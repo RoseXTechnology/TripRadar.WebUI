@@ -53,7 +53,7 @@ export default function Hero() {
               <div className="p-3 bg-white/10 backdrop-blur-sm rounded-full group-hover:bg-white/20 transition-colors">
                 <Play className="h-6 w-6 ml-1" />
               </div>
-              <span className="font-medium">Microinvest Love</span>
+              <span className="font-medium">Watch Demo</span>
             </button>
           </div>
 
@@ -61,11 +61,11 @@ export default function Hero() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">500K+</div>
-              <div className="text-blue-200">Trips Planned</div>
+              <div className="text-blue-200">Watch Demo</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">50+</div>
-              <div className="text-blue-200">Countries</div>
+              <div className="text-blue-200">Watch Demo</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">4.9</div>
