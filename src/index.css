@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Animation Styles */
+@layer utilities {
+  /* Spotlight effect for both themes */
+  .spotlight-effect {
+    @apply fixed pointer-events-none z-0 w-96 h-96 rounded-full transition-all duration-300 ease-out;
+  }
+  
+  .spotlight-effect-light {
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    opacity: 0.6;
+  }
+  
+  .spotlight-effect-dark {
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+    opacity: 0.2;
+  }
+  
+  /* Floating particles for both themes */
+  .floating-particle {
+    @apply absolute w-1 h-1 rounded-full animate-pulse;
+  }
+  
+  .floating-particle-light {
+    @apply bg-primary-500/10;
+  }
+  
+  .floating-particle-dark {
+    @apply bg-white/20;
+  }
+  
+  /* Micro-interactions */
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+  }
+  
+  .hover-scale {
+    @apply transition-all duration-300 hover:scale-105;
+  }
+  
+  .hover-glow-light {
+    @apply transition-all duration-300;
+  }
+  
+  .hover-glow-light:hover {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+  }
+  
+  .hover-glow-dark {
+    @apply transition-all duration-300;
+  }
+  
+  .hover-glow-dark:hover {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  }
+}
