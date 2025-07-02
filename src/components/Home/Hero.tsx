@@ -53,7 +53,7 @@ export default function Hero() {
               <div className="p-3 bg-white/10 backdrop-blur-sm rounded-full group-hover:bg-white/20 transition-colors">
                 <Play className="h-6 w-6 ml-1" />
               </div>
-              <span className="font-medium">Watch Demo</span>
+              <span className="font-medium">Microinvest Love</span>
             </button>
           </div>
 
