@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Mail, Lock, Bell, Shield, Plug, Camera, Edit3, Check, X, AlertTriangle, Trash2, Plus, Eye, EyeOff, Chrome, Github, Smartphone, Globe, Moon, Sun, Download, ExternalLink, Settings as SettingsIcon, ChevronRight, Save, RefreshCw, Sparkles, Palette, Monitor, LogOut, Key, Database, Zap, BarChart, CreditCard, Link as LinkIcon, Search, Bot, Users, Clock, Coffee, Utensils, Briefcase, Heart, Home, Plane, Hotel, Car, Sunset, Sunrise, Music, Film, Book, Bike, CookingPot as Hiking, Tent, Mountain, Waves, Snowflake, Leaf, Baby, Armchair as Wheelchair } from 'lucide-react';
+import { User, Mail, Lock, Bell, Shield, Plug, Camera, Edit3, Check, X, AlertTriangle, Trash2, Plus, Eye, EyeOff, Chrome, Github, Smartphone, Globe, Moon, Sun, Download, ExternalLink, Settings as SettingsIcon, ChevronRight, Save, RefreshCw, Sparkles, Palette, Monitor, LogOut, Key, Database, Zap, BarChart, CreditCard, Link as LinkIcon, Search, Bot, Users, Clock, Coffee, Utensils, Briefcase, Heart, Home, Plane, Hotel, Car, Sunset, Sunrise, Music, Film, Book, Bike, CookingPot as Hiking, Tent, Mountain, Waves, Snowflake, Leaf, Baby, Armchair as Wheelchair, DollarSign } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
 
@@ -1460,5 +1460,23 @@ const Volume1 = (props: any) => (
   >
     <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
     <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+  </svg>
+);
+
+const ArrowUp = (props: any) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="m5 12 7-7 7 7" />
+    <path d="M12 19V5" />
   </svg>
 );
