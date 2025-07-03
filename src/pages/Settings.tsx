@@ -43,8 +43,9 @@ import {
   Users,
   UserPlus,
   UserCheck,
-  UserX
-} from 'lucide-react';
+  UserX,
+  Star
+} from 'lucide-react'; from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
