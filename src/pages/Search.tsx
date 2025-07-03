@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Search as SearchIcon, 
   MapPin, 
@@ -17,7 +17,8 @@ import {
   Clock,
   ArrowRight,
   ChevronRight,
-  ChevronLeft
+  ChevronLeft,
+  ExternalLink
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -53,7 +54,8 @@ const mockFlights = [
     duration: '12h 15m',
     stops: 0,
     price: 899,
-    currency: 'USD'
+    currency: 'USD',
+    bookingUrl: 'https://www.emirates.com'
   },
   {
     id: 'FL2',
@@ -75,7 +77,8 @@ const mockFlights = [
     stops: 1,
     stopAirports: ['LHR'],
     price: 845,
-    currency: 'USD'
+    currency: 'USD',
+    bookingUrl: 'https://www.singaporeair.com'
   },
   {
     id: 'FL3',
@@ -97,7 +100,8 @@ const mockFlights = [
     stops: 1,
     stopAirports: ['DOH'],
     price: 925,
-    currency: 'USD'
+    currency: 'USD',
+    bookingUrl: 'https://www.qatarairways.com'
   }
 ];
 
@@ -112,7 +116,8 @@ const mockHotels = [
     reviews: 1245,
     price: 299,
     currency: 'USD',
-    amenities: ['Pool', 'Spa', 'Gym', 'Free WiFi', 'Restaurant']
+    amenities: ['Pool', 'Spa', 'Gym', 'Free WiFi', 'Restaurant'],
+    bookingUrl: 'https://www.booking.com'
   },
   {
     id: 'HT2',
@@ -123,7 +128,8 @@ const mockHotels = [
     reviews: 876,
     price: 245,
     currency: 'USD',
-    amenities: ['Pool', 'Gym', 'Free WiFi', 'Breakfast', 'Bar']
+    amenities: ['Pool', 'Gym', 'Free WiFi', 'Breakfast', 'Bar'],
+    bookingUrl: 'https://www.hotels.com'
   },
   {
     id: 'HT3',
@@ -134,7 +140,8 @@ const mockHotels = [
     reviews: 2103,
     price: 450,
     currency: 'USD',
-    amenities: ['Beach Access', 'Pool', 'Spa', 'Gym', 'Multiple Restaurants']
+    amenities: ['Beach Access', 'Pool', 'Spa', 'Gym', 'Multiple Restaurants'],
+    bookingUrl: 'https://www.expedia.com'
   }
 ];
 
@@ -148,7 +155,8 @@ const mockPlaces = [
     rating: 4.7,
     reviews: 15420,
     description: 'World\'s tallest building with observation decks offering panoramic views of the city.',
-    location: 'Downtown Dubai'
+    location: 'Downtown Dubai',
+    websiteUrl: 'https://www.burjkhalifa.ae'
   },
   {
     id: 'PL2',
@@ -158,7 +166,8 @@ const mockPlaces = [
     rating: 4.8,
     reviews: 12350,
     description: 'One of the world\'s largest shopping malls featuring retail, entertainment, and dining options.',
-    location: 'Downtown Dubai'
+    location: 'Downtown Dubai',
+    websiteUrl: 'https://www.thedubaimall.com'
   },
   {
     id: 'PL3',
@@ -168,7 +177,8 @@ const mockPlaces = [
     rating: 4.6,
     reviews: 8920,
     description: 'Artificial archipelago with luxury hotels, restaurants, and beautiful beaches.',
-    location: 'Jumeirah'
+    location: 'Jumeirah',
+    websiteUrl: 'https://www.visitdubai.com'
   }
 ];
 
@@ -184,11 +194,24 @@ export default function Search() {
   });
   const { actualTheme } = useTheme();
   const [isSearching, setIsSearching] = useState(false);
-  const [showResults, setShowResults] = useState(true);
+  const [showResults, setShowResults] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [formData, setFormData] = useState({
+    from: '',
+    to: '',
+    departureDate: '',
+    returnDate: '',
+    passengers: 1,
+    destination: '',
+    checkIn: '',
+    checkOut: '',
+    guests: 1,
+    location: '',
+    radius: '10'
+  });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -205,6 +228,11 @@ export default function Search() {
     setShowResults(true);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
   const renderSearchForm = () => {
     switch (activeCategory) {
       case 'flights':
@@ -216,6 +244,9 @@ export default function Search() {
                 <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <input
                   type="text"
+                  name="from"
+                  value={formData.from}
+                  onChange={handleInputChange}
                   placeholder="Departure city"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
@@ -227,6 +258,9 @@ export default function Search() {
                 <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <input
                   type="text"
+                  name="to"
+                  value={formData.to}
+                  onChange={handleInputChange}
                   placeholder="Destination city"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
@@ -238,6 +272,9 @@ export default function Search() {
                 <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <input
                   type="date"
+                  name="departureDate"
+                  value={formData.departureDate}
+                  onChange={handleInputChange}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
@@ -246,11 +283,16 @@ export default function Search() {
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Passengers</label>
               <div className="relative">
                 <Users className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                <select className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                  <option>1 Passenger</option>
-                  <option>2 Passengers</option>
-                  <option>3 Passengers</option>
-                  <option>4+ Passengers</option>
+                <select
+                  name="passengers"
+                  value={formData.passengers}
+                  onChange={handleInputChange}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                >
+                  <option value={1}>1 Passenger</option>
+                  <option value={2}>2 Passengers</option>
+                  <option value={3}>3 Passengers</option>
+                  <option value={4}>4+ Passengers</option>
                 </select>
               </div>
             </div>
@@ -266,6 +308,9 @@ export default function Search() {
                 <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <input
                   type="text"
+                  name="destination"
+                  value={formData.destination}
+                  onChange={handleInputChange}
                   placeholder="City or hotel name"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
@@ -277,6 +322,9 @@ export default function Search() {
                 <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <input
                   type="date"
+                  name="checkIn"
+                  value={formData.checkIn}
+                  onChange={handleInputChange}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
@@ -287,6 +335,9 @@ export default function Search() {
                 <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <input
                   type="date"
+                  name="checkOut"
+                  value={formData.checkOut}
+                  onChange={handleInputChange}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
@@ -295,11 +346,16 @@ export default function Search() {
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Guests</label>
               <div className="relative">
                 <Users className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                <select className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                  <option>1 Guest</option>
-                  <option>2 Guests</option>
-                  <option>3 Guests</option>
-                  <option>4+ Guests</option>
+                <select
+                  name="guests"
+                  value={formData.guests}
+                  onChange={handleInputChange}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                >
+                  <option value={1}>1 Guest</option>
+                  <option value={2}>2 Guests</option>
+                  <option value={3}>3 Guests</option>
+                  <option value={4}>4+ Guests</option>
                 </select>
               </div>
             </div>
@@ -326,6 +382,9 @@ export default function Search() {
                   <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <input
                     type="text"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleInputChange}
                     placeholder="Enter location"
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
@@ -337,17 +396,25 @@ export default function Search() {
                   <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <input
                     type="date"
+                    name="departureDate"
+                    value={formData.departureDate}
+                    onChange={handleInputChange}
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Radius</label>
-                <select className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                  <option>5 km</option>
-                  <option>10 km</option>
-                  <option>25 km</option>
-                  <option>50 km</option>
+                <select
+                  name="radius"
+                  value={formData.radius}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                >
+                  <option value="5">5 km</option>
+                  <option value="10">10 km</option>
+                  <option value="25">25 km</option>
+                  <option value="50">50 km</option>
                 </select>
               </div>
             </div>
@@ -430,9 +497,15 @@ export default function Search() {
                     
                     <div className="text-right">
                       <div className="text-2xl font-bold text-gray-900 dark:text-white">${flight.price}</div>
-                      <button className="mt-2 px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors">
-                        Select
-                      </button>
+                      <a 
+                        href={flight.bookingUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-2 px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors inline-flex items-center space-x-1"
+                      >
+                        <span>View Details</span>
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -512,9 +585,15 @@ export default function Search() {
                         )}
                       </div>
                       
-                      <button className="w-full py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors">
-                        View Details
-                      </button>
+                      <a 
+                        href={hotel.bookingUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors inline-flex items-center justify-center space-x-1"
+                      >
+                        <span>View Details</span>
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
                     </div>
                   </div>
                 ))}
@@ -585,9 +664,15 @@ export default function Search() {
                         {place.description}
                       </p>
                       
-                      <button className="w-full py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors">
-                        View Details
-                      </button>
+                      <a 
+                        href={place.websiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors inline-flex items-center justify-center space-x-1"
+                      >
+                        <span>View Details</span>
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
                     </div>
                   </div>
                 ))}
@@ -662,7 +747,10 @@ export default function Search() {
             {searchCategories.map((category) => (
               <button
                 key={category.id}
-                onClick={() => setActiveCategory(category.id)}
+                onClick={() => {
+                  setActiveCategory(category.id);
+                  setShowResults(false);
+                }}
                 className={`flex flex-col items-center space-y-2 p-4 rounded-xl transition-all ${
                   activeCategory === category.id
                     ? 'bg-primary-50 dark:bg-primary-900/20 border-2 border-primary-500'

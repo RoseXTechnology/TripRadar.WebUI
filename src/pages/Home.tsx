@@ -28,9 +28,11 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAnimation } from '../components/AnimationProvider';
+import VideoModal from '../components/Home/VideoModal';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
   const { actualTheme } = useTheme();
   const { mousePosition } = useAnimation();
 
@@ -209,14 +211,17 @@ export default function Home() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
               <Link
-                to="/dashboard"
+                to="/signup"
                 className="group relative bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 flex items-center space-x-2 transform hover:-translate-y-1"
               >
-                <span>Start Planning</span>
+                <span>Get Started Free</span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               
-              <button className="group flex items-center space-x-3 text-gray-700 dark:text-white/80 hover:text-gray-900 dark:hover:text-white transition-colors">
+              <button 
+                onClick={() => setShowVideoModal(true)}
+                className="group flex items-center space-x-3 text-gray-700 dark:text-white/80 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
                 <div className="p-3 bg-white/10 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl group-hover:bg-white/20 dark:group-hover:bg-white/10 transition-all duration-300">
                   <Play className="h-6 w-6 ml-1" />
                 </div>
@@ -347,12 +352,22 @@ export default function Home() {
               Join thousands of travelers who trust TripRadar for intelligent, 
               collaborative, and privacy-first trip planning.
             </p>
-            <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:-translate-y-1">
+            <Link 
+              to="/signup"
+              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:-translate-y-1"
+            >
               Get Started Free
-            </button>
+            </Link>
           </div>
         </div>
       </section>
+
+      {/* Video Modal */}
+      <VideoModal 
+        isOpen={showVideoModal} 
+        onClose={() => setShowVideoModal(false)}
+        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+      />
     </div>
   );
 }

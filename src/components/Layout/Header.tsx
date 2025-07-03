@@ -96,20 +96,25 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-colors group ${
-                    location.pathname === item.href ? 'text-gray-900 dark:text-white' : ''
-                  }`}
-                >
-                  {item.name}
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-200 ${
-                    location.pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`}></span>
-                </Link>
-              ))}
+              {navigation.map((item) => {
+                // Skip protected routes if user is not authenticated
+                if (item.protected && !isAuthenticated) return null;
+                
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={`relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-colors group ${
+                      location.pathname === item.href ? 'text-gray-900 dark:text-white' : ''
+                    }`}
+                  >
+                    {item.name}
+                    <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-200 ${
+                      location.pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}></span>
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* Right side */}
@@ -237,18 +242,23 @@ export default function Header() {
           {isMenuOpen && (
             <div className="md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 animate-slide-down">
               <nav className="space-y-2">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl font-medium transition-colors ${
-                      location.pathname === item.href ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700' : ''
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+                {navigation.map((item) => {
+                  // Skip protected routes if user is not authenticated
+                  if (item.protected && !isAuthenticated) return null;
+                  
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={`block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl font-medium transition-colors ${
+                        location.pathname === item.href ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700' : ''
+                      }`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  );
+                })}
               </nav>
             </div>
           )}

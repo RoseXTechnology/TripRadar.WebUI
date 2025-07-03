@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useApp } from '../context/AppContext';
+import BudgetForm from '../components/Budget/BudgetForm';
 
 // Backend-provided budget categories
 const BUDGET_CATEGORIES = [
@@ -27,8 +28,9 @@ const BUDGET_CATEGORIES = [
 
 export default function Budget() {
   const { requireAuth } = useAuth();
-  const { currentTrip } = useApp();
+  const { currentTrip, setCurrentTrip } = useApp();
   const [showAddExpense, setShowAddExpense] = useState(false);
+  const [showEditBudget, setShowEditBudget] = useState(false);
   const [newExpense, setNewExpense] = useState({
     category: '',
     amount: '',
@@ -55,13 +57,38 @@ export default function Budget() {
     setShowAddExpense(true);
   };
 
+  const handleSaveBudget = (budgetData: any) => {
+    if (currentTrip) {
+      const updatedTrip = {
+        ...currentTrip,
+        budget: {
+          ...currentTrip.budget,
+          total: budgetData.total,
+          currency: budgetData.currency,
+          categories: budgetData.categories
+        }
+      };
+      
+      setCurrentTrip(updatedTrip);
+    }
+    
+    setShowEditBudget(false);
+  };
+
   if (!currentTrip?.budget) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center transition-colors duration-300 pt-16">
-        <div className="text-center">
+        <div className="text-center p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 max-w-md">
           <DollarSign className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No Budget Set</h2>
-          <p className="text-gray-600 dark:text-gray-400">Set up a budget for your trip to start tracking expenses.</p>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">No Budget Set</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">Set up a budget for your trip to start tracking expenses.</p>
+          <button 
+            onClick={() => setShowEditBudget(true)}
+            className="bg-primary-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-700 transition-colors flex items-center space-x-2 mx-auto"
+          >
+            <Plus className="h-5 w-5" />
+            <span>Create Budget</span>
+          </button>
         </div>
       </div>
     );
@@ -80,13 +107,22 @@ export default function Budget() {
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Trip Budget</h1>
             <p className="text-gray-600 dark:text-gray-400">{currentTrip.title} - {currentTrip.destination}</p>
           </div>
-          <button
-            onClick={handleShowAddExpense}
-            className="mt-4 sm:mt-0 bg-primary-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-700 transition-colors flex items-center space-x-2"
-          >
-            <Plus className="h-5 w-5" />
-            <span>Add Expense</span>
-          </button>
+          <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+            <button
+              onClick={() => setShowEditBudget(true)}
+              className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center justify-center space-x-2"
+            >
+              <Edit className="h-5 w-5" />
+              <span>Adjust Budget</span>
+            </button>
+            <button
+              onClick={handleShowAddExpense}
+              className="bg-primary-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2"
+            >
+              <Plus className="h-5 w-5" />
+              <span>Add Expense</span>
+            </button>
+          </div>
         </div>
 
         {/* Budget Overview */}
@@ -107,7 +143,7 @@ export default function Budget() {
               <span className="text-sm text-gray-600 dark:text-gray-400">Spent</span>
               <TrendingDown className="h-5 w-5 text-red-400" />
             </div>
-            <div className="text-2xl font-bold text-red-600">
+            <div className="text-2xl font-bold text-red-600 dark:text-red-400">
               ${budget.spent.toLocaleString()}
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">{spentPercentage.toFixed(1)}% of budget</div>
@@ -118,7 +154,7 @@ export default function Budget() {
               <span className="text-sm text-gray-600 dark:text-gray-400">Remaining</span>
               <TrendingUp className="h-5 w-5 text-green-400" />
             </div>
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
               ${remainingBudget.toLocaleString()}
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">{(100 - spentPercentage).toFixed(1)}% remaining</div>
@@ -129,7 +165,7 @@ export default function Budget() {
               <span className="text-sm text-gray-600 dark:text-gray-400">Daily Average</span>
               <Calendar className="h-5 w-5 text-blue-400" />
             </div>
-            <div className="text-2xl font-bold text-blue-600">
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
               ${Math.round(remainingBudget / 7).toLocaleString()}
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">Per day remaining</div>
@@ -158,7 +194,7 @@ export default function Budget() {
                           <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                             <Edit className="h-4 w-4" />
                           </button>
-                          <button className="p-1 text-gray-400 hover:text-red-600">
+                          <button className="p-1 text-gray-400 hover:text-red-600 dark:hover:text-red-400">
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
@@ -171,11 +207,11 @@ export default function Budget() {
                         </div>
                         <div>
                           <span className="text-gray-600 dark:text-gray-400">Spent</span>
-                          <div className="font-semibold text-red-600">${category.spent.toLocaleString()}</div>
+                          <div className="font-semibold text-red-600 dark:text-red-400">${category.spent.toLocaleString()}</div>
                         </div>
                         <div>
                           <span className="text-gray-600 dark:text-gray-400">Remaining</span>
-                          <div className={`font-semibold ${remaining >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                          <div className={`font-semibold ${remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                             ${remaining.toLocaleString()}
                           </div>
                         </div>
@@ -185,7 +221,7 @@ export default function Budget() {
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600 dark:text-gray-400">{percentage.toFixed(1)}% used</span>
                           {percentage > 90 && (
-                            <span className="text-red-600 font-medium">Over budget!</span>
+                            <span className="text-red-600 dark:text-red-400 font-medium">Over budget!</span>
                           )}
                         </div>
                         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
@@ -207,7 +243,16 @@ export default function Budget() {
 
             {/* Recent Expenses */}
             <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Recent Expenses</h3>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Expenses</h3>
+                <button 
+                  onClick={handleShowAddExpense}
+                  className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 text-sm font-medium flex items-center space-x-1"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Add Expense</span>
+                </button>
+              </div>
               
               <div className="space-y-4">
                 {/* Sample expenses */}
@@ -220,7 +265,7 @@ export default function Budget() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-semibold text-red-600">-$800</div>
+                    <div className="font-semibold text-red-600 dark:text-red-400">-$800</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">Flights</div>
                   </div>
                 </div>
@@ -234,10 +279,24 @@ export default function Budget() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-semibold text-red-600">-$400</div>
+                    <div className="font-semibold text-red-600 dark:text-red-400">-$400</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">Hotels</div>
                   </div>
                 </div>
+                
+                {/* Empty state if no expenses */}
+                {budget.spent === 0 && (
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <DollarSign className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                    <p>No expenses recorded yet</p>
+                    <button 
+                      onClick={handleShowAddExpense}
+                      className="mt-2 text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
+                    >
+                      Add your first expense
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -289,7 +348,7 @@ export default function Budget() {
               <div className="space-y-4">
                 <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                   <div className="flex items-center space-x-2 mb-2">
-                    <TrendingUp className="h-4 w-4 text-blue-600" />
+                    <TrendingUp className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                     <span className="font-medium text-blue-900 dark:text-blue-400">On Track</span>
                   </div>
                   <p className="text-sm text-blue-700 dark:text-blue-300">
@@ -299,7 +358,7 @@ export default function Budget() {
                 
                 <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                   <div className="flex items-center space-x-2 mb-2">
-                    <Target className="h-4 w-4 text-green-600" />
+                    <Target className="h-4 w-4 text-green-600 dark:text-green-400" />
                     <span className="font-medium text-green-900 dark:text-green-400">Savings Opportunity</span>
                   </div>
                   <p className="text-sm text-green-700 dark:text-green-300">
@@ -315,19 +374,19 @@ export default function Budget() {
               
               <div className="space-y-3">
                 <button 
-                  onClick={() => requireAuth()}
+                  onClick={() => setShowEditBudget(true)}
                   className="w-full flex items-center space-x-3 p-3 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors"
                 >
-                  <Plus className="h-4 w-4" />
-                  <span>Add New Category</span>
+                  <Edit className="h-4 w-4" />
+                  <span>Adjust Budget</span>
                 </button>
                 
                 <button 
                   onClick={() => requireAuth()}
                   className="w-full flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                 >
-                  <DollarSign className="h-4 w-4" />
-                  <span>Adjust Budget</span>
+                  <Plus className="h-4 w-4" />
+                  <span>Add New Category</span>
                 </button>
                 
                 <button 
@@ -412,6 +471,16 @@ export default function Budget() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Edit Budget Modal */}
+        {showEditBudget && (
+          <BudgetForm 
+            onClose={() => setShowEditBudget(false)}
+            onSave={handleSaveBudget}
+            initialData={budget}
+            isEditing={true}
+          />
         )}
       </div>
     </div>

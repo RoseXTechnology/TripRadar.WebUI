@@ -12,7 +12,7 @@ import {
   Command,
   Clock
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface QuickSearchProps {
   onClose: () => void;
@@ -59,6 +59,7 @@ export default function QuickSearch({ onClose }: QuickSearchProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [recentSearches] = useState(['Dashboard', 'Flight Search', 'Budget Tracker']);
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -88,14 +89,14 @@ export default function QuickSearch({ onClose }: QuickSearchProps) {
         e.preventDefault();
         setSelectedIndex(prev => Math.max(prev - 1, 0));
       } else if (e.key === 'Enter' && results[selectedIndex]) {
-        window.location.href = results[selectedIndex].url;
+        navigate(results[selectedIndex].url);
         onClose();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [results, selectedIndex, onClose]);
+  }, [results, selectedIndex, onClose, navigate]);
 
   const getCategoryIcon = (category: string) => {
     switch (category) {

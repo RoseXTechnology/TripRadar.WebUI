@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Play, Star, MessageSquare, Smartphone } from 'lucide-react';
+import VideoModal from './VideoModal';
 
 export default function Hero() {
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
@@ -42,14 +45,17 @@ export default function Hero() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
             <Link
-              to="/dashboard"
+              to="/signup"
               className="group bg-primary-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-primary-700 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
               <span>Start Planning</span>
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             
-            <button className="group flex items-center space-x-3 text-white hover:text-blue-200 transition-colors">
+            <button 
+              onClick={() => setShowVideoModal(true)}
+              className="group flex items-center space-x-3 text-white hover:text-blue-200 transition-colors"
+            >
               <div className="p-3 bg-white/10 backdrop-blur-sm rounded-full group-hover:bg-white/20 transition-colors">
                 <Play className="h-6 w-6 ml-1" />
               </div>
@@ -83,11 +89,11 @@ export default function Hero() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto mt-12">
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">500K+</div>
-              <div className="text-blue-200">Watch Demo</div>
+              <div className="text-blue-200">Trips Planned</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">50+</div>
-              <div className="text-blue-200">Watch Demo</div>
+              <div className="text-blue-200">Countries</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">4.9</div>
@@ -100,6 +106,13 @@ export default function Hero() {
       {/* Floating elements */}
       <div className="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl animate-bounce-gentle"></div>
       <div className="absolute bottom-20 right-10 w-32 h-32 bg-blue-400/20 rounded-full blur-xl animate-bounce-gentle" style={{ animationDelay: '1s' }}></div>
+      
+      {/* Video Modal */}
+      <VideoModal 
+        isOpen={showVideoModal} 
+        onClose={() => setShowVideoModal(false)}
+        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+      />
     </section>
   );
 }
