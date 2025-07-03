@@ -1,8 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import { User, Mail, Lock, Bell, Shield, Plug, Camera, Edit3, Check, X, AlertTriangle, Trash2, Plus, Eye, EyeOff, Chrome, Github, Smartphone, Globe, Moon, Sun, Download, ExternalLink, Settings as SettingsIcon, ChevronRight, Save, RefreshCw, Sparkles, Palette, Monitor, LogOut, Key, Database, Zap, BarChart, CreditCard, Link as LinkIcon, Search, Bot, Utensils, Home, Briefcase, Languages, Armchair as Wheelchair, Baby, PawPrint, Bus, Car, Plane, Hotel, Bed, DollarSign, Coffee, Wine, Users, Clock } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { 
+  User, 
+  Mail, 
+  Lock, 
+  Bell, 
+  Shield, 
+  Plug, 
+  Camera, 
+  Edit3, 
+  Check, 
+  X, 
+  AlertTriangle, 
+  Trash2, 
+  Plus, 
+  Eye, 
+  EyeOff,
+  Chrome,
+  Github,
+  Smartphone,
+  Globe,
+  Moon,
+  Sun,
+  Download,
+  ExternalLink,
+  Settings as SettingsIcon,
+  ChevronRight,
+  Save,
+  RefreshCw,
+  Sparkles,
+  Palette,
+  Monitor,
+  LogOut,
+  Key,
+  Database,
+  Zap,
+  BarChart,
+  CreditCard,
+  Link as LinkIcon,
+  Search,
+  Bot,
+  Users,
+  Clock,
+  Coffee,
+  Utensils,
+  Briefcase,
+  Heart,
+  Home,
+  Plane,
+  Hotel,
+  Car,
+  Sunset,
+  Sunrise,
+  Music,
+  Film,
+  Book,
+  Bike,
+  Hiking,
+  Tent,
+  Mountain,
+  Waves,
+  Snowflake,
+  Leaf,
+  Baby,
+  Wheelchair
+} from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
-import { Link } from 'react-router-dom';
 
 type SettingsSection = 'account' | 'notifications' | 'security' | 'integrations' | 'preferences';
 
@@ -58,20 +122,23 @@ export default function Settings() {
     loginNotifications: true
   });
 
-  const [preferences, setPreferences] = useState({
+  const [preferenceSettings, setPreferenceSettings] = useState({
     dietary: ['vegetarian'],
     accommodation: ['hotel', 'airbnb'],
-    transport: ['public', 'rideshare'],
+    transport: ['public', 'walking'],
     tripType: ['adventure', 'cultural'],
     accessibility: [],
     languages: ['english'],
     activityTime: 'both',
-    budget: 'medium'
+    budget: 'medium',
+    pace: 'moderate',
+    climate: 'warm',
+    groupMembers: []
   });
 
   const sidebarItems = [
     { id: 'account', label: 'Account', icon: User },
-    { id: 'preferences', label: 'Preferences', icon: Sparkles },
+    { id: 'preferences', label: 'Preferences', icon: Heart },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'security', label: 'Security', icon: Shield },
     { id: 'integrations', label: 'Integrations', icon: Plug }
@@ -377,7 +444,7 @@ export default function Settings() {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Travel Preferences</h2>
-        <p className="text-gray-600 dark:text-gray-400">Customize your travel preferences to get personalized recommendations</p>
+        <p className="text-gray-600 dark:text-gray-400">Customize your travel experience with personalized preferences</p>
       </div>
 
       {/* Dietary Preferences */}
@@ -387,88 +454,86 @@ export default function Settings() {
           <span>Dietary Preferences</span>
         </h3>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {[
             { id: 'vegetarian', label: 'Vegetarian' },
             { id: 'vegan', label: 'Vegan' },
+            { id: 'pescatarian', label: 'Pescatarian' },
+            { id: 'gluten-free', label: 'Gluten Free' },
+            { id: 'dairy-free', label: 'Dairy Free' },
+            { id: 'nut-free', label: 'Nut Free' },
             { id: 'halal', label: 'Halal' },
-            { id: 'kosher', label: 'Kosher' },
-            { id: 'gluten-free', label: 'Gluten-Free' },
-            { id: 'dairy-free', label: 'Dairy-Free' },
-            { id: 'nut-free', label: 'Nut-Free' },
-            { id: 'no-restrictions', label: 'No Restrictions' }
-          ].map(option => (
+            { id: 'kosher', label: 'Kosher' }
+          ].map((option) => (
             <button
               key={option.id}
               onClick={() => {
-                setPreferences(prev => {
+                setPreferenceSettings(prev => {
                   const newDietary = [...prev.dietary];
                   if (newDietary.includes(option.id)) {
-                    return { ...prev, dietary: newDietary.filter(d => d !== option.id) };
+                    return { ...prev, dietary: newDietary.filter(id => id !== option.id) };
                   } else {
                     return { ...prev, dietary: [...newDietary, option.id] };
                   }
                 });
               }}
               className={`flex items-center justify-center space-x-2 p-3 rounded-xl border-2 transition-colors ${
-                preferences.dietary.includes(option.id)
+                preferenceSettings.dietary.includes(option.id)
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
                   : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300'
               }`}
             >
               <span>{option.label}</span>
+              {preferenceSettings.dietary.includes(option.id) && (
+                <Check className="h-4 w-4" />
+              )}
             </button>
           ))}
         </div>
-        
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          These preferences will be used to suggest restaurants and food options during your trips.
-        </p>
       </div>
 
       {/* Accommodation Preferences */}
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center space-x-2">
-          <Bed className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+          <Home className="h-5 w-5 text-primary-600 dark:text-primary-400" />
           <span>Accommodation Preferences</span>
         </h3>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {[
             { id: 'hotel', label: 'Hotels', icon: Hotel },
-            { id: 'hostel', label: 'Hostels', icon: Bed },
-            { id: 'airbnb', label: 'Airbnb', icon: Home },
-            { id: 'resort', label: 'Resorts', icon: Bed },
-            { id: 'camping', label: 'Camping', icon: Home },
-            { id: 'boutique', label: 'Boutique', icon: Hotel }
-          ].map(option => (
+            { id: 'hostel', label: 'Hostels', icon: Users },
+            { id: 'airbnb', label: 'Vacation Rentals', icon: Home },
+            { id: 'resort', label: 'Resorts', icon: Sunrise },
+            { id: 'camping', label: 'Camping', icon: Tent },
+            { id: 'boutique', label: 'Boutique Hotels', icon: Star }
+          ].map((option) => (
             <button
               key={option.id}
               onClick={() => {
-                setPreferences(prev => {
+                setPreferenceSettings(prev => {
                   const newAccommodation = [...prev.accommodation];
                   if (newAccommodation.includes(option.id)) {
-                    return { ...prev, accommodation: newAccommodation.filter(a => a !== option.id) };
+                    return { ...prev, accommodation: newAccommodation.filter(id => id !== option.id) };
                   } else {
                     return { ...prev, accommodation: [...newAccommodation, option.id] };
                   }
                 });
               }}
               className={`flex items-center justify-center space-x-2 p-3 rounded-xl border-2 transition-colors ${
-                preferences.accommodation.includes(option.id)
+                preferenceSettings.accommodation.includes(option.id)
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
                   : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300'
               }`}
             >
               <option.icon className="h-4 w-4" />
               <span>{option.label}</span>
+              {preferenceSettings.accommodation.includes(option.id) && (
+                <Check className="h-4 w-4" />
+              )}
             </button>
           ))}
         </div>
-        
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          These preferences will be used to prioritize accommodation options in search results.
-        </p>
       </div>
 
       {/* Transportation Preferences */}
@@ -478,42 +543,41 @@ export default function Settings() {
           <span>Transportation Preferences</span>
         </h3>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {[
-            { id: 'public', label: 'Public Transit', icon: Bus },
+            { id: 'public', label: 'Public Transport', icon: Bus },
             { id: 'rental', label: 'Car Rental', icon: Car },
-            { id: 'rideshare', label: 'Rideshare', icon: Car },
             { id: 'walking', label: 'Walking', icon: User },
-            { id: 'biking', label: 'Biking', icon: User },
+            { id: 'cycling', label: 'Cycling', icon: Bike },
+            { id: 'rideshare', label: 'Rideshare', icon: Users },
             { id: 'taxi', label: 'Taxi', icon: Car }
-          ].map(option => (
+          ].map((option) => (
             <button
               key={option.id}
               onClick={() => {
-                setPreferences(prev => {
+                setPreferenceSettings(prev => {
                   const newTransport = [...prev.transport];
                   if (newTransport.includes(option.id)) {
-                    return { ...prev, transport: newTransport.filter(t => t !== option.id) };
+                    return { ...prev, transport: newTransport.filter(id => id !== option.id) };
                   } else {
                     return { ...prev, transport: [...newTransport, option.id] };
                   }
                 });
               }}
               className={`flex items-center justify-center space-x-2 p-3 rounded-xl border-2 transition-colors ${
-                preferences.transport.includes(option.id)
+                preferenceSettings.transport.includes(option.id)
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
                   : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300'
               }`}
             >
               <option.icon className="h-4 w-4" />
               <span>{option.label}</span>
+              {preferenceSettings.transport.includes(option.id) && (
+                <Check className="h-4 w-4" />
+              )}
             </button>
           ))}
         </div>
-        
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          These preferences will be used to suggest transportation options during your trips.
-        </p>
       </div>
 
       {/* Trip Type Preferences */}
@@ -523,44 +587,43 @@ export default function Settings() {
           <span>Trip Type Preferences</span>
         </h3>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {[
+            { id: 'adventure', label: 'Adventure', icon: Mountain },
+            { id: 'beach', label: 'Beach', icon: Waves },
+            { id: 'cultural', label: 'Cultural', icon: Museum },
+            { id: 'food', label: 'Food & Drink', icon: Utensils },
+            { id: 'luxury', label: 'Luxury', icon: Star },
             { id: 'budget', label: 'Budget', icon: DollarSign },
-            { id: 'luxury', label: 'Luxury', icon: DollarSign },
-            { id: 'adventure', label: 'Adventure', icon: Zap },
-            { id: 'relaxation', label: 'Relaxation', icon: Coffee },
-            { id: 'cultural', label: 'Cultural', icon: Globe },
-            { id: 'foodie', label: 'Foodie', icon: Utensils },
-            { id: 'nightlife', label: 'Nightlife', icon: Wine },
-            { id: 'family', label: 'Family', icon: Users }
-          ].map(option => (
+            { id: 'family', label: 'Family', icon: Users },
+            { id: 'romantic', label: 'Romantic', icon: Heart }
+          ].map((option) => (
             <button
               key={option.id}
               onClick={() => {
-                setPreferences(prev => {
+                setPreferenceSettings(prev => {
                   const newTripType = [...prev.tripType];
                   if (newTripType.includes(option.id)) {
-                    return { ...prev, tripType: newTripType.filter(t => t !== option.id) };
+                    return { ...prev, tripType: newTripType.filter(id => id !== option.id) };
                   } else {
                     return { ...prev, tripType: [...newTripType, option.id] };
                   }
                 });
               }}
               className={`flex items-center justify-center space-x-2 p-3 rounded-xl border-2 transition-colors ${
-                preferences.tripType.includes(option.id)
+                preferenceSettings.tripType.includes(option.id)
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
                   : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300'
               }`}
             >
               <option.icon className="h-4 w-4" />
               <span>{option.label}</span>
+              {preferenceSettings.tripType.includes(option.id) && (
+                <Check className="h-4 w-4" />
+              )}
             </button>
           ))}
         </div>
-        
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          These preferences will be used to suggest destinations and activities that match your travel style.
-        </p>
       </div>
 
       {/* Accessibility Preferences */}
@@ -570,88 +633,41 @@ export default function Settings() {
           <span>Accessibility Preferences</span>
         </h3>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {[
             { id: 'wheelchair', label: 'Wheelchair Access', icon: Wheelchair },
-            { id: 'kid-friendly', label: 'Kid-Friendly', icon: Baby },
-            { id: 'pet-friendly', label: 'Pet-Friendly', icon: PawPrint },
-            { id: 'elevator', label: 'Elevator Access', icon: Wheelchair },
-            { id: 'quiet', label: 'Quiet Areas', icon: Bell },
-            { id: 'allergy-friendly', label: 'Allergy-Friendly', icon: Shield }
-          ].map(option => (
+            { id: 'elevator', label: 'Elevator Access', icon: ArrowUp },
+            { id: 'ground-floor', label: 'Ground Floor', icon: Home },
+            { id: 'kid-friendly', label: 'Kid Friendly', icon: Baby },
+            { id: 'pet-friendly', label: 'Pet Friendly', icon: Paw },
+            { id: 'quiet', label: 'Quiet Environment', icon: Volume1 }
+          ].map((option) => (
             <button
               key={option.id}
               onClick={() => {
-                setPreferences(prev => {
+                setPreferenceSettings(prev => {
                   const newAccessibility = [...prev.accessibility];
                   if (newAccessibility.includes(option.id)) {
-                    return { ...prev, accessibility: newAccessibility.filter(a => a !== option.id) };
+                    return { ...prev, accessibility: newAccessibility.filter(id => id !== option.id) };
                   } else {
                     return { ...prev, accessibility: [...newAccessibility, option.id] };
                   }
                 });
               }}
               className={`flex items-center justify-center space-x-2 p-3 rounded-xl border-2 transition-colors ${
-                preferences.accessibility.includes(option.id)
+                preferenceSettings.accessibility.includes(option.id)
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
                   : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300'
               }`}
             >
               <option.icon className="h-4 w-4" />
               <span>{option.label}</span>
+              {preferenceSettings.accessibility.includes(option.id) && (
+                <Check className="h-4 w-4" />
+              )}
             </button>
           ))}
         </div>
-        
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          These preferences will be used to ensure your travel experiences are accessible and comfortable.
-        </p>
-      </div>
-
-      {/* Languages */}
-      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center space-x-2">
-          <Languages className="h-5 w-5 text-primary-600 dark:text-primary-400" />
-          <span>Languages Spoken</span>
-        </h3>
-        
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-          {[
-            { id: 'english', label: 'English' },
-            { id: 'spanish', label: 'Spanish' },
-            { id: 'french', label: 'French' },
-            { id: 'german', label: 'German' },
-            { id: 'italian', label: 'Italian' },
-            { id: 'japanese', label: 'Japanese' },
-            { id: 'chinese', label: 'Chinese' },
-            { id: 'arabic', label: 'Arabic' }
-          ].map(option => (
-            <button
-              key={option.id}
-              onClick={() => {
-                setPreferences(prev => {
-                  const newLanguages = [...prev.languages];
-                  if (newLanguages.includes(option.id)) {
-                    return { ...prev, languages: newLanguages.filter(l => l !== option.id) };
-                  } else {
-                    return { ...prev, languages: [...newLanguages, option.id] };
-                  }
-                });
-              }}
-              className={`flex items-center justify-center space-x-2 p-3 rounded-xl border-2 transition-colors ${
-                preferences.languages.includes(option.id)
-                  ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
-                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300'
-              }`}
-            >
-              <span>{option.label}</span>
-            </button>
-          ))}
-        </div>
-        
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          These preferences will be used to suggest destinations where your languages are commonly spoken.
-        </p>
       </div>
 
       {/* Activity Time Preference */}
@@ -663,22 +679,22 @@ export default function Settings() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
-            onClick={() => setPreferences(prev => ({ ...prev, activityTime: 'day' }))}
+            onClick={() => setPreferenceSettings(prev => ({ ...prev, activityTime: 'day' }))}
             className={`group relative p-6 rounded-2xl border-2 transition-all duration-300 ${
-              preferences.activityTime === 'day'
+              preferenceSettings.activityTime === 'day'
                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/10'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
             }`}
           >
             <div className="flex flex-col items-center space-y-4">
               <div className="p-4 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <Sun className="h-8 w-8 text-white" />
+                <Sunrise className="h-8 w-8 text-white" />
               </div>
               <div className="text-center">
                 <h4 className="font-semibold text-gray-900 dark:text-white">Day Activities</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Prefer daytime adventures</p>
               </div>
-              {preferences.activityTime === 'day' && (
+              {preferenceSettings.activityTime === 'day' && (
                 <div className="absolute top-3 right-3">
                   <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
                     <Check className="h-4 w-4 text-white" />
@@ -689,22 +705,22 @@ export default function Settings() {
           </button>
 
           <button
-            onClick={() => setPreferences(prev => ({ ...prev, activityTime: 'night' }))}
+            onClick={() => setPreferenceSettings(prev => ({ ...prev, activityTime: 'night' }))}
             className={`group relative p-6 rounded-2xl border-2 transition-all duration-300 ${
-              preferences.activityTime === 'night'
+              preferenceSettings.activityTime === 'night'
                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/10'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
             }`}
           >
             <div className="flex flex-col items-center space-y-4">
               <div className="p-4 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <Moon className="h-8 w-8 text-white" />
+                <Sunset className="h-8 w-8 text-white" />
               </div>
               <div className="text-center">
                 <h4 className="font-semibold text-gray-900 dark:text-white">Night Activities</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Prefer nighttime experiences</p>
               </div>
-              {preferences.activityTime === 'night' && (
+              {preferenceSettings.activityTime === 'night' && (
                 <div className="absolute top-3 right-3">
                   <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
                     <Check className="h-4 w-4 text-white" />
@@ -715,22 +731,22 @@ export default function Settings() {
           </button>
 
           <button
-            onClick={() => setPreferences(prev => ({ ...prev, activityTime: 'both' }))}
+            onClick={() => setPreferenceSettings(prev => ({ ...prev, activityTime: 'both' }))}
             className={`group relative p-6 rounded-2xl border-2 transition-all duration-300 ${
-              preferences.activityTime === 'both'
+              preferenceSettings.activityTime === 'both'
                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/10'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
             }`}
           >
             <div className="flex flex-col items-center space-y-4">
-              <div className="p-4 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <div className="p-4 bg-gradient-to-br from-gray-500 to-gray-700 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                 <Clock className="h-8 w-8 text-white" />
               </div>
               <div className="text-center">
                 <h4 className="font-semibold text-gray-900 dark:text-white">Both</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Enjoy day and night activities</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">No time preference</p>
               </div>
-              {preferences.activityTime === 'both' && (
+              {preferenceSettings.activityTime === 'both' && (
                 <div className="absolute top-3 right-3">
                   <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
                     <Check className="h-4 w-4 text-white" />
@@ -751,22 +767,22 @@ export default function Settings() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
-            onClick={() => setPreferences(prev => ({ ...prev, budget: 'budget' }))}
+            onClick={() => setPreferenceSettings(prev => ({ ...prev, budget: 'budget' }))}
             className={`group relative p-6 rounded-2xl border-2 transition-all duration-300 ${
-              preferences.budget === 'budget'
+              preferenceSettings.budget === 'budget'
                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/10'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
             }`}
           >
             <div className="flex flex-col items-center space-y-4">
-              <div className="p-4 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <div className="p-4 bg-gradient-to-br from-green-400 to-green-500 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                 <DollarSign className="h-8 w-8 text-white" />
               </div>
               <div className="text-center">
                 <h4 className="font-semibold text-gray-900 dark:text-white">Budget</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Economical options</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Economy options</p>
               </div>
-              {preferences.budget === 'budget' && (
+              {preferenceSettings.budget === 'budget' && (
                 <div className="absolute top-3 right-3">
                   <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
                     <Check className="h-4 w-4 text-white" />
@@ -777,23 +793,23 @@ export default function Settings() {
           </button>
 
           <button
-            onClick={() => setPreferences(prev => ({ ...prev, budget: 'medium' }))}
+            onClick={() => setPreferenceSettings(prev => ({ ...prev, budget: 'medium' }))}
             className={`group relative p-6 rounded-2xl border-2 transition-all duration-300 ${
-              preferences.budget === 'medium'
+              preferenceSettings.budget === 'medium'
                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/10'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
             }`}
           >
             <div className="flex flex-col items-center space-y-4">
-              <div className="p-4 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <div className="p-4 bg-gradient-to-br from-blue-400 to-blue-500 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                 <DollarSign className="h-8 w-8 text-white" />
                 <DollarSign className="h-8 w-8 text-white -mt-4" />
               </div>
               <div className="text-center">
                 <h4 className="font-semibold text-gray-900 dark:text-white">Medium</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Balanced value</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Balanced options</p>
               </div>
-              {preferences.budget === 'medium' && (
+              {preferenceSettings.budget === 'medium' && (
                 <div className="absolute top-3 right-3">
                   <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
                     <Check className="h-4 w-4 text-white" />
@@ -804,24 +820,24 @@ export default function Settings() {
           </button>
 
           <button
-            onClick={() => setPreferences(prev => ({ ...prev, budget: 'luxury' }))}
+            onClick={() => setPreferenceSettings(prev => ({ ...prev, budget: 'luxury' }))}
             className={`group relative p-6 rounded-2xl border-2 transition-all duration-300 ${
-              preferences.budget === 'luxury'
+              preferenceSettings.budget === 'luxury'
                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/10'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
             }`}
           >
             <div className="flex flex-col items-center space-y-4">
-              <div className="p-4 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <div className="p-4 bg-gradient-to-br from-purple-400 to-purple-500 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                 <DollarSign className="h-8 w-8 text-white" />
                 <DollarSign className="h-8 w-8 text-white -mt-4" />
                 <DollarSign className="h-8 w-8 text-white -mt-4" />
               </div>
               <div className="text-center">
                 <h4 className="font-semibold text-gray-900 dark:text-white">Luxury</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Premium experiences</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Premium options</p>
               </div>
-              {preferences.budget === 'luxury' && (
+              {preferenceSettings.budget === 'luxury' && (
                 <div className="absolute top-3 right-3">
                   <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
                     <Check className="h-4 w-4 text-white" />
@@ -831,6 +847,65 @@ export default function Settings() {
             </div>
           </button>
         </div>
+      </div>
+
+      {/* Group Members */}
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
+            <Users className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+            <span>Group Members</span>
+          </h3>
+          
+          <button
+            onClick={() => {
+              // Add new group member logic
+            }}
+            className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors flex items-center space-x-2"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Add Member</span>
+          </button>
+        </div>
+        
+        {preferenceSettings.groupMembers.length === 0 ? (
+          <div className="text-center py-8 border border-dashed border-gray-300 dark:border-gray-600 rounded-xl">
+            <Users className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-3" />
+            <p className="text-gray-600 dark:text-gray-400 mb-4">No group members added yet</p>
+            <button
+              onClick={() => {
+                // Add new group member logic
+              }}
+              className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
+            >
+              Add your first group member
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {preferenceSettings.groupMembers.map((member, index) => (
+              <div key={index} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                    <User className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+                  </div>
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">{member.name}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">{member.relationship}</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button className="p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    <Edit3 className="h-4 w-4" />
+                  </button>
+                  <button className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1347,3 +1422,107 @@ export default function Settings() {
     </div>
   );
 }
+
+// These are missing icons that need to be defined for the component to work
+const Bus = (props: any) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M8 6v6" />
+    <path d="M16 6v6" />
+    <path d="M2 12h20" />
+    <path d="M7 18h10" />
+    <path d="M18 18h1a2 2 0 0 0 2-2v-7a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v7a2 2 0 0 0 2 2h1" />
+    <circle cx="7" cy="18" r="2" />
+    <circle cx="17" cy="18" r="2" />
+  </svg>
+);
+
+const Star = (props: any) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+);
+
+const Museum = (props: any) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M2 20h20" />
+    <path d="M4 20V8.5A2.5 2.5 0 0 1 6.5 6H8" />
+    <path d="M20 20V8.5A2.5 2.5 0 0 0 17.5 6H16" />
+    <path d="M12 6V4" />
+    <path d="M12 2v2" />
+    <path d="M12 6v14" />
+    <path d="M8 12h8" />
+    <path d="M8 16h8" />
+    <path d="M8 6h8" />
+  </svg>
+);
+
+const Paw = (props: any) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <circle cx="11" cy="4" r="2" />
+    <circle cx="18" cy="8" r="2" />
+    <circle cx="20" cy="16" r="2" />
+    <path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z" />
+  </svg>
+);
+
+const Volume1 = (props: any) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+  </svg>
+);
