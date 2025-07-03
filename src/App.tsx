@@ -39,6 +39,7 @@ import Billing from './pages/Billing';
 import CheckoutSuccess from './pages/CheckoutSuccess';
 import CheckoutCancel from './pages/CheckoutCancel';
 import TokenUsage from './pages/TokenUsage';
+import ComingSoon from './pages/ComingSoon';
 import { useAuth } from './context/AuthContext';
 
 function AppContent() {
@@ -73,6 +74,7 @@ function AppContent() {
           <Route path="/test-account" element={<TestAccount />} />
           <Route path="/checkout/success" element={<CheckoutSuccess />} />
           <Route path="/checkout/cancel" element={<CheckoutCancel />} />
+          <Route path="/coming-soon" element={<ComingSoon />} />
           
           {/* Protected Routes */}
           <Route path="/dashboard" element={

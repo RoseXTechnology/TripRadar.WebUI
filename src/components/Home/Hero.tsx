@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Play, Star } from 'lucide-react';
+import { ArrowRight, Play, Star, MessageSquare, Smartphone } from 'lucide-react';
 
 export default function Hero() {
   return (
@@ -57,8 +57,30 @@ export default function Hero() {
             </button>
           </div>
 
+          {/* AI Assistant Links */}
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+            <a 
+              href="https://t.me/TripRadarBot" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-xl hover:bg-white/20 transition-colors text-white"
+            >
+              <MessageSquare className="h-5 w-5" />
+              <span className="font-medium">Chat on Telegram</span>
+            </a>
+            <a 
+              href="https://wa.me/1234567890" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-xl hover:bg-white/20 transition-colors text-white"
+            >
+              <Smartphone className="h-5 w-5" />
+              <span className="font-medium">Chat on WhatsApp</span>
+            </a>
+          </div>
+
           {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto mt-12">
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">500K+</div>
               <div className="text-blue-200">Watch Demo</div>

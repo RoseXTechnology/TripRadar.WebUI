@@ -12,7 +12,9 @@ import {
   Sparkles,
   Globe,
   Shield,
-  Zap
+  Zap,
+  MessageSquare,
+  Smartphone
 } from 'lucide-react';
 
 export default function Footer() {
@@ -63,6 +65,10 @@ export default function Footer() {
               <li><Link to="/pricing" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Pricing</Link></li>
               <li><Link to="/trip-planning" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Trip Planning</Link></li>
               <li><Link to="/scheduled" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Scheduled</Link></li>
+              <li><Link to="/coming-soon" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center space-x-1">
+                <span>Coming Soon</span>
+                <Sparkles className="h-3 w-3" />
+              </Link></li>
             </ul>
           </div>
 
@@ -88,6 +94,38 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* AI Assistant Links */}
+        <div className="bg-gradient-to-r from-indigo-600 to-blue-700 rounded-3xl p-8 mb-12 text-white">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-2xl font-bold mb-2">AI Travel Assistant</h3>
+              <p className="text-indigo-100 max-w-xl">
+                Chat with our AI assistant via Telegram or WhatsApp for instant trip help, budget tracking, weather updates, and personalized recommendations.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a 
+                href="https://t.me/TripRadarBot" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-xl hover:bg-white/20 transition-colors"
+              >
+                <MessageSquare className="h-5 w-5" />
+                <span className="font-medium">Telegram Bot</span>
+              </a>
+              <a 
+                href="https://wa.me/1234567890" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-xl hover:bg-white/20 transition-colors"
+              >
+                <Smartphone className="h-5 w-5" />
+                <span className="font-medium">WhatsApp</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* Newsletter Signup */}
         <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl p-8 mb-12">
           <div className="max-w-2xl mx-auto text-center">
@@ -99,7 +137,7 @@ export default function Footer() {
                 placeholder="Enter your email"
                 className="flex-1 px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
-              <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all flex items-center justify-center space-x-2">
+              <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all flex items-center space-x-2">
                 <span>Subscribe</span>
                 <ArrowRight className="h-4 w-4" />
               </button>
