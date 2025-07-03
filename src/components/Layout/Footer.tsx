@@ -26,7 +26,10 @@ export default function Footer() {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl"></div>
       </div>
 
-              {/* AI Assistant Links */}
+    
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-12">
+                  {/* AI Assistant Links */}
         <div className="bg-gradient-to-r from-indigo-600 to-blue-700 rounded-3xl p-8 mb-12 text-white">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
@@ -57,9 +60,6 @@ export default function Footer() {
             </div>
           </div>
         </div>
-      
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-12">
           {/* Company Info */}
           <div className="md:col-span-2 space-y-6">
             <div className="flex items-center space-x-3">
