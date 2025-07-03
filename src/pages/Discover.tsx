@@ -1,27 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  MapPin, 
-  Star, 
-  Clock, 
-  Users, 
-  Camera,
-  Compass,
-  Mountain,
-  Building,
-  TreePine,
-  Waves,
-  Plus,
-  Search,
-  Filter,
-  ArrowRight,
-  Heart,
-  DollarSign,
-  Utensils,
-  Wheelchair,
-  Bus,
-  Globe
-} from 'lucide-react';
+import { MapPin, Star, Clock, Users, Camera, Compass, Mountain, Building, TreePine, Waves, Plus, Search, Filter, ArrowRight, Heart, DollarSign, Utensils, Armchair as Wheelchair, Bus, Globe } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useApp } from '../context/AppContext';
 
