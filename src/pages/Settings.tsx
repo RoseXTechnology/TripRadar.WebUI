@@ -45,7 +45,7 @@ import {
   UserCheck,
   UserX,
   Star
-} from 'lucide-react'; from 'lucide-react';
+} from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
