@@ -1,32 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { User, Mail, Lock, Bell, Shield, Plug, Camera, Edit3, Check, X, AlertTriangle, Trash2, Plus, Eye, EyeOff, Chrome, Github, Smartphone, Globe, Moon, Sun, Download, ExternalLink, Settings as SettingsIcon, ChevronRight, Save, RefreshCw, Sparkles, Palette, Monitor, LogOut, Key, Database, Zap, BarChart, CreditCard, Link as LinkIcon, Search, Bot, Users, DollarSign, Utensils, Building, Bus, Armchair as Wheelchair, Languages, Sun as SunIcon, Moon as MoonIcon, Coffee, Heart, UserPlus, UserMinus, UserX, UserCheck, Info } from 'lucide-react';
+import { 
+  User, 
+  Mail, 
+  Lock, 
+  Bell, 
+  Shield, 
+  Plug, 
+  Camera, 
+  Edit3, 
+  Check, 
+  X, 
+  AlertTriangle, 
+  Trash2, 
+  Plus, 
+  Eye, 
+  EyeOff,
+  Chrome,
+  Github,
+  Smartphone,
+  Globe,
+  Moon,
+  Sun,
+  Download,
+  ExternalLink,
+  Settings as SettingsIcon,
+  ChevronRight,
+  Save,
+  RefreshCw,
+  Sparkles,
+  Palette,
+  Monitor,
+  LogOut,
+  Key,
+  Database,
+  Zap,
+  BarChart,
+  CreditCard,
+  Link as LinkIcon,
+  Search,
+  Bot,
+  Info,
+  DollarSign,
+  Users as UsersIcon
+} from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
+import { PreferenceCategory, PreferenceSchema } from '../types';
 
 type SettingsSection = 'account' | 'notifications' | 'security' | 'integrations' | 'preferences' | 'group';
-
-// Define preference categories and options
-interface PreferenceOption {
-  id: string;
-  label: string;
-  icon: React.ComponentType<any>;
-}
-
-interface PreferenceCategory {
-  id: string;
-  name: string;
-  description: string;
-  options: PreferenceOption[];
-}
-
-interface GroupMember {
-  id: string;
-  name: string;
-  email: string;
-  role: 'owner' | 'member';
-  preferences: Record<string, string[]>;
-}
 
 export default function Settings() {
   const { user, setUser } = useApp();
@@ -38,46 +60,49 @@ export default function Settings() {
   const [show2FAModal, setShow2FAModal] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isLoadingPreferences, setIsLoadingPreferences] = useState(true);
+  const [preferenceSchema, setPreferenceSchema] = useState<PreferenceSchema | null>(null);
+  const [userPreferences, setUserPreferences] = useState<Record<string, string[]>>({});
+  const [isLoadingPreferences, setIsLoadingPreferences] = useState(false);
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
-  const [newMember, setNewMember] = useState({ name: '', email: '', role: 'member' });
-
-  // User preferences state
-  const [userPreferences, setUserPreferences] = useState<Record<string, string[]>>({
-    dietary: [],
-    accommodation: [],
-    transport: [],
-    tripType: [],
-    accessibility: [],
-    languages: [],
-    activities: []
+  const [newMember, setNewMember] = useState({
+    name: '',
+    email: '',
+    role: 'member',
+    preferences: {} as Record<string, string[]>
   });
-
-  // Group members state
-  const [groupMembers, setGroupMembers] = useState<GroupMember[]>([
+  const [groupMembers, setGroupMembers] = useState<any[]>([
     {
       id: '1',
       name: 'Alex Thompson',
       email: 'alex@example.com',
-      role: 'owner',
+      role: 'organizer',
+      status: 'accepted',
+      avatar: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1',
       preferences: {
         dietary: ['vegetarian'],
+        accommodation: ['hotel', 'airbnb'],
+        transport: ['public-transport', 'walking'],
+        tripType: ['cultural', 'adventure'],
+        accessibility: []
+      }
+    },
+    {
+      id: '2',
+      name: 'Sarah Johnson',
+      email: 'sarah@example.com',
+      role: 'member',
+      status: 'accepted',
+      avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1',
+      preferences: {
+        dietary: ['gluten-free'],
         accommodation: ['hotel'],
-        transport: ['public-transport'],
-        tripType: ['adventure'],
-        accessibility: [],
-        languages: ['english'],
-        activities: ['day']
+        transport: ['rental-car'],
+        tripType: ['luxury'],
+        accessibility: []
       }
     }
   ]);
-
-  // Group settings
-  const [groupSettings, setGroupSettings] = useState({
-    mergePreferences: true,
-    notifyMembers: true,
-    allowMemberEditing: false
-  });
+  const [useGroupPreferences, setUseGroupPreferences] = useState(true);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -85,31 +110,120 @@ export default function Settings() {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    
-    // Simulate fetching preferences from API
-    const fetchPreferences = async () => {
-      setIsLoadingPreferences(true);
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Set mock user preferences
-      setUserPreferences({
-        dietary: ['vegetarian'],
-        accommodation: ['hotel', 'airbnb'],
-        transport: ['public-transport'],
-        tripType: ['adventure', 'budget'],
-        accessibility: [],
-        languages: ['english', 'spanish'],
-        activities: ['day']
-      });
-      
-      setIsLoadingPreferences(false);
-    };
-    
-    fetchPreferences();
-    
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  // Fetch preference schema from API
+  useEffect(() => {
+    const fetchPreferenceSchema = async () => {
+      setIsLoadingPreferences(true);
+      try {
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Mock preference schema
+        const mockSchema: PreferenceSchema = {
+          categories: [
+            {
+              id: 'dietary',
+              name: 'Dietary Preferences',
+              description: 'Your food preferences while traveling',
+              options: [
+                { id: 'vegetarian', label: 'Vegetarian' },
+                { id: 'vegan', label: 'Vegan' },
+                { id: 'halal', label: 'Halal' },
+                { id: 'kosher', label: 'Kosher' },
+                { id: 'gluten-free', label: 'Gluten Free' },
+                { id: 'dairy-free', label: 'Dairy Free' }
+              ]
+            },
+            {
+              id: 'accommodation',
+              name: 'Accommodation',
+              description: 'Your preferred places to stay',
+              options: [
+                { id: 'hotel', label: 'Hotels' },
+                { id: 'hostel', label: 'Hostels' },
+                { id: 'airbnb', label: 'Airbnb' },
+                { id: 'resort', label: 'Resorts' },
+                { id: 'camping', label: 'Camping' }
+              ]
+            },
+            {
+              id: 'transport',
+              name: 'Transportation',
+              description: 'How you prefer to get around',
+              options: [
+                { id: 'public-transport', label: 'Public Transport' },
+                { id: 'rental-car', label: 'Rental Car' },
+                { id: 'taxi', label: 'Taxi/Rideshare' },
+                { id: 'walking', label: 'Walking' },
+                { id: 'cycling', label: 'Cycling' }
+              ]
+            },
+            {
+              id: 'tripType',
+              name: 'Travel Style',
+              description: 'Your preferred type of travel experience',
+              options: [
+                { id: 'adventure', label: 'Adventure' },
+                { id: 'relaxation', label: 'Relaxation' },
+                { id: 'cultural', label: 'Cultural' },
+                { id: 'budget', label: 'Budget' },
+                { id: 'luxury', label: 'Luxury' }
+              ]
+            },
+            {
+              id: 'accessibility',
+              name: 'Accessibility',
+              description: 'Your accessibility requirements',
+              options: [
+                { id: 'wheelchair', label: 'Wheelchair Access' },
+                { id: 'limited-mobility', label: 'Limited Mobility' },
+                { id: 'kid-friendly', label: 'Kid Friendly' },
+                { id: 'pet-friendly', label: 'Pet Friendly' }
+              ]
+            },
+            {
+              id: 'languages',
+              name: 'Languages',
+              description: 'Languages you speak or prefer',
+              options: [
+                { id: 'english', label: 'English' },
+                { id: 'spanish', label: 'Spanish' },
+                { id: 'french', label: 'French' },
+                { id: 'german', label: 'German' },
+                { id: 'japanese', label: 'Japanese' },
+                { id: 'chinese', label: 'Chinese' }
+              ]
+            }
+          ]
+        };
+        
+        setPreferenceSchema(mockSchema);
+        
+        // Set initial user preferences based on user data
+        if (user?.preferences) {
+          const initialPreferences: Record<string, string[]> = {};
+          
+          if (user.preferences.dietary) initialPreferences.dietary = user.preferences.dietary;
+          if (user.preferences.accommodationType) initialPreferences.accommodation = user.preferences.accommodationType;
+          if (user.preferences.transport) initialPreferences.transport = user.preferences.transport;
+          if (user.preferences.travelStyle) initialPreferences.tripType = [user.preferences.travelStyle];
+          if (user.preferences.accessibility) initialPreferences.accessibility = user.preferences.accessibility;
+          if (user.preferences.languages) initialPreferences.languages = user.preferences.languages;
+          
+          setUserPreferences(initialPreferences);
+        }
+      } catch (error) {
+        console.error('Error fetching preference schema:', error);
+      } finally {
+        setIsLoadingPreferences(false);
+      }
+    };
+    
+    fetchPreferenceSchema();
+  }, [user]);
 
   // Form states
   const [profileData, setProfileData] = useState({
@@ -145,8 +259,8 @@ export default function Settings() {
 
   const sidebarItems = [
     { id: 'account', label: 'Account', icon: User },
-    { id: 'preferences', label: 'Preferences', icon: Heart },
-    { id: 'group', label: 'Group Management', icon: Users },
+    { id: 'preferences', label: 'Preferences', icon: Sparkles },
+    { id: 'group', label: 'Group Management', icon: UsersIcon },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'security', label: 'Security', icon: Shield },
     { id: 'integrations', label: 'Integrations', icon: Plug }
@@ -164,97 +278,6 @@ export default function Settings() {
     { id: 3, device: 'Chrome on Windows', location: 'New York, NY', lastActive: '2 days ago', current: false }
   ];
 
-  // Preference categories and options
-  const preferenceCategories: PreferenceCategory[] = [
-    {
-      id: 'dietary',
-      name: 'Dietary Preferences',
-      description: 'Your food preferences while traveling',
-      options: [
-        { id: 'vegetarian', label: 'Vegetarian', icon: Utensils },
-        { id: 'vegan', label: 'Vegan', icon: Utensils },
-        { id: 'halal', label: 'Halal', icon: Utensils },
-        { id: 'kosher', label: 'Kosher', icon: Utensils },
-        { id: 'gluten-free', label: 'Gluten Free', icon: Utensils },
-        { id: 'dairy-free', label: 'Dairy Free', icon: Utensils }
-      ]
-    },
-    {
-      id: 'accommodation',
-      name: 'Accommodation Preferences',
-      description: 'Your preferred places to stay',
-      options: [
-        { id: 'hotel', label: 'Hotels', icon: Building },
-        { id: 'hostel', label: 'Hostels', icon: Building },
-        { id: 'airbnb', label: 'Airbnb', icon: Building },
-        { id: 'resort', label: 'Resorts', icon: Building },
-        { id: 'camping', label: 'Camping', icon: Building }
-      ]
-    },
-    {
-      id: 'transport',
-      name: 'Transportation Preferences',
-      description: 'How you prefer to get around',
-      options: [
-        { id: 'public-transport', label: 'Public Transport', icon: Bus },
-        { id: 'rental-car', label: 'Rental Car', icon: Bus },
-        { id: 'taxi', label: 'Taxi/Rideshare', icon: Bus },
-        { id: 'walking', label: 'Walking', icon: Bus },
-        { id: 'cycling', label: 'Cycling', icon: Bus }
-      ]
-    },
-    {
-      id: 'tripType',
-      name: 'Trip Type Preferences',
-      description: 'Your preferred travel styles',
-      options: [
-        { id: 'adventure', label: 'Adventure', icon: Globe },
-        { id: 'relaxation', label: 'Relaxation', icon: Globe },
-        { id: 'cultural', label: 'Cultural', icon: Globe },
-        { id: 'budget', label: 'Budget', icon: DollarSign },
-        { id: 'luxury', label: 'Luxury', icon: DollarSign }
-      ]
-    },
-    {
-      id: 'accessibility',
-      name: 'Accessibility Needs',
-      description: 'Your accessibility requirements',
-      options: [
-        { id: 'wheelchair', label: 'Wheelchair Access', icon: Wheelchair },
-        { id: 'limited-mobility', label: 'Limited Mobility', icon: Wheelchair },
-        { id: 'visual-impairment', label: 'Visual Impairment', icon: Wheelchair },
-        { id: 'hearing-impairment', label: 'Hearing Impairment', icon: Wheelchair },
-        { id: 'kid-friendly', label: 'Kid Friendly', icon: Wheelchair },
-        { id: 'pet-friendly', label: 'Pet Friendly', icon: Wheelchair }
-      ]
-    },
-    {
-      id: 'languages',
-      name: 'Languages',
-      description: 'Languages you speak or prefer',
-      options: [
-        { id: 'english', label: 'English', icon: Languages },
-        { id: 'spanish', label: 'Spanish', icon: Languages },
-        { id: 'french', label: 'French', icon: Languages },
-        { id: 'german', label: 'German', icon: Languages },
-        { id: 'japanese', label: 'Japanese', icon: Languages },
-        { id: 'chinese', label: 'Chinese', icon: Languages }
-      ]
-    },
-    {
-      id: 'activities',
-      name: 'Activity Preferences',
-      description: 'When you prefer to be active',
-      options: [
-        { id: 'day', label: 'Day Activities', icon: SunIcon },
-        { id: 'night', label: 'Night Activities', icon: MoonIcon },
-        { id: 'indoor', label: 'Indoor Activities', icon: Building },
-        { id: 'outdoor', label: 'Outdoor Activities', icon: Globe },
-        { id: 'water', label: 'Water Activities', icon: Globe }
-      ]
-    }
-  ];
-
   const handleSave = async (section: string) => {
     setIsLoading(true);
     // Simulate API call
@@ -264,87 +287,53 @@ export default function Settings() {
     setTimeout(() => setShowSuccessToast(false), 3000);
   };
 
-  const handlePreferenceToggle = (categoryId: string, optionId: string) => {
+  const handlePreferenceChange = (categoryId: string, optionId: string) => {
     setUserPreferences(prev => {
-      const currentPrefs = [...(prev[categoryId] || [])];
+      const current = [...(prev[categoryId] || [])];
       
-      if (currentPrefs.includes(optionId)) {
+      if (current.includes(optionId)) {
         // Remove the option if already selected
         return {
           ...prev,
-          [categoryId]: currentPrefs.filter(id => id !== optionId)
+          [categoryId]: current.filter(item => item !== optionId)
         };
       } else {
         // Add the option if not already selected
         return {
           ...prev,
-          [categoryId]: [...currentPrefs, optionId]
+          [categoryId]: [...current, optionId]
         };
       }
     });
   };
 
   const handleAddMember = () => {
-    if (newMember.name && newMember.email) {
-      const newMemberId = (groupMembers.length + 1).toString();
-      
-      setGroupMembers(prev => [
-        ...prev,
-        {
-          id: newMemberId,
-          name: newMember.name,
-          email: newMember.email,
-          role: newMember.role as 'owner' | 'member',
-          preferences: {
-            dietary: [],
-            accommodation: [],
-            transport: [],
-            tripType: [],
-            accessibility: [],
-            languages: [],
-            activities: []
-          }
-        }
-      ]);
-      
-      setNewMember({ name: '', email: '', role: 'member' });
-      setShowAddMemberModal(false);
-    }
+    // Add new member to the group
+    const newMemberObj = {
+      id: `member-${Date.now()}`,
+      name: newMember.name,
+      email: newMember.email,
+      role: newMember.role,
+      status: 'invited',
+      avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1',
+      preferences: newMember.preferences
+    };
+    
+    setGroupMembers(prev => [...prev, newMemberObj]);
+    
+    // Reset form
+    setNewMember({
+      name: '',
+      email: '',
+      role: 'member',
+      preferences: {}
+    });
+    
+    setShowAddMemberModal(false);
   };
 
   const handleRemoveMember = (memberId: string) => {
     setGroupMembers(prev => prev.filter(member => member.id !== memberId));
-  };
-
-  const handleMemberPreferenceToggle = (memberId: string, categoryId: string, optionId: string) => {
-    setGroupMembers(prev => {
-      return prev.map(member => {
-        if (member.id === memberId) {
-          const currentPrefs = [...(member.preferences[categoryId] || [])];
-          
-          if (currentPrefs.includes(optionId)) {
-            // Remove the option if already selected
-            return {
-              ...member,
-              preferences: {
-                ...member.preferences,
-                [categoryId]: currentPrefs.filter(id => id !== optionId)
-              }
-            };
-          } else {
-            // Add the option if not already selected
-            return {
-              ...member,
-              preferences: {
-                ...member.preferences,
-                [categoryId]: [...currentPrefs, optionId]
-              }
-            };
-          }
-        }
-        return member;
-      });
-    });
   };
 
   const renderAccountSection = () => (
@@ -625,10 +614,8 @@ export default function Settings() {
   const renderPreferencesSection = () => (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Travel Preferences</h2>
-        <p className="text-gray-600 dark:text-gray-400">
-          Set your travel preferences to personalize your search results and recommendations
-        </p>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Preferences</h2>
+        <p className="text-gray-600 dark:text-gray-400">Customize your travel preferences to get personalized recommendations</p>
       </div>
 
       {isLoadingPreferences ? (
@@ -637,82 +624,63 @@ export default function Settings() {
           <p className="text-gray-600 dark:text-gray-400">Loading your preferences...</p>
         </div>
       ) : (
-        <div className="space-y-6">
-          {preferenceCategories.map((category) => (
-            <div key={category.id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{category.name}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">{category.description}</p>
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Your Travel Preferences</h3>
+            <p className="text-gray-600 dark:text-gray-400">
+              These preferences will be used to personalize your search results, recommendations, and trip planning.
+            </p>
+          </div>
+          
+          {preferenceSchema?.categories.map((category) => (
+            <div key={category.id} className="mb-8">
+              <div className="flex items-center space-x-2 mb-3">
+                <h4 className="font-medium text-gray-900 dark:text-white">{category.name}</h4>
+                <div className="relative group">
+                  <Info className="h-4 w-4 text-gray-400 cursor-help" />
+                  <div className="absolute left-0 bottom-full mb-2 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+                    <p className="text-xs text-gray-600 dark:text-gray-400">{category.description}</p>
+                  </div>
+                </div>
+              </div>
               
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              <div className="flex flex-wrap gap-2">
                 {category.options.map((option) => {
                   const isSelected = userPreferences[category.id]?.includes(option.id);
                   
                   return (
                     <button
                       key={option.id}
-                      onClick={() => handlePreferenceToggle(category.id, option.id)}
-                      className={`flex items-center space-x-3 p-3 rounded-xl border-2 transition-colors ${
+                      onClick={() => handlePreferenceChange(category.id, option.id)}
+                      className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                         isSelected
-                          ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                          ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 border-2 border-primary-500'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
                       }`}
                     >
-                      <div className={`p-2 rounded-lg ${isSelected ? 'bg-primary-100 dark:bg-primary-900/40' : 'bg-gray-100 dark:bg-gray-700'}`}>
-                        <option.icon className={`h-5 w-5 ${isSelected ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400'}`} />
-                      </div>
-                      <span className={`text-sm font-medium ${isSelected ? 'text-primary-700 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'}`}>
-                        {option.label}
-                      </span>
+                      {option.label}
                     </button>
                   );
                 })}
               </div>
             </div>
           ))}
-        </div>
-      )}
-
-      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Preference Usage</h3>
-        
-        <div className="space-y-4">
-          <div className="flex items-start space-x-3">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg mt-1">
-              <Search className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-            </div>
-            <div>
-              <h4 className="font-medium text-gray-900 dark:text-white">Search Results</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Your preferences will be used to personalize search results for flights, hotels, and activities.
-              </p>
-            </div>
-          </div>
           
-          <div className="flex items-start space-x-3">
-            <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg mt-1">
-              <Bot className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            <div>
-              <h4 className="font-medium text-gray-900 dark:text-white">AI Recommendations</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Our AI will use your preferences to provide personalized travel recommendations.
-              </p>
-            </div>
-          </div>
-          
-          <div className="flex items-start space-x-3">
-            <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg mt-1">
-              <Globe className="h-5 w-5 text-green-600 dark:text-green-400" />
-            </div>
-            <div>
-              <h4 className="font-medium text-gray-900 dark:text-white">Discover Page</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Discover page will show destinations and experiences that match your preferences.
-              </p>
+          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <div className="flex items-start space-x-3">
+              <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+              <div>
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  <span className="font-medium">How we use your preferences:</span> Your selections help us personalize your experience across TripRadar.
+                </p>
+                <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                  We'll use these preferences to filter search results, suggest destinations, and customize your trip planning experience.
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 
@@ -720,213 +688,143 @@ export default function Settings() {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Group Management</h2>
-        <p className="text-gray-600 dark:text-gray-400">
-          Manage your travel group members and their preferences
-        </p>
+        <p className="text-gray-600 dark:text-gray-400">Manage your travel group and member preferences</p>
       </div>
 
-      {/* Group Settings */}
-      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Group Settings</h3>
-        
-        <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
-            <div>
-              <div className="font-medium text-gray-900 dark:text-white">Merge All Preferences</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Combine all group members' preferences when searching or planning trips
-              </div>
-            </div>
-            <button
-              onClick={() => setGroupSettings(prev => ({ ...prev, mergePreferences: !prev.mergePreferences }))}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                groupSettings.mergePreferences ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-600'
-              }`}
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  groupSettings.mergePreferences ? 'translate-x-6' : 'translate-x-1'
-                }`}
-              />
-            </button>
-          </div>
-          
-          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
-            <div>
-              <div className="font-medium text-gray-900 dark:text-white">Notify Members of Changes</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Send notifications to group members when trip details change
-              </div>
-            </div>
-            <button
-              onClick={() => setGroupSettings(prev => ({ ...prev, notifyMembers: !prev.notifyMembers }))}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                groupSettings.notifyMembers ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-600'
-              }`}
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  groupSettings.notifyMembers ? 'translate-x-6' : 'translate-x-1'
-                }`}
-              />
-            </button>
-          </div>
-          
-          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
-            <div>
-              <div className="font-medium text-gray-900 dark:text-white">Allow Member Editing</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Let members edit trip details and add activities
-              </div>
-            </div>
-            <button
-              onClick={() => setGroupSettings(prev => ({ ...prev, allowMemberEditing: !prev.allowMemberEditing }))}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                groupSettings.allowMemberEditing ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-600'
-              }`}
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  groupSettings.allowMemberEditing ? 'translate-x-6' : 'translate-x-1'
-                }`}
-              />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Group Members */}
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Group Members</h3>
           <button
             onClick={() => setShowAddMemberModal(true)}
-            className="bg-primary-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-primary-700 transition-colors flex items-center space-x-2"
+            className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors flex items-center space-x-2"
           >
-            <UserPlus className="h-4 w-4" />
+            <Plus className="h-4 w-4" />
             <span>Add Member</span>
           </button>
         </div>
         
-        <div className="space-y-4">
+        <div className="space-y-4 mb-6">
           {groupMembers.map((member) => (
-            <div key={member.id} className="border border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden">
-              <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-full">
-                    <User className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+            <div key={member.id} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
+              <div className="flex items-center space-x-3">
+                <img
+                  src={member.avatar}
+                  alt={member.name}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                <div>
+                  <div className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
+                    <span>{member.name}</span>
+                    {member.role === 'organizer' && (
+                      <span className="bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 px-2 py-0.5 rounded-full text-xs">
+                        Organizer
+                      </span>
+                    )}
                   </div>
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                      <span>{member.name}</span>
-                      {member.role === 'owner' && (
-                        <span className="bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded-full text-xs">
-                          Owner
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">{member.email}</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-2">
-                  <button
-                    className="p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                    title="Edit Member"
-                  >
-                    <Edit3 className="h-4 w-4" />
-                  </button>
-                  {member.role !== 'owner' && (
-                    <button
-                      onClick={() => handleRemoveMember(member.id)}
-                      className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                      title="Remove Member"
-                    >
-                      <UserMinus className="h-4 w-4" />
-                    </button>
-                  )}
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{member.email}</div>
                 </div>
               </div>
               
-              {/* Member Preferences */}
-              <div className="p-4">
-                <h4 className="font-medium text-gray-900 dark:text-white mb-3">Member Preferences</h4>
-                
-                <div className="space-y-4">
-                  {preferenceCategories.map((category) => (
-                    <div key={category.id} className="space-y-2">
-                      <div className="text-sm font-medium text-gray-700 dark:text-gray-300">{category.name}</div>
-                      <div className="flex flex-wrap gap-2">
-                        {category.options.map((option) => {
-                          const isSelected = member.preferences[category.id]?.includes(option.id);
-                          
-                          return (
-                            <button
-                              key={option.id}
-                              onClick={() => handleMemberPreferenceToggle(member.id, category.id, option.id)}
-                              className={`flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                                isSelected
-                                  ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
-                                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                              }`}
-                            >
-                              <option.icon className="h-3 w-3" />
-                              <span>{option.label}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              <div className="flex items-center space-x-3">
+                <button className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium">
+                  Edit
+                </button>
+                {member.role !== 'organizer' && (
+                  <button 
+                    onClick={() => handleRemoveMember(member.id)}
+                    className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 text-sm font-medium"
+                  >
+                    Remove
+                  </button>
+                )}
               </div>
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Group Preference Summary */}
-      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Group Preference Summary</h3>
         
-        <div className="space-y-4">
-          {preferenceCategories.map((category) => {
-            // Get all unique preferences across all members for this category
-            const allPreferences = new Set<string>();
-            groupMembers.forEach(member => {
-              (member.preferences[category.id] || []).forEach(pref => {
-                allPreferences.add(pref);
-              });
-            });
-            
-            // Convert to array and map to labels
-            const preferenceLabels = Array.from(allPreferences).map(prefId => {
-              const option = category.options.find(opt => opt.id === prefId);
-              return option?.label || prefId;
-            });
-            
-            return (
-              <div key={category.id} className="space-y-1">
-                <div className="text-sm font-medium text-gray-700 dark:text-gray-300">{category.name}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {preferenceLabels.length > 0 
-                    ? preferenceLabels.join(', ') 
-                    : 'No preferences set'}
+        <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <h4 className="font-medium text-gray-900 dark:text-white">Use Group Preferences</h4>
+              <div className="relative group">
+                <Info className="h-4 w-4 text-gray-400 cursor-help" />
+                <div className="absolute left-0 bottom-full mb-2 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                    When enabled, search results and recommendations will consider the preferences of all group members.
+                  </p>
                 </div>
               </div>
-            );
-          })}
-        </div>
-        
-        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
-          <div className="flex items-start space-x-3">
-            <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
-            <div>
-              <h4 className="font-medium text-blue-900 dark:text-blue-300 mb-1">How Group Preferences Work</h4>
-              <p className="text-sm text-blue-700 dark:text-blue-400">
-                When "Merge All Preferences" is enabled, search results and recommendations will consider all group members' preferences. This helps find options that work for everyone in your group.
-              </p>
             </div>
+            <button
+              onClick={() => setUseGroupPreferences(!useGroupPreferences)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                useGroupPreferences
+                  ? 'bg-primary-600'
+                  : 'bg-gray-200 dark:bg-gray-600'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  useGroupPreferences
+                    ? 'translate-x-6'
+                    : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+            {useGroupPreferences 
+              ? 'Group preferences are enabled. Search results will be personalized for the entire group.'
+              : 'Group preferences are disabled. Search results will only use your personal preferences.'}
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Group Preference Summary</h3>
+        
+        {preferenceSchema?.categories.map((category) => {
+          // Get all unique preferences across group members for this category
+          const allPreferences = new Set<string>();
+          groupMembers.forEach(member => {
+            if (member.preferences[category.id]) {
+              member.preferences[category.id].forEach((pref: string) => allPreferences.add(pref));
+            }
+          });
+          
+          if (allPreferences.size === 0) return null;
+          
+          return (
+            <div key={category.id} className="mb-6">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-3">{category.name}</h4>
+              <div className="flex flex-wrap gap-2">
+                {Array.from(allPreferences).map(prefId => {
+                  const option = category.options.find(opt => opt.id === prefId);
+                  if (!option) return null;
+                  
+                  // Count how many members have this preference
+                  const memberCount = groupMembers.filter(member => 
+                    member.preferences[category.id]?.includes(prefId)
+                  ).length;
+                  
+                  return (
+                    <div key={prefId} className="bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full text-sm">
+                      <span className="text-gray-700 dark:text-gray-300">{option.label}</span>
+                      <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">({memberCount})</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+        
+        <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+          <div className="flex items-start space-x-3">
+            <Info className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
+            <p className="text-sm text-yellow-700 dark:text-yellow-300">
+              When group preferences are enabled, we'll try to find destinations and activities that satisfy as many group members as possible.
+            </p>
           </div>
         </div>
       </div>
@@ -1450,7 +1348,7 @@ export default function Settings() {
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-full">
-                  <UserPlus className="h-6 w-6 text-primary-600 dark:text-primary-400" />
+                  <UsersIcon className="h-6 w-6 text-primary-600 dark:text-primary-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Add Group Member</h3>
               </div>
@@ -1484,8 +1382,70 @@ export default function Settings() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="member">Member</option>
-                    <option value="owner">Owner</option>
+                    <option value="organizer">Organizer</option>
                   </select>
+                </div>
+                
+                {/* Member Preferences */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Member Preferences</label>
+                    <button
+                      type="button"
+                      className="text-xs text-primary-600 dark:text-primary-400"
+                      onClick={() => setNewMember({...newMember, preferences: {}})}
+                    >
+                      Clear All
+                    </button>
+                  </div>
+                  
+                  <div className="max-h-60 overflow-y-auto p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
+                    {preferenceSchema?.categories.slice(0, 3).map((category) => (
+                      <div key={category.id} className="mb-4">
+                        <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{category.name}</h5>
+                        <div className="flex flex-wrap gap-2">
+                          {category.options.map((option) => {
+                            const isSelected = newMember.preferences[category.id]?.includes(option.id);
+                            
+                            return (
+                              <button
+                                key={option.id}
+                                type="button"
+                                onClick={() => {
+                                  const current = [...(newMember.preferences[category.id] || [])];
+                                  
+                                  if (current.includes(option.id)) {
+                                    setNewMember({
+                                      ...newMember,
+                                      preferences: {
+                                        ...newMember.preferences,
+                                        [category.id]: current.filter(item => item !== option.id)
+                                      }
+                                    });
+                                  } else {
+                                    setNewMember({
+                                      ...newMember,
+                                      preferences: {
+                                        ...newMember.preferences,
+                                        [category.id]: [...current, option.id]
+                                      }
+                                    });
+                                  }
+                                }}
+                                className={`px-2 py-1 rounded-full text-xs transition-colors ${
+                                  isSelected
+                                    ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 border border-primary-500'
+                                    : 'bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-500'
+                                }`}
+                              >
+                                {option.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               
@@ -1498,7 +1458,8 @@ export default function Settings() {
                 </button>
                 <button 
                   onClick={handleAddMember}
-                  className="flex-1 bg-primary-600 text-white py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors"
+                  disabled={!newMember.name || !newMember.email}
+                  className="flex-1 bg-primary-600 text-white py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Add Member
                 </button>
