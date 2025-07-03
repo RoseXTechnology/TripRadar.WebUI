@@ -39,14 +39,49 @@ import {
   Link as LinkIcon,
   Search,
   Bot,
+  Users,
   DollarSign,
-  Users
+  Utensils,
+  Building,
+  Bus,
+  Wheelchair,
+  Languages,
+  Sun as SunIcon,
+  Moon as MoonIcon,
+  Coffee,
+  Heart,
+  UserPlus,
+  UserMinus,
+  UserX,
+  UserCheck
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
 
-type SettingsSection = 'account' | 'notifications' | 'security' | 'integrations' | 'preferences';
+type SettingsSection = 'account' | 'notifications' | 'security' | 'integrations' | 'preferences' | 'group';
+
+// Define preference categories and options
+interface PreferenceOption {
+  id: string;
+  label: string;
+  icon: React.ComponentType<any>;
+}
+
+interface PreferenceCategory {
+  id: string;
+  name: string;
+  description: string;
+  options: PreferenceOption[];
+}
+
+interface GroupMember {
+  id: string;
+  name: string;
+  email: string;
+  role: 'owner' | 'member';
+  preferences: Record<string, string[]>;
+}
 
 export default function Settings() {
   const { user, setUser } = useApp();
@@ -58,6 +93,46 @@ export default function Settings() {
   const [show2FAModal, setShow2FAModal] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isLoadingPreferences, setIsLoadingPreferences] = useState(true);
+  const [showAddMemberModal, setShowAddMemberModal] = useState(false);
+  const [newMember, setNewMember] = useState({ name: '', email: '', role: 'member' });
+
+  // User preferences state
+  const [userPreferences, setUserPreferences] = useState<Record<string, string[]>>({
+    dietary: [],
+    accommodation: [],
+    transport: [],
+    tripType: [],
+    accessibility: [],
+    languages: [],
+    activities: []
+  });
+
+  // Group members state
+  const [groupMembers, setGroupMembers] = useState<GroupMember[]>([
+    {
+      id: '1',
+      name: 'Alex Thompson',
+      email: 'alex@example.com',
+      role: 'owner',
+      preferences: {
+        dietary: ['vegetarian'],
+        accommodation: ['hotel'],
+        transport: ['public-transport'],
+        tripType: ['adventure'],
+        accessibility: [],
+        languages: ['english'],
+        activities: ['day']
+      }
+    }
+  ]);
+
+  // Group settings
+  const [groupSettings, setGroupSettings] = useState({
+    mergePreferences: true,
+    notifyMembers: true,
+    allowMemberEditing: false
+  });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -65,6 +140,29 @@ export default function Settings() {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
+    
+    // Simulate fetching preferences from API
+    const fetchPreferences = async () => {
+      setIsLoadingPreferences(true);
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Set mock user preferences
+      setUserPreferences({
+        dietary: ['vegetarian'],
+        accommodation: ['hotel', 'airbnb'],
+        transport: ['public-transport'],
+        tripType: ['adventure', 'budget'],
+        accessibility: [],
+        languages: ['english', 'spanish'],
+        activities: ['day']
+      });
+      
+      setIsLoadingPreferences(false);
+    };
+    
+    fetchPreferences();
+    
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
@@ -100,38 +198,10 @@ export default function Settings() {
     loginNotifications: true
   });
 
-  const [preferences, setPreferences] = useState({
-    dietary: ['vegetarian'],
-    accommodation: ['hotel', 'airbnb'],
-    transport: ['public', 'walking'],
-    tripType: ['adventure', 'cultural'],
-    accessibility: [],
-    languages: ['english'],
-    activities: ['day']
-  });
-
-  const [groupPreferences, setGroupPreferences] = useState([
-    {
-      id: '1',
-      name: 'Alex',
-      dietary: ['vegetarian'],
-      accommodation: ['hotel'],
-      transport: ['public'],
-      isDefault: true
-    },
-    {
-      id: '2',
-      name: 'Sarah',
-      dietary: ['vegan'],
-      accommodation: ['hostel'],
-      transport: ['public'],
-      isDefault: false
-    }
-  ]);
-
   const sidebarItems = [
     { id: 'account', label: 'Account', icon: User },
-    { id: 'preferences', label: 'Preferences', icon: Sparkles },
+    { id: 'preferences', label: 'Preferences', icon: Heart },
+    { id: 'group', label: 'Group Management', icon: Users },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'security', label: 'Security', icon: Shield },
     { id: 'integrations', label: 'Integrations', icon: Plug }
@@ -149,6 +219,97 @@ export default function Settings() {
     { id: 3, device: 'Chrome on Windows', location: 'New York, NY', lastActive: '2 days ago', current: false }
   ];
 
+  // Preference categories and options
+  const preferenceCategories: PreferenceCategory[] = [
+    {
+      id: 'dietary',
+      name: 'Dietary Preferences',
+      description: 'Your food preferences while traveling',
+      options: [
+        { id: 'vegetarian', label: 'Vegetarian', icon: Utensils },
+        { id: 'vegan', label: 'Vegan', icon: Utensils },
+        { id: 'halal', label: 'Halal', icon: Utensils },
+        { id: 'kosher', label: 'Kosher', icon: Utensils },
+        { id: 'gluten-free', label: 'Gluten Free', icon: Utensils },
+        { id: 'dairy-free', label: 'Dairy Free', icon: Utensils }
+      ]
+    },
+    {
+      id: 'accommodation',
+      name: 'Accommodation Preferences',
+      description: 'Your preferred places to stay',
+      options: [
+        { id: 'hotel', label: 'Hotels', icon: Building },
+        { id: 'hostel', label: 'Hostels', icon: Building },
+        { id: 'airbnb', label: 'Airbnb', icon: Building },
+        { id: 'resort', label: 'Resorts', icon: Building },
+        { id: 'camping', label: 'Camping', icon: Building }
+      ]
+    },
+    {
+      id: 'transport',
+      name: 'Transportation Preferences',
+      description: 'How you prefer to get around',
+      options: [
+        { id: 'public-transport', label: 'Public Transport', icon: Bus },
+        { id: 'rental-car', label: 'Rental Car', icon: Bus },
+        { id: 'taxi', label: 'Taxi/Rideshare', icon: Bus },
+        { id: 'walking', label: 'Walking', icon: Bus },
+        { id: 'cycling', label: 'Cycling', icon: Bus }
+      ]
+    },
+    {
+      id: 'tripType',
+      name: 'Trip Type Preferences',
+      description: 'Your preferred travel styles',
+      options: [
+        { id: 'adventure', label: 'Adventure', icon: Globe },
+        { id: 'relaxation', label: 'Relaxation', icon: Globe },
+        { id: 'cultural', label: 'Cultural', icon: Globe },
+        { id: 'budget', label: 'Budget', icon: DollarSign },
+        { id: 'luxury', label: 'Luxury', icon: DollarSign }
+      ]
+    },
+    {
+      id: 'accessibility',
+      name: 'Accessibility Needs',
+      description: 'Your accessibility requirements',
+      options: [
+        { id: 'wheelchair', label: 'Wheelchair Access', icon: Wheelchair },
+        { id: 'limited-mobility', label: 'Limited Mobility', icon: Wheelchair },
+        { id: 'visual-impairment', label: 'Visual Impairment', icon: Wheelchair },
+        { id: 'hearing-impairment', label: 'Hearing Impairment', icon: Wheelchair },
+        { id: 'kid-friendly', label: 'Kid Friendly', icon: Wheelchair },
+        { id: 'pet-friendly', label: 'Pet Friendly', icon: Wheelchair }
+      ]
+    },
+    {
+      id: 'languages',
+      name: 'Languages',
+      description: 'Languages you speak or prefer',
+      options: [
+        { id: 'english', label: 'English', icon: Languages },
+        { id: 'spanish', label: 'Spanish', icon: Languages },
+        { id: 'french', label: 'French', icon: Languages },
+        { id: 'german', label: 'German', icon: Languages },
+        { id: 'japanese', label: 'Japanese', icon: Languages },
+        { id: 'chinese', label: 'Chinese', icon: Languages }
+      ]
+    },
+    {
+      id: 'activities',
+      name: 'Activity Preferences',
+      description: 'When you prefer to be active',
+      options: [
+        { id: 'day', label: 'Day Activities', icon: SunIcon },
+        { id: 'night', label: 'Night Activities', icon: MoonIcon },
+        { id: 'indoor', label: 'Indoor Activities', icon: Building },
+        { id: 'outdoor', label: 'Outdoor Activities', icon: Globe },
+        { id: 'water', label: 'Water Activities', icon: Globe }
+      ]
+    }
+  ];
+
   const handleSave = async (section: string) => {
     setIsLoading(true);
     // Simulate API call
@@ -156,6 +317,89 @@ export default function Settings() {
     setIsLoading(false);
     setShowSuccessToast(true);
     setTimeout(() => setShowSuccessToast(false), 3000);
+  };
+
+  const handlePreferenceToggle = (categoryId: string, optionId: string) => {
+    setUserPreferences(prev => {
+      const currentPrefs = [...(prev[categoryId] || [])];
+      
+      if (currentPrefs.includes(optionId)) {
+        // Remove the option if already selected
+        return {
+          ...prev,
+          [categoryId]: currentPrefs.filter(id => id !== optionId)
+        };
+      } else {
+        // Add the option if not already selected
+        return {
+          ...prev,
+          [categoryId]: [...currentPrefs, optionId]
+        };
+      }
+    });
+  };
+
+  const handleAddMember = () => {
+    if (newMember.name && newMember.email) {
+      const newMemberId = (groupMembers.length + 1).toString();
+      
+      setGroupMembers(prev => [
+        ...prev,
+        {
+          id: newMemberId,
+          name: newMember.name,
+          email: newMember.email,
+          role: newMember.role as 'owner' | 'member',
+          preferences: {
+            dietary: [],
+            accommodation: [],
+            transport: [],
+            tripType: [],
+            accessibility: [],
+            languages: [],
+            activities: []
+          }
+        }
+      ]);
+      
+      setNewMember({ name: '', email: '', role: 'member' });
+      setShowAddMemberModal(false);
+    }
+  };
+
+  const handleRemoveMember = (memberId: string) => {
+    setGroupMembers(prev => prev.filter(member => member.id !== memberId));
+  };
+
+  const handleMemberPreferenceToggle = (memberId: string, categoryId: string, optionId: string) => {
+    setGroupMembers(prev => {
+      return prev.map(member => {
+        if (member.id === memberId) {
+          const currentPrefs = [...(member.preferences[categoryId] || [])];
+          
+          if (currentPrefs.includes(optionId)) {
+            // Remove the option if already selected
+            return {
+              ...member,
+              preferences: {
+                ...member.preferences,
+                [categoryId]: currentPrefs.filter(id => id !== optionId)
+              }
+            };
+          } else {
+            // Add the option if not already selected
+            return {
+              ...member,
+              preferences: {
+                ...member.preferences,
+                [categoryId]: [...currentPrefs, optionId]
+              }
+            };
+          }
+        }
+        return member;
+      });
+    });
   };
 
   const renderAccountSection = () => (
@@ -437,292 +681,258 @@ export default function Settings() {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Travel Preferences</h2>
-        <p className="text-gray-600 dark:text-gray-400">Customize your travel preferences to get personalized recommendations</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          Set your travel preferences to personalize your search results and recommendations
+        </p>
       </div>
 
-      {/* Individual Preferences */}
-      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Your Preferences</h3>
-        
+      {isLoadingPreferences ? (
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 text-center">
+          <div className="animate-spin h-10 w-10 border-4 border-primary-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading your preferences...</p>
+        </div>
+      ) : (
         <div className="space-y-6">
-          {/* Dietary Preferences */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              Dietary Preferences
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {['vegetarian', 'vegan', 'halal', 'kosher', 'gluten-free', 'dairy-free', 'no restrictions'].map((option) => (
-                <button
-                  key={option}
-                  onClick={() => {
-                    setPreferences(prev => {
-                      const newDietary = prev.dietary.includes(option)
-                        ? prev.dietary.filter(item => item !== option)
-                        : [...prev.dietary, option];
-                      return { ...prev, dietary: newDietary };
-                    });
-                  }}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    preferences.dietary.includes(option)
-                      ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 border-2 border-primary-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
-                >
-                  {option.charAt(0).toUpperCase() + option.slice(1)}
-                </button>
-              ))}
+          {preferenceCategories.map((category) => (
+            <div key={category.id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{category.name}</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">{category.description}</p>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {category.options.map((option) => {
+                  const isSelected = userPreferences[category.id]?.includes(option.id);
+                  
+                  return (
+                    <button
+                      key={option.id}
+                      onClick={() => handlePreferenceToggle(category.id, option.id)}
+                      className={`flex items-center space-x-3 p-3 rounded-xl border-2 transition-colors ${
+                        isSelected
+                          ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
+                          : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                      }`}
+                    >
+                      <div className={`p-2 rounded-lg ${isSelected ? 'bg-primary-100 dark:bg-primary-900/40' : 'bg-gray-100 dark:bg-gray-700'}`}>
+                        <option.icon className={`h-5 w-5 ${isSelected ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400'}`} />
+                      </div>
+                      <span className={`text-sm font-medium ${isSelected ? 'text-primary-700 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'}`}>
+                        {option.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Preference Usage</h3>
+        
+        <div className="space-y-4">
+          <div className="flex items-start space-x-3">
+            <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg mt-1">
+              <Search className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <h4 className="font-medium text-gray-900 dark:text-white">Search Results</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Your preferences will be used to personalize search results for flights, hotels, and activities.
+              </p>
             </div>
           </div>
-
-          {/* Accommodation Preferences */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              Accommodation Preferences
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {['hotel', 'hostel', 'airbnb', 'resort', 'camping', 'apartment'].map((option) => (
-                <button
-                  key={option}
-                  onClick={() => {
-                    setPreferences(prev => {
-                      const newAccommodation = prev.accommodation.includes(option)
-                        ? prev.accommodation.filter(item => item !== option)
-                        : [...prev.accommodation, option];
-                      return { ...prev, accommodation: newAccommodation };
-                    });
-                  }}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    preferences.accommodation.includes(option)
-                      ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-2 border-green-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
-                >
-                  {option.charAt(0).toUpperCase() + option.slice(1)}
-                </button>
-              ))}
+          
+          <div className="flex items-start space-x-3">
+            <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg mt-1">
+              <Bot className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <h4 className="font-medium text-gray-900 dark:text-white">AI Recommendations</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Our AI will use your preferences to provide personalized travel recommendations.
+              </p>
             </div>
           </div>
-
-          {/* Transport Preferences */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              Transport Preferences
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {['public', 'rental car', 'taxi', 'walking', 'cycling', 'ride-sharing'].map((option) => (
-                <button
-                  key={option}
-                  onClick={() => {
-                    setPreferences(prev => {
-                      const newTransport = prev.transport.includes(option)
-                        ? prev.transport.filter(item => item !== option)
-                        : [...prev.transport, option];
-                      return { ...prev, transport: newTransport };
-                    });
-                  }}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    preferences.transport.includes(option)
-                      ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-2 border-blue-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
-                >
-                  {option.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                </button>
-              ))}
+          
+          <div className="flex items-start space-x-3">
+            <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg mt-1">
+              <Globe className="h-5 w-5 text-green-600 dark:text-green-400" />
             </div>
-          </div>
-
-          {/* Trip Type Preferences */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              Trip Type Preferences
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {['budget', 'luxury', 'adventure', 'relaxation', 'cultural', 'family', 'romantic'].map((option) => (
-                <button
-                  key={option}
-                  onClick={() => {
-                    setPreferences(prev => {
-                      const newTripType = prev.tripType.includes(option)
-                        ? prev.tripType.filter(item => item !== option)
-                        : [...prev.tripType, option];
-                      return { ...prev, tripType: newTripType };
-                    });
-                  }}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    preferences.tripType.includes(option)
-                      ? 'bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 border-2 border-purple-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
-                >
-                  {option.charAt(0).toUpperCase() + option.slice(1)}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Accessibility Preferences */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              Accessibility Preferences
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {['wheelchair', 'kid-friendly', 'pet-friendly', 'elderly-friendly', 'hearing-impaired', 'vision-impaired'].map((option) => (
-                <button
-                  key={option}
-                  onClick={() => {
-                    setPreferences(prev => {
-                      const newAccessibility = prev.accessibility.includes(option)
-                        ? prev.accessibility.filter(item => item !== option)
-                        : [...prev.accessibility, option];
-                      return { ...prev, accessibility: newAccessibility };
-                    });
-                  }}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    preferences.accessibility.includes(option)
-                      ? 'bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 border-2 border-orange-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
-                >
-                  {option.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Languages */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              Languages Spoken
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {['english', 'spanish', 'french', 'german', 'japanese', 'chinese', 'arabic'].map((option) => (
-                <button
-                  key={option}
-                  onClick={() => {
-                    setPreferences(prev => {
-                      const newLanguages = prev.languages.includes(option)
-                        ? prev.languages.filter(item => item !== option)
-                        : [...prev.languages, option];
-                      return { ...prev, languages: newLanguages };
-                    });
-                  }}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    preferences.languages.includes(option)
-                      ? 'bg-indigo-100 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 border-2 border-indigo-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
-                >
-                  {option.charAt(0).toUpperCase() + option.slice(1)}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Activity Time Preferences */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              Activity Time Preferences
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {['day', 'night', 'morning', 'afternoon', 'evening'].map((option) => (
-                <button
-                  key={option}
-                  onClick={() => {
-                    setPreferences(prev => {
-                      const newActivities = prev.activities.includes(option)
-                        ? prev.activities.filter(item => item !== option)
-                        : [...prev.activities, option];
-                      return { ...prev, activities: newActivities };
-                    });
-                  }}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    preferences.activities.includes(option)
-                      ? 'bg-cyan-100 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-400 border-2 border-cyan-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
-                >
-                  {option.charAt(0).toUpperCase() + option.slice(1)}
-                </button>
-              ))}
+            <div>
+              <h4 className="font-medium text-gray-900 dark:text-white">Discover Page</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Discover page will show destinations and experiences that match your preferences.
+              </p>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  );
 
-      {/* Group Preferences */}
+  const renderGroupSection = () => (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Group Management</h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          Manage your travel group members and their preferences
+        </p>
+      </div>
+
+      {/* Group Settings */}
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Group Settings</h3>
+        
+        <div className="space-y-4">
+          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
+            <div>
+              <div className="font-medium text-gray-900 dark:text-white">Merge All Preferences</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Combine all group members' preferences when searching or planning trips
+              </div>
+            </div>
+            <button
+              onClick={() => setGroupSettings(prev => ({ ...prev, mergePreferences: !prev.mergePreferences }))}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                groupSettings.mergePreferences ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-600'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  groupSettings.mergePreferences ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+          
+          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
+            <div>
+              <div className="font-medium text-gray-900 dark:text-white">Notify Members of Changes</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Send notifications to group members when trip details change
+              </div>
+            </div>
+            <button
+              onClick={() => setGroupSettings(prev => ({ ...prev, notifyMembers: !prev.notifyMembers }))}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                groupSettings.notifyMembers ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-600'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  groupSettings.notifyMembers ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+          
+          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
+            <div>
+              <div className="font-medium text-gray-900 dark:text-white">Allow Member Editing</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Let members edit trip details and add activities
+              </div>
+            </div>
+            <button
+              onClick={() => setGroupSettings(prev => ({ ...prev, allowMemberEditing: !prev.allowMemberEditing }))}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                groupSettings.allowMemberEditing ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-600'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  groupSettings.allowMemberEditing ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Group Members */}
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Group Preferences</h3>
-          <button className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors flex items-center space-x-2">
-            <Plus className="h-4 w-4" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Group Members</h3>
+          <button
+            onClick={() => setShowAddMemberModal(true)}
+            className="bg-primary-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-primary-700 transition-colors flex items-center space-x-2"
+          >
+            <UserPlus className="h-4 w-4" />
             <span>Add Member</span>
           </button>
         </div>
         
         <div className="space-y-4">
-          {groupPreferences.map((member, index) => (
-            <div key={member.id} className="border border-gray-200 dark:border-gray-700 rounded-xl p-4">
-              <div className="flex items-center justify-between mb-4">
+          {groupMembers.map((member) => (
+            <div key={member.id} className="border border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden">
+              <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center">
+                  <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-full">
                     <User className="h-5 w-5 text-primary-600 dark:text-primary-400" />
                   </div>
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
                       <span>{member.name}</span>
-                      {member.isDefault && (
-                        <span className="bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-2 py-0.5 rounded-full text-xs">
-                          Default
+                      {member.role === 'owner' && (
+                        <span className="bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded-full text-xs">
+                          Owner
                         </span>
                       )}
                     </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">{member.email}</div>
                   </div>
                 </div>
+                
                 <div className="flex items-center space-x-2">
-                  <button className="p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <button
+                    className="p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                    title="Edit Member"
+                  >
                     <Edit3 className="h-4 w-4" />
                   </button>
-                  {!member.isDefault && (
-                    <button className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                      <Trash2 className="h-4 w-4" />
+                  {member.role !== 'owner' && (
+                    <button
+                      onClick={() => handleRemoveMember(member.id)}
+                      className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                      title="Remove Member"
+                    >
+                      <UserMinus className="h-4 w-4" />
                     </button>
                   )}
                 </div>
               </div>
               
-              <div className="space-y-3">
-                <div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Dietary</div>
-                  <div className="flex flex-wrap gap-1">
-                    {member.dietary.map((pref) => (
-                      <span key={pref} className="px-2 py-0.5 bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 rounded-full text-xs">
-                        {pref.charAt(0).toUpperCase() + pref.slice(1)}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              {/* Member Preferences */}
+              <div className="p-4">
+                <h4 className="font-medium text-gray-900 dark:text-white mb-3">Member Preferences</h4>
                 
-                <div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Accommodation</div>
-                  <div className="flex flex-wrap gap-1">
-                    {member.accommodation.map((pref) => (
-                      <span key={pref} className="px-2 py-0.5 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-full text-xs">
-                        {pref.charAt(0).toUpperCase() + pref.slice(1)}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Transport</div>
-                  <div className="flex flex-wrap gap-1">
-                    {member.transport.map((pref) => (
-                      <span key={pref} className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 rounded-full text-xs">
-                        {pref.charAt(0).toUpperCase() + pref.slice(1)}
-                      </span>
-                    ))}
-                  </div>
+                <div className="space-y-4">
+                  {preferenceCategories.map((category) => (
+                    <div key={category.id} className="space-y-2">
+                      <div className="text-sm font-medium text-gray-700 dark:text-gray-300">{category.name}</div>
+                      <div className="flex flex-wrap gap-2">
+                        {category.options.map((option) => {
+                          const isSelected = member.preferences[category.id]?.includes(option.id);
+                          
+                          return (
+                            <button
+                              key={option.id}
+                              onClick={() => handleMemberPreferenceToggle(member.id, category.id, option.id)}
+                              className={`flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                                isSelected
+                                  ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
+                                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                              }`}
+                            >
+                              <option.icon className="h-3 w-3" />
+                              <span>{option.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -730,45 +940,48 @@ export default function Settings() {
         </div>
       </div>
 
-      {/* Preference Sync */}
+      {/* Group Preference Summary */}
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Preference Sync</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Group Preference Summary</h3>
         
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
+          {preferenceCategories.map((category) => {
+            // Get all unique preferences across all members for this category
+            const allPreferences = new Set<string>();
+            groupMembers.forEach(member => {
+              (member.preferences[category.id] || []).forEach(pref => {
+                allPreferences.add(pref);
+              });
+            });
+            
+            // Convert to array and map to labels
+            const preferenceLabels = Array.from(allPreferences).map(prefId => {
+              const option = category.options.find(opt => opt.id === prefId);
+              return option?.label || prefId;
+            });
+            
+            return (
+              <div key={category.id} className="space-y-1">
+                <div className="text-sm font-medium text-gray-700 dark:text-gray-300">{category.name}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  {preferenceLabels.length > 0 
+                    ? preferenceLabels.join(', ') 
+                    : 'No preferences set'}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        
+        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+          <div className="flex items-start space-x-3">
+            <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
             <div>
-              <div className="font-medium text-gray-900 dark:text-white">Sync with Search</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Automatically apply preferences to search results</div>
+              <h4 className="font-medium text-blue-900 dark:text-blue-300 mb-1">How Group Preferences Work</h4>
+              <p className="text-sm text-blue-700 dark:text-blue-400">
+                When "Merge All Preferences" is enabled, search results and recommendations will consider all group members' preferences. This helps find options that work for everyone in your group.
+              </p>
             </div>
-            <button
-              className="relative inline-flex h-6 w-11 items-center rounded-full bg-primary-600"
-            >
-              <span className="inline-block h-4 w-4 transform translate-x-6 rounded-full bg-white"></span>
-            </button>
-          </div>
-          
-          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
-            <div>
-              <div className="font-medium text-gray-900 dark:text-white">Sync with Trip Planning</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Apply preferences to trip suggestions</div>
-            </div>
-            <button
-              className="relative inline-flex h-6 w-11 items-center rounded-full bg-primary-600"
-            >
-              <span className="inline-block h-4 w-4 transform translate-x-6 rounded-full bg-white"></span>
-            </button>
-          </div>
-          
-          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
-            <div>
-              <div className="font-medium text-gray-900 dark:text-white">AI Assistant Awareness</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Allow AI to use preferences for recommendations</div>
-            </div>
-            <button
-              className="relative inline-flex h-6 w-11 items-center rounded-full bg-primary-600"
-            >
-              <span className="inline-block h-4 w-4 transform translate-x-6 rounded-full bg-white"></span>
-            </button>
           </div>
         </div>
       </div>
@@ -1101,6 +1314,8 @@ export default function Settings() {
         return renderAccountSection();
       case 'preferences':
         return renderPreferencesSection();
+      case 'group':
+        return renderGroupSection();
       case 'notifications':
         return renderNotificationsSection();
       case 'security':
@@ -1278,6 +1493,69 @@ export default function Settings() {
                 </button>
                 <button className="flex-1 bg-primary-600 text-white py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors">
                   Update Password
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Add Member Modal */}
+        {showAddMemberModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-full">
+                  <UserPlus className="h-6 w-6 text-primary-600 dark:text-primary-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Add Group Member</h3>
+              </div>
+              
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
+                  <input
+                    type="text"
+                    value={newMember.name}
+                    onChange={(e) => setNewMember({...newMember, name: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="Enter member name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                  <input
+                    type="email"
+                    value={newMember.email}
+                    onChange={(e) => setNewMember({...newMember, email: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="Enter member email"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role</label>
+                  <select
+                    value={newMember.role}
+                    onChange={(e) => setNewMember({...newMember, role: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  >
+                    <option value="member">Member</option>
+                    <option value="owner">Owner</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setShowAddMemberModal(false)}
+                  className="flex-1 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={handleAddMember}
+                  className="flex-1 bg-primary-600 text-white py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors"
+                >
+                  Add Member
                 </button>
               </div>
             </div>

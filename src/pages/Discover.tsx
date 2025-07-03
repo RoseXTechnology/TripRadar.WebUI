@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   MapPin, 
@@ -14,9 +14,16 @@ import {
   Plus,
   Search,
   Filter,
-  ArrowRight
+  ArrowRight,
+  Heart,
+  DollarSign,
+  Utensils,
+  Wheelchair,
+  Bus,
+  Globe
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useApp } from '../context/AppContext';
 
 const destinations = [
   {
@@ -30,7 +37,16 @@ const destinations = [
     highlights: ['Temples', 'Gardens', 'Traditional Culture'],
     description: 'Immerse yourself in traditional Japanese culture with ancient temples, serene gardens, and timeless traditions.',
     estimatedCost: 1200,
-    bestTime: 'Spring/Fall'
+    bestTime: 'Spring/Fall',
+    tags: {
+      dietary: ['vegetarian', 'vegan'],
+      accommodation: ['hotel', 'hostel', 'airbnb'],
+      transport: ['public-transport', 'walking'],
+      tripType: ['cultural', 'relaxation'],
+      accessibility: ['wheelchair'],
+      languages: ['japanese', 'english'],
+      activities: ['day']
+    }
   },
   {
     id: 2,
@@ -43,7 +59,16 @@ const destinations = [
     highlights: ['Sunsets', 'Architecture', 'Wineries'],
     description: 'Experience breathtaking sunsets, iconic white-washed buildings, and world-class wines on this Greek island paradise.',
     estimatedCost: 1800,
-    bestTime: 'Summer'
+    bestTime: 'Summer',
+    tags: {
+      dietary: ['mediterranean'],
+      accommodation: ['hotel', 'airbnb', 'resort'],
+      transport: ['rental-car', 'taxi'],
+      tripType: ['relaxation', 'luxury'],
+      accessibility: [],
+      languages: ['greek', 'english'],
+      activities: ['day', 'night']
+    }
   },
   {
     id: 3,
@@ -56,7 +81,16 @@ const destinations = [
     highlights: ['Hiking', 'Skiing', 'Mountain Views'],
     description: 'Adventure awaits in the majestic Swiss Alps with world-class skiing, hiking trails, and stunning mountain vistas.',
     estimatedCost: 2500,
-    bestTime: 'Winter/Summer'
+    bestTime: 'Winter/Summer',
+    tags: {
+      dietary: ['dairy-free', 'gluten-free'],
+      accommodation: ['hotel', 'resort', 'camping'],
+      transport: ['public-transport', 'rental-car'],
+      tripType: ['adventure', 'luxury'],
+      accessibility: ['limited-mobility'],
+      languages: ['german', 'french', 'italian', 'english'],
+      activities: ['day', 'outdoor']
+    }
   },
   {
     id: 4,
@@ -69,7 +103,16 @@ const destinations = [
     highlights: ['Markets', 'Architecture', 'Cuisine'],
     description: 'Dive into the vibrant culture of Morocco with bustling souks, stunning architecture, and incredible cuisine.',
     estimatedCost: 900,
-    bestTime: 'Spring/Fall'
+    bestTime: 'Spring/Fall',
+    tags: {
+      dietary: ['halal'],
+      accommodation: ['hotel', 'riad'],
+      transport: ['taxi', 'walking'],
+      tripType: ['cultural', 'budget'],
+      accessibility: [],
+      languages: ['arabic', 'french'],
+      activities: ['day', 'night']
+    }
   },
   {
     id: 5,
@@ -82,7 +125,16 @@ const destinations = [
     highlights: ['Beaches', 'Temples', 'Rice Terraces'],
     description: 'Discover the perfect blend of spiritual culture, stunning landscapes, and tropical paradise in Bali.',
     estimatedCost: 1400,
-    bestTime: 'Dry Season'
+    bestTime: 'Dry Season',
+    tags: {
+      dietary: ['vegetarian', 'vegan'],
+      accommodation: ['hotel', 'resort', 'airbnb'],
+      transport: ['rental-car', 'taxi'],
+      tripType: ['relaxation', 'adventure', 'cultural'],
+      accessibility: [],
+      languages: ['indonesian', 'english'],
+      activities: ['day', 'outdoor', 'water']
+    }
   },
   {
     id: 6,
@@ -95,7 +147,16 @@ const destinations = [
     highlights: ['Waterfalls', 'Glaciers', 'Northern Lights'],
     description: 'Journey through Iceland\'s dramatic landscapes featuring powerful waterfalls, ancient glaciers, and the magical Northern Lights.',
     estimatedCost: 3200,
-    bestTime: 'Summer'
+    bestTime: 'Summer',
+    tags: {
+      dietary: ['gluten-free', 'dairy-free'],
+      accommodation: ['hotel', 'camping', 'airbnb'],
+      transport: ['rental-car'],
+      tripType: ['adventure', 'nature'],
+      accessibility: [],
+      languages: ['icelandic', 'english'],
+      activities: ['day', 'outdoor']
+    }
   },
 ];
 
@@ -112,17 +173,69 @@ export default function Discover() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const { requireAuth } = useAuth();
+  const { user } = useApp();
   const navigate = useNavigate();
+  const [filteredDestinations, setFilteredDestinations] = useState(destinations);
+  const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({});
 
-  const filteredDestinations = destinations.filter(destination => {
-    const matchesCategory = selectedCategory === 'All' || destination.type === selectedCategory;
-    const matchesSearch = searchQuery === '' || 
-      destination.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      destination.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      destination.highlights.some(highlight => highlight.toLowerCase().includes(searchQuery.toLowerCase()));
+  // Apply user preferences to filter destinations
+  useEffect(() => {
+    if (user?.preferences) {
+      // Convert user preferences to filter format
+      const userFilters: Record<string, string[]> = {};
+      
+      if (user.preferences.dietary) userFilters.dietary = user.preferences.dietary;
+      if (user.preferences.accommodationType) userFilters.accommodation = user.preferences.accommodationType;
+      if (user.preferences.transport) userFilters.transport = user.preferences.transport;
+      if (user.preferences.tripType) userFilters.tripType = [user.preferences.travelStyle];
+      if (user.preferences.accessibility) userFilters.accessibility = user.preferences.accessibility;
+      if (user.preferences.languages) userFilters.languages = user.preferences.languages;
+      if (user.preferences.activities) userFilters.activities = user.preferences.activities;
+      
+      setActiveFilters(userFilters);
+    }
+  }, [user]);
+
+  // Filter destinations based on category, search query, and user preferences
+  useEffect(() => {
+    let filtered = destinations;
     
-    return matchesCategory && matchesSearch;
-  });
+    // Filter by category
+    if (selectedCategory !== 'All') {
+      filtered = filtered.filter(destination => destination.type === selectedCategory);
+    }
+    
+    // Filter by search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(destination => 
+        destination.name.toLowerCase().includes(query) ||
+        destination.description.toLowerCase().includes(query) ||
+        destination.highlights.some(highlight => highlight.toLowerCase().includes(query))
+      );
+    }
+    
+    // Filter by user preferences if any are active
+    if (Object.keys(activeFilters).length > 0) {
+      filtered = filtered.filter(destination => {
+        // For each preference category
+        return Object.entries(activeFilters).every(([category, selectedOptions]) => {
+          // Skip if no options selected for this category
+          if (!selectedOptions || selectedOptions.length === 0) return true;
+          
+          // Skip if destination doesn't have tags for this category
+          if (!destination.tags[category as keyof typeof destination.tags]) return true;
+          
+          // Check if any of the destination's tags for this category match the selected options
+          return selectedOptions.some(option => 
+            destination.tags[category as keyof typeof destination.tags].includes(option)
+          );
+        });
+      });
+    }
+    
+    setFilteredDestinations(filtered);
+  }, [selectedCategory, searchQuery, activeFilters]);
 
   const handleCreateTrip = (destination: any) => {
     if (!requireAuth()) return;
@@ -149,6 +262,94 @@ export default function Discover() {
       }
     });
   };
+
+  const toggleFilter = (category: string, option: string) => {
+    setActiveFilters(prev => {
+      const current = [...(prev[category] || [])];
+      
+      if (current.includes(option)) {
+        // Remove the option if already selected
+        return {
+          ...prev,
+          [category]: current.filter(item => item !== option)
+        };
+      } else {
+        // Add the option if not already selected
+        return {
+          ...prev,
+          [category]: [...current, option]
+        };
+      }
+    });
+  };
+
+  const clearFilters = () => {
+    setActiveFilters({});
+  };
+
+  // Preference categories for filtering
+  const filterCategories = [
+    {
+      id: 'dietary',
+      name: 'Dietary',
+      icon: Utensils,
+      options: [
+        { id: 'vegetarian', label: 'Vegetarian' },
+        { id: 'vegan', label: 'Vegan' },
+        { id: 'halal', label: 'Halal' },
+        { id: 'kosher', label: 'Kosher' },
+        { id: 'gluten-free', label: 'Gluten Free' },
+        { id: 'dairy-free', label: 'Dairy Free' }
+      ]
+    },
+    {
+      id: 'accommodation',
+      name: 'Accommodation',
+      icon: Building,
+      options: [
+        { id: 'hotel', label: 'Hotels' },
+        { id: 'hostel', label: 'Hostels' },
+        { id: 'airbnb', label: 'Airbnb' },
+        { id: 'resort', label: 'Resorts' },
+        { id: 'camping', label: 'Camping' }
+      ]
+    },
+    {
+      id: 'transport',
+      name: 'Transportation',
+      icon: Bus,
+      options: [
+        { id: 'public-transport', label: 'Public Transport' },
+        { id: 'rental-car', label: 'Rental Car' },
+        { id: 'taxi', label: 'Taxi/Rideshare' },
+        { id: 'walking', label: 'Walking' },
+        { id: 'cycling', label: 'Cycling' }
+      ]
+    },
+    {
+      id: 'tripType',
+      name: 'Trip Type',
+      icon: Globe,
+      options: [
+        { id: 'adventure', label: 'Adventure' },
+        { id: 'relaxation', label: 'Relaxation' },
+        { id: 'cultural', label: 'Cultural' },
+        { id: 'budget', label: 'Budget' },
+        { id: 'luxury', label: 'Luxury' }
+      ]
+    },
+    {
+      id: 'accessibility',
+      name: 'Accessibility',
+      icon: Wheelchair,
+      options: [
+        { id: 'wheelchair', label: 'Wheelchair Access' },
+        { id: 'limited-mobility', label: 'Limited Mobility' },
+        { id: 'kid-friendly', label: 'Kid Friendly' },
+        { id: 'pet-friendly', label: 'Pet Friendly' }
+      ]
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 pt-16">
@@ -188,6 +389,11 @@ export default function Discover() {
             >
               <Filter className="h-5 w-5" />
               <span>Filters</span>
+              {Object.values(activeFilters).flat().length > 0 && (
+                <span className="bg-primary-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">
+                  {Object.values(activeFilters).flat().length}
+                </span>
+              )}
             </button>
           </div>
 
@@ -208,6 +414,68 @@ export default function Discover() {
               </button>
             ))}
           </div>
+
+          {/* Expanded Filters */}
+          {showFilters && (
+            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Preferences</h3>
+                <button 
+                  onClick={clearFilters}
+                  className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
+                >
+                  Clear All
+                </button>
+              </div>
+              
+              <div className="space-y-6">
+                {filterCategories.map((category) => (
+                  <div key={category.id}>
+                    <div className="flex items-center space-x-2 mb-3">
+                      <category.icon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                      <h4 className="font-medium text-gray-900 dark:text-white">{category.name}</h4>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {category.options.map((option) => {
+                        const isActive = activeFilters[category.id]?.includes(option.id);
+                        
+                        return (
+                          <button
+                            key={option.id}
+                            onClick={() => toggleFilter(category.id, option.id)}
+                            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                              isActive
+                                ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 border-2 border-primary-500'
+                                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
+                            }`}
+                          >
+                            {option.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {/* User Preferences Notice */}
+              {user?.preferences && Object.keys(activeFilters).length > 0 && (
+                <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                  <div className="flex items-start space-x-3">
+                    <Heart className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+                    <div>
+                      <p className="text-sm text-blue-700 dark:text-blue-300">
+                        <span className="font-medium">Personalized Results:</span> Showing destinations that match your preferences.
+                      </p>
+                      <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                        You can adjust your preferences in Settings or modify the filters above.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Destinations Grid */}

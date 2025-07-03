@@ -14,6 +14,12 @@ export interface UserPreferences {
   activities: string[];
   travelStyle: 'budget' | 'comfort' | 'luxury';
   groupSize: 'solo' | 'couple' | 'small-group' | 'large-group';
+  dietary?: string[];
+  transport?: string[];
+  tripType?: string[];
+  accessibility?: string[];
+  languages?: string[];
+  timePreference?: 'day' | 'night' | 'both';
 }
 
 export interface PrivacySettings {
@@ -72,6 +78,7 @@ export interface GroupMember {
   role: 'organizer' | 'member';
   status: 'invited' | 'accepted' | 'declined';
   permissions: string[];
+  preferences?: Record<string, string[]>;
 }
 
 export interface SatisfactionPrediction {
@@ -107,6 +114,7 @@ export interface SearchFilters {
   endDate: string;
   guests: number;
   budget?: number;
+  preferences?: Record<string, string[]>;
 }
 
 export interface FlightResult {
@@ -160,4 +168,21 @@ export interface VoteOption {
   description?: string;
   votes: string[];
   cost?: number;
+}
+
+export interface PreferenceSchema {
+  categories: PreferenceCategory[];
+}
+
+export interface PreferenceCategory {
+  id: string;
+  name: string;
+  description: string;
+  options: PreferenceOption[];
+}
+
+export interface PreferenceOption {
+  id: string;
+  label: string;
+  icon?: string;
 }
