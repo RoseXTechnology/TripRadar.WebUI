@@ -1,2 +1,6 @@
-export type { User, UserProfile, UserPreferences } from './model/types';
-export { userApi } from './api/userApi';
+export type {
+  User,
+  UserSubscription,
+  UserPreferences,
+  PrivacySettings,
+} from './model/types';

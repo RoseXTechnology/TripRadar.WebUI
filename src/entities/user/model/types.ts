@@ -1,26 +1,34 @@
 export interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  subscription: 'free' | 'premium' | 'enterprise';
-  createdAt: string;
-  updatedAt: string;
+  readonly id: string;
+  readonly name: string;
+  readonly email: string;
+  readonly avatar?: string;
+  readonly subscription: UserSubscription;
+  readonly preferences: UserPreferences;
+  readonly privacySettings: PrivacySettings;
+  readonly createdAt: string;
+  readonly updatedAt: string;
 }
 
-export interface UserProfile extends User {
-  phone?: string;
-  bio?: string;
-  preferences: UserPreferences;
-}
+export type UserSubscription = 'free' | 'premium' | 'enterprise';
 
 export interface UserPreferences {
-  theme: 'light' | 'dark' | 'system';
-  language: string;
-  currency: string;
-  notifications: {
-    email: boolean;
-    push: boolean;
-    sms: boolean;
-  };
+  readonly budgetRange: readonly [number, number];
+  readonly accommodationType: readonly string[];
+  readonly activities: readonly string[];
+  readonly travelStyle: 'budget' | 'comfort' | 'luxury';
+  readonly groupSize: 'solo' | 'couple' | 'small-group' | 'large-group';
+  readonly dietary?: readonly string[];
+  readonly transport?: readonly string[];
+  readonly tripType?: readonly string[];
+  readonly accessibility?: readonly string[];
+  readonly languages?: readonly string[];
+  readonly timePreference?: 'day' | 'night' | 'both';
+}
+
+export interface PrivacySettings {
+  readonly dataRetention: 'minimal' | 'standard';
+  readonly aiTraining: boolean;
+  readonly analytics: boolean;
+  readonly marketing: boolean;
 }

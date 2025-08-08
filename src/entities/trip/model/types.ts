@@ -1,34 +1,53 @@
+import type { BudgetCategory, BudgetAlert } from '../../../entities/budget';
+
 export interface Trip {
-  id: string;
-  title: string;
-  description?: string;
-  destination: string;
-  startDate: string;
-  endDate: string;
-  status: 'planning' | 'active' | 'completed' | 'cancelled';
-  budget: number;
-  currency: string;
-  participants: string[];
-  createdBy: string;
-  createdAt: string;
-  updatedAt: string;
+  readonly id: string;
+  readonly title: string;
+  readonly destination: string;
+  readonly startDate: string;
+  readonly endDate: string;
+  readonly status: TripStatus;
+  readonly participants: number;
+  readonly budget?: TripBudget;
+  readonly image?: string;
+  readonly isGroupTrip: boolean;
+  readonly groupMembers?: readonly GroupMember[];
+  readonly satisfactionPrediction?: SatisfactionPrediction;
+  readonly aiChatEnabled: boolean;
+  readonly createdAt: string;
+  readonly updatedAt: string;
 }
 
-export interface TripItinerary {
-  id: string;
-  tripId: string;
-  day: number;
-  date: string;
-  activities: Activity[];
+export type TripStatus = 'planning' | 'active' | 'completed' | 'cancelled';
+
+export interface TripBudget {
+  readonly total: number;
+  readonly spent: number;
+  readonly categories: readonly BudgetCategory[];
+  readonly alerts: readonly BudgetAlert[];
+  readonly currency: string;
 }
 
-export interface Activity {
-  id: string;
-  title: string;
-  description?: string;
-  startTime: string;
-  endTime: string;
-  location: string;
-  cost?: number;
-  category: 'transport' | 'accommodation' | 'food' | 'activity' | 'other';
+export interface GroupMember {
+  readonly id: string;
+  readonly name: string;
+  readonly email: string;
+  readonly avatar?: string;
+  readonly role: 'organizer' | 'member';
+  readonly status: 'invited' | 'accepted' | 'declined';
+  readonly permissions: readonly string[];
+  readonly preferences?: Record<string, readonly string[]>;
+}
+
+export interface SatisfactionPrediction {
+  readonly score: number;
+  readonly factors: readonly SatisfactionFactor[];
+  readonly recommendations: readonly string[];
+  readonly confidence: number;
+}
+
+export interface SatisfactionFactor {
+  readonly name: string;
+  readonly impact: number;
+  readonly description: string;
 }

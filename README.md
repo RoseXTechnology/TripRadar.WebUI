@@ -2,16 +2,6 @@
 
 A modern travel planning and budget tracking web application built with React, TypeScript, and Tailwind CSS.
 
-## 🚀 Current Refactoring Status
-
-**Phase 1: Infrastructure Setup** ✅ In Progress
-- [x] Updated dependencies (Zustand, React Query, Zod)
-- [x] Configured ESLint with strict TypeScript rules
-- [x] Set up path aliases for FSD architecture
-- [x] Added Prettier configuration
-- [ ] Complete app layer structure
-- [ ] Implement type-safe architecture
-
 ## Features
 
 - 🏠 **Trip Planning** - Create and manage travel itineraries
