@@ -2,6 +2,16 @@
 
 A modern travel planning and budget tracking web application built with React, TypeScript, and Tailwind CSS.
 
+## 🚀 Current Refactoring Status
+
+**Phase 1: Infrastructure Setup** ✅ In Progress
+- [x] Updated dependencies (Zustand, React Query, Zod)
+- [x] Configured ESLint with strict TypeScript rules
+- [x] Set up path aliases for FSD architecture
+- [x] Added Prettier configuration
+- [ ] Complete app layer structure
+- [ ] Implement type-safe architecture
+
 ## Features
 
 - 🏠 **Trip Planning** - Create and manage travel itineraries
@@ -14,12 +24,24 @@ A modern travel planning and budget tracking web application built with React, T
 
 ## Tech Stack
 
-- **Frontend**: React 18, TypeScript
-- **Styling**: Tailwind CSS
-- **Build Tool**: Vite
+### Core Technologies
+- **Frontend**: React 18, TypeScript 5.5
+- **Build Tool**: Vite 5.4
+- **Styling**: Tailwind CSS 3.4
 - **Architecture**: Feature-Sliced Design (FSD)
 - **Icons**: Lucide React
-- **Routing**: React Router DOM
+- **Routing**: React Router DOM 6.21
+
+### State Management
+- **Client State**: Zustand 4.5 (replacing React Context)
+- **Server State**: TanStack React Query 5.0
+- **Validation**: Zod 3.22 for runtime type checking
+
+### Development Tools
+- **Linting**: ESLint 9.9 with TypeScript strict rules
+- **Formatting**: Prettier 3.6
+- **Testing**: Vitest + Testing Library (planned)
+- **Documentation**: Storybook (planned)
 
 ## Getting Started
 
@@ -44,55 +66,99 @@ npm run dev
 
 4. Open your browser and navigate to `http://localhost:5173`
 
-## Available Scripts
+### Development Commands
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint issues
-- `npm run format` - Format code with Prettier
-- `npm run format:check` - Check code formatting
+```bash
+# Development
+npm run dev          # Start dev server
+npm run build        # Build for production
+npm run preview      # Preview production build
 
-## Project Structure
+# Code Quality
+npm run lint         # Run ESLint
+npm run lint:fix     # Fix ESLint issues
+npm run format       # Format with Prettier
+npm run format:check # Check formatting
+```
+
+## Project Structure (Feature-Sliced Design)
 
 ```
 src/
-├── app/           # Application configuration
-├── pages/         # Page components
-├── widgets/       # Complex UI blocks
-├── features/      # Business logic features
-├── entities/      # Business entities
-├── shared/        # Shared utilities and components
-└── components/    # Reusable UI components
+├── app/                    # Application layer
+│   ├── providers/          # App providers (Theme, Query, etc.)
+│   ├── router/            # Routing configuration
+│   └── store/             # Global store setup
+├── pages/                  # Pages layer
+│   ├── dashboard/         # Dashboard page
+│   ├── trips/             # Trips pages
+│   └── auth/              # Auth pages
+├── widgets/                # Widgets layer
+│   ├── header/            # Header widget
+│   ├── trip-card/         # Trip card widget
+│   └── budget-overview/   # Budget overview widget
+├── features/               # Features layer
+│   ├── auth/              # Authentication feature
+│   ├── trip-management/   # Trip management feature
+│   └── budget-tracking/   # Budget tracking feature
+├── entities/               # Entities layer
+│   ├── user/              # User entity
+│   ├── trip/              # Trip entity
+│   └── budget/            # Budget entity
+└── shared/                 # Shared layer
+    ├── ui/                # UI components
+    ├── lib/               # Utilities and hooks
+    ├── api/               # API configuration
+    └── config/            # App configuration
 ```
 
-## Usage
+### Import Rules
 
-1. **Home Page** - Landing page with platform overview
-2. **Authentication** - Sign up or log in to access features
-3. **Dashboard** - View your trips, budgets, and recent activities
-4. **Trip Planning** - Create new trips and manage itineraries
-5. **Budget Tracking** - Set budgets and track expenses
-6. **Search** - Discover new destinations and travel options
-7. **Profile** - Manage your account settings
+```typescript
+// ✅ Allowed imports (following FSD rules)
+import { Button } from 'shared/ui';
+import { useAuth } from 'features/auth';
+import { User } from 'entities/user';
 
-## Development
+// ❌ Forbidden imports
+import { LoginForm } from 'features/auth/ui/LoginForm'; // Direct file import
+import { Dashboard } from 'pages/dashboard'; // Page from feature
+```
 
-The project follows Feature-Sliced Design architecture for better maintainability and scalability. Each feature is organized into layers with clear dependencies.
+## Architecture Decisions
 
-### Key Directories:
+### Why Zustand over Redux?
+- **Simplicity**: 5 lines vs 50+ lines for same functionality
+- **TypeScript**: Excellent built-in TypeScript support
+- **Size**: 2.9KB vs 11KB+ for Redux Toolkit
+- **Performance**: No unnecessary re-renders
+- **Persistence**: Built-in localStorage integration
 
-- `pages/` - Route-level components
-- `features/` - Business logic (auth, budget-tracking, trip-management)
-- `entities/` - Data models (user, trip, budget)
-- `shared/` - Reusable utilities, UI components, and configurations
-- `widgets/` - Composite UI blocks
+### Why Zod for validation?
+- **Type Safety**: Runtime validation + TypeScript types
+- **Developer Experience**: Excellent error messages
+- **Composability**: Easy to combine and extend schemas
+- **Security**: Prevents invalid data from entering the system
+
+### Why React Query?
+- **Server State**: Perfect separation from client state
+- **Caching**: Intelligent background updates
+- **Performance**: Automatic request deduplication
+- **DevTools**: Excellent debugging experience
 
 ## Contributing
 
-1. Follow the existing code style and architecture patterns
-2. Use TypeScript for type safety
-3. Follow the Feature-Sliced Design principles
+1. Follow the Feature-Sliced Design architecture
+2. Use TypeScript with strict mode (no `any` types)
+3. Follow import rules and path aliases
 4. Run linting and formatting before committing
+5. Write tests for new features
+6. Update this README when adding new technologies
 
+### Code Quality Rules
+
+- **No `any` types** - Use proper TypeScript types
+- **Import order** - Follow ESLint import rules
+- **Barrel exports** - Use index.ts files for clean imports
+- **Validation** - Use Zod schemas for all external data
+- **Error handling** - Wrap components in ErrorBoundary
