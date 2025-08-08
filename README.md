@@ -30,11 +30,7 @@ A modern travel planning and budget tracking web application built with React, T
 
 ### Installation
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd TripRadar.WebUI-1
-```
+1. Clone the repository
 
 2. Install dependencies:
 ```bash
