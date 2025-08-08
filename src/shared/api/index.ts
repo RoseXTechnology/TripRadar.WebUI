@@ -1,2 +1,2 @@
-export { apiConfig, apiRequest, api } from './base';
-export type { ApiResponse, ApiError, PaginatedResponse } from './types';
+export { apiRequest, API_BASE_URL } from './base';
+export type { ApiResponse, ApiError } from './types';
