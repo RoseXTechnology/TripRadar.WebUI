@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -49,7 +48,7 @@ function AppContent() {
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Conditional Header */}
       {isAuthenticated ? <Header /> : <LandingHeader />}
-      
+
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -75,71 +74,107 @@ function AppContent() {
           <Route path="/checkout/success" element={<CheckoutSuccess />} />
           <Route path="/checkout/cancel" element={<CheckoutCancel />} />
           <Route path="/coming-soon" element={<ComingSoon />} />
-          
+
           {/* Protected Routes */}
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/trips" element={
-            <ProtectedRoute>
-              <Trips />
-            </ProtectedRoute>
-          } />
-          <Route path="/trips/:id" element={
-            <ProtectedRoute>
-              <TripPlanning />
-            </ProtectedRoute>
-          } />
-          <Route path="/budget" element={
-            <ProtectedRoute>
-              <Budget />
-            </ProtectedRoute>
-          } />
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          } />
-          <Route path="/settings" element={
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          } />
-          <Route path="/notifications" element={
-            <ProtectedRoute>
-              <Notifications />
-            </ProtectedRoute>
-          } />
-          <Route path="/feedback" element={
-            <ProtectedRoute>
-              <Feedback />
-            </ProtectedRoute>
-          } />
-          <Route path="/scheduled" element={
-            <ProtectedRoute>
-              <Scheduled />
-            </ProtectedRoute>
-          } />
-          <Route path="/trip-planning" element={
-            <ProtectedRoute>
-              <TripPlanning />
-            </ProtectedRoute>
-          } />
-          <Route path="/billing" element={
-            <ProtectedRoute>
-              <Billing />
-            </ProtectedRoute>
-          } />
-          <Route path="/settings/usage" element={
-            <ProtectedRoute>
-              <TokenUsage />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/trips"
+            element={
+              <ProtectedRoute>
+                <Trips />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/trips/:id"
+            element={
+              <ProtectedRoute>
+                <TripPlanning />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/budget"
+            element={
+              <ProtectedRoute>
+                <Budget />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <Notifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/feedback"
+            element={
+              <ProtectedRoute>
+                <Feedback />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/scheduled"
+            element={
+              <ProtectedRoute>
+                <Scheduled />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/trip-planning"
+            element={
+              <ProtectedRoute>
+                <TripPlanning />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/billing"
+            element={
+              <ProtectedRoute>
+                <Billing />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings/usage"
+            element={
+              <ProtectedRoute>
+                <TokenUsage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
-      
+
       <Footer />
     </div>
   );

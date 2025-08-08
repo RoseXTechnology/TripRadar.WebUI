@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { 
-  Bot, 
-  MessageSquare, 
-  Smartphone, 
-  Settings, 
+import { useState } from 'react';
+import {
+  Bot,
+  MessageSquare,
+  Smartphone,
+  Settings,
   Check,
   ExternalLink,
   Shield,
   Zap,
-  Globe,
   Play,
   Image as ImageIcon,
-  ArrowRight
+  ArrowRight,
 } from 'lucide-react';
 import { AIBotIntegration as AIBotType } from '../../types';
 
@@ -29,8 +28,8 @@ export default function AIBotIntegration({ aiBot, onUpdate }: AIBotIntegrationPr
       ...aiBot,
       telegram: {
         ...aiBot.telegram,
-        enabled: !aiBot.telegram.enabled
-      }
+        enabled: !aiBot.telegram.enabled,
+      },
     });
   };
 
@@ -39,8 +38,8 @@ export default function AIBotIntegration({ aiBot, onUpdate }: AIBotIntegrationPr
       ...aiBot,
       whatsapp: {
         ...aiBot.whatsapp,
-        enabled: !aiBot.whatsapp.enabled
-      }
+        enabled: !aiBot.whatsapp.enabled,
+      },
     });
   };
 
@@ -48,33 +47,33 @@ export default function AIBotIntegration({ aiBot, onUpdate }: AIBotIntegrationPr
     {
       command: '"Show my Tokyo trip budget"',
       description: 'Get detailed budget breakdown with spending alerts',
-      platform: 'both'
+      platform: 'both',
     },
     {
       command: '"What\'s the weather in Paris tomorrow?"',
       description: 'Real-time weather updates with travel recommendations',
-      platform: 'both'
+      platform: 'both',
     },
     {
       command: '"Remind me to book hotel in 2 days"',
       description: 'Smart reminders for important travel tasks',
-      platform: 'both'
+      platform: 'both',
     },
     {
       command: '"Add expense: dinner 45 euros"',
       description: 'Quick expense logging with automatic categorization',
-      platform: 'both'
+      platform: 'both',
     },
     {
       command: '"Find ramen near Shibuya"',
       description: 'Local recommendations with ratings and directions',
-      platform: 'both'
+      platform: 'both',
     },
     {
       command: '"Group vote status for restaurant"',
       description: 'Check voting progress for group decisions',
-      platform: 'both'
-    }
+      platform: 'both',
+    },
   ];
 
   return (
@@ -104,21 +103,25 @@ export default function AIBotIntegration({ aiBot, onUpdate }: AIBotIntegrationPr
       {/* Integration Status */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {/* Telegram Integration */}
-        <div className={`p-4 rounded-lg border-2 transition-colors ${
-          aiBot.telegram.enabled 
-            ? 'border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20' 
-            : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800'
-        }`}>
+        <div
+          className={`p-4 rounded-lg border-2 transition-colors ${
+            aiBot.telegram.enabled
+              ? 'border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20'
+              : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800'
+          }`}
+        >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
               <MessageSquare className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               <span className="font-medium text-gray-900 dark:text-white">Telegram</span>
             </div>
-            <div className={`w-3 h-3 rounded-full ${
-              aiBot.telegram.enabled ? 'bg-green-500' : 'bg-gray-400 dark:bg-gray-600'
-            }`}></div>
+            <div
+              className={`w-3 h-3 rounded-full ${
+                aiBot.telegram.enabled ? 'bg-green-500' : 'bg-gray-400 dark:bg-gray-600'
+              }`}
+            ></div>
           </div>
-          
+
           {aiBot.telegram.enabled ? (
             <div className="space-y-2">
               <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
@@ -126,7 +129,8 @@ export default function AIBotIntegration({ aiBot, onUpdate }: AIBotIntegrationPr
                 <span>Connected</span>
               </div>
               <div className="text-sm text-gray-700 dark:text-gray-300">
-                Bot: <span className="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                Bot:{' '}
+                <span className="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                   {aiBot.telegram.botUsername}
                 </span>
               </div>
@@ -149,21 +153,25 @@ export default function AIBotIntegration({ aiBot, onUpdate }: AIBotIntegrationPr
         </div>
 
         {/* WhatsApp Integration */}
-        <div className={`p-4 rounded-lg border-2 transition-colors ${
-          aiBot.whatsapp.enabled 
-            ? 'border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20' 
-            : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800'
-        }`}>
+        <div
+          className={`p-4 rounded-lg border-2 transition-colors ${
+            aiBot.whatsapp.enabled
+              ? 'border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20'
+              : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800'
+          }`}
+        >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
               <Smartphone className="h-5 w-5 text-green-600 dark:text-green-400" />
               <span className="font-medium text-gray-900 dark:text-white">WhatsApp</span>
             </div>
-            <div className={`w-3 h-3 rounded-full ${
-              aiBot.whatsapp.enabled ? 'bg-green-500' : 'bg-gray-400 dark:bg-gray-600'
-            }`}></div>
+            <div
+              className={`w-3 h-3 rounded-full ${
+                aiBot.whatsapp.enabled ? 'bg-green-500' : 'bg-gray-400 dark:bg-gray-600'
+              }`}
+            ></div>
           </div>
-          
+
           {aiBot.whatsapp.enabled ? (
             <div className="space-y-2">
               <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
@@ -171,7 +179,8 @@ export default function AIBotIntegration({ aiBot, onUpdate }: AIBotIntegrationPr
                 <span>Verified</span>
               </div>
               <div className="text-sm text-gray-700 dark:text-gray-300">
-                Phone: <span className="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                Phone:{' '}
+                <span className="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                   {aiBot.whatsapp.phoneNumber}
                 </span>
               </div>
@@ -264,8 +273,8 @@ export default function AIBotIntegration({ aiBot, onUpdate }: AIBotIntegrationPr
           <div className="flex-1">
             <h5 className="font-medium text-blue-900 dark:text-blue-300 mb-1">Privacy First</h5>
             <p className="text-sm text-blue-700 dark:text-blue-400">
-              Your conversations are encrypted and never stored. Our AI processes requests locally 
-              and doesn't learn from your personal data.
+              Your conversations are encrypted and never stored. Our AI processes requests locally and doesn't learn
+              from your personal data.
             </p>
           </div>
         </div>
@@ -281,18 +290,14 @@ export default function AIBotIntegration({ aiBot, onUpdate }: AIBotIntegrationPr
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Proactive Notifications</span>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Get automatic updates about your trips</p>
               </div>
-              <button className="bg-primary-600 text-white px-3 py-1 rounded text-sm">
-                Enabled
-              </button>
+              <button className="bg-primary-600 text-white px-3 py-1 rounded text-sm">Enabled</button>
             </div>
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Smart Suggestions</span>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Receive AI-powered travel recommendations</p>
               </div>
-              <button className="bg-primary-600 text-white px-3 py-1 rounded text-sm">
-                Enabled
-              </button>
+              <button className="bg-primary-600 text-white px-3 py-1 rounded text-sm">Enabled</button>
             </div>
             <div className="flex items-center justify-between">
               <div>

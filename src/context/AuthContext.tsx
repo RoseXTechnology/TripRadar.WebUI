@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface AuthContextType {
@@ -34,7 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAuthenticated(true);
     setUser(userData);
     localStorage.setItem('tripradar-auth', JSON.stringify({ user: userData }));
-    
+
     // Redirect to intended page after login
     if (redirectAfterLogin) {
       navigate(redirectAfterLogin);
@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       navigate('/login');
       return false;
     }
-    
+
     // Execute the action if authenticated
     if (action) {
       action();
@@ -76,11 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setRedirectAfterLogin,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import { 
-  CreditCard, 
-  Download, 
-  Check, 
-  X, 
-  AlertTriangle, 
-  Shield, 
-  Zap, 
-  Globe,
+import {
+  CreditCard,
+  Download,
+  Check,
+  AlertTriangle,
   DollarSign,
   Calendar,
   ArrowRight,
@@ -15,7 +11,7 @@ import {
   Clock,
   RefreshCw,
   MapPin,
-  Bot
+  Bot,
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
@@ -60,7 +56,7 @@ export default function Billing() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 pt-16">
       {/* Mouse Follower Spotlight - Only in dark mode */}
       {actualTheme === 'dark' && (
-        <div 
+        <div
           className="fixed pointer-events-none z-0 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
           style={{
             background: `radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`,
@@ -84,31 +80,33 @@ export default function Billing() {
               <Star className="h-5 w-5 text-primary-600 dark:text-primary-400" />
               <span>Current Plan</span>
             </h3>
-            
+
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
               <div>
-                <div className="text-2xl font-bold text-gray-900 dark:text-white capitalize mb-1">{user.subscription} Plan</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white capitalize mb-1">
+                  {user.subscription} Plan
+                </div>
                 <div className="text-gray-600 dark:text-gray-400">
                   {user.subscription === 'premium' ? '$10/month' : 'Free forever'}
                 </div>
                 {user.subscription === 'premium' && (
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Next billing date: March 15, 2025
-                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">Next billing date: March 15, 2025</div>
                 )}
               </div>
-              
+
               <div className="flex flex-col sm:flex-row gap-3">
-                <div className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  user.subscription === 'premium' 
-                    ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400' 
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                }`}>
+                <div
+                  className={`px-4 py-2 rounded-full text-sm font-medium ${
+                    user.subscription === 'premium'
+                      ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                  }`}
+                >
                   {user.subscription === 'premium' ? 'Active' : 'Free'}
                 </div>
-                
+
                 {user.subscription === 'premium' ? (
-                  <button 
+                  <button
                     onClick={() => setShowCancelModal(true)}
                     className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   >
@@ -121,7 +119,7 @@ export default function Billing() {
                 )}
               </div>
             </div>
-            
+
             {/* Plan Features */}
             {user.subscription === 'premium' && (
               <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
@@ -135,7 +133,7 @@ export default function Billing() {
                     'Priority support',
                     'Ad-free experience',
                     'Offline access',
-                    'Premium templates'
+                    'Premium templates',
                   ].map((feature, index) => (
                     <div key={index} className="flex items-center space-x-2">
                       <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
@@ -154,12 +152,12 @@ export default function Billing() {
                 <CreditCard className="h-5 w-5 text-primary-600 dark:text-primary-400" />
                 <span>Payment Methods</span>
               </h3>
-              
+
               <button className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium">
                 Add New Card
               </button>
             </div>
-            
+
             {user.subscription === 'premium' ? (
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
@@ -199,15 +197,33 @@ export default function Billing() {
               <Clock className="h-5 w-5 text-primary-600 dark:text-primary-400" />
               <span>Billing History</span>
             </h3>
-            
+
             {user.subscription === 'premium' ? (
               <div className="space-y-4">
                 {[
-                  { date: 'Feb 15, 2025', amount: '$10.00', status: 'Paid', id: 'INV-2025-0215' },
-                  { date: 'Jan 15, 2025', amount: '$10.00', status: 'Paid', id: 'INV-2025-0115' },
-                  { date: 'Dec 15, 2024', amount: '$10.00', status: 'Paid', id: 'INV-2024-1215' }
+                  {
+                    date: 'Feb 15, 2025',
+                    amount: '$10.00',
+                    status: 'Paid',
+                    id: 'INV-2025-0215',
+                  },
+                  {
+                    date: 'Jan 15, 2025',
+                    amount: '$10.00',
+                    status: 'Paid',
+                    id: 'INV-2025-0115',
+                  },
+                  {
+                    date: 'Dec 15, 2024',
+                    amount: '$10.00',
+                    status: 'Paid',
+                    id: 'INV-2024-1215',
+                  },
                 ].map((invoice, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl"
+                  >
                     <div>
                       <div className="font-medium text-gray-900 dark:text-white">{invoice.date}</div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">{invoice.id}</div>
@@ -237,12 +253,12 @@ export default function Billing() {
                 <MapPin className="h-5 w-5 text-primary-600 dark:text-primary-400" />
                 <span>Billing Address</span>
               </h3>
-              
+
               <button className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium">
                 Edit Address
               </button>
             </div>
-            
+
             {user.subscription === 'premium' ? (
               <div className="p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
                 <p className="text-gray-900 dark:text-white font-medium">{user.name}</p>
@@ -263,14 +279,14 @@ export default function Billing() {
           {/* Subscription Management */}
           <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Subscription Management</h3>
-            
+
             <div className="space-y-6">
               <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
                 <div>
                   <div className="font-medium text-gray-900 dark:text-white">Auto-renewal</div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                    {user.subscription === 'premium' 
-                      ? 'Your subscription will automatically renew on March 15, 2025' 
+                    {user.subscription === 'premium'
+                      ? 'Your subscription will automatically renew on March 15, 2025'
                       : 'Enable auto-renewal when you upgrade'}
                   </div>
                 </div>
@@ -278,7 +294,7 @@ export default function Billing() {
                   <span className="inline-block h-4 w-4 transform translate-x-6 rounded-full bg-white"></span>
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
                 <div>
                   <div className="font-medium text-gray-900 dark:text-white">Email Receipts</div>
@@ -300,7 +316,7 @@ export default function Billing() {
               <p className="text-blue-100 mb-6">
                 Get access to all premium features and enhance your travel experience.
               </p>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                   <h4 className="font-semibold mb-3 flex items-center space-x-2">
@@ -311,18 +327,16 @@ export default function Billing() {
                     Chat with our AI via Telegram or WhatsApp for instant trip assistance.
                   </p>
                 </div>
-                
+
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                   <h4 className="font-semibold mb-3 flex items-center space-x-2">
                     <DollarSign className="h-5 w-5" />
                     <span>Advanced Budget Tools</span>
                   </h4>
-                  <p className="text-sm text-blue-100">
-                    Detailed expense tracking, alerts, and financial insights.
-                  </p>
+                  <p className="text-sm text-blue-100">Detailed expense tracking, alerts, and financial insights.</p>
                 </div>
               </div>
-              
+
               <button className="bg-white text-primary-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-colors flex items-center space-x-2 mx-auto">
                 <span>Upgrade Now</span>
                 <ArrowRight className="h-5 w-5" />
@@ -341,20 +355,22 @@ export default function Billing() {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Cancel Subscription</h3>
               </div>
-              
+
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Are you sure you want to cancel your premium subscription? You'll lose access to all premium features at the end of your current billing period.
+                Are you sure you want to cancel your premium subscription? You'll lose access to all premium features at
+                the end of your current billing period.
               </p>
-              
+
               <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">
                 <div className="flex items-start space-x-3">
                   <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
                   <p className="text-sm text-yellow-700 dark:text-yellow-300">
-                    Your subscription will remain active until March 15, 2025. You can reactivate anytime before then to maintain continuous access.
+                    Your subscription will remain active until March 15, 2025. You can reactivate anytime before then to
+                    maintain continuous access.
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex space-x-3">
                 <button
                   onClick={() => setShowCancelModal(false)}
@@ -362,7 +378,7 @@ export default function Billing() {
                 >
                   Keep Subscription
                 </button>
-                <button 
+                <button
                   onClick={handleCancelSubscription}
                   disabled={isLoading}
                   className="flex-1 bg-red-600 text-white py-2 rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center space-x-2 disabled:opacity-50"

@@ -1,17 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Search, 
-  X, 
-  ArrowRight, 
-  FileText, 
-  Book, 
-  Code, 
-  Users, 
-  MapPin, 
-  Calendar,
-  Command,
-  Clock
-} from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Search, X, ArrowRight, FileText, Book, Code, Users, MapPin, Calendar, Command, Clock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface QuickSearchProps {
@@ -29,28 +17,140 @@ interface SearchResult {
 
 const searchData: SearchResult[] = [
   // Pages
-  { id: '1', title: 'Dashboard', description: 'View your trips and travel overview', url: '/dashboard', category: 'pages', icon: MapPin },
-  { id: '2', title: 'Search Flights', description: 'Find and compare flight prices', url: '/search', category: 'pages', icon: Search },
-  { id: '3', title: 'My Trips', description: 'Manage your travel itineraries', url: '/trips', category: 'pages', icon: Calendar },
-  { id: '4', title: 'Budget Tracker', description: 'Track your travel expenses', url: '/budget', category: 'pages', icon: MapPin },
-  { id: '5', title: 'Blog', description: 'Travel tips and insights', url: '/blog', category: 'pages', icon: FileText },
-  { id: '6', title: 'Help Center', description: 'Get help and support', url: '/help', category: 'pages', icon: Book },
-  { id: '7', title: 'Contact Us', description: 'Get in touch with our team', url: '/contact', category: 'pages', icon: Users },
-  
+  {
+    id: '1',
+    title: 'Dashboard',
+    description: 'View your trips and travel overview',
+    url: '/dashboard',
+    category: 'pages',
+    icon: MapPin,
+  },
+  {
+    id: '2',
+    title: 'Search Flights',
+    description: 'Find and compare flight prices',
+    url: '/search',
+    category: 'pages',
+    icon: Search,
+  },
+  {
+    id: '3',
+    title: 'My Trips',
+    description: 'Manage your travel itineraries',
+    url: '/trips',
+    category: 'pages',
+    icon: Calendar,
+  },
+  {
+    id: '4',
+    title: 'Budget Tracker',
+    description: 'Track your travel expenses',
+    url: '/budget',
+    category: 'pages',
+    icon: MapPin,
+  },
+  {
+    id: '5',
+    title: 'Blog',
+    description: 'Travel tips and insights',
+    url: '/blog',
+    category: 'pages',
+    icon: FileText,
+  },
+  {
+    id: '6',
+    title: 'Help Center',
+    description: 'Get help and support',
+    url: '/help',
+    category: 'pages',
+    icon: Book,
+  },
+  {
+    id: '7',
+    title: 'Contact Us',
+    description: 'Get in touch with our team',
+    url: '/contact',
+    category: 'pages',
+    icon: Users,
+  },
+
   // Features
-  { id: '8', title: 'AI Travel Assistant', description: 'Chat with our AI via Telegram/WhatsApp', url: '/features#ai-bot', category: 'features', icon: Users },
-  { id: '9', title: 'Group Trip Planning', description: 'Collaborate with friends and family', url: '/features#group-trips', category: 'features', icon: Users },
-  { id: '10', title: 'Budget Management', description: 'Track expenses and set budgets', url: '/features#budget', category: 'features', icon: MapPin },
-  
+  {
+    id: '8',
+    title: 'AI Travel Assistant',
+    description: 'Chat with our AI via Telegram/WhatsApp',
+    url: '/features#ai-bot',
+    category: 'features',
+    icon: Users,
+  },
+  {
+    id: '9',
+    title: 'Group Trip Planning',
+    description: 'Collaborate with friends and family',
+    url: '/features#group-trips',
+    category: 'features',
+    icon: Users,
+  },
+  {
+    id: '10',
+    title: 'Budget Management',
+    description: 'Track expenses and set budgets',
+    url: '/features#budget',
+    category: 'features',
+    icon: MapPin,
+  },
+
   // Help
-  { id: '11', title: 'Getting Started', description: 'Learn how to use TripRadar', url: '/help#getting-started', category: 'help', icon: Book },
-  { id: '12', title: 'AI Bot Setup', description: 'How to connect Telegram/WhatsApp', url: '/help#ai-bot', category: 'help', icon: Book },
-  { id: '13', title: 'Billing Guide', description: 'Understand pricing and billing', url: '/help#billing', category: 'help', icon: Book },
-  
+  {
+    id: '11',
+    title: 'Getting Started',
+    description: 'Learn how to use TripRadar',
+    url: '/help#getting-started',
+    category: 'help',
+    icon: Book,
+  },
+  {
+    id: '12',
+    title: 'AI Bot Setup',
+    description: 'How to connect Telegram/WhatsApp',
+    url: '/help#ai-bot',
+    category: 'help',
+    icon: Book,
+  },
+  {
+    id: '13',
+    title: 'Billing Guide',
+    description: 'Understand pricing and billing',
+    url: '/help#billing',
+    category: 'help',
+    icon: Book,
+  },
+
   // API
-  { id: '14', title: 'Flight Search API', description: 'Search flights programmatically', url: '/api/flights', category: 'api', icon: Code },
-  { id: '15', title: 'Hotel Search API', description: 'Find accommodations via API', url: '/api/hotels', category: 'api', icon: Code },
-  { id: '16', title: 'Weather API', description: 'Get weather data for destinations', url: '/api/weather', category: 'api', icon: Code },
+  {
+    id: '14',
+    title: 'Flight Search API',
+    description: 'Search flights programmatically',
+    url: '/api/flights',
+    category: 'api',
+    icon: Code,
+  },
+  {
+    id: '15',
+    title: 'Hotel Search API',
+    description: 'Find accommodations via API',
+    url: '/api/hotels',
+    category: 'api',
+    icon: Code,
+  },
+  {
+    id: '16',
+    title: 'Weather API',
+    description: 'Get weather data for destinations',
+    url: '/api/weather',
+    category: 'api',
+    icon: Code,
+  },
 ];
 
 export default function QuickSearch({ onClose }: QuickSearchProps) {
@@ -67,9 +167,10 @@ export default function QuickSearch({ onClose }: QuickSearchProps) {
 
   useEffect(() => {
     if (query.trim()) {
-      const filtered = searchData.filter(item =>
-        item.title.toLowerCase().includes(query.toLowerCase()) ||
-        item.description.toLowerCase().includes(query.toLowerCase())
+      const filtered = searchData.filter(
+        item =>
+          item.title.toLowerCase().includes(query.toLowerCase()) ||
+          item.description.toLowerCase().includes(query.toLowerCase())
       );
       setResults(filtered.slice(0, 8));
       setSelectedIndex(0);
@@ -100,21 +201,31 @@ export default function QuickSearch({ onClose }: QuickSearchProps) {
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'pages': return MapPin;
-      case 'features': return Users;
-      case 'help': return Book;
-      case 'api': return Code;
-      default: return FileText;
+      case 'pages':
+        return MapPin;
+      case 'features':
+        return Users;
+      case 'help':
+        return Book;
+      case 'api':
+        return Code;
+      default:
+        return FileText;
     }
   };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'pages': return 'text-blue-600 dark:text-blue-400';
-      case 'features': return 'text-green-600 dark:text-green-400';
-      case 'help': return 'text-purple-600 dark:text-purple-400';
-      case 'api': return 'text-orange-600 dark:text-orange-400';
-      default: return 'text-gray-600 dark:text-gray-400';
+      case 'pages':
+        return 'text-blue-600 dark:text-blue-400';
+      case 'features':
+        return 'text-green-600 dark:text-green-400';
+      case 'help':
+        return 'text-purple-600 dark:text-purple-400';
+      case 'api':
+        return 'text-orange-600 dark:text-orange-400';
+      default:
+        return 'text-gray-600 dark:text-gray-400';
     }
   };
 
@@ -129,17 +240,14 @@ export default function QuickSearch({ onClose }: QuickSearchProps) {
             type="text"
             placeholder="Search pages, features, help..."
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={e => setQuery(e.target.value)}
             className="flex-1 bg-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none text-lg"
           />
           <div className="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400">
             <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded border">ESC</kbd>
             <span>to close</span>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded"
-          >
+          <button onClick={onClose} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -164,7 +272,7 @@ export default function QuickSearch({ onClose }: QuickSearchProps) {
                   </button>
                 ))}
               </div>
-              
+
               {/* Quick Actions */}
               <div className="mt-6">
                 <div className="flex items-center space-x-2 mb-3">
@@ -197,57 +305,57 @@ export default function QuickSearch({ onClose }: QuickSearchProps) {
               {results.map((result, index) => {
                 const CategoryIcon = getCategoryIcon(result.category);
                 const isSelected = index === selectedIndex;
-                
+
                 return (
                   <Link
                     key={result.id}
                     to={result.url}
                     onClick={onClose}
                     className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                      isSelected 
-                        ? 'bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800' 
+                      isSelected
+                        ? 'bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800'
                         : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                     }`}
                   >
-                    <div className={`p-2 rounded-lg ${
-                      isSelected 
-                        ? 'bg-primary-100 dark:bg-primary-900/40' 
-                        : 'bg-gray-100 dark:bg-gray-700'
-                    }`}>
-                      <result.icon className={`h-4 w-4 ${
-                        isSelected 
-                          ? 'text-primary-600 dark:text-primary-400' 
-                          : getCategoryColor(result.category)
-                      }`} />
+                    <div
+                      className={`p-2 rounded-lg ${
+                        isSelected ? 'bg-primary-100 dark:bg-primary-900/40' : 'bg-gray-100 dark:bg-gray-700'
+                      }`}
+                    >
+                      <result.icon
+                        className={`h-4 w-4 ${
+                          isSelected ? 'text-primary-600 dark:text-primary-400' : getCategoryColor(result.category)
+                        }`}
+                      />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2">
-                        <h3 className={`font-medium truncate ${
-                          isSelected 
-                            ? 'text-primary-900 dark:text-primary-100' 
-                            : 'text-gray-900 dark:text-white'
-                        }`}>
+                        <h3
+                          className={`font-medium truncate ${
+                            isSelected ? 'text-primary-900 dark:text-primary-100' : 'text-gray-900 dark:text-white'
+                          }`}
+                        >
                           {result.title}
                         </h3>
-                        <span className={`text-xs px-2 py-1 rounded-full capitalize ${
-                          isSelected 
-                            ? 'bg-primary-200 dark:bg-primary-800 text-primary-800 dark:text-primary-200' 
-                            : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-400'
-                        }`}>
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full capitalize ${
+                            isSelected
+                              ? 'bg-primary-200 dark:bg-primary-800 text-primary-800 dark:text-primary-200'
+                              : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-400'
+                          }`}
+                        >
                           {result.category}
                         </span>
                       </div>
-                      <p className={`text-sm truncate ${
-                        isSelected 
-                          ? 'text-primary-700 dark:text-primary-300' 
-                          : 'text-gray-600 dark:text-gray-400'
-                      }`}>
+                      <p
+                        className={`text-sm truncate ${
+                          isSelected ? 'text-primary-700 dark:text-primary-300' : 'text-gray-600 dark:text-gray-400'
+                        }`}
+                      >
                         {result.description}
                       </p>
                     </div>
-                    {isSelected && (
-                      <ArrowRight className="h-4 w-4 text-primary-600 dark:text-primary-400" />
-                    )}
+                    {isSelected && <ArrowRight className="h-4 w-4 text-primary-600 dark:text-primary-400" />}
                   </Link>
                 );
               })}
@@ -275,9 +383,7 @@ export default function QuickSearch({ onClose }: QuickSearchProps) {
                 <span>select</span>
               </div>
             </div>
-            <div className="text-gray-400">
-              Search powered by TripRadar
-            </div>
+            <div className="text-gray-400">Search powered by TripRadar</div>
           </div>
         </div>
       </div>

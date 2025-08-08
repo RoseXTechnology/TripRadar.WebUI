@@ -14,7 +14,7 @@ export default function Trips() {
   useEffect(() => {
     // Create floating particles
     createParticles('trips-particles');
-    
+
     // Cleanup on unmount
     return () => {
       removeParticles('trips-particles');
@@ -74,13 +74,11 @@ export default function Trips() {
                   </span>
                 </div>
                 <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="text-xl font-bold group-hover:text-primary-200 transition-colors">
-                    {trip.title}
-                  </h3>
+                  <h3 className="text-xl font-bold group-hover:text-primary-200 transition-colors">{trip.title}</h3>
                   <p className="text-sm opacity-90">{trip.destination}</p>
                 </div>
               </div>
-              
+
               <div className="p-6">
                 <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 dark:text-gray-400">
                   <div className="flex items-center space-x-2">
@@ -100,7 +98,10 @@ export default function Trips() {
                   <div className="flex items-center space-x-2">
                     <MapPin className="h-4 w-4" />
                     <span>
-                      {Math.ceil((new Date(trip.endDate).getTime() - new Date(trip.startDate).getTime()) / (1000 * 60 * 60 * 24))} days
+                      {Math.ceil(
+                        (new Date(trip.endDate).getTime() - new Date(trip.startDate).getTime()) / (1000 * 60 * 60 * 24)
+                      )}{' '}
+                      days
                     </span>
                   </div>
                 </div>

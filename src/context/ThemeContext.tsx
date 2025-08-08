@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -26,18 +26,18 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const updateActualTheme = () => {
       let newActualTheme: 'light' | 'dark';
-      
+
       if (theme === 'system') {
         newActualTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       } else {
         newActualTheme = theme;
       }
-      
+
       setActualTheme(newActualTheme);
-      
+
       // Apply theme to document
       const root = document.documentElement;
-      
+
       if (newActualTheme === 'dark') {
         root.classList.add('dark');
         root.style.colorScheme = 'dark';
@@ -58,7 +58,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     };
 
     mediaQuery.addEventListener('change', handleChange);
-    
+
     // Save to localStorage
     localStorage.setItem('tripradar-theme', theme);
 
@@ -86,11 +86,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setTheme,
   };
 
-  return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {

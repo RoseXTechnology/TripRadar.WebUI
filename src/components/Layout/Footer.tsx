@@ -1,12 +1,8 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Radar, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Github, 
-  Twitter, 
+import {
+  Radar,
+  Github,
+  Twitter,
   Linkedin,
   ArrowRight,
   Sparkles,
@@ -14,7 +10,7 @@ import {
   Shield,
   Zap,
   MessageSquare,
-  Smartphone
+  Smartphone,
 } from 'lucide-react';
 
 export default function Footer() {
@@ -37,21 +33,29 @@ export default function Footer() {
                 </div>
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
               </div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">
-                TripRadar
-              </span>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">TripRadar</span>
             </div>
             <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-              Smart travel management platform for modern travelers. Plan, track, and optimize your trips with AI-powered intelligence and comprehensive travel data.
+              Smart travel management platform for modern travelers. Plan, track, and optimize your trips with
+              AI-powered intelligence and comprehensive travel data.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="p-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+              <a
+                href="#"
+                className="p-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+              >
                 <Twitter className="h-5 w-5" />
               </a>
-              <a href="#" className="p-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+              <a
+                href="#"
+                className="p-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+              >
                 <Github className="h-5 w-5" />
               </a>
-              <a href="#" className="p-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+              <a
+                href="#"
+                className="p-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+              >
                 <Linkedin className="h-5 w-5" />
               </a>
             </div>
@@ -61,14 +65,47 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Product</h3>
             <ul className="space-y-3 text-sm">
-              <li><Link to="/features" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Features</Link></li>
-              <li><Link to="/pricing" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Pricing</Link></li>
-              <li><Link to="/trip-planning" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Trip Planning</Link></li>
-              <li><Link to="/scheduled" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Scheduled</Link></li>
-              <li><Link to="/coming-soon" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center space-x-1">
-                <span>Coming Soon</span>
-                <Sparkles className="h-3 w-3" />
-              </Link></li>
+              <li>
+                <Link
+                  to="/features"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/pricing"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  Pricing
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/trip-planning"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  Trip Planning
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/scheduled"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  Scheduled
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/coming-soon"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center space-x-1"
+                >
+                  <span>Coming Soon</span>
+                  <Sparkles className="h-3 w-3" />
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -76,10 +113,38 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Resources</h3>
             <ul className="space-y-3 text-sm">
-              <li><Link to="/help" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Help Center</Link></li>
-              <li><Link to="/blog" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Blog</Link></li>
-              <li><Link to="/api-docs" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">API Documentation</Link></li>
-              <li><Link to="/feedback" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Feedback</Link></li>
+              <li>
+                <Link
+                  to="/help"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  Help Center
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/blog"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/api-docs"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  API Documentation
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/feedback"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  Feedback
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -87,9 +152,30 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Company</h3>
             <ul className="space-y-3 text-sm">
-              <li><Link to="/about" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">About</Link></li>
-              <li><Link to="/careers" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Careers</Link></li>
-              <li><Link to="/contact" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Contact</Link></li>
+              <li>
+                <Link
+                  to="/about"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/careers"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  Careers
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/contact"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  Contact
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -100,22 +186,23 @@ export default function Footer() {
             <div>
               <h3 className="text-2xl font-bold mb-2">AI Travel Assistant</h3>
               <p className="text-indigo-100 max-w-xl">
-                Chat with our AI assistant via Telegram or WhatsApp for instant trip help, budget tracking, weather updates, and personalized recommendations.
+                Chat with our AI assistant via Telegram or WhatsApp for instant trip help, budget tracking, weather
+                updates, and personalized recommendations.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a 
-                href="https://t.me/TripRadarBot" 
-                target="_blank" 
+              <a
+                href="https://t.me/TripRadarBot"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-xl hover:bg-white/20 transition-colors"
               >
                 <MessageSquare className="h-5 w-5" />
                 <span className="font-medium">Telegram Bot</span>
               </a>
-              <a 
-                href="https://wa.me/1234567890" 
-                target="_blank" 
+              <a
+                href="https://wa.me/1234567890"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-xl hover:bg-white/20 transition-colors"
               >
@@ -130,7 +217,9 @@ export default function Footer() {
         <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl p-8 mb-12">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Stay Updated</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">Get the latest updates on new features, integrations, and travel insights.</p>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              Get the latest updates on new features, integrations, and travel insights.
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <input
                 type="email"
@@ -173,20 +262,30 @@ export default function Footer() {
         {/* Legal Links */}
         <div className="border-t border-gray-200 dark:border-gray-700 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              © 2025 TripRadar. All rights reserved.
-            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">© 2025 TripRadar. All rights reserved.</p>
             <div className="flex flex-wrap justify-center gap-6 mt-4 md:mt-0">
-              <Link to="/privacy" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+              <Link
+                to="/privacy"
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+              <Link
+                to="/terms"
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
                 Terms of Service
               </Link>
-              <Link to="/cookies" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+              <Link
+                to="/cookies"
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
                 Cookie Policy
               </Link>
-              <Link to="/security" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+              <Link
+                to="/security"
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
                 Security
               </Link>
             </div>

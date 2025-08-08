@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { 
-  Search, 
-  MapPin, 
-  Calendar, 
-  Users, 
-  Filter,
+import { useState } from 'react';
+import {
+  Search,
+  MapPin,
+  Calendar,
+  Users,
   Plane,
   Building,
   Ticket,
@@ -12,7 +11,7 @@ import {
   CloudSun,
   Zap,
   Banknote,
-  PartyPopper
+  PartyPopper,
 } from 'lucide-react';
 
 const searchCategories = [
@@ -97,7 +96,7 @@ export default function SearchInterface() {
             </div>
           </div>
         );
-      
+
       case 'hotels':
         return (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -146,7 +145,7 @@ export default function SearchInterface() {
             </div>
           </div>
         );
-      
+
       default:
         return (
           <div className="space-y-4">
@@ -155,7 +154,7 @@ export default function SearchInterface() {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 placeholder={`Search ${searchCategories.find(c => c.id === activeCategory)?.name.toLowerCase()}...`}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
@@ -201,9 +200,7 @@ export default function SearchInterface() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          Search & Discover
-        </h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Search & Discover</h1>
         <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           Find everything you need for your perfect trip - from flights and hotels to local events and hidden gems.
         </p>
@@ -212,7 +209,7 @@ export default function SearchInterface() {
       {/* Search Categories */}
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-6 mb-8">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-6">
-          {searchCategories.map((category) => (
+          {searchCategories.map(category => (
             <button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
@@ -225,9 +222,7 @@ export default function SearchInterface() {
               <div className={`p-3 rounded-lg ${category.color}`}>
                 <category.icon className="h-6 w-6 text-white" />
               </div>
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {category.name}
-              </span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{category.name}</span>
             </button>
           ))}
         </div>
@@ -235,7 +230,7 @@ export default function SearchInterface() {
         {/* Search Form */}
         <div className="space-y-6">
           {renderSearchForm()}
-          
+
           {/* Search Button */}
           <div className="flex justify-center">
             <button
@@ -264,12 +259,16 @@ export default function SearchInterface() {
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-8">
           <div className="text-center">
             <div className="animate-spin h-12 w-12 border-4 border-primary-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Searching for the best options...</h3>
-            <p className="text-gray-600 dark:text-gray-400">We're scanning thousands of results to find you the perfect match.</p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              Searching for the best options...
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400">
+              We're scanning thousands of results to find you the perfect match.
+            </p>
           </div>
         </div>
       )}
-      
+
       {!isSearching && (
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-8">
           <div className="text-center text-gray-500 dark:text-gray-400">

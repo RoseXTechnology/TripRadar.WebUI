@@ -1,28 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  User, 
-  Mail, 
-  Lock, 
-  Bell, 
-  Globe, 
-  Moon, 
-  Sun, 
-  Camera, 
-  Edit3, 
-  Check, 
-  X, 
-  Shield, 
-  CreditCard, 
-  Activity, 
-  LogOut, 
-  Trash2, 
-  Github, 
-  Chrome, 
+import { useState, useEffect } from 'react';
+import {
+  User,
+  Mail,
+  Lock,
+  Bell,
+  Globe,
+  Moon,
+  Sun,
+  Camera,
+  Edit3,
+  Check,
+  X,
+  Activity,
+  LogOut,
+  Trash2,
+  Github,
+  Chrome,
   Settings,
   AlertTriangle,
   Calendar,
   MapPin,
-  DollarSign
+  DollarSign,
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
@@ -33,12 +31,12 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState({
     name: false,
     bio: false,
-    email: false
+    email: false,
   });
   const [editValues, setEditValues] = useState({
     name: user?.name || '',
     bio: 'Travel enthusiast and digital nomad exploring the world one trip at a time.',
-    email: user?.email || ''
+    email: user?.email || '',
   });
   const [preferences, setPreferences] = useState({
     theme: 'light',
@@ -46,7 +44,7 @@ export default function Profile() {
     emailNotifications: true,
     pushNotifications: true,
     marketingEmails: false,
-    weeklyDigest: true
+    weeklyDigest: true,
   });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -80,20 +78,20 @@ export default function Profile() {
     setEditValues(prev => ({
       ...prev,
       name: user?.name || '',
-      email: user?.email || ''
+      email: user?.email || '',
     }));
   };
 
   const connectedAccounts = [
     { provider: 'Google', icon: Chrome, connected: true, email: user?.email },
-    { provider: 'GitHub', icon: Github, connected: false, email: null }
+    { provider: 'GitHub', icon: Github, connected: false, email: null },
   ];
 
   const usageStats = [
     { label: 'Trips Created', value: '12', icon: MapPin },
     { label: 'Total Spent', value: '$24,500', icon: DollarSign },
     { label: 'Days Traveled', value: '89', icon: Calendar },
-    { label: 'Countries Visited', value: '8', icon: Globe }
+    { label: 'Countries Visited', value: '8', icon: Globe },
   ];
 
   if (!user) {
@@ -112,7 +110,7 @@ export default function Profile() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 pt-16">
       {/* Mouse Follower Spotlight - Only in dark theme */}
       {actualTheme === 'dark' && (
-        <div 
+        <div
           className="fixed pointer-events-none z-0 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
           style={{
             background: `radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`,
@@ -121,7 +119,7 @@ export default function Profile() {
           }}
         />
       )}
-      
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -154,7 +152,12 @@ export default function Profile() {
                       <input
                         type="text"
                         value={editValues.name}
-                        onChange={(e) => setEditValues(prev => ({ ...prev, name: e.target.value }))}
+                        onChange={e =>
+                          setEditValues(prev => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
                         className="text-2xl font-bold text-gray-900 dark:text-white bg-transparent border-b-2 border-primary-500 focus:outline-none dark:bg-gray-800"
                       />
                       <button
@@ -189,7 +192,12 @@ export default function Profile() {
                     <div className="flex-1 space-y-2">
                       <textarea
                         value={editValues.bio}
-                        onChange={(e) => setEditValues(prev => ({ ...prev, bio: e.target.value }))}
+                        onChange={e =>
+                          setEditValues(prev => ({
+                            ...prev,
+                            bio: e.target.value,
+                          }))
+                        }
                         className="w-full text-gray-600 dark:text-gray-300 bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-800"
                         rows={2}
                       />
@@ -223,11 +231,13 @@ export default function Profile() {
 
                 {/* Subscription Badge */}
                 <div className="flex items-center space-x-2">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    user.subscription === 'premium' 
-                      ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400' 
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                  }`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      user.subscription === 'premium'
+                        ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                    }`}
+                  >
                     {user.subscription === 'premium' ? '✨ Premium' : 'Free Plan'}
                   </span>
                   {user.subscription !== 'premium' && (
@@ -266,7 +276,7 @@ export default function Profile() {
                 <User className="h-5 w-5" />
                 <span>Account Information</span>
               </h3>
-              
+
               <div className="space-y-6">
                 {/* Email */}
                 <div>
@@ -276,7 +286,12 @@ export default function Profile() {
                       <input
                         type="email"
                         value={editValues.email}
-                        onChange={(e) => setEditValues(prev => ({ ...prev, email: e.target.value }))}
+                        onChange={e =>
+                          setEditValues(prev => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
+                        }
                         className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                       />
                       <button
@@ -321,10 +336,15 @@ export default function Profile() {
 
                 {/* Connected Accounts */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Connected Accounts</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    Connected Accounts
+                  </label>
                   <div className="space-y-3">
                     {connectedAccounts.map((account, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-600 rounded-lg">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-600 rounded-lg"
+                      >
                         <div className="flex items-center space-x-3">
                           <account.icon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                           <div>
@@ -356,7 +376,7 @@ export default function Profile() {
                 <Settings className="h-5 w-5" />
                 <span>Preferences</span>
               </h3>
-              
+
               <div className="space-y-6">
                 {/* Theme */}
                 <div>
@@ -392,7 +412,12 @@ export default function Profile() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Language</label>
                   <select
                     value={preferences.language}
-                    onChange={(e) => setPreferences(prev => ({ ...prev, language: e.target.value }))}
+                    onChange={e =>
+                      setPreferences(prev => ({
+                        ...prev,
+                        language: e.target.value,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   >
                     <option value="en">English</option>
@@ -405,24 +430,44 @@ export default function Profile() {
 
                 {/* Notifications */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Notifications</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    Notifications
+                  </label>
                   <div className="space-y-3">
                     {[
-                      { key: 'emailNotifications', label: 'Email notifications', icon: Mail },
-                      { key: 'pushNotifications', label: 'Push notifications', icon: Bell },
-                      { key: 'marketingEmails', label: 'Marketing emails', icon: Mail },
-                      { key: 'weeklyDigest', label: 'Weekly digest', icon: Calendar }
-                    ].map((setting) => (
+                      {
+                        key: 'emailNotifications',
+                        label: 'Email notifications',
+                        icon: Mail,
+                      },
+                      {
+                        key: 'pushNotifications',
+                        label: 'Push notifications',
+                        icon: Bell,
+                      },
+                      {
+                        key: 'marketingEmails',
+                        label: 'Marketing emails',
+                        icon: Mail,
+                      },
+                      {
+                        key: 'weeklyDigest',
+                        label: 'Weekly digest',
+                        icon: Calendar,
+                      },
+                    ].map(setting => (
                       <div key={setting.key} className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                           <setting.icon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                           <span className="text-gray-900 dark:text-white">{setting.label}</span>
                         </div>
                         <button
-                          onClick={() => setPreferences(prev => ({ 
-                            ...prev, 
-                            [setting.key]: !prev[setting.key as keyof typeof prev] 
-                          }))}
+                          onClick={() =>
+                            setPreferences(prev => ({
+                              ...prev,
+                              [setting.key]: !prev[setting.key as keyof typeof prev],
+                            }))
+                          }
                           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                             preferences[setting.key as keyof typeof preferences]
                               ? 'bg-primary-600'
@@ -431,9 +476,7 @@ export default function Profile() {
                         >
                           <span
                             className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              preferences[setting.key as keyof typeof preferences]
-                                ? 'translate-x-6'
-                                : 'translate-x-1'
+                              preferences[setting.key as keyof typeof preferences] ? 'translate-x-6' : 'translate-x-1'
                             }`}
                           />
                         </button>
@@ -451,23 +494,27 @@ export default function Profile() {
               <AlertTriangle className="h-5 w-5" />
               <span>Danger Zone</span>
             </h3>
-            
+
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
                 <div>
                   <div className="font-medium text-gray-900 dark:text-white">Sign out</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Sign out of your account on this device</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Sign out of your account on this device
+                  </div>
                 </div>
                 <button className="flex items-center space-x-2 px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                   <LogOut className="h-4 w-4" />
                   <span>Sign Out</span>
                 </button>
               </div>
-              
+
               <div className="flex items-center justify-between p-4 border border-red-200 dark:border-red-800 rounded-lg bg-red-50 dark:bg-red-900/20">
                 <div>
                   <div className="font-medium text-red-900 dark:text-red-400">Delete account</div>
-                  <div className="text-sm text-red-600 dark:text-red-500">Permanently delete your account and all data</div>
+                  <div className="text-sm text-red-600 dark:text-red-500">
+                    Permanently delete your account and all data
+                  </div>
                 </div>
                 <button
                   onClick={() => setShowDeleteModal(true)}
@@ -491,11 +538,12 @@ export default function Profile() {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Delete Account</h3>
               </div>
-              
+
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Are you sure you want to delete your account? This action cannot be undone and will permanently delete all your data, trips, and preferences.
+                Are you sure you want to delete your account? This action cannot be undone and will permanently delete
+                all your data, trips, and preferences.
               </p>
-              
+
               <div className="flex space-x-3">
                 <button
                   onClick={() => setShowDeleteModal(false)}
@@ -521,31 +569,37 @@ export default function Profile() {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Change Password</h3>
               </div>
-              
+
               <div className="space-y-4 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Current Password</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Current Password
+                  </label>
                   <input
                     type="password"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">New Password</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    New Password
+                  </label>
                   <input
                     type="password"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirm New Password</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Confirm New Password
+                  </label>
                   <input
                     type="password"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   />
                 </div>
               </div>
-              
+
               <div className="flex space-x-3">
                 <button
                   onClick={() => setShowPasswordModal(false)}

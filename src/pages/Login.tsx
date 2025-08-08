@@ -1,17 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  Mail, 
-  Lock, 
-  Eye, 
-  EyeOff, 
-  ArrowRight,
-  Chrome,
-  Github,
-  Radar,
-  Shield,
-  Zap
-} from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Chrome, Github, Radar, Shield, Zap } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
@@ -19,7 +8,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
@@ -32,19 +21,20 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     // Mock user data
     const userData = {
       id: '1',
       name: 'Alex Thompson',
       email: formData.email,
-      avatar: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1',
-      subscription: 'premium'
+      avatar:
+        'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1',
+      subscription: 'premium',
     };
-    
+
     login(userData);
     setIsLoading(false);
   };
@@ -72,13 +62,9 @@ export default function Login() {
             </div>
             <span className="text-xl font-bold text-gray-900 dark:text-white">TripRadar</span>
           </Link>
-          
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Welcome back
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            Sign in to your account to continue your travel journey
-          </p>
+
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome back</h2>
+          <p className="text-gray-600 dark:text-gray-400">Sign in to your account to continue your travel journey</p>
         </div>
 
         {/* Main Card */}
@@ -92,7 +78,7 @@ export default function Login() {
               <Chrome className="h-5 w-5" />
               <span>Continue with Google</span>
             </button>
-            
+
             <button
               onClick={handleGithubSignIn}
               className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 font-medium"
@@ -100,7 +86,7 @@ export default function Login() {
               <Github className="h-5 w-5" />
               <span>Continue with GitHub</span>
             </button>
-            
+
             <button
               onClick={handleMicrosoftSignIn}
               className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 font-medium"
@@ -118,7 +104,9 @@ export default function Login() {
               <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">or continue with email</span>
+              <span className="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
+                or continue with email
+              </span>
             </div>
           </div>
 
@@ -139,7 +127,7 @@ export default function Login() {
                   autoComplete="email"
                   required
                   value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-xl placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Enter your email"
                 />
@@ -161,7 +149,7 @@ export default function Login() {
                   autoComplete="current-password"
                   required
                   value={formData.password}
-                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                  onChange={e => setFormData(prev => ({ ...prev, password: e.target.value }))}
                   className="block w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Enter your password"
                 />
@@ -245,7 +233,7 @@ export default function Login() {
               <span>Lightning Fast</span>
             </div>
           </div>
-          
+
           <div className="flex items-center justify-center space-x-4 text-xs text-gray-400 dark:text-gray-500">
             <Link to="/privacy" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
               Privacy Policy

@@ -1,12 +1,4 @@
-import React from 'react';
-import { 
-  DollarSign, 
-  TrendingUp, 
-  TrendingDown, 
-  AlertTriangle,
-  PieChart,
-  Target
-} from 'lucide-react';
+import { DollarSign, AlertTriangle } from 'lucide-react';
 import { TripBudget, BudgetCategory } from '../../types';
 
 interface BudgetOverviewProps {
@@ -16,7 +8,7 @@ interface BudgetOverviewProps {
 export default function BudgetOverview({ budget }: BudgetOverviewProps) {
   const spentPercentage = (budget.spent / budget.total) * 100;
   const remainingBudget = budget.total - budget.spent;
-  
+
   const getCategoryPercentage = (category: BudgetCategory) => {
     return category.allocated > 0 ? (category.spent / category.allocated) * 100 : 0;
   };
@@ -46,15 +38,11 @@ export default function BudgetOverview({ budget }: BudgetOverviewProps) {
       {/* Budget Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-          <div className="text-2xl font-bold text-gray-900 dark:text-white">
-            ${budget.total.toLocaleString()}
-          </div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-white">${budget.total.toLocaleString()}</div>
           <div className="text-sm text-gray-600 dark:text-gray-400">Total Budget</div>
         </div>
         <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-            ${budget.spent.toLocaleString()}
-          </div>
+          <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">${budget.spent.toLocaleString()}</div>
           <div className="text-sm text-gray-600 dark:text-gray-400">Spent</div>
         </div>
         <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
@@ -74,7 +62,7 @@ export default function BudgetOverview({ budget }: BudgetOverviewProps) {
           </span>
         </div>
         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-          <div 
+          <div
             className={`h-3 rounded-full transition-all duration-300 ${getProgressColor(spentPercentage)}`}
             style={{ width: `${Math.min(spentPercentage, 100)}%` }}
           ></div>
@@ -84,7 +72,7 @@ export default function BudgetOverview({ budget }: BudgetOverviewProps) {
       {/* Budget Categories */}
       <div className="space-y-4 mb-6">
         <h4 className="font-medium text-gray-900 dark:text-white">Budget Categories</h4>
-        {budget.categories.map((category) => {
+        {budget.categories.map(category => {
           const percentage = getCategoryPercentage(category);
           return (
             <div key={category.id} className="space-y-2">
@@ -97,13 +85,11 @@ export default function BudgetOverview({ budget }: BudgetOverviewProps) {
                   <div className="text-sm font-medium text-gray-900 dark:text-white">
                     ${category.spent.toLocaleString()} / ${category.allocated.toLocaleString()}
                   </div>
-                  <div className={`text-xs ${getStatusColor(percentage)}`}>
-                    {percentage.toFixed(1)}%
-                  </div>
+                  <div className={`text-xs ${getStatusColor(percentage)}`}>{percentage.toFixed(1)}%</div>
                 </div>
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div 
+                <div
                   className={`h-2 rounded-full transition-all duration-300 ${getProgressColor(percentage)}`}
                   style={{ width: `${Math.min(percentage, 100)}%` }}
                 ></div>
@@ -120,19 +106,19 @@ export default function BudgetOverview({ budget }: BudgetOverviewProps) {
             <AlertTriangle className="h-4 w-4 text-yellow-500" />
             <span>Budget Alerts</span>
           </h4>
-          {budget.alerts.map((alert) => (
-            <div 
-              key={alert.id} 
+          {budget.alerts.map(alert => (
+            <div
+              key={alert.id}
               className={`p-3 rounded-lg border-l-4 ${
-                alert.type === 'critical' 
-                  ? 'bg-red-50 dark:bg-red-900/20 border-red-500' 
+                alert.type === 'critical'
+                  ? 'bg-red-50 dark:bg-red-900/20 border-red-500'
                   : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-500'
               }`}
             >
               <div className="flex items-start space-x-2">
-                <AlertTriangle className={`h-4 w-4 mt-0.5 ${
-                  alert.type === 'critical' ? 'text-red-500' : 'text-yellow-500'
-                }`} />
+                <AlertTriangle
+                  className={`h-4 w-4 mt-0.5 ${alert.type === 'critical' ? 'text-red-500' : 'text-yellow-500'}`}
+                />
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-900 dark:text-white">{alert.message}</p>
                   <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">

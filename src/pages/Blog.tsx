@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  FileText, 
-  Calendar, 
-  User, 
-  Tag, 
-  Search, 
-  Filter, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  ArrowLeft, 
-  MessageSquare, 
-  Heart, 
-  Share, 
+import {
+  FileText,
+  Calendar,
+  Tag,
+  Search,
+  Plus,
+  ArrowLeft,
+  MessageSquare,
+  Heart,
+  Share,
   Bookmark,
   ChevronRight,
   Clock,
-  Eye
+  Eye,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -62,17 +58,19 @@ const blogPosts = [
     `,
     author: {
       name: 'Mika Tanaka',
-      avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&dpr=1',
-      role: 'Travel Writer'
+      avatar:
+        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&dpr=1',
+      role: 'Travel Writer',
     },
     publishedAt: '2024-01-15',
     readTime: '8 min read',
     category: 'Travel Tips',
     tags: ['Japan', 'Travel Tips', 'First-Time Travelers', 'Asia'],
-    image: 'https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=1',
+    image:
+      'https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=1',
     views: 3542,
     comments: 24,
-    likes: 156
+    likes: 156,
   },
   {
     id: '2',
@@ -98,17 +96,19 @@ const blogPosts = [
     `,
     author: {
       name: 'Alex Thompson',
-      avatar: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&dpr=1',
-      role: 'Budget Travel Expert'
+      avatar:
+        'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&dpr=1',
+      role: 'Budget Travel Expert',
     },
     publishedAt: '2024-01-10',
     readTime: '10 min read',
     category: 'Budget Travel',
     tags: ['Southeast Asia', 'Budget Travel', 'Backpacking', 'Travel Tips'],
-    image: 'https://images.pexels.com/photos/2166559/pexels-photo-2166559.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=1',
+    image:
+      'https://images.pexels.com/photos/2166559/pexels-photo-2166559.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=1',
     views: 4210,
     comments: 32,
-    likes: 189
+    likes: 189,
   },
   {
     id: '3',
@@ -140,18 +140,20 @@ const blogPosts = [
     `,
     author: {
       name: 'Sarah Johnson',
-      avatar: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&dpr=1',
-      role: 'Digital Nomad'
+      avatar:
+        'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&dpr=1',
+      role: 'Digital Nomad',
     },
     publishedAt: '2024-01-05',
     readTime: '12 min read',
     category: 'Travel Planning',
     tags: ['Packing Tips', 'Round-the-World', 'Long-Term Travel', 'Travel Planning'],
-    image: 'https://images.pexels.com/photos/1008155/pexels-photo-1008155.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=1',
+    image:
+      'https://images.pexels.com/photos/1008155/pexels-photo-1008155.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=1',
     views: 2876,
     comments: 18,
-    likes: 132
-  }
+    likes: 132,
+  },
 ];
 
 export default function Blog() {
@@ -164,23 +166,23 @@ export default function Blog() {
     excerpt: '',
     content: '',
     category: '',
-    tags: ''
+    tags: '',
   });
-  
+
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const { requireAuth } = useAuth();
-  
+
   // Check if we're on the new post page
   const isNewPostPage = location.pathname === '/blog/new';
-  
+
   // Check if we're viewing a single post
   const isSinglePost = id && id !== 'new';
-  
+
   // Get the current post if viewing a single post
   const currentPost = isSinglePost ? posts.find(post => post.id === id) : null;
-  
+
   useEffect(() => {
     // If we're on the new post page, show the create form
     if (isNewPostPage) {
@@ -191,12 +193,12 @@ export default function Blog() {
       setShowCreateForm(false);
     }
   }, [isNewPostPage, requireAuth]);
-  
+
   const handleCreatePost = () => {
     if (!requireAuth()) return;
     navigate('/blog/new');
   };
-  
+
   const handleSubmitPost = (e: React.FormEvent) => {
     e.preventDefault();
     // Create a new post with the form data
@@ -207,48 +209,51 @@ export default function Blog() {
       content: newPost.content,
       author: {
         name: 'Alex Thompson',
-        avatar: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&dpr=1',
-        role: 'Travel Enthusiast'
+        avatar:
+          'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&dpr=1',
+        role: 'Travel Enthusiast',
       },
       publishedAt: new Date().toISOString().split('T')[0],
       readTime: '5 min read',
       category: newPost.category,
       tags: newPost.tags.split(',').map(tag => tag.trim()),
-      image: 'https://images.pexels.com/photos/1051073/pexels-photo-1051073.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=1',
+      image:
+        'https://images.pexels.com/photos/1051073/pexels-photo-1051073.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=1',
       views: 0,
       comments: 0,
-      likes: 0
+      likes: 0,
     };
-    
+
     // Add the new post to the posts array
     setPosts([newPostData, ...posts]);
-    
+
     // Reset the form
     setNewPost({
       title: '',
       excerpt: '',
       content: '',
       category: '',
-      tags: ''
+      tags: '',
     });
-    
+
     // Navigate to the new post
     navigate(`/blog/${newPostData.id}`);
   };
-  
+
   const filteredPosts = posts.filter(post => {
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch =
+      searchQuery === '' ||
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    
+
     const matchesCategory = selectedCategory === '' || post.category === selectedCategory;
-    
+
     return matchesSearch && matchesCategory;
   });
-  
+
   const categories = Array.from(new Set(posts.map(post => post.category)));
-  
+
   // Render the single post view
   if (isSinglePost && currentPost) {
     return (
@@ -262,13 +267,11 @@ export default function Blog() {
             <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
             <span>Back to all articles</span>
           </button>
-          
+
           {/* Article Header */}
           <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {currentPost.title}
-            </h1>
-            
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">{currentPost.title}</h1>
+
             <div className="flex flex-wrap items-center text-sm text-gray-600 dark:text-gray-400 gap-4 mb-6">
               <div className="flex items-center space-x-2">
                 <Calendar className="h-4 w-4" />
@@ -287,7 +290,7 @@ export default function Blog() {
                 <span>{currentPost.category}</span>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-3 mb-6">
               <img
                 src={currentPost.author.avatar}
@@ -300,21 +303,17 @@ export default function Blog() {
               </div>
             </div>
           </div>
-          
+
           {/* Featured Image */}
           <div className="mb-8 rounded-2xl overflow-hidden">
-            <img
-              src={currentPost.image}
-              alt={currentPost.title}
-              className="w-full h-auto object-cover"
-            />
+            <img src={currentPost.image} alt={currentPost.title} className="w-full h-auto object-cover" />
           </div>
-          
+
           {/* Article Content */}
           <div className="prose prose-lg max-w-none dark:prose-invert mb-8">
             <div dangerouslySetInnerHTML={{ __html: currentPost.content }} />
           </div>
-          
+
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-8">
             {currentPost.tags.map((tag, index) => (
@@ -326,7 +325,7 @@ export default function Blog() {
               </span>
             ))}
           </div>
-          
+
           {/* Article Actions */}
           <div className="flex items-center justify-between border-t border-b border-gray-200 dark:border-gray-700 py-4 mb-8">
             <div className="flex items-center space-x-4">
@@ -350,46 +349,43 @@ export default function Blog() {
               </button>
             </div>
           </div>
-          
+
           {/* Related Articles */}
           <div className="mb-8">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Related Articles</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {posts.filter(post => post.id !== currentPost.id && post.category === currentPost.category).slice(0, 2).map((post) => (
-                <div
-                  key={post.id}
-                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden hover:shadow-md transition-shadow"
-                >
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-40 object-cover"
-                  />
-                  <div className="p-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
-                      {post.title}
-                    </h4>
-                    <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
-                      <span>{post.publishedAt}</span>
-                      <span>{post.readTime}</span>
+              {posts
+                .filter(post => post.id !== currentPost.id && post.category === currentPost.category)
+                .slice(0, 2)
+                .map(post => (
+                  <div
+                    key={post.id}
+                    className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden hover:shadow-md transition-shadow"
+                  >
+                    <img src={post.image} alt={post.title} className="w-full h-40 object-cover" />
+                    <div className="p-4">
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">{post.title}</h4>
+                      <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+                        <span>{post.publishedAt}</span>
+                        <span>{post.readTime}</span>
+                      </div>
+                      <button
+                        onClick={() => navigate(`/blog/${post.id}`)}
+                        className="mt-3 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium flex items-center space-x-1"
+                      >
+                        <span>Read Article</span>
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
                     </div>
-                    <button
-                      onClick={() => navigate(`/blog/${post.id}`)}
-                      className="mt-3 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium flex items-center space-x-1"
-                    >
-                      <span>Read Article</span>
-                      <ChevronRight className="h-4 w-4" />
-                    </button>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>
       </div>
     );
   }
-  
+
   // Render the create post form
   if (showCreateForm) {
     return (
@@ -403,85 +399,77 @@ export default function Blog() {
             <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
             <span>Back to all articles</span>
           </button>
-          
+
           <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Create New Article</h1>
-            
+
             <form onSubmit={handleSubmitPost} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Title
-                </label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title</label>
                 <input
                   type="text"
                   required
                   value={newPost.title}
-                  onChange={(e) => setNewPost(prev => ({ ...prev, title: e.target.value }))}
+                  onChange={e => setNewPost(prev => ({ ...prev, title: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Enter article title"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Excerpt
-                </label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Excerpt</label>
                 <input
                   type="text"
                   required
                   value={newPost.excerpt}
-                  onChange={(e) => setNewPost(prev => ({ ...prev, excerpt: e.target.value }))}
+                  onChange={e => setNewPost(prev => ({ ...prev, excerpt: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Brief summary of the article"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Category
-                </label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
                 <select
                   required
                   value={newPost.category}
-                  onChange={(e) => setNewPost(prev => ({ ...prev, category: e.target.value }))}
+                  onChange={e => setNewPost(prev => ({ ...prev, category: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
                   <option value="">Select a category</option>
-                  {categories.map((category) => (
-                    <option key={category} value={category}>{category}</option>
+                  {categories.map(category => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
                   ))}
                   <option value="New Category">New Category</option>
                 </select>
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Tags
-                </label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tags</label>
                 <input
                   type="text"
                   required
                   value={newPost.tags}
-                  onChange={(e) => setNewPost(prev => ({ ...prev, tags: e.target.value }))}
+                  onChange={e => setNewPost(prev => ({ ...prev, tags: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Enter tags separated by commas"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Content
-                </label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Content</label>
                 <textarea
                   required
                   rows={12}
                   value={newPost.content}
-                  onChange={(e) => setNewPost(prev => ({ ...prev, content: e.target.value }))}
+                  onChange={e => setNewPost(prev => ({ ...prev, content: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Write your article content here..."
                 />
               </div>
-              
+
               <div className="flex justify-end space-x-3">
                 <button
                   type="button"
@@ -503,7 +491,7 @@ export default function Blog() {
       </div>
     );
   }
-  
+
   // Render the blog list view
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 pt-16 animate-fade-in">
@@ -512,7 +500,9 @@ export default function Blog() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Blog</h1>
-            <p className="text-gray-600 dark:text-gray-400">Travel tips, insights, and inspiration for your next adventure</p>
+            <p className="text-gray-600 dark:text-gray-400">
+              Travel tips, insights, and inspiration for your next adventure
+            </p>
           </div>
           <button
             onClick={handleCreatePost}
@@ -522,7 +512,7 @@ export default function Blog() {
             <span>Write Article</span>
           </button>
         </div>
-        
+
         {/* Search and Filters */}
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 mb-8">
           <div className="flex flex-col md:flex-row gap-4">
@@ -534,26 +524,28 @@ export default function Blog() {
                   type="text"
                   placeholder="Search articles..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
             </div>
-            
+
             {/* Category Filter */}
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={e => setSelectedCategory(e.target.value)}
               className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
               <option value="">All Categories</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>{category}</option>
+              {categories.map(category => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
               ))}
             </select>
           </div>
         </div>
-        
+
         {/* Featured Post */}
         {filteredPosts.length > 0 && (
           <div className="mb-12">
@@ -574,16 +566,12 @@ export default function Blog() {
                       </span>
                       <span className="text-sm text-gray-600 dark:text-gray-400">{filteredPosts[0].readTime}</span>
                     </div>
-                    
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
-                      {filteredPosts[0].title}
-                    </h2>
-                    
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
-                      {filteredPosts[0].excerpt}
-                    </p>
+
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{filteredPosts[0].title}</h2>
+
+                    <p className="text-gray-600 dark:text-gray-400 mb-6">{filteredPosts[0].excerpt}</p>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <img
@@ -596,7 +584,7 @@ export default function Blog() {
                         <div className="text-sm text-gray-600 dark:text-gray-400">{filteredPosts[0].publishedAt}</div>
                       </div>
                     </div>
-                    
+
                     <button
                       onClick={() => navigate(`/blog/${filteredPosts[0].id}`)}
                       className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium flex items-center space-x-1"
@@ -610,36 +598,28 @@ export default function Blog() {
             </div>
           </div>
         )}
-        
+
         {/* Blog Posts Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPosts.slice(1).map((post) => (
+          {filteredPosts.slice(1).map(post => (
             <div
               key={post.id}
               className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow animate-slide-up"
             >
               <div className="relative h-48">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                />
+                <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
                 <div className="absolute top-4 left-4">
                   <span className="bg-white/90 dark:bg-black/70 backdrop-blur-sm text-gray-900 dark:text-white px-3 py-1 rounded-full text-sm font-medium">
                     {post.category}
                   </span>
                 </div>
               </div>
-              
+
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2">
-                  {post.title}
-                </h3>
-                
-                <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                  {post.excerpt}
-                </p>
-                
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2">{post.title}</h3>
+
+                <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">{post.excerpt}</p>
+
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <img
@@ -647,11 +627,9 @@ export default function Blog() {
                       alt={post.author.name}
                       className="w-8 h-8 rounded-full object-cover"
                     />
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      {post.publishedAt}
-                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">{post.publishedAt}</div>
                   </div>
-                  
+
                   <button
                     onClick={() => navigate(`/blog/${post.id}`)}
                     className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium flex items-center space-x-1"
@@ -664,7 +642,7 @@ export default function Blog() {
             </div>
           ))}
         </div>
-        
+
         {/* No Results */}
         {filteredPosts.length === 0 && (
           <div className="text-center py-12">

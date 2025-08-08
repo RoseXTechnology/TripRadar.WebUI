@@ -1,28 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  User, 
-  Mail, 
-  Lock, 
-  Bell, 
-  Shield, 
-  Plug, 
-  Camera, 
-  Edit3, 
-  Check, 
-  X, 
-  AlertTriangle, 
-  Trash2, 
-  Plus, 
-  Eye, 
-  EyeOff,
+import { useState, useEffect } from 'react';
+import {
+  User,
+  Lock,
+  Bell,
+  Shield,
+  Plug,
+  Camera,
+  Check,
+  AlertTriangle,
+  Trash2,
+  Plus,
   Chrome,
   Github,
   Smartphone,
   Globe,
   Moon,
   Sun,
-  Download,
-  ExternalLink,
   Settings as SettingsIcon,
   ChevronRight,
   Save,
@@ -42,9 +35,7 @@ import {
   Info,
   Users,
   UserPlus,
-  UserCheck,
-  UserX,
-  Star
+  Star,
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
@@ -69,45 +60,45 @@ export default function Settings() {
   const [newGroupMember, setNewGroupMember] = useState({
     name: '',
     email: '',
-    role: 'member'
+    role: 'member',
   });
   const [groupMembers, setGroupMembers] = useState([
-    { 
-      id: '1', 
-      name: 'Alex Thompson', 
-      email: 'alex@example.com', 
-      role: 'organizer', 
+    {
+      id: '1',
+      name: 'Alex Thompson',
+      email: 'alex@example.com',
+      role: 'organizer',
       status: 'accepted',
       preferences: {
         dietary: ['vegetarian'],
         accommodationType: ['hotel', 'airbnb'],
         transport: ['public-transport', 'walking'],
         tripType: ['cultural', 'adventure'],
-        languages: ['english', 'spanish']
-      }
+        languages: ['english', 'spanish'],
+      },
     },
-    { 
-      id: '2', 
-      name: 'Sarah Johnson', 
-      email: 'sarah@example.com', 
-      role: 'member', 
+    {
+      id: '2',
+      name: 'Sarah Johnson',
+      email: 'sarah@example.com',
+      role: 'member',
       status: 'accepted',
       preferences: {
         dietary: ['gluten-free'],
         accommodationType: ['hotel'],
         transport: ['rental-car'],
         tripType: ['luxury'],
-        languages: ['english', 'french']
-      }
+        languages: ['english', 'french'],
+      },
     },
-    { 
-      id: '3', 
-      name: 'Mike Chen', 
-      email: 'mike@example.com', 
-      role: 'member', 
+    {
+      id: '3',
+      name: 'Mike Chen',
+      email: 'mike@example.com',
+      role: 'member',
       status: 'invited',
-      preferences: {}
-    }
+      preferences: {},
+    },
   ]);
 
   useEffect(() => {
@@ -116,14 +107,14 @@ export default function Settings() {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    
+
     // Fetch preference schema
     fetchPreferenceSchema();
-    
+
     // Initialize user preferences
     if (user?.preferences) {
       const formattedPreferences: Record<string, string[]> = {};
-      
+
       if (user.preferences.dietary) formattedPreferences.dietary = user.preferences.dietary;
       if (user.preferences.accommodationType) formattedPreferences.accommodation = user.preferences.accommodationType;
       if (user.preferences.activities) formattedPreferences.activities = user.preferences.activities;
@@ -131,10 +122,10 @@ export default function Settings() {
       if (user.preferences.transport) formattedPreferences.transport = user.preferences.transport;
       if (user.preferences.languages) formattedPreferences.languages = user.preferences.languages;
       if (user.preferences.accessibility) formattedPreferences.accessibility = user.preferences.accessibility;
-      
+
       setUserPreferences(formattedPreferences);
     }
-    
+
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [user]);
 
@@ -144,13 +135,13 @@ export default function Settings() {
     username: 'alexthompson',
     bio: 'Travel enthusiast and digital nomad exploring the world one trip at a time.',
     website: 'https://alexthompson.dev',
-    location: 'San Francisco, CA'
+    location: 'San Francisco, CA',
   });
 
   const [accountData, setAccountData] = useState({
     email: user?.email || '',
     language: 'en',
-    timezone: 'America/Los_Angeles'
+    timezone: 'America/Los_Angeles',
   });
 
   const [notificationSettings, setNotificationSettings] = useState({
@@ -161,13 +152,13 @@ export default function Settings() {
     securityAlerts: true,
     tripReminders: true,
     budgetAlerts: true,
-    groupUpdates: true
+    groupUpdates: true,
   });
 
   const [securitySettings, setSecuritySettings] = useState({
     twoFactorEnabled: false,
     sessionTimeout: '24h',
-    loginNotifications: true
+    loginNotifications: true,
   });
 
   const sidebarItems = [
@@ -176,19 +167,37 @@ export default function Settings() {
     { id: 'group', label: 'Group Management', icon: Users },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'security', label: 'Security', icon: Shield },
-    { id: 'integrations', label: 'Integrations', icon: Plug }
+    { id: 'integrations', label: 'Integrations', icon: Plug },
   ];
 
   const connectedAccounts = [
     { provider: 'Google', icon: Chrome, connected: true, email: user?.email },
     { provider: 'GitHub', icon: Github, connected: false, email: null },
-    { provider: 'Microsoft', icon: Globe, connected: false, email: null }
+    { provider: 'Microsoft', icon: Globe, connected: false, email: null },
   ];
 
   const activeSessions = [
-    { id: 1, device: 'MacBook Pro', location: 'San Francisco, CA', lastActive: '2 minutes ago', current: true },
-    { id: 2, device: 'iPhone 15 Pro', location: 'San Francisco, CA', lastActive: '1 hour ago', current: false },
-    { id: 3, device: 'Chrome on Windows', location: 'New York, NY', lastActive: '2 days ago', current: false }
+    {
+      id: 1,
+      device: 'MacBook Pro',
+      location: 'San Francisco, CA',
+      lastActive: '2 minutes ago',
+      current: true,
+    },
+    {
+      id: 2,
+      device: 'iPhone 15 Pro',
+      location: 'San Francisco, CA',
+      lastActive: '1 hour ago',
+      current: false,
+    },
+    {
+      id: 3,
+      device: 'Chrome on Windows',
+      location: 'New York, NY',
+      lastActive: '2 days ago',
+      current: false,
+    },
   ];
 
   // Mock preference schema
@@ -206,8 +215,8 @@ export default function Settings() {
             { id: 'halal', label: 'Halal' },
             { id: 'kosher', label: 'Kosher' },
             { id: 'gluten-free', label: 'Gluten Free' },
-            { id: 'dairy-free', label: 'Dairy Free' }
-          ]
+            { id: 'dairy-free', label: 'Dairy Free' },
+          ],
         },
         {
           id: 'accommodation',
@@ -218,8 +227,8 @@ export default function Settings() {
             { id: 'hostel', label: 'Hostels' },
             { id: 'airbnb', label: 'Vacation Rentals' },
             { id: 'resort', label: 'Resorts' },
-            { id: 'camping', label: 'Camping' }
-          ]
+            { id: 'camping', label: 'Camping' },
+          ],
         },
         {
           id: 'transport',
@@ -230,8 +239,8 @@ export default function Settings() {
             { id: 'rental-car', label: 'Rental Car' },
             { id: 'taxi', label: 'Taxi/Rideshare' },
             { id: 'walking', label: 'Walking' },
-            { id: 'cycling', label: 'Cycling' }
-          ]
+            { id: 'cycling', label: 'Cycling' },
+          ],
         },
         {
           id: 'tripType',
@@ -242,8 +251,8 @@ export default function Settings() {
             { id: 'relaxation', label: 'Relaxation' },
             { id: 'cultural', label: 'Cultural' },
             { id: 'budget', label: 'Budget' },
-            { id: 'luxury', label: 'Luxury' }
-          ]
+            { id: 'luxury', label: 'Luxury' },
+          ],
         },
         {
           id: 'accessibility',
@@ -253,8 +262,8 @@ export default function Settings() {
             { id: 'wheelchair', label: 'Wheelchair Access' },
             { id: 'limited-mobility', label: 'Limited Mobility' },
             { id: 'kid-friendly', label: 'Kid Friendly' },
-            { id: 'pet-friendly', label: 'Pet Friendly' }
-          ]
+            { id: 'pet-friendly', label: 'Pet Friendly' },
+          ],
         },
         {
           id: 'languages',
@@ -266,8 +275,8 @@ export default function Settings() {
             { id: 'french', label: 'French' },
             { id: 'german', label: 'German' },
             { id: 'japanese', label: 'Japanese' },
-            { id: 'chinese', label: 'Chinese' }
-          ]
+            { id: 'chinese', label: 'Chinese' },
+          ],
         },
         {
           id: 'activities',
@@ -279,12 +288,12 @@ export default function Settings() {
             { id: 'shopping', label: 'Shopping' },
             { id: 'nature', label: 'Nature & Outdoors' },
             { id: 'museums', label: 'Museums & Culture' },
-            { id: 'nightlife', label: 'Nightlife' }
-          ]
-        }
-      ]
+            { id: 'nightlife', label: 'Nightlife' },
+          ],
+        },
+      ],
     };
-    
+
     setPreferenceSchema(mockSchema);
   };
 
@@ -300,18 +309,18 @@ export default function Settings() {
   const togglePreference = (categoryId: string, optionId: string) => {
     setUserPreferences(prev => {
       const current = [...(prev[categoryId] || [])];
-      
+
       if (current.includes(optionId)) {
         // Remove the option if already selected
         return {
           ...prev,
-          [categoryId]: current.filter(item => item !== optionId)
+          [categoryId]: current.filter(item => item !== optionId),
         };
       } else {
         // Add the option if not already selected
         return {
           ...prev,
-          [categoryId]: [...current, optionId]
+          [categoryId]: [...current, optionId],
         };
       }
     });
@@ -325,14 +334,14 @@ export default function Settings() {
         email: newGroupMember.email,
         role: newGroupMember.role,
         status: 'invited',
-        preferences: {}
+        preferences: {},
       };
-      
+
       setGroupMembers([...groupMembers, newMember]);
       setNewGroupMember({
         name: '',
         email: '',
-        role: 'member'
+        role: 'member',
       });
       setShowAddGroupMemberModal(false);
     }
@@ -348,7 +357,7 @@ export default function Settings() {
       {/* Profile Information */}
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Profile Information</h3>
-        
+
         {/* Avatar Section */}
         <div className="flex items-center space-x-6 mb-6">
           <div className="relative group">
@@ -378,7 +387,7 @@ export default function Settings() {
             <input
               type="text"
               value={profileData.name}
-              onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value }))}
+              onChange={e => setProfileData(prev => ({ ...prev, name: e.target.value }))}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             />
           </div>
@@ -387,7 +396,7 @@ export default function Settings() {
             <input
               type="email"
               value={accountData.email}
-              onChange={(e) => setAccountData(prev => ({ ...prev, email: e.target.value }))}
+              onChange={e => setAccountData(prev => ({ ...prev, email: e.target.value }))}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             />
           </div>
@@ -395,7 +404,7 @@ export default function Settings() {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Language</label>
             <select
               value={accountData.language}
-              onChange={(e) => setAccountData(prev => ({ ...prev, language: e.target.value }))}
+              onChange={e => setAccountData(prev => ({ ...prev, language: e.target.value }))}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
               <option value="en">English</option>
@@ -409,7 +418,7 @@ export default function Settings() {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Timezone</label>
             <select
               value={accountData.timezone}
-              onChange={(e) => setAccountData(prev => ({ ...prev, timezone: e.target.value }))}
+              onChange={e => setAccountData(prev => ({ ...prev, timezone: e.target.value }))}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
               <option value="America/Los_Angeles">Pacific Time</option>
@@ -427,7 +436,7 @@ export default function Settings() {
           <Palette className="h-5 w-5" />
           <span>Theme Preferences</span>
         </h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Light Theme */}
           <button
@@ -525,7 +534,7 @@ export default function Settings() {
             <BarChart className="h-5 w-5 text-primary-600 dark:text-primary-400" />
             <span>Token Usage</span>
           </h3>
-          
+
           <Link
             to="/settings/usage"
             className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium flex items-center space-x-1"
@@ -534,23 +543,18 @@ export default function Settings() {
             <ChevronRight className="h-4 w-4" />
           </Link>
         </div>
-        
+
         <div className="space-y-4">
           <div className="flex justify-between items-center mb-2">
             <div className="text-sm text-gray-600 dark:text-gray-400">
               <span className="font-medium text-gray-900 dark:text-white">12,280</span> of 50,000 tokens used this month
             </div>
-            <div className="text-sm font-medium text-primary-600 dark:text-primary-400">
-              24.6%
-            </div>
+            <div className="text-sm font-medium text-primary-600 dark:text-primary-400">24.6%</div>
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-            <div 
-              className="h-2.5 rounded-full bg-primary-600"
-              style={{ width: '24.6%' }}
-            ></div>
+            <div className="h-2.5 rounded-full bg-primary-600" style={{ width: '24.6%' }}></div>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
               <div className="flex items-center space-x-2 mb-1">
@@ -560,7 +564,7 @@ export default function Settings() {
               <div className="text-lg font-bold text-gray-900 dark:text-white">4,190</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">tokens used</div>
             </div>
-            
+
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
               <div className="flex items-center space-x-2 mb-1">
                 <Bot className="h-4 w-4 text-purple-500 dark:text-purple-400" />
@@ -569,7 +573,7 @@ export default function Settings() {
               <div className="text-lg font-bold text-gray-900 dark:text-white">5,760</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">tokens used</div>
             </div>
-            
+
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
               <div className="flex items-center space-x-2 mb-1">
                 <Zap className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />
@@ -587,7 +591,10 @@ export default function Settings() {
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Connected Accounts</h3>
         <div className="space-y-4">
           {connectedAccounts.map((account, index) => (
-            <div key={index} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
+            <div
+              key={index}
+              className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl"
+            >
               <div className="flex items-center space-x-3">
                 <account.icon className="h-6 w-6 text-gray-600 dark:text-gray-400" />
                 <div>
@@ -617,7 +624,9 @@ export default function Settings() {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">User Preferences</h2>
-        <p className="text-gray-600 dark:text-gray-400">Customize your travel preferences to get personalized recommendations</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          Customize your travel preferences to get personalized recommendations
+        </p>
       </div>
 
       {/* Preferences Form */}
@@ -631,20 +640,20 @@ export default function Settings() {
             Reset All
           </button>
         </div>
-        
+
         {preferenceSchema ? (
           <div className="space-y-8">
-            {preferenceSchema.categories.map((category) => (
+            {preferenceSchema.categories.map(category => (
               <div key={category.id} className="space-y-4">
                 <div>
                   <h4 className="font-medium text-gray-900 dark:text-white">{category.name}</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{category.description}</p>
                 </div>
-                
+
                 <div className="flex flex-wrap gap-2">
-                  {category.options.map((option) => {
+                  {category.options.map(option => {
                     const isSelected = userPreferences[category.id]?.includes(option.id);
-                    
+
                     return (
                       <button
                         key={option.id}
@@ -674,7 +683,7 @@ export default function Settings() {
       {/* Preference Usage */}
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">How We Use Your Preferences</h3>
-        
+
         <div className="space-y-4">
           <div className="flex items-start space-x-4">
             <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg mt-1">
@@ -683,11 +692,12 @@ export default function Settings() {
             <div>
               <h4 className="font-medium text-gray-900 dark:text-white">Personalized Search Results</h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                We'll prioritize search results that match your preferences, such as hotels with vegetarian restaurants if you have dietary restrictions.
+                We'll prioritize search results that match your preferences, such as hotels with vegetarian restaurants
+                if you have dietary restrictions.
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-start space-x-4">
             <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg mt-1">
               <Bot className="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -695,11 +705,12 @@ export default function Settings() {
             <div>
               <h4 className="font-medium text-gray-900 dark:text-white">AI Recommendations</h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Our AI assistant will use your preferences to suggest destinations, activities, and accommodations that match your travel style.
+                Our AI assistant will use your preferences to suggest destinations, activities, and accommodations that
+                match your travel style.
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-start space-x-4">
             <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg mt-1">
               <Users className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -707,12 +718,13 @@ export default function Settings() {
             <div>
               <h4 className="font-medium text-gray-900 dark:text-white">Group Trip Planning</h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                When planning group trips, we can combine everyone's preferences to find options that work for the whole group.
+                When planning group trips, we can combine everyone's preferences to find options that work for the whole
+                group.
               </p>
             </div>
           </div>
         </div>
-        
+
         <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
           <div className="flex items-start space-x-3">
             <Shield className="h-5 w-5 text-gray-600 dark:text-gray-400 mt-0.5" />
@@ -729,7 +741,9 @@ export default function Settings() {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Group Management</h2>
-        <p className="text-gray-600 dark:text-gray-400">Manage group members and their preferences for collaborative trip planning</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          Manage group members and their preferences for collaborative trip planning
+        </p>
       </div>
 
       {/* Group Members */}
@@ -744,9 +758,9 @@ export default function Settings() {
             <span>Add Member</span>
           </button>
         </div>
-        
+
         <div className="space-y-4">
-          {groupMembers.map((member) => (
+          {groupMembers.map(member => (
             <div key={member.id} className="border border-gray-200 dark:border-gray-600 rounded-xl p-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
@@ -768,11 +782,13 @@ export default function Settings() {
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    member.status === 'accepted' 
-                      ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400' 
-                      : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      member.status === 'accepted'
+                        ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                        : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
+                    }`}
+                  >
                     {member.status}
                   </span>
                   <div className="relative">
@@ -782,7 +798,7 @@ export default function Settings() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Member Preferences */}
               {member.status === 'accepted' && Object.keys(member.preferences || {}).length > 0 && (
                 <div className="mt-2">
@@ -791,9 +807,12 @@ export default function Settings() {
                     <button className="text-xs text-primary-600 dark:text-primary-400">Edit</button>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {Object.entries(member.preferences || {}).flatMap(([category, values]) => 
+                    {Object.entries(member.preferences || {}).flatMap(([category, values]) =>
                       values.map(value => (
-                        <span key={`${category}-${value}`} className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs">
+                        <span
+                          key={`${category}-${value}`}
+                          className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs"
+                        >
                           {value}
                         </span>
                       ))
@@ -812,7 +831,7 @@ export default function Settings() {
           <Info className="h-5 w-5 text-primary-600 dark:text-primary-400" />
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Group Preference Settings</h3>
         </div>
-        
+
         <div className="space-y-6">
           <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
             <div>
@@ -825,7 +844,7 @@ export default function Settings() {
               <span className="inline-block h-4 w-4 transform translate-x-6 rounded-full bg-white"></span>
             </div>
           </div>
-          
+
           <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
             <div>
               <div className="font-medium text-gray-900 dark:text-white">Preference Weighting</div>
@@ -839,7 +858,7 @@ export default function Settings() {
               <option value="majority">Majority Rules</option>
             </select>
           </div>
-          
+
           <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
             <div>
               <div className="font-medium text-gray-900 dark:text-white">Notification on Preference Changes</div>
@@ -852,12 +871,13 @@ export default function Settings() {
             </div>
           </div>
         </div>
-        
+
         <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
           <div className="flex items-start space-x-3">
             <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
             <p className="text-sm text-blue-700 dark:text-blue-300">
-              Group preferences are used when planning trips together. Each member can set their own preferences, and our system will find options that work for everyone.
+              Group preferences are used when planning trips together. Each member can set their own preferences, and
+              our system will find options that work for everyone.
             </p>
           </div>
         </div>
@@ -869,7 +889,9 @@ export default function Settings() {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Notification Preferences</h2>
-        <p className="text-gray-600 dark:text-gray-400">Choose how you want to be notified about updates and activities</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          Choose how you want to be notified about updates and activities
+        </p>
       </div>
 
       {/* Email Notifications */}
@@ -877,21 +899,42 @@ export default function Settings() {
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Email Notifications</h3>
         <div className="space-y-4">
           {[
-            { key: 'emailNotifications', label: 'Email notifications', description: 'Receive notifications via email' },
-            { key: 'productUpdates', label: 'Product updates', description: 'Get notified about new features and improvements' },
-            { key: 'marketingEmails', label: 'Marketing emails', description: 'Receive promotional content and offers' },
-            { key: 'weeklyDigest', label: 'Weekly digest', description: 'Summary of your travel activity' }
-          ].map((setting) => (
-            <div key={setting.key} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
+            {
+              key: 'emailNotifications',
+              label: 'Email notifications',
+              description: 'Receive notifications via email',
+            },
+            {
+              key: 'productUpdates',
+              label: 'Product updates',
+              description: 'Get notified about new features and improvements',
+            },
+            {
+              key: 'marketingEmails',
+              label: 'Marketing emails',
+              description: 'Receive promotional content and offers',
+            },
+            {
+              key: 'weeklyDigest',
+              label: 'Weekly digest',
+              description: 'Summary of your travel activity',
+            },
+          ].map(setting => (
+            <div
+              key={setting.key}
+              className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl"
+            >
               <div>
                 <div className="font-medium text-gray-900 dark:text-white">{setting.label}</div>
                 <div className="text-sm text-gray-500 dark:text-gray-400">{setting.description}</div>
               </div>
               <button
-                onClick={() => setNotificationSettings(prev => ({ 
-                  ...prev, 
-                  [setting.key]: !prev[setting.key as keyof typeof prev] 
-                }))}
+                onClick={() =>
+                  setNotificationSettings(prev => ({
+                    ...prev,
+                    [setting.key]: !prev[setting.key as keyof typeof prev],
+                  }))
+                }
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                   notificationSettings[setting.key as keyof typeof notificationSettings]
                     ? 'bg-primary-600'
@@ -916,21 +959,42 @@ export default function Settings() {
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Push Notifications</h3>
         <div className="space-y-4">
           {[
-            { key: 'tripReminders', label: 'Trip reminders', description: 'Get reminded about upcoming trips and tasks' },
-            { key: 'budgetAlerts', label: 'Budget alerts', description: 'Notifications when you exceed budget limits' },
-            { key: 'groupUpdates', label: 'Group updates', description: 'Updates from group trips and collaborations' },
-            { key: 'securityAlerts', label: 'Security alerts', description: 'Important security and account notifications' }
-          ].map((setting) => (
-            <div key={setting.key} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
+            {
+              key: 'tripReminders',
+              label: 'Trip reminders',
+              description: 'Get reminded about upcoming trips and tasks',
+            },
+            {
+              key: 'budgetAlerts',
+              label: 'Budget alerts',
+              description: 'Notifications when you exceed budget limits',
+            },
+            {
+              key: 'groupUpdates',
+              label: 'Group updates',
+              description: 'Updates from group trips and collaborations',
+            },
+            {
+              key: 'securityAlerts',
+              label: 'Security alerts',
+              description: 'Important security and account notifications',
+            },
+          ].map(setting => (
+            <div
+              key={setting.key}
+              className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl"
+            >
               <div>
                 <div className="font-medium text-gray-900 dark:text-white">{setting.label}</div>
                 <div className="text-sm text-gray-500 dark:text-gray-400">{setting.description}</div>
               </div>
               <button
-                onClick={() => setNotificationSettings(prev => ({ 
-                  ...prev, 
-                  [setting.key]: !prev[setting.key as keyof typeof prev] 
-                }))}
+                onClick={() =>
+                  setNotificationSettings(prev => ({
+                    ...prev,
+                    [setting.key]: !prev[setting.key as keyof typeof prev],
+                  }))
+                }
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                   notificationSettings[setting.key as keyof typeof notificationSettings]
                     ? 'bg-primary-600'
@@ -1009,8 +1073,11 @@ export default function Settings() {
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Active Sessions</h3>
         <div className="space-y-4">
-          {activeSessions.map((session) => (
-            <div key={session.id} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
+          {activeSessions.map(session => (
+            <div
+              key={session.id}
+              className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl"
+            >
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
                   <Smartphone className="h-5 w-5 text-gray-600 dark:text-gray-400" />
@@ -1045,7 +1112,7 @@ export default function Settings() {
           <AlertTriangle className="h-5 w-5" />
           <span>Danger Zone</span>
         </h3>
-        
+
         <div className="space-y-4">
           <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
             <div>
@@ -1057,7 +1124,7 @@ export default function Settings() {
               <span>Sign Out All</span>
             </button>
           </div>
-          
+
           <div className="flex items-center justify-between p-4 border border-red-200 dark:border-red-800 rounded-lg bg-red-50 dark:bg-red-900/20">
             <div>
               <div className="font-medium text-red-900 dark:text-red-400">Delete account</div>
@@ -1125,7 +1192,9 @@ export default function Settings() {
         </div>
         <div className="text-center py-8">
           <div className="text-gray-500 dark:text-gray-400">No webhooks configured</div>
-          <div className="text-sm text-gray-400 dark:text-gray-500 mt-1">Add webhooks to receive real-time notifications</div>
+          <div className="text-sm text-gray-400 dark:text-gray-500 mt-1">
+            Add webhooks to receive real-time notifications
+          </div>
         </div>
       </div>
 
@@ -1140,14 +1209,16 @@ export default function Settings() {
               </div>
               <div>
                 <div className="font-medium text-gray-900 dark:text-white">Telegram Bot</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">Connect your Telegram account for AI assistance</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                  Connect your Telegram account for AI assistance
+                </div>
               </div>
             </div>
             <button className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium">
               Connect
             </button>
           </div>
-          
+
           <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
@@ -1155,14 +1226,16 @@ export default function Settings() {
               </div>
               <div>
                 <div className="font-medium text-gray-900 dark:text-white">WhatsApp</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">Connect your WhatsApp for mobile assistance</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                  Connect your WhatsApp for mobile assistance
+                </div>
               </div>
             </div>
             <button className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium">
               Connect
             </button>
           </div>
-          
+
           <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-xl">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
@@ -1173,7 +1246,7 @@ export default function Settings() {
                 <div className="text-sm text-gray-500 dark:text-gray-400">Manage your payment methods</div>
               </div>
             </div>
-            <Link 
+            <Link
               to="/billing"
               className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
             >
@@ -1220,7 +1293,7 @@ export default function Settings() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 pt-16">
       {/* Mouse Follower Spotlight - Only in dark mode */}
       {actualTheme === 'dark' && (
-        <div 
+        <div
           className="fixed pointer-events-none z-0 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
           style={{
             background: `radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`,
@@ -1236,7 +1309,7 @@ export default function Settings() {
           <div className="lg:w-64 flex-shrink-0">
             <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 sticky top-24">
               <nav className="space-y-2">
-                {sidebarItems.map((item) => (
+                {sidebarItems.map(item => (
                   <button
                     key={item.id}
                     onClick={() => setActiveSection(item.id as SettingsSection)}
@@ -1250,9 +1323,9 @@ export default function Settings() {
                       <item.icon className="h-5 w-5" />
                       <span className="font-medium">{item.label}</span>
                     </div>
-                    <ChevronRight className={`h-4 w-4 transition-transform ${
-                      activeSection === item.id ? 'rotate-90' : ''
-                    }`} />
+                    <ChevronRight
+                      className={`h-4 w-4 transition-transform ${activeSection === item.id ? 'rotate-90' : ''}`}
+                    />
                   </button>
                 ))}
               </nav>
@@ -1262,12 +1335,10 @@ export default function Settings() {
           {/* Main Content */}
           <div className="flex-1">
             {renderContent()}
-            
+
             {/* Save Button */}
             <div className="mt-8 flex items-center justify-between bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Changes are saved automatically
-              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Changes are saved automatically</div>
               <button
                 onClick={() => handleSave(activeSection)}
                 disabled={isLoading}
@@ -1307,11 +1378,12 @@ export default function Settings() {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Delete Account</h3>
               </div>
-              
+
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Are you sure you want to delete your account? This action cannot be undone and will permanently delete all your data, trips, and preferences.
+                Are you sure you want to delete your account? This action cannot be undone and will permanently delete
+                all your data, trips, and preferences.
               </p>
-              
+
               <div className="flex space-x-3">
                 <button
                   onClick={() => setShowDeleteModal(false)}
@@ -1336,31 +1408,37 @@ export default function Settings() {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Change Password</h3>
               </div>
-              
+
               <div className="space-y-4 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Current Password</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Current Password
+                  </label>
                   <input
                     type="password"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">New Password</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    New Password
+                  </label>
                   <input
                     type="password"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirm New Password</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Confirm New Password
+                  </label>
                   <input
                     type="password"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
               </div>
-              
+
               <div className="flex space-x-3">
                 <button
                   onClick={() => setShowPasswordModal(false)}
@@ -1386,14 +1464,19 @@ export default function Settings() {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Add Group Member</h3>
               </div>
-              
+
               <div className="space-y-4 mb-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
                   <input
                     type="text"
                     value={newGroupMember.name}
-                    onChange={(e) => setNewGroupMember({...newGroupMember, name: e.target.value})}
+                    onChange={e =>
+                      setNewGroupMember({
+                        ...newGroupMember,
+                        name: e.target.value,
+                      })
+                    }
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="Enter member's name"
                   />
@@ -1403,7 +1486,12 @@ export default function Settings() {
                   <input
                     type="email"
                     value={newGroupMember.email}
-                    onChange={(e) => setNewGroupMember({...newGroupMember, email: e.target.value})}
+                    onChange={e =>
+                      setNewGroupMember({
+                        ...newGroupMember,
+                        email: e.target.value,
+                      })
+                    }
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="Enter member's email"
                   />
@@ -1412,7 +1500,12 @@ export default function Settings() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role</label>
                   <select
                     value={newGroupMember.role}
-                    onChange={(e) => setNewGroupMember({...newGroupMember, role: e.target.value})}
+                    onChange={e =>
+                      setNewGroupMember({
+                        ...newGroupMember,
+                        role: e.target.value,
+                      })
+                    }
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="member">Member</option>
@@ -1420,7 +1513,7 @@ export default function Settings() {
                   </select>
                 </div>
               </div>
-              
+
               <div className="flex space-x-3">
                 <button
                   onClick={() => setShowAddGroupMemberModal(false)}
@@ -1428,7 +1521,7 @@ export default function Settings() {
                 >
                   Cancel
                 </button>
-                <button 
+                <button
                   onClick={handleAddGroupMember}
                   className="flex-1 bg-primary-600 text-white py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors"
                 >

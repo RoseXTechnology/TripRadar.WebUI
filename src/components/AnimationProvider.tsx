@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useTheme } from '../context/ThemeContext';
 
 interface AnimationContextType {
   createParticles: (containerId: string) => void;
   removeParticles: (containerId: string) => void;
-  mousePosition: { x: number, y: number };
+  mousePosition: { x: number; y: number };
 }
 
 const AnimationContext = createContext<AnimationContextType | undefined>(undefined);
@@ -25,30 +25,30 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
   const createParticles = (containerId: string) => {
     // Remove any existing particles container with this ID
     removeParticles(containerId);
-    
+
     // Create new particles container
     const particlesContainer = document.createElement('div');
     particlesContainer.className = 'fixed inset-0 overflow-hidden pointer-events-none z-0';
     particlesContainer.id = containerId;
-    
+
     // Create particles
     for (let i = 0; i < 50; i++) {
       const particle = document.createElement('div');
       particle.className = `floating-particle ${
         actualTheme === 'dark' ? 'floating-particle-dark' : 'floating-particle-light'
       }`;
-      
+
       // Random position
       particle.style.left = `${Math.random() * 100}%`;
       particle.style.top = `${Math.random() * 100}%`;
-      
+
       // Random animation
       particle.style.animationDelay = `${Math.random() * 3}s`;
       particle.style.animationDuration = `${2 + Math.random() * 3}s`;
-      
+
       particlesContainer.appendChild(particle);
     }
-    
+
     document.body.appendChild(particlesContainer);
   };
 
@@ -62,14 +62,10 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
   const value = {
     createParticles,
     removeParticles,
-    mousePosition
+    mousePosition,
   };
 
-  return (
-    <AnimationContext.Provider value={value}>
-      {children}
-    </AnimationContext.Provider>
-  );
+  return <AnimationContext.Provider value={value}>{children}</AnimationContext.Provider>;
 }
 
 export function useAnimation() {

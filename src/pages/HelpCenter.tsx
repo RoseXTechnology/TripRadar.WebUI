@@ -1,24 +1,20 @@
 import React, { useState } from 'react';
-import { 
-  Search, 
-  Book, 
-  MessageSquare, 
-  Bot, 
-  CreditCard, 
-  User, 
+import {
+  Search,
+  Book,
+  MessageSquare,
+  Bot,
+  CreditCard,
+  User,
   AlertTriangle,
   ChevronRight,
   ChevronDown,
   ExternalLink,
   Play,
   FileText,
-  Lightbulb,
-  Settings,
-  Shield,
   Zap,
   Globe,
   Mail,
-  Phone
 } from 'lucide-react';
 
 interface FAQItem {
@@ -44,7 +40,7 @@ const helpCategories: HelpCategory[] = [
     description: 'Learn the basics of using TripRadar',
     icon: Book,
     color: 'bg-blue-500',
-    articles: 12
+    articles: 12,
   },
   {
     id: 'ai-bot',
@@ -52,7 +48,7 @@ const helpCategories: HelpCategory[] = [
     description: 'How to use our AI bot via Telegram/WhatsApp',
     icon: Bot,
     color: 'bg-purple-500',
-    articles: 8
+    articles: 8,
   },
   {
     id: 'search',
@@ -60,7 +56,7 @@ const helpCategories: HelpCategory[] = [
     description: 'Find flights, hotels, and plan your trips',
     icon: Search,
     color: 'bg-green-500',
-    articles: 15
+    articles: 15,
   },
   {
     id: 'billing',
@@ -68,7 +64,7 @@ const helpCategories: HelpCategory[] = [
     description: 'Manage your account and payments',
     icon: CreditCard,
     color: 'bg-orange-500',
-    articles: 10
+    articles: 10,
   },
   {
     id: 'account',
@@ -76,7 +72,7 @@ const helpCategories: HelpCategory[] = [
     description: 'Profile settings and security',
     icon: User,
     color: 'bg-indigo-500',
-    articles: 7
+    articles: 7,
   },
   {
     id: 'troubleshooting',
@@ -84,59 +80,67 @@ const helpCategories: HelpCategory[] = [
     description: 'Common issues and solutions',
     icon: AlertTriangle,
     color: 'bg-red-500',
-    articles: 9
-  }
+    articles: 9,
+  },
 ];
 
 const faqs: FAQItem[] = [
   {
     id: '1',
     question: 'How do I connect the AI bot to Telegram?',
-    answer: 'To connect the AI bot to Telegram: 1) Go to your Dashboard, 2) Find the AI Bot Integration section, 3) Click "Enable Telegram", 4) Follow the setup instructions to connect @TripRadarBot, 5) Start chatting with commands like "What\'s my budget status?"',
-    category: 'ai-bot'
+    answer:
+      'To connect the AI bot to Telegram: 1) Go to your Dashboard, 2) Find the AI Bot Integration section, 3) Click "Enable Telegram", 4) Follow the setup instructions to connect @TripRadarBot, 5) Start chatting with commands like "What\'s my budget status?"',
+    category: 'ai-bot',
   },
   {
     id: '2',
     question: 'How does the flight search work?',
-    answer: 'Our flight search aggregates data from multiple airlines and booking platforms. Simply enter your departure and destination cities, select dates, and we\'ll show you the best options sorted by price, duration, and convenience.',
-    category: 'search'
+    answer:
+      "Our flight search aggregates data from multiple airlines and booking platforms. Simply enter your departure and destination cities, select dates, and we'll show you the best options sorted by price, duration, and convenience.",
+    category: 'search',
   },
   {
     id: '3',
     question: 'What payment methods do you accept?',
-    answer: 'We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers. All payments are processed securely through Stripe.',
-    category: 'billing'
+    answer:
+      'We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers. All payments are processed securely through Stripe.',
+    category: 'billing',
   },
   {
     id: '4',
     question: 'How do I create my first trip?',
-    answer: 'Creating your first trip is easy: 1) Click "New Trip" on your dashboard, 2) Enter your destination and dates, 3) Set your budget and preferences, 4) Start adding flights, hotels, and activities, 5) Invite friends if it\'s a group trip.',
-    category: 'getting-started'
+    answer:
+      'Creating your first trip is easy: 1) Click "New Trip" on your dashboard, 2) Enter your destination and dates, 3) Set your budget and preferences, 4) Start adding flights, hotels, and activities, 5) Invite friends if it\'s a group trip.',
+    category: 'getting-started',
   },
   {
     id: '5',
     question: 'Can I change my subscription plan?',
-    answer: 'Yes! You can upgrade or downgrade your plan at any time from the Billing section in your account settings. Changes take effect immediately, and we\'ll prorate the billing accordingly.',
-    category: 'billing'
+    answer:
+      "Yes! You can upgrade or downgrade your plan at any time from the Billing section in your account settings. Changes take effect immediately, and we'll prorate the billing accordingly.",
+    category: 'billing',
   },
   {
     id: '6',
     question: 'How do I reset my password?',
-    answer: 'To reset your password: 1) Go to the login page, 2) Click "Forgot password?", 3) Enter your email address, 4) Check your email for reset instructions, 5) Follow the link to create a new password.',
-    category: 'account'
+    answer:
+      'To reset your password: 1) Go to the login page, 2) Click "Forgot password?", 3) Enter your email address, 4) Check your email for reset instructions, 5) Follow the link to create a new password.',
+    category: 'account',
   },
   {
     id: '7',
     question: 'Why is my search taking so long?',
-    answer: 'Search times can vary based on destination popularity and current demand. International flights typically take 10-30 seconds. If searches consistently take longer, try clearing your browser cache or contact support.',
-    category: 'troubleshooting'
+    answer:
+      'Search times can vary based on destination popularity and current demand. International flights typically take 10-30 seconds. If searches consistently take longer, try clearing your browser cache or contact support.',
+    category: 'troubleshooting',
   },
   {
     id: '8',
     question: 'How does group trip planning work?',
-    answer: 'Group trips allow multiple people to collaborate: 1) Create a trip and mark it as "Group Trip", 2) Invite members via email, 3) Use voting features for decisions, 4) Share budgets and expenses, 5) Chat and coordinate through the platform.',
-    category: 'getting-started'
-  }
+    answer:
+      'Group trips allow multiple people to collaborate: 1) Create a trip and mark it as "Group Trip", 2) Invite members via email, 3) Use voting features for decisions, 4) Share budgets and expenses, 5) Chat and coordinate through the platform.',
+    category: 'getting-started',
+  },
 ];
 
 export default function HelpCenter() {
@@ -145,12 +149,13 @@ export default function HelpCenter() {
   const [openFAQ, setOpenFAQ] = useState<string | null>(null);
 
   const filteredFAQs = faqs.filter(faq => {
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch =
+      searchQuery === '' ||
       faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
       faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     const matchesCategory = !selectedCategory || faq.category === selectedCategory;
-    
+
     return matchesSearch && matchesCategory;
   });
 
@@ -163,9 +168,7 @@ export default function HelpCenter() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Help Center
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">Help Center</h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Find answers to common questions and learn how to make the most of TripRadar.
           </p>
@@ -179,7 +182,7 @@ export default function HelpCenter() {
               type="text"
               placeholder="Search for help articles..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm"
             />
           </div>
@@ -197,22 +200,20 @@ export default function HelpCenter() {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="flex items-start justify-between mb-4">
-                <div className={`p-3 rounded-xl ${category.color} group-hover:scale-110 transition-transform duration-300`}>
+                <div
+                  className={`p-3 rounded-xl ${category.color} group-hover:scale-110 transition-transform duration-300`}
+                >
                   <category.icon className="h-6 w-6 text-white" />
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  {category.articles} articles
-                </div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">{category.articles} articles</div>
               </div>
-              
+
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                 {category.title}
               </h3>
-              
-              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                {category.description}
-              </p>
-              
+
+              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{category.description}</p>
+
               <div className="flex items-center mt-4 text-primary-600 dark:text-primary-400 text-sm font-medium">
                 <span>Browse articles</span>
                 <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
@@ -225,10 +226,9 @@ export default function HelpCenter() {
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              {selectedCategory ? 
-                `${helpCategories.find(c => c.id === selectedCategory)?.title} FAQs` : 
-                'Frequently Asked Questions'
-              }
+              {selectedCategory
+                ? `${helpCategories.find(c => c.id === selectedCategory)?.title} FAQs`
+                : 'Frequently Asked Questions'}
             </h2>
             {selectedCategory && (
               <button
@@ -245,10 +245,12 @@ export default function HelpCenter() {
               <div className="text-center py-12">
                 <Search className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No results found</h3>
-                <p className="text-gray-600 dark:text-gray-400">Try adjusting your search or browse our categories above.</p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Try adjusting your search or browse our categories above.
+                </p>
               </div>
             ) : (
-              filteredFAQs.map((faq) => (
+              filteredFAQs.map(faq => (
                 <div
                   key={faq.id}
                   className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden"
@@ -257,20 +259,16 @@ export default function HelpCenter() {
                     onClick={() => toggleFAQ(faq.id)}
                     className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   >
-                    <h3 className="font-medium text-gray-900 dark:text-white pr-4">
-                      {faq.question}
-                    </h3>
+                    <h3 className="font-medium text-gray-900 dark:text-white pr-4">{faq.question}</h3>
                     <div className={`transform transition-transform ${openFAQ === faq.id ? 'rotate-180' : ''}`}>
                       <ChevronDown className="h-5 w-5 text-gray-500 dark:text-gray-400" />
                     </div>
                   </button>
-                  
+
                   {openFAQ === faq.id && (
                     <div className="px-6 pb-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
                       <div className="pt-4">
-                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                          {faq.answer}
-                        </p>
+                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{faq.answer}</p>
                       </div>
                     </div>
                   )}
@@ -333,20 +331,18 @@ export default function HelpCenter() {
 
         {/* Contact Section */}
         <div className="mt-16 bg-gradient-to-r from-primary-600 to-blue-700 rounded-2xl p-8 text-white text-center">
-          <h3 className="text-2xl md:text-3xl font-bold mb-4">
-            Still Need Help?
-          </h3>
+          <h3 className="text-2xl md:text-3xl font-bold mb-4">Still Need Help?</h3>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Our support team is here to help you get the most out of TripRadar. 
-            Reach out anytime for personalized assistance.
+            Our support team is here to help you get the most out of TripRadar. Reach out anytime for personalized
+            assistance.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
             <button className="bg-white text-primary-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-colors flex items-center space-x-2">
               <Mail className="h-5 w-5" />
               <span>Email Support</span>
             </button>
-            
+
             <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-3 rounded-xl font-semibold hover:bg-white/20 transition-colors flex items-center space-x-2 border border-white/20">
               <MessageSquare className="h-5 w-5" />
               <span>Live Chat</span>

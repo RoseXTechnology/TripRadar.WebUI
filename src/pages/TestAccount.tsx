@@ -1,19 +1,5 @@
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { 
-  User, 
-  Key, 
-  Shield, 
-  Info, 
-  CheckCircle, 
-  AlertTriangle,
-  Lock,
-  Settings,
-  CreditCard,
-  Clock,
-  FileText,
-  ArrowRight
-} from 'lucide-react';
+import { User, Key, Info, CheckCircle, AlertTriangle, Clock, FileText, ArrowRight, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function TestAccount() {
@@ -26,13 +12,14 @@ export default function TestAccount() {
       id: 'test-user-1',
       name: 'Test User',
       email: 'test@tripradar.io',
-      avatar: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1',
-      subscription: 'premium'
+      avatar:
+        'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1',
+      subscription: 'premium',
     };
-    
+
     // Log in as test user
     login(testUser);
-    
+
     // Navigate to dashboard
     navigate('/dashboard');
   };
@@ -50,14 +37,14 @@ export default function TestAccount() {
             Use our test account to explore all features of TripRadar without creating a new account.
           </p>
         </div>
-        
+
         {/* Test Account Info */}
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center space-x-2">
             <Info className="h-6 w-6 text-primary-600 dark:text-primary-400" />
             <span>Test Account Information</span>
           </h2>
-          
+
           <div className="space-y-6">
             <div className="flex items-start space-x-4">
               <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-lg mt-1">
@@ -66,13 +53,19 @@ export default function TestAccount() {
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Account Details</h3>
                 <div className="space-y-2 text-gray-700 dark:text-gray-300">
-                  <p><strong>Username:</strong> test@tripradar.io</p>
-                  <p><strong>Password:</strong> TestUser123</p>
-                  <p><strong>Subscription:</strong> Premium (All features enabled)</p>
+                  <p>
+                    <strong>Username:</strong> test@tripradar.io
+                  </p>
+                  <p>
+                    <strong>Password:</strong> TestUser123
+                  </p>
+                  <p>
+                    <strong>Subscription:</strong> Premium (All features enabled)
+                  </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-4">
               <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-lg mt-1">
                 <Key className="h-5 w-5 text-primary-600 dark:text-primary-400" />
@@ -92,7 +85,7 @@ export default function TestAccount() {
                 </ul>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-4">
               <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-lg mt-1">
                 <Clock className="h-5 w-5 text-primary-600 dark:text-primary-400" />
@@ -110,7 +103,7 @@ export default function TestAccount() {
               </div>
             </div>
           </div>
-          
+
           <div className="mt-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
             <div className="flex items-start space-x-3">
               <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
@@ -126,14 +119,14 @@ export default function TestAccount() {
             </div>
           </div>
         </div>
-        
+
         {/* Limitations */}
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center space-x-2">
             <AlertTriangle className="h-6 w-6 text-primary-600 dark:text-primary-400" />
             <span>Test Account Limitations</span>
           </h2>
-          
+
           <div className="space-y-4">
             <div className="flex items-start space-x-3">
               <div className="p-1 bg-red-100 dark:bg-red-900/20 rounded-full mt-0.5">
@@ -146,7 +139,7 @@ export default function TestAccount() {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <div className="p-1 bg-red-100 dark:bg-red-900/20 rounded-full mt-0.5">
                 <X className="h-4 w-4 text-red-600 dark:text-red-400" />
@@ -158,7 +151,7 @@ export default function TestAccount() {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <div className="p-1 bg-red-100 dark:bg-red-900/20 rounded-full mt-0.5">
                 <X className="h-4 w-4 text-red-600 dark:text-red-400" />
@@ -170,7 +163,7 @@ export default function TestAccount() {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <div className="p-1 bg-red-100 dark:bg-red-900/20 rounded-full mt-0.5">
                 <X className="h-4 w-4 text-red-600 dark:text-red-400" />
@@ -184,7 +177,7 @@ export default function TestAccount() {
             </div>
           </div>
         </div>
-        
+
         {/* Login Button */}
         <div className="bg-gradient-to-r from-primary-600 to-blue-700 rounded-2xl p-8 text-white text-center">
           <h3 className="text-2xl font-bold mb-4">Ready to Explore TripRadar?</h3>
@@ -198,7 +191,7 @@ export default function TestAccount() {
             <span>Log in as Test User</span>
             <ArrowRight className="h-5 w-5" />
           </button>
-          
+
           <div className="mt-6 flex items-center justify-center space-x-6 text-sm text-blue-200">
             <div className="flex items-center space-x-2">
               <CheckCircle className="h-4 w-4" />
@@ -214,20 +207,29 @@ export default function TestAccount() {
             </div>
           </div>
         </div>
-        
+
         {/* Documentation Links */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Link to="/help" className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow flex items-center space-x-3">
+          <Link
+            to="/help"
+            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow flex items-center space-x-3"
+          >
             <FileText className="h-5 w-5 text-primary-600 dark:text-primary-400" />
             <span className="text-gray-900 dark:text-white font-medium">Help Center</span>
           </Link>
-          
-          <Link to="/api-docs" className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow flex items-center space-x-3">
+
+          <Link
+            to="/api-docs"
+            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow flex items-center space-x-3"
+          >
             <FileText className="h-5 w-5 text-primary-600 dark:text-primary-400" />
             <span className="text-gray-900 dark:text-white font-medium">API Documentation</span>
           </Link>
-          
-          <Link to="/feedback" className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow flex items-center space-x-3">
+
+          <Link
+            to="/feedback"
+            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow flex items-center space-x-3"
+          >
             <FileText className="h-5 w-5 text-primary-600 dark:text-primary-400" />
             <span className="text-gray-900 dark:text-white font-medium">Provide Feedback</span>
           </Link>

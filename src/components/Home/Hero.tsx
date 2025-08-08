@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Play, Star, MessageSquare, Smartphone } from 'lucide-react';
-import VideoModal from './VideoModal';
+import { VideoModal } from 'shared/ui';
 
 export default function Hero() {
   const [showVideoModal, setShowVideoModal] = useState(false);
@@ -31,15 +31,13 @@ export default function Hero() {
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             Smart Travel
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-              Management
-            </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Management</span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Plan, track, and optimize your trips with our comprehensive travel management platform. 
-            From flights to local experiences, we've got you covered.
+            Plan, track, and optimize your trips with our comprehensive travel management platform. From flights to
+            local experiences, we've got you covered.
           </p>
 
           {/* CTA Buttons */}
@@ -51,8 +49,8 @@ export default function Hero() {
               <span>Start Planning</span>
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
-            
-            <button 
+
+            <button
               onClick={() => setShowVideoModal(true)}
               className="group flex items-center space-x-3 text-white hover:text-blue-200 transition-colors"
             >
@@ -65,18 +63,18 @@ export default function Hero() {
 
           {/* AI Assistant Links */}
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <a 
-              href="https://t.me/TripRadarBot" 
-              target="_blank" 
+            <a
+              href="https://t.me/TripRadarBot"
+              target="_blank"
               rel="noopener noreferrer"
               className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-xl hover:bg-white/20 transition-colors text-white"
             >
               <MessageSquare className="h-5 w-5" />
               <span className="font-medium">Chat on Telegram</span>
             </a>
-            <a 
-              href="https://wa.me/1234567890" 
-              target="_blank" 
+            <a
+              href="https://wa.me/1234567890"
+              target="_blank"
               rel="noopener noreferrer"
               className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-xl hover:bg-white/20 transition-colors text-white"
             >
@@ -105,13 +103,18 @@ export default function Hero() {
 
       {/* Floating elements */}
       <div className="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl animate-bounce-gentle"></div>
-      <div className="absolute bottom-20 right-10 w-32 h-32 bg-blue-400/20 rounded-full blur-xl animate-bounce-gentle" style={{ animationDelay: '1s' }}></div>
-      
+      <div
+        className="absolute bottom-20 right-10 w-32 h-32 bg-blue-400/20 rounded-full blur-xl animate-bounce-gentle"
+        style={{ animationDelay: '1s' }}
+      ></div>
+
       {/* Video Modal */}
-      <VideoModal 
-        isOpen={showVideoModal} 
+      <VideoModal
+        isOpen={showVideoModal}
         onClose={() => setShowVideoModal(false)}
-        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        title="AI Travel Assistant Demo"
+        description="This demo shows how to use our AI Travel Assistant via Telegram and WhatsApp for instant trip management, budget tracking, and personalized recommendations."
       />
     </section>
   );

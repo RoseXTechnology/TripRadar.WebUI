@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Mail, 
-  Code, 
-  Handshake, 
-  Newspaper, 
-  MapPin, 
-  Clock, 
-  Phone, 
+import {
+  Mail,
+  Code,
+  Handshake,
+  Newspaper,
+  MapPin,
+  Clock,
   MessageSquare,
   Send,
   CheckCircle,
   ExternalLink,
-  Globe,
   Shield,
   Zap,
   Users,
@@ -21,12 +19,12 @@ import {
   Twitter,
   Github,
   Linkedin,
-  AlertTriangle
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 // Define SVG pattern as a constant to avoid parsing issues
-const dotPattern = "data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E";
+const dotPattern =
+  "data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E";
 
 export default function Contact() {
   const [isVisible, setIsVisible] = useState(false);
@@ -35,7 +33,7 @@ export default function Contact() {
     email: '',
     company: '',
     subject: 'general',
-    message: ''
+    message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -44,12 +42,12 @@ export default function Contact() {
   const [formErrors, setFormErrors] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
   });
 
   useEffect(() => {
     setIsVisible(true);
-    
+
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -61,138 +59,138 @@ export default function Contact() {
   const contactMethods = [
     {
       icon: Mail,
-      title: "General Inquiries",
-      email: "hello@tripradar.io",
-      description: "General questions and information",
-      responseTime: "24 hours",
-      gradient: "from-blue-500 to-cyan-500"
+      title: 'General Inquiries',
+      email: 'hello@tripradar.io',
+      description: 'General questions and information',
+      responseTime: '24 hours',
+      gradient: 'from-blue-500 to-cyan-500',
     },
     {
       icon: Code,
-      title: "Technical Support",
-      email: "support@tripradar.io", 
-      description: "API documentation, integration help, technical issues",
-      responseTime: "4 hours during business days",
-      gradient: "from-green-500 to-teal-500"
+      title: 'Technical Support',
+      email: 'support@tripradar.io',
+      description: 'API documentation, integration help, technical issues',
+      responseTime: '4 hours during business days',
+      gradient: 'from-green-500 to-teal-500',
     },
     {
       icon: Handshake,
-      title: "Sales & Partnerships",
-      email: "sales@tripradar.io",
-      description: "Enterprise plans, partnerships, custom solutions",
-      responseTime: "Same day",
-      gradient: "from-purple-500 to-pink-500"
+      title: 'Sales & Partnerships',
+      email: 'sales@tripradar.io',
+      description: 'Enterprise plans, partnerships, custom solutions',
+      responseTime: 'Same day',
+      gradient: 'from-purple-500 to-pink-500',
     },
     {
       icon: Newspaper,
-      title: "Press & Media",
-      email: "press@tripradar.io",
-      description: "Media inquiries, press releases, interviews",
-      responseTime: "48 hours",
-      gradient: "from-orange-500 to-red-500"
-    }
+      title: 'Press & Media',
+      email: 'press@tripradar.io',
+      description: 'Media inquiries, press releases, interviews',
+      responseTime: '48 hours',
+      gradient: 'from-orange-500 to-red-500',
+    },
   ];
 
   const offices = [
     {
-      city: "San Francisco",
-      region: "Headquarters",
-      address: "123 Market Street, Suite 400",
-      note: "Remote-First Company"
+      city: 'San Francisco',
+      region: 'Headquarters',
+      address: '123 Market Street, Suite 400',
+      note: 'Remote-First Company',
     },
     {
-      city: "Austin",
-      region: "Developer Hub", 
-      address: "456 Congress Avenue, Floor 12",
-      note: "Engineering Team"
+      city: 'Austin',
+      region: 'Developer Hub',
+      address: '456 Congress Avenue, Floor 12',
+      note: 'Engineering Team',
     },
     {
-      city: "London",
-      region: "European Office",
+      city: 'London',
+      region: 'European Office',
       address: "789 King's Road, Level 8",
-      note: "EU Operations"
-    }
+      note: 'EU Operations',
+    },
   ];
 
   const faqs = [
     {
       question: 'How quickly do you respond to support requests?',
-      answer: 'Technical support: 4 hours during business days, General inquiries: 24 hours, Sales: Same day response'
+      answer: 'Technical support: 4 hours during business days, General inquiries: 24 hours, Sales: Same day response',
     },
     {
       question: 'Do you offer phone support?',
-      answer: 'Currently we provide email-based support with scheduled calls available for enterprise customers'
+      answer: 'Currently we provide email-based support with scheduled calls available for enterprise customers',
     },
     {
       question: 'Can I schedule a demo?',
-      answer: 'Yes! Contact our sales team to arrange a personalized demo of our platform and APIs'
+      answer: 'Yes! Contact our sales team to arrange a personalized demo of our platform and APIs',
     },
     {
       question: 'Do you have API documentation?',
-      answer: 'Comprehensive documentation is available at docs.tripradar.io with examples and interactive testing'
+      answer: 'Comprehensive documentation is available at docs.tripradar.io with examples and interactive testing',
     },
     {
       question: 'What about enterprise support?',
-      answer: 'Enterprise customers get priority support with dedicated success managers and SLA guarantees'
-    }
+      answer: 'Enterprise customers get priority support with dedicated success managers and SLA guarantees',
+    },
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    
+
     // Clear error when user types
     if (formErrors[name as keyof typeof formErrors]) {
       setFormErrors(prev => ({
         ...prev,
-        [name]: ''
+        [name]: '',
       }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate form
     let hasErrors = false;
     const errors = {
       name: '',
       email: '',
-      message: ''
+      message: '',
     };
-    
+
     if (!formData.name.trim()) {
       errors.name = 'Name is required';
       hasErrors = true;
     }
-    
+
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = 'Email is invalid';
       hasErrors = true;
     }
-    
+
     if (!formData.message.trim()) {
       errors.message = 'Message is required';
       hasErrors = true;
     }
-    
+
     setFormErrors(errors);
-    
+
     if (hasErrors) return;
-    
+
     setIsSubmitting(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     setIsSubmitting(false);
     setIsSubmitted(true);
-    
+
     // Reset form after success
     setTimeout(() => {
       setIsSubmitted(false);
@@ -201,7 +199,7 @@ export default function Contact() {
         email: '',
         company: '',
         subject: 'general',
-        message: ''
+        message: '',
       });
     }, 3000);
   };
@@ -210,7 +208,7 @@ export default function Contact() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 pt-16">
       {/* Mouse Follower Spotlight - Only in dark mode */}
       {actualTheme === 'dark' && (
-        <div 
+        <div
           className="fixed pointer-events-none z-0 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
           style={{
             background: `radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`,
@@ -224,27 +222,29 @@ export default function Contact() {
       <section className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700">
         {/* Background with SVG pattern */}
         <div className="absolute inset-0">
-          <div 
+          <div
             className="absolute inset-0 animate-pulse"
-            style={{ 
+            style={{
               backgroundImage: `url('${dotPattern}')`,
-              backgroundSize: '60px 60px'
+              backgroundSize: '60px 60px',
             }}
           ></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className={`text-center transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <div
+            className={`text-center transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+          >
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
               Get in
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
                 Touch
               </span>
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-12 leading-relaxed">
-              Our team is here to help you get the most out of TripRadar. Reach out anytime for support, 
-              partnerships, or just to say hello!
+              Our team is here to help you get the most out of TripRadar. Reach out anytime for support, partnerships,
+              or just to say hello!
             </p>
           </div>
         </div>
@@ -254,9 +254,7 @@ export default function Contact() {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-              How Can We Help?
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">How Can We Help?</h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
               Choose the best way to reach us based on your needs.
             </p>
@@ -269,20 +267,18 @@ export default function Contact() {
                 className={`group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 ${isVisible ? 'animate-slide-up' : ''}`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${method.gradient} mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <div
+                  className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${method.gradient} mb-6 group-hover:scale-110 transition-transform duration-300`}
+                >
                   <method.icon className="h-8 w-8 text-white" />
                 </div>
-                
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                  {method.title}
-                </h3>
-                
-                <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
-                  {method.description}
-                </p>
-                
+
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{method.title}</h3>
+
+                <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">{method.description}</p>
+
                 <div className="space-y-2">
-                  <a 
+                  <a
                     href={`mailto:${method.email}`}
                     className="block text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium transition-colors"
                   >
@@ -313,9 +309,7 @@ export default function Contact() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Name *
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name *</label>
                     <input
                       type="text"
                       name="name"
@@ -330,11 +324,9 @@ export default function Contact() {
                       <p className="mt-1 text-sm text-red-600 dark:text-red-400">{formErrors.name}</p>
                     )}
                   </div>
-                  
+
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Email *
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email *</label>
                     <input
                       type="email"
                       name="email"
@@ -352,9 +344,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Company
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Company</label>
                   <input
                     type="text"
                     name="company"
@@ -366,9 +356,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Subject *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject *</label>
                   <select
                     name="subject"
                     value={formData.subject}
@@ -384,9 +372,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Message *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message *</label>
                   <textarea
                     name="message"
                     rows={6}
@@ -439,7 +425,11 @@ export default function Contact() {
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Office Locations</h3>
                 <div className="space-y-6">
                   {offices.map((office, index) => (
-                    <div key={index} className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-6 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div
+                      key={index}
+                      className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-6 animate-slide-up"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
                       <div className="flex items-start space-x-4">
                         <div className="p-2 bg-indigo-100 dark:bg-indigo-900/20 rounded-lg">
                           <MapPin className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
@@ -454,10 +444,11 @@ export default function Contact() {
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
                   <p className="text-blue-800 dark:text-blue-300 text-sm">
-                    <strong>Note:</strong> We're a remote-first company, but these are our main hubs for meetings and events.
+                    <strong>Note:</strong> We're a remote-first company, but these are our main hubs for meetings and
+                    events.
                   </p>
                 </div>
               </div>
@@ -478,7 +469,7 @@ export default function Contact() {
                       Start Chat
                     </button>
                   </div>
-                  
+
                   <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg">
                     <div className="flex items-center space-x-3">
                       <Activity className="h-6 w-6 text-blue-600 dark:text-blue-400" />
@@ -492,7 +483,7 @@ export default function Contact() {
                       <ExternalLink className="h-4 w-4" />
                     </button>
                   </div>
-                  
+
                   <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg">
                     <div className="flex items-center space-x-3">
                       <FileText className="h-6 w-6 text-purple-600 dark:text-purple-400" />
@@ -566,20 +557,17 @@ export default function Contact() {
       {/* CTA Section */}
       <section className="py-24 bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Still Have Questions?
-          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Still Have Questions?</h2>
           <p className="text-xl text-blue-100 mb-12 max-w-2xl mx-auto">
-            Our team is here to help you get the most out of TripRadar. 
-            Reach out anytime for personalized assistance.
+            Our team is here to help you get the most out of TripRadar. Reach out anytime for personalized assistance.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
             <button className="bg-white text-indigo-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 flex items-center space-x-2 shadow-2xl">
               <Mail className="h-5 w-5" />
               <span>Email Support</span>
             </button>
-            
+
             <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all duration-300 flex items-center space-x-2 border border-white/20">
               <MessageSquare className="h-5 w-5" />
               <span>Live Chat</span>

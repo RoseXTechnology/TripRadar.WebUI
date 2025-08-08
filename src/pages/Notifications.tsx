@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Bell, 
-  Check, 
-  X, 
-  Clock, 
-  AlertTriangle, 
-  Info, 
+import { useState, useEffect } from 'react';
+import {
+  Bell,
+  Check,
+  X,
+  Clock,
+  AlertTriangle,
+  Info,
   CheckCircle,
-  Filter,
   Search,
-  MoreVertical,
   Trash2,
-  Archive,
-  Star,
-  Calendar,
   DollarSign,
   Users,
   MapPin,
-  Settings
+  Settings,
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -36,7 +31,6 @@ export default function Notifications() {
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedNotifications, setSelectedNotifications] = useState<string[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { actualTheme } = useTheme();
 
@@ -57,7 +51,7 @@ export default function Notifications() {
       message: 'Your Tokyo trip budget is 85% used. Consider reviewing your expenses.',
       timestamp: '2024-01-15T10:30:00Z',
       read: false,
-      category: 'budget'
+      category: 'budget',
     },
     {
       id: '2',
@@ -66,7 +60,7 @@ export default function Notifications() {
       message: 'Your flight to Tokyo departs in 3 days. Check-in is now available.',
       timestamp: '2024-01-15T09:15:00Z',
       read: false,
-      category: 'trip'
+      category: 'trip',
     },
     {
       id: '3',
@@ -75,7 +69,7 @@ export default function Notifications() {
       message: 'Restaurant voting for Day 2 dinner is complete. Le Comptoir du Relais won!',
       timestamp: '2024-01-14T18:45:00Z',
       read: true,
-      category: 'group'
+      category: 'group',
     },
     {
       id: '4',
@@ -84,7 +78,7 @@ export default function Notifications() {
       message: 'Rain expected in Tokyo tomorrow. Pack an umbrella!',
       timestamp: '2024-01-14T16:20:00Z',
       read: true,
-      category: 'trip'
+      category: 'trip',
     },
     {
       id: '5',
@@ -93,7 +87,7 @@ export default function Notifications() {
       message: 'New login detected from Chrome on Windows in New York.',
       timestamp: '2024-01-14T14:10:00Z',
       read: false,
-      category: 'security'
+      category: 'security',
     },
     {
       id: '6',
@@ -102,8 +96,8 @@ export default function Notifications() {
       message: 'Your premium subscription has been renewed successfully.',
       timestamp: '2024-01-13T12:00:00Z',
       read: true,
-      category: 'system'
-    }
+      category: 'system',
+    },
   ];
 
   const getTypeIcon = (type: string) => {
@@ -138,7 +132,7 @@ export default function Notifications() {
     const date = new Date(timestamp);
     const now = new Date();
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
+
     if (diffInHours < 1) return 'Just now';
     if (diffInHours < 24) return `${diffInHours}h ago`;
     if (diffInHours < 48) return 'Yesterday';
@@ -146,16 +140,16 @@ export default function Notifications() {
   };
 
   const filteredNotifications = notifications.filter(notification => {
-    const matchesFilter = filter === 'all' || 
-      (filter === 'read' && notification.read) || 
-      (filter === 'unread' && !notification.read);
-    
+    const matchesFilter =
+      filter === 'all' || (filter === 'read' && notification.read) || (filter === 'unread' && !notification.read);
+
     const matchesCategory = categoryFilter === 'all' || notification.category === categoryFilter;
-    
-    const matchesSearch = searchQuery === '' || 
+
+    const matchesSearch =
+      searchQuery === '' ||
       notification.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       notification.message.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     return matchesFilter && matchesCategory && matchesSearch;
   });
 
@@ -180,7 +174,7 @@ export default function Notifications() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 pt-16">
       {/* Mouse Follower Spotlight - Only in dark mode */}
       {actualTheme === 'dark' && (
-        <div 
+        <div
           className="fixed pointer-events-none z-0 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
           style={{
             background: `radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`,
@@ -189,7 +183,7 @@ export default function Notifications() {
           }}
         />
       )}
-      
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
@@ -202,7 +196,7 @@ export default function Notifications() {
               Stay updated with your travel activities and important alerts
             </p>
           </div>
-          
+
           {unreadCount > 0 && (
             <div className="mt-4 sm:mt-0 flex items-center space-x-4">
               <span className="bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 px-3 py-1 rounded-full text-sm font-medium">
@@ -229,7 +223,7 @@ export default function Notifications() {
                   type="text"
                   placeholder="Search notifications..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
@@ -237,7 +231,7 @@ export default function Notifications() {
 
             {/* Status Filter */}
             <div className="flex space-x-2">
-              {['all', 'unread', 'read'].map((filterOption) => (
+              {['all', 'unread', 'read'].map(filterOption => (
                 <button
                   key={filterOption}
                   onClick={() => setFilter(filterOption as any)}
@@ -255,7 +249,7 @@ export default function Notifications() {
             {/* Category Filter */}
             <select
               value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
+              onChange={e => setCategoryFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
               <option value="all">All Categories</option>
@@ -275,7 +269,7 @@ export default function Notifications() {
               <Bell className="h-16 w-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No notifications found</h3>
               <p className="text-gray-600 dark:text-gray-400">
-                {searchQuery ? 'Try adjusting your search or filters.' : 'You\'re all caught up!'}
+                {searchQuery ? 'Try adjusting your search or filters.' : "You're all caught up!"}
               </p>
             </div>
           ) : (
@@ -289,31 +283,25 @@ export default function Notifications() {
               >
                 <div className="flex items-start space-x-4">
                   {/* Type Icon */}
-                  <div className="flex-shrink-0 mt-1">
-                    {getTypeIcon(notification.type)}
-                  </div>
+                  <div className="flex-shrink-0 mt-1">{getTypeIcon(notification.type)}</div>
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-1">
-                          <h3 className={`text-lg font-semibold ${
-                            !notification.read 
-                              ? 'text-gray-900 dark:text-white' 
-                              : 'text-gray-700 dark:text-gray-300'
-                          }`}>
+                          <h3
+                            className={`text-lg font-semibold ${
+                              !notification.read ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'
+                            }`}
+                          >
                             {notification.title}
                           </h3>
-                          {!notification.read && (
-                            <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
-                          )}
+                          {!notification.read && <div className="w-2 h-2 bg-primary-500 rounded-full"></div>}
                         </div>
-                        
-                        <p className="text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">
-                          {notification.message}
-                        </p>
-                        
+
+                        <p className="text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">{notification.message}</p>
+
                         <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
                           <div className="flex items-center space-x-1">
                             <Clock className="h-4 w-4" />
@@ -337,7 +325,7 @@ export default function Notifications() {
                             <Check className="h-4 w-4" />
                           </button>
                         )}
-                        
+
                         <button
                           onClick={() => handleDeleteNotification(notification.id)}
                           className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -357,9 +345,7 @@ export default function Notifications() {
         {/* Notification Settings Link */}
         <div className="mt-8 text-center animate-slide-up" style={{ animationDelay: '0.5s' }}>
           <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-              Notification Preferences
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Notification Preferences</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               Customize which notifications you receive and how you receive them.
             </p>

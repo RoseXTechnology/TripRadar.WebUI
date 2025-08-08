@@ -1,6 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Star, Clock, Users, Camera, Compass, Mountain, Building, TreePine, Waves, Plus, Search, Filter, ArrowRight, Heart, DollarSign, Utensils, Armchair as Wheelchair, Bus, Globe } from 'lucide-react';
+import {
+  Star,
+  Clock,
+  Camera,
+  Compass,
+  Mountain,
+  Building,
+  TreePine,
+  Waves,
+  Plus,
+  Search,
+  Filter,
+  ArrowRight,
+  Heart,
+  Utensils,
+  Armchair as Wheelchair,
+  Bus,
+  Globe,
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useApp } from '../context/AppContext';
 
@@ -8,13 +26,15 @@ const destinations = [
   {
     id: 1,
     name: 'Kyoto, Japan',
-    image: 'https://images.pexels.com/photos/1829980/pexels-photo-1829980.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
+    image:
+      'https://images.pexels.com/photos/1829980/pexels-photo-1829980.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
     rating: 4.9,
     reviews: 2847,
     type: 'Cultural',
     duration: '3-5 days',
     highlights: ['Temples', 'Gardens', 'Traditional Culture'],
-    description: 'Immerse yourself in traditional Japanese culture with ancient temples, serene gardens, and timeless traditions.',
+    description:
+      'Immerse yourself in traditional Japanese culture with ancient temples, serene gardens, and timeless traditions.',
     estimatedCost: 1200,
     bestTime: 'Spring/Fall',
     tags: {
@@ -24,19 +44,21 @@ const destinations = [
       tripType: ['cultural', 'relaxation'],
       accessibility: ['wheelchair'],
       languages: ['japanese', 'english'],
-      activities: ['day']
-    }
+      activities: ['day'],
+    },
   },
   {
     id: 2,
     name: 'Santorini, Greece',
-    image: 'https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
+    image:
+      'https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
     rating: 4.8,
     reviews: 1923,
     type: 'Coastal',
     duration: '4-6 days',
     highlights: ['Sunsets', 'Architecture', 'Wineries'],
-    description: 'Experience breathtaking sunsets, iconic white-washed buildings, and world-class wines on this Greek island paradise.',
+    description:
+      'Experience breathtaking sunsets, iconic white-washed buildings, and world-class wines on this Greek island paradise.',
     estimatedCost: 1800,
     bestTime: 'Summer',
     tags: {
@@ -46,19 +68,21 @@ const destinations = [
       tripType: ['relaxation', 'luxury'],
       accessibility: [],
       languages: ['greek', 'english'],
-      activities: ['day', 'night']
-    }
+      activities: ['day', 'night'],
+    },
   },
   {
     id: 3,
     name: 'Swiss Alps',
-    image: 'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
+    image:
+      'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
     rating: 4.9,
     reviews: 3156,
     type: 'Adventure',
     duration: '5-7 days',
     highlights: ['Hiking', 'Skiing', 'Mountain Views'],
-    description: 'Adventure awaits in the majestic Swiss Alps with world-class skiing, hiking trails, and stunning mountain vistas.',
+    description:
+      'Adventure awaits in the majestic Swiss Alps with world-class skiing, hiking trails, and stunning mountain vistas.',
     estimatedCost: 2500,
     bestTime: 'Winter/Summer',
     tags: {
@@ -68,19 +92,21 @@ const destinations = [
       tripType: ['adventure', 'luxury'],
       accessibility: ['limited-mobility'],
       languages: ['german', 'french', 'italian', 'english'],
-      activities: ['day', 'outdoor']
-    }
+      activities: ['day', 'outdoor'],
+    },
   },
   {
     id: 4,
     name: 'Marrakech, Morocco',
-    image: 'https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
+    image:
+      'https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
     rating: 4.7,
     reviews: 2134,
     type: 'Cultural',
     duration: '3-4 days',
     highlights: ['Markets', 'Architecture', 'Cuisine'],
-    description: 'Dive into the vibrant culture of Morocco with bustling souks, stunning architecture, and incredible cuisine.',
+    description:
+      'Dive into the vibrant culture of Morocco with bustling souks, stunning architecture, and incredible cuisine.',
     estimatedCost: 900,
     bestTime: 'Spring/Fall',
     tags: {
@@ -90,13 +116,14 @@ const destinations = [
       tripType: ['cultural', 'budget'],
       accessibility: [],
       languages: ['arabic', 'french'],
-      activities: ['day', 'night']
-    }
+      activities: ['day', 'night'],
+    },
   },
   {
     id: 5,
     name: 'Bali, Indonesia',
-    image: 'https://images.pexels.com/photos/2161467/pexels-photo-2161467.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
+    image:
+      'https://images.pexels.com/photos/2161467/pexels-photo-2161467.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
     rating: 4.8,
     reviews: 4521,
     type: 'Tropical',
@@ -112,19 +139,21 @@ const destinations = [
       tripType: ['relaxation', 'adventure', 'cultural'],
       accessibility: [],
       languages: ['indonesian', 'english'],
-      activities: ['day', 'outdoor', 'water']
-    }
+      activities: ['day', 'outdoor', 'water'],
+    },
   },
   {
     id: 6,
     name: 'Iceland Ring Road',
-    image: 'https://images.pexels.com/photos/1586298/pexels-photo-1586298.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
+    image:
+      'https://images.pexels.com/photos/1586298/pexels-photo-1586298.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1',
     rating: 4.9,
     reviews: 1876,
     type: 'Nature',
     duration: '8-12 days',
     highlights: ['Waterfalls', 'Glaciers', 'Northern Lights'],
-    description: 'Journey through Iceland\'s dramatic landscapes featuring powerful waterfalls, ancient glaciers, and the magical Northern Lights.',
+    description:
+      "Journey through Iceland's dramatic landscapes featuring powerful waterfalls, ancient glaciers, and the magical Northern Lights.",
     estimatedCost: 3200,
     bestTime: 'Summer',
     tags: {
@@ -134,8 +163,8 @@ const destinations = [
       tripType: ['adventure', 'nature'],
       accessibility: [],
       languages: ['icelandic', 'english'],
-      activities: ['day', 'outdoor']
-    }
+      activities: ['day', 'outdoor'],
+    },
   },
 ];
 
@@ -162,7 +191,7 @@ export default function Discover() {
     if (user?.preferences) {
       // Convert user preferences to filter format
       const userFilters: Record<string, string[]> = {};
-      
+
       if (user.preferences.dietary) userFilters.dietary = user.preferences.dietary;
       if (user.preferences.accommodationType) userFilters.accommodation = user.preferences.accommodationType;
       if (user.preferences.transport) userFilters.transport = user.preferences.transport;
@@ -170,7 +199,7 @@ export default function Discover() {
       if (user.preferences.accessibility) userFilters.accessibility = user.preferences.accessibility;
       if (user.preferences.languages) userFilters.languages = user.preferences.languages;
       if (user.preferences.activities) userFilters.activities = user.preferences.activities;
-      
+
       setActiveFilters(userFilters);
     }
   }, [user]);
@@ -178,22 +207,23 @@ export default function Discover() {
   // Filter destinations based on category, search query, and user preferences
   useEffect(() => {
     let filtered = destinations;
-    
+
     // Filter by category
     if (selectedCategory !== 'All') {
       filtered = filtered.filter(destination => destination.type === selectedCategory);
     }
-    
+
     // Filter by search query
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(destination => 
-        destination.name.toLowerCase().includes(query) ||
-        destination.description.toLowerCase().includes(query) ||
-        destination.highlights.some(highlight => highlight.toLowerCase().includes(query))
+      filtered = filtered.filter(
+        destination =>
+          destination.name.toLowerCase().includes(query) ||
+          destination.description.toLowerCase().includes(query) ||
+          destination.highlights.some(highlight => highlight.toLowerCase().includes(query))
       );
     }
-    
+
     // Filter by user preferences if any are active
     if (Object.keys(activeFilters).length > 0) {
       filtered = filtered.filter(destination => {
@@ -201,62 +231,62 @@ export default function Discover() {
         return Object.entries(activeFilters).every(([category, selectedOptions]) => {
           // Skip if no options selected for this category
           if (!selectedOptions || selectedOptions.length === 0) return true;
-          
+
           // Skip if destination doesn't have tags for this category
           if (!destination.tags[category as keyof typeof destination.tags]) return true;
-          
+
           // Check if any of the destination's tags for this category match the selected options
-          return selectedOptions.some(option => 
+          return selectedOptions.some(option =>
             destination.tags[category as keyof typeof destination.tags].includes(option)
           );
         });
       });
     }
-    
+
     setFilteredDestinations(filtered);
   }, [selectedCategory, searchQuery, activeFilters]);
 
   const handleCreateTrip = (destination: any) => {
     if (!requireAuth()) return;
-    
+
     // Navigate to trip planning with pre-populated data
-    navigate('/trip-planning', { 
-      state: { 
+    navigate('/trip-planning', {
+      state: {
         destination: destination.name,
         estimatedCost: destination.estimatedCost,
         duration: destination.duration,
         highlights: destination.highlights,
-        type: destination.type
-      }
+        type: destination.type,
+      },
     });
   };
 
   const handleAddToTrip = (destination: any) => {
     if (!requireAuth()) return;
-    
+
     // Navigate to trips page with option to add to existing trip
-    navigate('/trips', { 
-      state: { 
-        addDestination: destination
-      }
+    navigate('/trips', {
+      state: {
+        addDestination: destination,
+      },
     });
   };
 
   const toggleFilter = (category: string, option: string) => {
     setActiveFilters(prev => {
       const current = [...(prev[category] || [])];
-      
+
       if (current.includes(option)) {
         // Remove the option if already selected
         return {
           ...prev,
-          [category]: current.filter(item => item !== option)
+          [category]: current.filter(item => item !== option),
         };
       } else {
         // Add the option if not already selected
         return {
           ...prev,
-          [category]: [...current, option]
+          [category]: [...current, option],
         };
       }
     });
@@ -278,8 +308,8 @@ export default function Discover() {
         { id: 'halal', label: 'Halal' },
         { id: 'kosher', label: 'Kosher' },
         { id: 'gluten-free', label: 'Gluten Free' },
-        { id: 'dairy-free', label: 'Dairy Free' }
-      ]
+        { id: 'dairy-free', label: 'Dairy Free' },
+      ],
     },
     {
       id: 'accommodation',
@@ -290,8 +320,8 @@ export default function Discover() {
         { id: 'hostel', label: 'Hostels' },
         { id: 'airbnb', label: 'Airbnb' },
         { id: 'resort', label: 'Resorts' },
-        { id: 'camping', label: 'Camping' }
-      ]
+        { id: 'camping', label: 'Camping' },
+      ],
     },
     {
       id: 'transport',
@@ -302,8 +332,8 @@ export default function Discover() {
         { id: 'rental-car', label: 'Rental Car' },
         { id: 'taxi', label: 'Taxi/Rideshare' },
         { id: 'walking', label: 'Walking' },
-        { id: 'cycling', label: 'Cycling' }
-      ]
+        { id: 'cycling', label: 'Cycling' },
+      ],
     },
     {
       id: 'tripType',
@@ -314,8 +344,8 @@ export default function Discover() {
         { id: 'relaxation', label: 'Relaxation' },
         { id: 'cultural', label: 'Cultural' },
         { id: 'budget', label: 'Budget' },
-        { id: 'luxury', label: 'Luxury' }
-      ]
+        { id: 'luxury', label: 'Luxury' },
+      ],
     },
     {
       id: 'accessibility',
@@ -325,9 +355,9 @@ export default function Discover() {
         { id: 'wheelchair', label: 'Wheelchair Access' },
         { id: 'limited-mobility', label: 'Limited Mobility' },
         { id: 'kid-friendly', label: 'Kid Friendly' },
-        { id: 'pet-friendly', label: 'Pet Friendly' }
-      ]
-    }
+        { id: 'pet-friendly', label: 'Pet Friendly' },
+      ],
+    },
   ];
 
   return (
@@ -339,8 +369,8 @@ export default function Discover() {
             Discover Amazing Destinations
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Explore handpicked destinations and hidden gems from around the world. 
-            Let our curated recommendations inspire your next adventure.
+            Explore handpicked destinations and hidden gems from around the world. Let our curated recommendations
+            inspire your next adventure.
           </p>
         </div>
 
@@ -355,7 +385,7 @@ export default function Discover() {
                   type="text"
                   placeholder="Search destinations, activities, or experiences..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
@@ -378,7 +408,7 @@ export default function Discover() {
 
           {/* Categories */}
           <div className="flex flex-wrap justify-center gap-4 mt-6">
-            {categories.map((category) => (
+            {categories.map(category => (
               <button
                 key={category.name}
                 onClick={() => setSelectedCategory(category.name)}
@@ -399,25 +429,25 @@ export default function Discover() {
             <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Preferences</h3>
-                <button 
+                <button
                   onClick={clearFilters}
                   className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
                 >
                   Clear All
                 </button>
               </div>
-              
+
               <div className="space-y-6">
-                {filterCategories.map((category) => (
+                {filterCategories.map(category => (
                   <div key={category.id}>
                     <div className="flex items-center space-x-2 mb-3">
                       <category.icon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                       <h4 className="font-medium text-gray-900 dark:text-white">{category.name}</h4>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {category.options.map((option) => {
+                      {category.options.map(option => {
                         const isActive = activeFilters[category.id]?.includes(option.id);
-                        
+
                         return (
                           <button
                             key={option.id}
@@ -436,7 +466,7 @@ export default function Discover() {
                   </div>
                 ))}
               </div>
-              
+
               {/* User Preferences Notice */}
               {user?.preferences && Object.keys(activeFilters).length > 0 && (
                 <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
@@ -444,7 +474,8 @@ export default function Discover() {
                     <Heart className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
                     <div>
                       <p className="text-sm text-blue-700 dark:text-blue-300">
-                        <span className="font-medium">Personalized Results:</span> Showing destinations that match your preferences.
+                        <span className="font-medium">Personalized Results:</span> Showing destinations that match your
+                        preferences.
                       </p>
                       <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
                         You can adjust your preferences in Settings or modify the filters above.
@@ -495,12 +526,10 @@ export default function Discover() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="p-6">
-                <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
-                  {destination.description}
-                </p>
-                
+                <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">{destination.description}</p>
+
                 <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
                   <div className="flex items-center space-x-1">
                     <Clock className="h-4 w-4" />
@@ -511,9 +540,9 @@ export default function Discover() {
                     <span>{destination.bestTime}</span>
                   </div>
                 </div>
-                
+
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {destination.highlights.map((highlight) => (
+                  {destination.highlights.map(highlight => (
                     <span
                       key={highlight}
                       className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm"
@@ -522,7 +551,7 @@ export default function Discover() {
                     </span>
                   ))}
                 </div>
-                
+
                 <div className="flex space-x-3">
                   <button
                     onClick={() => handleCreateTrip(destination)}
@@ -556,14 +585,12 @@ export default function Discover() {
         {/* Bottom CTA */}
         <div className="text-center mt-16">
           <div className="bg-gradient-to-r from-primary-600 to-blue-700 rounded-2xl p-8 text-white">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Can't Find What You're Looking For?
-            </h3>
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">Can't Find What You're Looking For?</h3>
             <p className="text-xl text-blue-100 mb-6 max-w-2xl mx-auto">
-              Our travel experts can help you discover hidden gems and create custom itineraries 
-              tailored to your interests and preferences.
+              Our travel experts can help you discover hidden gems and create custom itineraries tailored to your
+              interests and preferences.
             </p>
-            <button 
+            <button
               onClick={() => requireAuth()}
               className="bg-white text-primary-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-colors"
             >

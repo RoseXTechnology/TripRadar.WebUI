@@ -1,12 +1,4 @@
-import React from 'react';
-import { 
-  Smile, 
-  TrendingUp, 
-  Target, 
-  Lightbulb,
-  Star,
-  BarChart3
-} from 'lucide-react';
+import { Smile, TrendingUp, Target, Lightbulb, Star, BarChart3 } from 'lucide-react';
 import { SatisfactionPrediction } from '../../types';
 
 interface SatisfactionPredictorProps {
@@ -74,21 +66,17 @@ export default function SatisfactionPredictor({ prediction }: SatisfactionPredic
                     <Star
                       key={i}
                       className={`h-3 w-3 ${
-                        i < factor.impact * 5 
-                          ? 'text-yellow-400 fill-current' 
-                          : 'text-gray-300 dark:text-gray-600'
+                        i < factor.impact * 5 ? 'text-yellow-400 fill-current' : 'text-gray-300 dark:text-gray-600'
                       }`}
                     />
                   ))}
                 </div>
-                <span className="text-xs text-gray-500 dark:text-gray-400">
-                  {(factor.impact * 100).toFixed(0)}%
-                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">{(factor.impact * 100).toFixed(0)}%</span>
               </div>
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-400">{factor.description}</p>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
-              <div 
+              <div
                 className="bg-primary-500 h-1.5 rounded-full transition-all duration-300"
                 style={{ width: `${factor.impact * 100}%` }}
               ></div>
@@ -116,8 +104,8 @@ export default function SatisfactionPredictor({ prediction }: SatisfactionPredic
       {/* Privacy Notice */}
       <div className="mt-6 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
         <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
-          🔒 Your data is processed locally and never used for AI training. 
-          Predictions are based on anonymized travel patterns only.
+          🔒 Your data is processed locally and never used for AI training. Predictions are based on anonymized travel
+          patterns only.
         </p>
       </div>
     </div>

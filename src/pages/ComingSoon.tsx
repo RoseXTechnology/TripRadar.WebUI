@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Calendar, 
-  Globe, 
-  Plane, 
-  Headphones, 
-  Bus, 
-  AlertTriangle, 
-  Package, 
-  Map, 
-  Smartphone, 
-  Wifi, 
-  Utensils, 
-  Languages, 
+import {
+  Calendar,
+  Globe,
+  Plane,
+  Headphones,
+  Bus,
+  AlertTriangle,
+  Package,
+  Map,
+  Smartphone,
+  Wifi,
+  Utensils,
+  Languages,
   Shield,
   Bell,
   ArrowRight,
@@ -20,7 +20,7 @@ import {
   Mail,
   ChevronRight,
   Star,
-  Sparkles
+  Sparkles,
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -48,10 +48,10 @@ export default function ComingSoon() {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    
+
     // Intersection Observer for scroll animations
     const observer = new IntersectionObserver(
-      (entries) => {
+      entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('animate-slide-up', 'opacity-100');
@@ -89,130 +89,155 @@ export default function ComingSoon() {
     {
       id: 'public-events',
       title: 'Public Events',
-      description: 'Discover local events, festivals, and activities happening during your trip. Get recommendations based on your interests and preferences.',
+      description:
+        'Discover local events, festivals, and activities happening during your trip. Get recommendations based on your interests and preferences.',
       icon: Calendar,
       status: 'coming-soon',
       eta: 'Q2 2025',
-      isPremium: false
+      isPremium: false,
     },
     {
       id: 'visa-requirements',
       title: 'Visa & Border Requirements',
-      description: 'Get up-to-date information on visa requirements, entry restrictions, and necessary documentation for your destination.',
+      description:
+        'Get up-to-date information on visa requirements, entry restrictions, and necessary documentation for your destination.',
       icon: Globe,
       status: 'in-development',
       eta: 'Q3 2025',
-      isPremium: true
+      isPremium: true,
     },
     {
       id: 'flight-tracking',
       title: 'Real-time Flight Tracking',
-      description: 'Track your flights in real-time, receive delay notifications, and get assistance with rebooking if your flight is cancelled.',
+      description:
+        'Track your flights in real-time, receive delay notifications, and get assistance with rebooking if your flight is cancelled.',
       icon: Plane,
       status: 'beta',
       eta: 'Q2 2025',
-      isPremium: true
+      isPremium: true,
     },
     {
       id: 'audio-guides',
       title: 'Audio Guides',
-      description: 'Listen to professional audio guides for popular attractions, landmarks, and museums in multiple languages.',
+      description:
+        'Listen to professional audio guides for popular attractions, landmarks, and museums in multiple languages.',
       icon: Headphones,
       status: 'coming-soon',
       eta: 'Q4 2025',
-      isPremium: true
+      isPremium: true,
     },
     {
       id: 'public-transport',
       title: 'Public Transport Routing',
-      description: 'Navigate public transportation systems in foreign cities with ease. Get real-time schedules, route planning, and fare information.',
+      description:
+        'Navigate public transportation systems in foreign cities with ease. Get real-time schedules, route planning, and fare information.',
       icon: Bus,
       status: 'in-development',
       eta: 'Q3 2025',
-      isPremium: false
+      isPremium: false,
     },
     {
       id: 'disaster-alerts',
       title: 'Global Disaster Alerts',
-      description: 'Receive timely alerts about natural disasters, civil unrest, or other safety concerns that might affect your travel plans.',
+      description:
+        'Receive timely alerts about natural disasters, civil unrest, or other safety concerns that might affect your travel plans.',
       icon: AlertTriangle,
       status: 'coming-soon',
       eta: 'Q2 2025',
-      isPremium: true
+      isPremium: true,
     },
     {
       id: 'luggage-storage',
       title: 'Luggage Storage',
-      description: 'Find and book secure luggage storage locations in major cities worldwide, allowing you to explore hands-free.',
+      description:
+        'Find and book secure luggage storage locations in major cities worldwide, allowing you to explore hands-free.',
       icon: Package,
       status: 'coming-soon',
       eta: 'Q3 2025',
-      isPremium: false
+      isPremium: false,
     },
     {
       id: 'offline-maps',
       title: 'Offline Maps',
-      description: 'Download detailed maps for offline use, complete with points of interest, navigation, and local recommendations.',
+      description:
+        'Download detailed maps for offline use, complete with points of interest, navigation, and local recommendations.',
       icon: Map,
       status: 'beta',
       eta: 'Q2 2025',
-      isPremium: false
+      isPremium: false,
     },
     {
       id: 'esim-services',
       title: 'eSIM Services',
-      description: 'Purchase and activate eSIMs for your destination directly through our platform, ensuring you stay connected while traveling.',
+      description:
+        'Purchase and activate eSIMs for your destination directly through our platform, ensuring you stay connected while traveling.',
       icon: Smartphone,
       status: 'in-development',
       eta: 'Q4 2025',
-      isPremium: true
+      isPremium: true,
     },
     {
       id: 'wifi-hotspots',
       title: 'WiFi Hotspots',
-      description: 'Find reliable WiFi hotspots worldwide with speed tests, security ratings, and connection instructions.',
+      description:
+        'Find reliable WiFi hotspots worldwide with speed tests, security ratings, and connection instructions.',
       icon: Wifi,
       status: 'coming-soon',
       eta: 'Q3 2025',
-      isPremium: false
+      isPremium: false,
     },
     {
       id: 'restaurant-reservations',
       title: 'Restaurant Reservations',
-      description: 'Book tables at popular restaurants in advance, with special deals and recommendations based on your dietary preferences.',
+      description:
+        'Book tables at popular restaurants in advance, with special deals and recommendations based on your dietary preferences.',
       icon: Utensils,
       status: 'in-development',
       eta: 'Q2 2025',
-      isPremium: true
+      isPremium: true,
     },
     {
       id: 'free-translations',
       title: 'Free Translations',
-      description: 'Translate signs, menus, and conversations in real-time using your camera or microphone, even without an internet connection.',
+      description:
+        'Translate signs, menus, and conversations in real-time using your camera or microphone, even without an internet connection.',
       icon: Languages,
       status: 'coming-soon',
       eta: 'Q4 2025',
-      isPremium: false
+      isPremium: false,
     },
     {
       id: 'insurance',
       title: 'Travel Insurance',
-      description: 'Compare and purchase travel insurance policies tailored to your specific trip details and requirements.',
+      description:
+        'Compare and purchase travel insurance policies tailored to your specific trip details and requirements.',
       icon: Shield,
       status: 'in-development',
       eta: 'Q3 2025',
-      isPremium: true
-    }
+      isPremium: true,
+    },
   ];
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'coming-soon':
-        return <span className="bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 px-3 py-1 rounded-full text-xs font-medium">Coming Soon</span>;
+        return (
+          <span className="bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 px-3 py-1 rounded-full text-xs font-medium">
+            Coming Soon
+          </span>
+        );
       case 'in-development':
-        return <span className="bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full text-xs font-medium">In Development</span>;
+        return (
+          <span className="bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full text-xs font-medium">
+            In Development
+          </span>
+        );
       case 'beta':
-        return <span className="bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-3 py-1 rounded-full text-xs font-medium">Beta</span>;
+        return (
+          <span className="bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-3 py-1 rounded-full text-xs font-medium">
+            Beta
+          </span>
+        );
       default:
         return null;
     }
@@ -222,7 +247,7 @@ export default function ComingSoon() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 pt-16">
       {/* Mouse Follower Spotlight - Only in dark mode */}
       {actualTheme === 'dark' && (
-        <div 
+        <div
           className="fixed pointer-events-none z-0 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
           style={{
             background: `radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`,
@@ -252,36 +277,42 @@ export default function ComingSoon() {
           {upcomingFeatures.map((feature, index) => (
             <div
               key={feature.id}
-              ref={el => featureRefs.current[feature.id] = el}
+              ref={el => (featureRefs.current[feature.id] = el)}
               className={`bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 opacity-0 translate-y-10`}
               style={{ transitionDelay: `${index * 0.05}s` }}
               onClick={() => setSelectedFeature(selectedFeature === feature.id ? null : feature.id)}
             >
               <div className="flex items-start justify-between mb-4">
-                <div className={`p-3 rounded-xl ${feature.isPremium ? 'bg-gradient-to-br from-purple-500 to-indigo-600' : 'bg-gradient-to-br from-blue-500 to-cyan-500'}`}>
+                <div
+                  className={`p-3 rounded-xl ${feature.isPremium ? 'bg-gradient-to-br from-purple-500 to-indigo-600' : 'bg-gradient-to-br from-blue-500 to-cyan-500'}`}
+                >
                   <feature.icon className="h-6 w-6 text-white" />
                 </div>
                 <div className="flex items-center space-x-2">
                   {getStatusBadge(feature.status)}
                   {feature.isPremium && (
-                    <span className="bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 px-3 py-1 rounded-full text-xs font-medium">Premium</span>
+                    <span className="bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 px-3 py-1 rounded-full text-xs font-medium">
+                      Premium
+                    </span>
                   )}
                 </div>
               </div>
-              
+
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{feature.title}</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">{feature.description}</p>
-              
+
               <div className="flex items-center justify-between">
                 <div className="text-sm text-gray-500 dark:text-gray-400">
                   <span className="font-medium">ETA:</span> {feature.eta}
                 </div>
                 <button className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium flex items-center space-x-1">
                   <span>{selectedFeature === feature.id ? 'Less Info' : 'More Info'}</span>
-                  <ChevronRight className={`h-4 w-4 transition-transform ${selectedFeature === feature.id ? 'rotate-90' : ''}`} />
+                  <ChevronRight
+                    className={`h-4 w-4 transition-transform ${selectedFeature === feature.id ? 'rotate-90' : ''}`}
+                  />
                 </button>
               </div>
-              
+
               {/* Expanded Details */}
               {selectedFeature === feature.id && (
                 <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 animate-slide-down">
@@ -303,10 +334,14 @@ export default function ComingSoon() {
                         </li>
                       </ul>
                     </div>
-                    
+
                     <div className="flex justify-between items-center">
                       <div className="text-sm text-gray-600 dark:text-gray-400">
-                        <span className="font-medium">Development Status:</span> {feature.status.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                        <span className="font-medium">Development Status:</span>{' '}
+                        {feature.status
+                          .split('-')
+                          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                          .join(' ')}
                       </div>
                       <div className="flex items-center">
                         <Star className="h-4 w-4 text-yellow-400 fill-current" />
@@ -316,7 +351,7 @@ export default function ComingSoon() {
                         <Star className="h-4 w-4 text-gray-300 dark:text-gray-600" />
                       </div>
                     </div>
-                    
+
                     <button className="w-full py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2">
                       <Bell className="h-4 w-4" />
                       <span>Notify Me When Available</span>
@@ -330,13 +365,11 @@ export default function ComingSoon() {
 
         {/* Newsletter Subscription */}
         <div className="bg-gradient-to-r from-primary-600 to-blue-700 rounded-2xl p-8 text-white text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">
-            Stay Updated on New Features
-          </h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Stay Updated on New Features</h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Subscribe to our newsletter to be the first to know when new features are released.
           </p>
-          
+
           {isSubscribed ? (
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 max-w-md mx-auto animate-slide-up">
               <div className="flex items-center justify-center space-x-3 mb-2">
@@ -357,7 +390,7 @@ export default function ComingSoon() {
                   type="email"
                   placeholder="Enter your email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   required
                   className="w-full pl-10 pr-4 py-3 bg-white text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -371,7 +404,7 @@ export default function ComingSoon() {
               </button>
             </form>
           )}
-          
+
           <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-blue-200">
             <div className="flex items-center space-x-2">
               <Check className="h-4 w-4" />
@@ -390,11 +423,10 @@ export default function ComingSoon() {
 
         {/* Feature Request */}
         <div className="mt-16 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Have a Feature Request?
-          </h3>
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Have a Feature Request?</h3>
           <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
-            We're always looking to improve TripRadar. If you have an idea for a feature that would make your travel experience better, we'd love to hear it!
+            We're always looking to improve TripRadar. If you have an idea for a feature that would make your travel
+            experience better, we'd love to hear it!
           </p>
           <Link
             to="/feedback"

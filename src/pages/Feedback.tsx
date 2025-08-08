@@ -1,21 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  MessageSquare, 
-  Star, 
-  Send, 
-  CheckCircle, 
-  Bug, 
-  Lightbulb, 
-  Zap, 
-  Palette, 
-  FileText,
-  Clock,
-  User,
-  Tag,
-  Filter,
-  Search,
-  AlertTriangle
-} from 'lucide-react';
+import { MessageSquare, Star, Send, CheckCircle, Bug, Lightbulb, Zap, Palette, FileText, Search } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 interface FeedbackItem {
@@ -31,12 +15,32 @@ interface FeedbackItem {
 
 // Backend-provided feedback categories
 const FEEDBACK_CATEGORIES = [
-  { id: 'general', label: 'General', icon: MessageSquare, color: 'bg-blue-500' },
+  {
+    id: 'general',
+    label: 'General',
+    icon: MessageSquare,
+    color: 'bg-blue-500',
+  },
   { id: 'bug', label: 'Bug Report', icon: Bug, color: 'bg-red-500' },
-  { id: 'feature', label: 'Feature Request', icon: Lightbulb, color: 'bg-green-500' },
-  { id: 'performance', label: 'Performance', icon: Zap, color: 'bg-yellow-500' },
+  {
+    id: 'feature',
+    label: 'Feature Request',
+    icon: Lightbulb,
+    color: 'bg-green-500',
+  },
+  {
+    id: 'performance',
+    label: 'Performance',
+    icon: Zap,
+    color: 'bg-yellow-500',
+  },
   { id: 'ui', label: 'UI/UX', icon: Palette, color: 'bg-purple-500' },
-  { id: 'documentation', label: 'Documentation', icon: FileText, color: 'bg-indigo-500' }
+  {
+    id: 'documentation',
+    label: 'Documentation',
+    icon: FileText,
+    color: 'bg-indigo-500',
+  },
 ];
 
 const feedbackHistory: FeedbackItem[] = [
@@ -48,7 +52,7 @@ const feedbackHistory: FeedbackItem[] = [
     rating: 5,
     status: 'implemented',
     submittedAt: '2024-01-10',
-    author: 'You'
+    author: 'You',
   },
   {
     id: '2',
@@ -58,7 +62,7 @@ const feedbackHistory: FeedbackItem[] = [
     rating: 3,
     status: 'reviewed',
     submittedAt: '2024-01-08',
-    author: 'You'
+    author: 'You',
   },
   {
     id: '3',
@@ -68,8 +72,8 @@ const feedbackHistory: FeedbackItem[] = [
     rating: 4,
     status: 'pending',
     submittedAt: '2024-01-05',
-    author: 'You'
-  }
+    author: 'You',
+  },
 ];
 
 export default function Feedback() {
@@ -77,7 +81,7 @@ export default function Feedback() {
     title: '',
     content: '',
     category: 'general' as const,
-    rating: 5
+    rating: 5,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -89,7 +93,7 @@ export default function Feedback() {
   const [formErrors, setFormErrors] = useState({
     title: '',
     content: '',
-    category: ''
+    category: '',
   });
 
   React.useEffect(() => {
@@ -103,42 +107,42 @@ export default function Feedback() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate form
     let hasErrors = false;
     const errors = {
       title: '',
       content: '',
-      category: ''
+      category: '',
     };
-    
+
     if (!formData.title.trim()) {
       errors.title = 'Title is required';
       hasErrors = true;
     }
-    
+
     if (!formData.content.trim()) {
       errors.content = 'Feedback details are required';
       hasErrors = true;
     }
-    
+
     if (!formData.category) {
       errors.category = 'Please select a category';
       hasErrors = true;
     }
-    
+
     setFormErrors(errors);
-    
+
     if (hasErrors) return;
-    
+
     setIsSubmitting(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     setIsSubmitting(false);
     setIsSubmitted(true);
-    
+
     // Reset form after success
     setTimeout(() => {
       setIsSubmitted(false);
@@ -146,7 +150,7 @@ export default function Feedback() {
         title: '',
         content: '',
         category: 'general',
-        rating: 5
+        rating: 5,
       });
     }, 3000);
   };
@@ -173,10 +177,11 @@ export default function Feedback() {
   const filteredFeedback = feedbackHistory.filter(item => {
     const matchesFilter = filter === 'all' || item.status === filter;
     const matchesCategory = categoryFilter === 'all' || item.category === categoryFilter;
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch =
+      searchQuery === '' ||
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.content.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     return matchesFilter && matchesCategory && matchesSearch;
   });
 
@@ -184,7 +189,7 @@ export default function Feedback() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 pt-16">
       {/* Mouse Follower Spotlight - Only in dark mode */}
       {actualTheme === 'dark' && (
-        <div 
+        <div
           className="fixed pointer-events-none z-0 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
           style={{
             background: `radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`,
@@ -193,13 +198,11 @@ export default function Feedback() {
           }}
         />
       )}
-      
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Share Your Feedback
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Share Your Feedback</h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Help us improve TripRadar by sharing your thoughts, reporting bugs, or suggesting new features.
           </p>
@@ -210,20 +213,21 @@ export default function Feedback() {
           <div className="lg:col-span-2">
             <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Submit Feedback</h2>
-              
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Category Selection */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Category
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Category</label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {FEEDBACK_CATEGORIES.map((category) => (
+                    {FEEDBACK_CATEGORIES.map(category => (
                       <button
                         key={category.id}
                         type="button"
                         onClick={() => {
-                          setFormData(prev => ({ ...prev, category: category.id as any }));
+                          setFormData(prev => ({
+                            ...prev,
+                            category: category.id as any,
+                          }));
                           setFormErrors(prev => ({ ...prev, category: '' }));
                         }}
                         className={`flex flex-col items-center space-y-2 p-4 rounded-xl border-2 transition-all ${
@@ -248,13 +252,11 @@ export default function Feedback() {
 
                 {/* Title */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Title
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title</label>
                   <input
                     type="text"
                     value={formData.title}
-                    onChange={(e) => {
+                    onChange={e => {
                       setFormData(prev => ({ ...prev, title: e.target.value }));
                       setFormErrors(prev => ({ ...prev, title: '' }));
                     }}
@@ -270,14 +272,15 @@ export default function Feedback() {
 
                 {/* Content */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Details
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Details</label>
                   <textarea
                     rows={6}
                     value={formData.content}
-                    onChange={(e) => {
-                      setFormData(prev => ({ ...prev, content: e.target.value }));
+                    onChange={e => {
+                      setFormData(prev => ({
+                        ...prev,
+                        content: e.target.value,
+                      }));
                       setFormErrors(prev => ({ ...prev, content: '' }));
                     }}
                     placeholder="Please provide detailed information about your feedback..."
@@ -296,7 +299,7 @@ export default function Feedback() {
                     Overall Rating
                   </label>
                   <div className="flex items-center space-x-2">
-                    {[1, 2, 3, 4, 5].map((rating) => (
+                    {[1, 2, 3, 4, 5].map(rating => (
                       <button
                         key={rating}
                         type="button"
@@ -350,7 +353,7 @@ export default function Feedback() {
             {/* Filters */}
             <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Your Feedback</h3>
-              
+
               {/* Search */}
               <div className="relative mb-4">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
@@ -358,14 +361,14 @@ export default function Feedback() {
                   type="text"
                   placeholder="Search feedback..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   className="w-full pl-9 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
                 />
               </div>
 
               {/* Status Filter */}
               <div className="space-y-2">
-                {['all', 'pending', 'reviewed', 'implemented', 'rejected'].map((status) => (
+                {['all', 'pending', 'reviewed', 'implemented', 'rejected'].map(status => (
                   <button
                     key={status}
                     onClick={() => setFilter(status)}
@@ -389,27 +392,23 @@ export default function Feedback() {
                   <p className="text-gray-600 dark:text-gray-400">No feedback found</p>
                 </div>
               ) : (
-                filteredFeedback.map((item) => {
+                filteredFeedback.map(item => {
                   const categoryInfo = getCategoryInfo(item.category);
-                  
+
                   return (
                     <div
                       key={item.id}
                       className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow animate-slide-up"
                     >
                       <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-medium text-gray-900 dark:text-white text-sm line-clamp-1">
-                          {item.title}
-                        </h4>
+                        <h4 className="font-medium text-gray-900 dark:text-white text-sm line-clamp-1">{item.title}</h4>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
                           {item.status}
                         </span>
                       </div>
-                      
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">
-                        {item.content}
-                      </p>
-                      
+
+                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">{item.content}</p>
+
                       <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                         <div className="flex items-center space-x-2">
                           <div className={`p-1 rounded ${categoryInfo.color}`}>
@@ -417,16 +416,14 @@ export default function Feedback() {
                           </div>
                           <span>{categoryInfo.label}</span>
                         </div>
-                        
+
                         <div className="flex items-center space-x-2">
                           <div className="flex">
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
                                 className={`h-3 w-3 ${
-                                  i < item.rating
-                                    ? 'text-yellow-400 fill-current'
-                                    : 'text-gray-300 dark:text-gray-600'
+                                  i < item.rating ? 'text-yellow-400 fill-current' : 'text-gray-300 dark:text-gray-600'
                                 }`}
                               />
                             ))}
@@ -446,8 +443,8 @@ export default function Feedback() {
         <div className="mt-12 bg-gradient-to-r from-primary-600 to-blue-700 rounded-2xl p-8 text-white text-center animate-slide-up">
           <h3 className="text-2xl font-bold mb-4">Thank You for Your Feedback!</h3>
           <p className="text-blue-100 max-w-2xl mx-auto">
-            Your input helps us build a better travel platform. We review all feedback carefully 
-            and use it to prioritize improvements and new features.
+            Your input helps us build a better travel platform. We review all feedback carefully and use it to
+            prioritize improvements and new features.
           </p>
         </div>
       </div>

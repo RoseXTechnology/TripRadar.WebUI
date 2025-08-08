@@ -1,16 +1,5 @@
-import React, { useState } from 'react';
-import { 
-  Users, 
-  UserPlus, 
-  Crown, 
-  Mail, 
-  Check, 
-  X, 
-  MessageSquare,
-  Vote,
-  Calendar,
-  DollarSign
-} from 'lucide-react';
+import { useState } from 'react';
+import { Users, UserPlus, Crown, Mail, Check, X, MessageSquare, Vote, DollarSign } from 'lucide-react';
 import { GroupMember, Vote as VoteType } from '../../types';
 
 interface GroupTripManagerProps {
@@ -28,14 +17,19 @@ export default function GroupTripManager({ groupMembers, tripId }: GroupTripMana
       title: 'Choose Restaurant for Day 2',
       description: 'Vote for our dinner location on the second day',
       options: [
-        { id: '1', title: 'Le Comptoir du Relais', votes: ['1', '2'], cost: 45 },
-        { id: '2', title: 'L\'As du Fallafel', votes: ['1'], cost: 15 },
-        { id: '3', title: 'Breizh Café', votes: ['3'], cost: 25 }
+        {
+          id: '1',
+          title: 'Le Comptoir du Relais',
+          votes: ['1', '2'],
+          cost: 45,
+        },
+        { id: '2', title: "L'As du Fallafel", votes: ['1'], cost: 15 },
+        { id: '3', title: 'Breizh Café', votes: ['3'], cost: 25 },
       ],
       deadline: '2024-02-20',
       status: 'active',
-      createdBy: '1'
-    }
+      createdBy: '1',
+    },
   ]);
 
   const organizer = groupMembers.find(member => member.role === 'organizer');
@@ -81,32 +75,37 @@ export default function GroupTripManager({ groupMembers, tripId }: GroupTripMana
         <h4 className="font-medium text-gray-900 dark:text-white">
           Group Members ({acceptedMembers.length}/{groupMembers.length})
         </h4>
-        
-        {groupMembers.map((member) => (
+
+        {groupMembers.map(member => (
           <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
             <div className="flex items-center space-x-3">
               <img
-                src={member.avatar || `https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&dpr=1`}
+                src={
+                  member.avatar ||
+                  `https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&dpr=1`
+                }
                 alt={member.name}
                 className="w-8 h-8 rounded-full object-cover"
               />
               <div>
                 <div className="flex items-center space-x-2">
                   <span className="text-sm font-medium text-gray-900 dark:text-white">{member.name}</span>
-                  {member.role === 'organizer' && (
-                    <Crown className="h-4 w-4 text-yellow-500" />
-                  )}
+                  {member.role === 'organizer' && <Crown className="h-4 w-4 text-yellow-500" />}
                 </div>
                 <span className="text-xs text-gray-500 dark:text-gray-400">{member.email}</span>
               </div>
             </div>
             <div className="flex items-center space-x-2">
               {getStatusIcon(member.status)}
-              <span className={`text-xs px-2 py-1 rounded-full ${
-                member.status === 'accepted' ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400' :
-                member.status === 'declined' ? 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400' :
-                'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
-              }`}>
+              <span
+                className={`text-xs px-2 py-1 rounded-full ${
+                  member.status === 'accepted'
+                    ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                    : member.status === 'declined'
+                      ? 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                      : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
+                }`}
+              >
                 {member.status}
               </span>
             </div>
@@ -128,8 +127,8 @@ export default function GroupTripManager({ groupMembers, tripId }: GroupTripMana
             <Vote className="h-4 w-4" />
             <span>Active Votes</span>
           </h4>
-          
-          {activeVotes.map((vote) => (
+
+          {activeVotes.map(vote => (
             <div key={vote.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
               <div className="flex justify-between items-start mb-3">
                 <div>
@@ -142,12 +141,12 @@ export default function GroupTripManager({ groupMembers, tripId }: GroupTripMana
                   </div>
                 </div>
               </div>
-              
+
               <div className="space-y-2">
-                {vote.options.map((option) => {
+                {vote.options.map(option => {
                   const voteCount = option.votes.length;
                   const percentage = acceptedMembers.length > 0 ? (voteCount / acceptedMembers.length) * 100 : 0;
-                  
+
                   return (
                     <div key={option.id} className="space-y-1">
                       <div className="flex justify-between items-center">
@@ -164,7 +163,7 @@ export default function GroupTripManager({ groupMembers, tripId }: GroupTripMana
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                        <div 
+                        <div
                           className="bg-primary-500 h-2 rounded-full transition-all duration-300"
                           style={{ width: `${percentage}%` }}
                         ></div>
@@ -173,7 +172,7 @@ export default function GroupTripManager({ groupMembers, tripId }: GroupTripMana
                   );
                 })}
               </div>
-              
+
               <button className="mt-3 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium">
                 Cast Your Vote
               </button>
@@ -201,13 +200,11 @@ export default function GroupTripManager({ groupMembers, tripId }: GroupTripMana
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Invite Group Member</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Email Address
-                </label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
                 <input
                   type="email"
                   value={inviteEmail}
-                  onChange={(e) => setInviteEmail(e.target.value)}
+                  onChange={e => setInviteEmail(e.target.value)}
                   placeholder="Enter email address"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />

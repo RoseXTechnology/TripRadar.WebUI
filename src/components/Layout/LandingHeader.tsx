@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  Radar, 
-  Menu, 
-  X, 
-  ArrowRight,
-  Search
-} from 'lucide-react';
+import { Radar, Menu, X, ArrowRight, Search } from 'lucide-react';
 import QuickSearch from '../Search/QuickSearch';
 
 export default function LandingHeader() {
@@ -32,7 +26,7 @@ export default function LandingHeader() {
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('keydown', handleKeyDown);
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('keydown', handleKeyDown);
@@ -40,9 +34,8 @@ export default function LandingHeader() {
   }, [showQuickSearch]);
 
   // Determine if the current page should have a transparent header
-  const isTransparentPage = location.pathname === '/' || 
-                           location.pathname === '/features' || 
-                           location.pathname.includes('/about');
+  const isTransparentPage =
+    location.pathname === '/' || location.pathname === '/features' || location.pathname.includes('/about');
 
   const navigation = [
     { name: 'Features', href: '/features' },
@@ -55,11 +48,13 @@ export default function LandingHeader() {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled || !isTransparentPage
-          ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-sm' 
-          : 'bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700'
-      }`}>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled || !isTransparentPage
+            ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-sm'
+            : 'bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -70,14 +65,12 @@ export default function LandingHeader() {
                 </div>
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
               </div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">
-                TripRadar
-              </span>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">TripRadar</span>
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              {navigation.map((item) => (
+              {navigation.map(item => (
                 <Link
                   key={item.name}
                   to={item.href}
@@ -86,9 +79,11 @@ export default function LandingHeader() {
                   }`}
                 >
                   {item.name}
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-200 ${
-                    location.pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`}></span>
+                  <span
+                    className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-200 ${
+                      location.pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}
+                  ></span>
                 </Link>
               ))}
             </nav>
@@ -96,7 +91,7 @@ export default function LandingHeader() {
             {/* Auth CTAs */}
             <div className="flex items-center space-x-4">
               {/* Quick Search */}
-              <button 
+              <button
                 onClick={() => setShowQuickSearch(true)}
                 className="hidden sm:flex items-center space-x-2 p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors"
               >
@@ -136,19 +131,21 @@ export default function LandingHeader() {
           {isMenuOpen && (
             <div className="md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 animate-slide-down">
               <nav className="space-y-2">
-                {navigation.map((item) => (
+                {navigation.map(item => (
                   <Link
                     key={item.name}
                     to={item.href}
                     className={`block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl font-medium transition-colors ${
-                      location.pathname === item.href ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700' : ''
+                      location.pathname === item.href
+                        ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700'
+                        : ''
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
                   </Link>
                 ))}
-                
+
                 {/* Mobile Auth Links */}
                 <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
                   <Link
@@ -173,9 +170,7 @@ export default function LandingHeader() {
       </header>
 
       {/* Quick Search Modal */}
-      {showQuickSearch && (
-        <QuickSearch onClose={() => setShowQuickSearch(false)} />
-      )}
+      {showQuickSearch && <QuickSearch onClose={() => setShowQuickSearch(false)} />}
     </>
   );
 }

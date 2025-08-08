@@ -1,18 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  ArrowRight, 
-  Play, 
-  Star, 
-  Sparkles, 
-  Globe, 
-  Shield, 
-  Zap, 
-  Users, 
-  Bot, 
-  MessageSquare, 
-  Smartphone,
-  Check,
+import {
+  ArrowRight,
+  Play,
+  Star,
+  Shield,
+  Users,
+  Bot,
   Search,
   MapPin,
   Calendar,
@@ -20,15 +14,10 @@ import {
   Target,
   Vote,
   Lock,
-  Building,
-  Mountain,
-  TreePine,
-  Waves,
-  Compass
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAnimation } from '../components/AnimationProvider';
-import VideoModal from '../components/Home/VideoModal';
+import { VideoModal } from 'shared/ui';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
@@ -38,42 +27,42 @@ export default function Home() {
 
   useEffect(() => {
     setIsVisible(true);
-    
+
     // Create floating particles
     const createParticles = () => {
       const particlesContainer = document.createElement('div');
       particlesContainer.className = 'fixed inset-0 overflow-hidden pointer-events-none z-0';
       particlesContainer.id = 'home-particles';
-      
+
       // Remove any existing particles container
       const existingContainer = document.getElementById('home-particles');
       if (existingContainer) {
         existingContainer.remove();
       }
-      
+
       // Create particles
       for (let i = 0; i < 50; i++) {
         const particle = document.createElement('div');
         particle.className = `absolute w-1 h-1 rounded-full animate-pulse ${
           actualTheme === 'dark' ? 'bg-white/20' : 'bg-primary-500/10'
         }`;
-        
+
         // Random position
         particle.style.left = `${Math.random() * 100}%`;
         particle.style.top = `${Math.random() * 100}%`;
-        
+
         // Random animation
         particle.style.animationDelay = `${Math.random() * 3}s`;
         particle.style.animationDuration = `${2 + Math.random() * 3}s`;
-        
+
         particlesContainer.appendChild(particle);
       }
-      
+
       document.body.appendChild(particlesContainer);
     };
-    
+
     createParticles();
-    
+
     // Cleanup on unmount
     return () => {
       const particlesContainer = document.getElementById('home-particles');
@@ -143,7 +132,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 overflow-hidden pt-16">
       {/* Mouse Follower Spotlight - In both light and dark themes */}
-      <div 
+      <div
         className="fixed pointer-events-none z-0 w-96 h-96 rounded-full transition-all duration-300 ease-out"
         style={{
           background: `radial-gradient(circle, ${actualTheme === 'dark' ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.1)'} 0%, transparent 70%)`,
@@ -160,14 +149,12 @@ export default function Home() {
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className={`absolute animate-pulse ${
-                actualTheme === 'dark' ? 'opacity-10' : 'opacity-5'
-              }`}
+              className={`absolute animate-pulse ${actualTheme === 'dark' ? 'opacity-10' : 'opacity-5'}`}
               style={{
                 left: `${20 + i * 15}%`,
                 top: `${10 + i * 10}%`,
                 animationDelay: `${i * 0.5}s`,
-                animationDuration: `${3 + i}s`
+                animationDuration: `${3 + i}s`,
               }}
             >
               <div className={`w-32 h-32 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 blur-xl`} />
@@ -176,7 +163,9 @@ export default function Home() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <div
+            className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+          >
             {/* Badge */}
             <div className="inline-flex items-center space-x-2 bg-white/10 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-full px-6 py-3 mb-8">
               <Star className="h-4 w-4 text-yellow-500 fill-current animate-pulse" />
@@ -185,27 +174,31 @@ export default function Home() {
 
             {/* Main heading */}
             <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
-              <span className={`${
-                actualTheme === 'dark' 
-                  ? 'bg-gradient-to-r from-white via-cyan-200 to-blue-400 bg-clip-text text-transparent'
-                  : 'text-gray-900'
-              }`}>
+              <span
+                className={`${
+                  actualTheme === 'dark'
+                    ? 'bg-gradient-to-r from-white via-cyan-200 to-blue-400 bg-clip-text text-transparent'
+                    : 'text-gray-900'
+                }`}
+              >
                 Smart Travel
               </span>
               <br />
-              <span className={`${
-                actualTheme === 'dark'
-                  ? 'bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent animate-pulse'
-                  : 'text-primary-600'
-              }`}>
+              <span
+                className={`${
+                  actualTheme === 'dark'
+                    ? 'bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent animate-pulse'
+                    : 'text-primary-600'
+                }`}
+              >
                 Management
               </span>
             </h1>
 
             {/* Subtitle */}
             <p className="text-xl md:text-2xl text-gray-600 dark:text-white/60 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Plan, track, and optimize your trips with our comprehensive travel management platform. 
-              From flights to local experiences, we've got you covered.
+              Plan, track, and optimize your trips with our comprehensive travel management platform. From flights to
+              local experiences, we've got you covered.
             </p>
 
             {/* CTA Buttons */}
@@ -217,8 +210,8 @@ export default function Home() {
                 <span>Get Started Free</span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              
-              <button 
+
+              <button
                 onClick={() => setShowVideoModal(true)}
                 className="group flex items-center space-x-3 text-gray-700 dark:text-white/80 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
@@ -232,27 +225,39 @@ export default function Home() {
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
               <div className="text-center">
-                <div className={`text-3xl font-bold mb-2 transition-all duration-300 ${
-                  actualTheme === 'dark'
-                    ? 'bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent'
-                    : 'text-primary-600'
-                }`}>500K+</div>
+                <div
+                  className={`text-3xl font-bold mb-2 transition-all duration-300 ${
+                    actualTheme === 'dark'
+                      ? 'bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent'
+                      : 'text-primary-600'
+                  }`}
+                >
+                  500K+
+                </div>
                 <div className="text-gray-600 dark:text-blue-200">Trips Planned</div>
               </div>
               <div className="text-center">
-                <div className={`text-3xl font-bold mb-2 transition-all duration-300 ${
-                  actualTheme === 'dark'
-                    ? 'bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent'
-                    : 'text-green-600'
-                }`}>50+</div>
+                <div
+                  className={`text-3xl font-bold mb-2 transition-all duration-300 ${
+                    actualTheme === 'dark'
+                      ? 'bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent'
+                      : 'text-green-600'
+                  }`}
+                >
+                  50+
+                </div>
                 <div className="text-gray-600 dark:text-blue-200">Countries</div>
               </div>
               <div className="text-center">
-                <div className={`text-3xl font-bold mb-2 transition-all duration-300 ${
-                  actualTheme === 'dark'
-                    ? 'bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent'
-                    : 'text-yellow-600'
-                }`}>4.9</div>
+                <div
+                  className={`text-3xl font-bold mb-2 transition-all duration-300 ${
+                    actualTheme === 'dark'
+                      ? 'bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent'
+                      : 'text-yellow-600'
+                  }`}
+                >
+                  4.9
+                </div>
                 <div className="text-gray-600 dark:text-blue-200">User Rating</div>
               </div>
             </div>
@@ -265,21 +270,21 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="text-gray-900 dark:text-white">
-                Everything You Need for
-              </span>
+              <span className="text-gray-900 dark:text-white">Everything You Need for</span>
               <br />
-              <span className={`${
-                actualTheme === 'dark'
-                  ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent'
-                  : 'text-primary-600'
-              }`}>
+              <span
+                className={`${
+                  actualTheme === 'dark'
+                    ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent'
+                    : 'text-primary-600'
+                }`}
+              >
                 Perfect Trips
               </span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-white/60 max-w-3xl mx-auto">
-              From AI-powered planning to group collaboration and budget management, 
-              TripRadar provides comprehensive tools for extraordinary journeys.
+              From AI-powered planning to group collaboration and budget management, TripRadar provides comprehensive
+              tools for extraordinary journeys.
             </p>
           </div>
 
@@ -290,19 +295,21 @@ export default function Home() {
                 className={`group bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-8 hover:bg-gray-50 dark:hover:bg-white/10 transition-all duration-500 hover:-translate-y-2 ${isVisible ? 'animate-slide-up' : ''} hover-glow-${actualTheme}`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-r ${feature.color} mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                <div
+                  className={`inline-flex p-4 rounded-2xl bg-gradient-to-r ${feature.color} mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}
+                >
                   <feature.icon className="h-8 w-8 text-white" />
                 </div>
-                <h3 className={`text-xl font-semibold mb-3 transition-all duration-300 ${
-                  actualTheme === 'dark'
-                    ? 'text-white group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 group-hover:bg-clip-text group-hover:text-transparent'
-                    : 'text-gray-900 group-hover:text-primary-600'
-                }`}>
+                <h3
+                  className={`text-xl font-semibold mb-3 transition-all duration-300 ${
+                    actualTheme === 'dark'
+                      ? 'text-white group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 group-hover:bg-clip-text group-hover:text-transparent'
+                      : 'text-gray-900 group-hover:text-primary-600'
+                  }`}
+                >
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 dark:text-white/60 leading-relaxed">
-                  {feature.description}
-                </p>
+                <p className="text-gray-600 dark:text-white/60 leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -316,12 +323,10 @@ export default function Home() {
             <div className="inline-flex p-4 bg-gradient-to-r from-red-500 to-pink-500 rounded-2xl mb-6">
               <Shield className="h-8 w-8 text-white" />
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Your Privacy is Our Priority
-            </h3>
+            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Your Privacy is Our Priority</h3>
             <p className="text-lg text-gray-600 dark:text-white/60 max-w-2xl mx-auto mb-6">
-              We never trace your data or use it for AI training. All processing happens locally, 
-              and your personal information stays completely private and secure.
+              We never trace your data or use it for AI training. All processing happens locally, and your personal
+              information stays completely private and secure.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <div className="flex items-center space-x-2 bg-white/10 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 px-4 py-2 rounded-full hover:bg-white/20 dark:hover:bg-white/20 transition-colors">
@@ -349,10 +354,10 @@ export default function Home() {
               Ready to Transform Your Travel Experience?
             </h3>
             <p className="text-xl text-gray-600 dark:text-white/60 mb-8 max-w-2xl mx-auto">
-              Join thousands of travelers who trust TripRadar for intelligent, 
-              collaborative, and privacy-first trip planning.
+              Join thousands of travelers who trust TripRadar for intelligent, collaborative, and privacy-first trip
+              planning.
             </p>
-            <Link 
+            <Link
               to="/signup"
               className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:-translate-y-1"
             >
@@ -363,10 +368,12 @@ export default function Home() {
       </section>
 
       {/* Video Modal */}
-      <VideoModal 
-        isOpen={showVideoModal} 
+      <VideoModal
+        isOpen={showVideoModal}
         onClose={() => setShowVideoModal(false)}
-        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        title="AI Travel Assistant Demo"
+        description="This demo shows how to use our AI Travel Assistant via Telegram and WhatsApp for instant trip management, budget tracking, and personalized recommendations."
       />
     </div>
   );

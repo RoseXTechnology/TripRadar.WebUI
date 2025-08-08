@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
-import { 
-  Calendar, 
-  Clock, 
-  Plus, 
-  Bell, 
-  Bot, 
-  MapPin, 
+import {
+  Calendar,
+  Clock,
+  Plus,
+  Bell,
+  Bot,
+  MapPin,
   DollarSign,
   Check,
-  X,
   Edit,
   Trash2,
   Play,
   Pause,
   Settings,
-  Filter,
-  Search
+  Search,
 } from 'lucide-react';
 
 interface ScheduledItem {
@@ -38,7 +36,7 @@ const scheduledItems: ScheduledItem[] = [
     frequency: 'once',
     nextRun: '2024-03-14T10:00:00Z',
     status: 'active',
-    category: 'trip'
+    category: 'trip',
   },
   {
     id: '2',
@@ -48,7 +46,7 @@ const scheduledItems: ScheduledItem[] = [
     frequency: 'daily',
     nextRun: '2024-03-15T09:00:00Z',
     status: 'active',
-    category: 'budget'
+    category: 'budget',
   },
   {
     id: '3',
@@ -58,7 +56,7 @@ const scheduledItems: ScheduledItem[] = [
     frequency: 'daily',
     nextRun: '2024-03-15T08:00:00Z',
     status: 'active',
-    category: 'weather'
+    category: 'weather',
   },
   {
     id: '4',
@@ -68,7 +66,7 @@ const scheduledItems: ScheduledItem[] = [
     frequency: 'once',
     nextRun: '2024-03-18T12:00:00Z',
     status: 'active',
-    category: 'booking'
+    category: 'booking',
   },
   {
     id: '5',
@@ -78,8 +76,8 @@ const scheduledItems: ScheduledItem[] = [
     frequency: 'weekly',
     nextRun: '2024-03-17T10:00:00Z',
     status: 'paused',
-    category: 'general'
-  }
+    category: 'general',
+  },
 ];
 
 export default function Scheduled() {
@@ -91,10 +89,11 @@ export default function Scheduled() {
   const filteredItems = scheduledItems.filter(item => {
     const matchesFilter = filter === 'all' || item.status === filter;
     const matchesCategory = categoryFilter === 'all' || item.category === categoryFilter;
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch =
+      searchQuery === '' ||
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     return matchesFilter && matchesCategory && matchesSearch;
   });
 
@@ -132,7 +131,7 @@ export default function Scheduled() {
     const date = new Date(dateString);
     const now = new Date();
     const diffInHours = Math.floor((date.getTime() - now.getTime()) / (1000 * 60 * 60));
-    
+
     if (diffInHours < 24) {
       return `In ${diffInHours} hours`;
     } else if (diffInHours < 48) {
@@ -156,7 +155,7 @@ export default function Scheduled() {
               Manage your automated tasks, reminders, and notifications
             </p>
           </div>
-          
+
           <button
             onClick={() => setShowCreateModal(true)}
             className="mt-4 sm:mt-0 bg-primary-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-700 transition-colors flex items-center space-x-2"
@@ -177,7 +176,7 @@ export default function Scheduled() {
                   type="text"
                   placeholder="Search scheduled items..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
@@ -185,7 +184,7 @@ export default function Scheduled() {
 
             {/* Status Filter */}
             <div className="flex space-x-2">
-              {['all', 'active', 'paused'].map((filterOption) => (
+              {['all', 'active', 'paused'].map(filterOption => (
                 <button
                   key={filterOption}
                   onClick={() => setFilter(filterOption as any)}
@@ -203,7 +202,7 @@ export default function Scheduled() {
             {/* Category Filter */}
             <select
               value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
+              onChange={e => setCategoryFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
               <option value="all">All Categories</option>
@@ -232,7 +231,9 @@ export default function Scheduled() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Active</p>
-                <p className="text-2xl font-bold text-green-600">{scheduledItems.filter(i => i.status === 'active').length}</p>
+                <p className="text-2xl font-bold text-green-600">
+                  {scheduledItems.filter(i => i.status === 'active').length}
+                </p>
               </div>
               <Play className="h-8 w-8 text-green-500" />
             </div>
@@ -242,7 +243,9 @@ export default function Scheduled() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Paused</p>
-                <p className="text-2xl font-bold text-yellow-600">{scheduledItems.filter(i => i.status === 'paused').length}</p>
+                <p className="text-2xl font-bold text-yellow-600">
+                  {scheduledItems.filter(i => i.status === 'paused').length}
+                </p>
               </div>
               <Pause className="h-8 w-8 text-yellow-500" />
             </div>
@@ -266,7 +269,9 @@ export default function Scheduled() {
               <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No scheduled items found</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                {searchQuery ? 'Try adjusting your search or filters.' : 'Create your first scheduled item to get started.'}
+                {searchQuery
+                  ? 'Try adjusting your search or filters.'
+                  : 'Create your first scheduled item to get started.'}
               </p>
               <button
                 onClick={() => setShowCreateModal(true)}
@@ -276,7 +281,7 @@ export default function Scheduled() {
               </button>
             </div>
           ) : (
-            filteredItems.map((item) => (
+            filteredItems.map(item => (
               <div
                 key={item.id}
                 className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 hover:shadow-md transition-all duration-200"
@@ -284,25 +289,27 @@ export default function Scheduled() {
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-4 flex-1">
                     {/* Type Icon */}
-                    <div className="flex-shrink-0 mt-1">
-                      {getTypeIcon(item.type)}
-                    </div>
+                    <div className="flex-shrink-0 mt-1">{getTypeIcon(item.type)}</div>
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2 mb-2">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{item.title}</h3>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          item.status === 'active' ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400' :
-                          item.status === 'paused' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400' :
-                          'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
-                        }`}>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            item.status === 'active'
+                              ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                              : item.status === 'paused'
+                                ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
+                                : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+                          }`}
+                        >
                           {item.status}
                         </span>
                       </div>
-                      
+
                       <p className="text-gray-600 dark:text-gray-400 mb-3">{item.description}</p>
-                      
+
                       <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
                         <div className="flex items-center space-x-1">
                           <Clock className="h-4 w-4" />
@@ -327,10 +334,10 @@ export default function Scheduled() {
                     >
                       <Edit className="h-4 w-4" />
                     </button>
-                    
+
                     <button
                       className={`p-2 rounded-lg transition-colors ${
-                        item.status === 'active' 
+                        item.status === 'active'
                           ? 'text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                           : 'text-gray-400 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                       }`}
@@ -338,7 +345,7 @@ export default function Scheduled() {
                     >
                       {item.status === 'active' ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                     </button>
-                    
+
                     <button
                       className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       title="Delete"
@@ -357,7 +364,7 @@ export default function Scheduled() {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Create New Schedule</h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title</label>
@@ -367,7 +374,7 @@ export default function Scheduled() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Type</label>
                   <select className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
@@ -377,7 +384,7 @@ export default function Scheduled() {
                     <option value="task">Task</option>
                   </select>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Frequency</label>
                   <select className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
@@ -387,7 +394,7 @@ export default function Scheduled() {
                     <option value="monthly">Monthly</option>
                   </select>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
                   <textarea
@@ -396,7 +403,7 @@ export default function Scheduled() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
-                
+
                 <div className="flex space-x-3 pt-4">
                   <button className="flex-1 bg-primary-600 text-white py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors">
                     Create Schedule

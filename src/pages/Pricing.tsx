@@ -1,25 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Check, 
-  X, 
-  Star, 
-  Shield, 
-  Zap, 
-  Users, 
-  Bot, 
-  Globe, 
-  ChevronDown, 
-  ChevronUp, 
-  ArrowRight, 
+import { useState, useEffect } from 'react';
+import {
+  Check,
+  X,
+  Star,
+  Shield,
+  Users,
+  Bot,
+  Globe,
+  ArrowRight,
   BarChart,
   DollarSign,
-  Clock,
   Calendar,
   MessageSquare,
   Search,
   MapPin,
   Smartphone,
-  Lock
+  Lock,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
@@ -36,16 +32,12 @@ const pricingTiers = [
       'Trip planning tools',
       'Email support',
       'Mobile app access',
-      'Basic weather data'
+      'Basic weather data',
     ],
-    limitations: [
-      'No AI chat assistant',
-      'Limited group features',
-      'No advanced analytics'
-    ],
+    limitations: ['No AI chat assistant', 'Limited group features', 'No advanced analytics'],
     cta: 'Get Started',
     popular: false,
-    color: 'border-gray-200 dark:border-gray-700'
+    color: 'border-gray-200 dark:border-gray-700',
   },
   {
     name: 'Essential',
@@ -60,12 +52,12 @@ const pricingTiers = [
       'Group trip planning',
       'Real-time notifications',
       'Priority email support',
-      'Weather forecasts & alerts'
+      'Weather forecasts & alerts',
     ],
     limitations: [],
     cta: 'Subscribe',
     popular: true,
-    color: 'border-primary-500'
+    color: 'border-primary-500',
   },
   {
     name: 'Advanced',
@@ -81,36 +73,41 @@ const pricingTiers = [
       'Custom integrations',
       'Phone & chat support',
       'API access',
-      'White-label options'
+      'White-label options',
     ],
     limitations: [],
     cta: 'Subscribe',
     popular: false,
-    color: 'border-gray-200 dark:border-gray-700'
-  }
+    color: 'border-gray-200 dark:border-gray-700',
+  },
 ];
 
 const faqs = [
   {
     question: 'What are API tokens and how do they work?',
-    answer: 'API tokens are used for each search query or AI interaction. One token equals one search request (flights, hotels, weather, etc.) or one AI chat message. Unused tokens don\'t roll over to the next billing period.'
+    answer:
+      "API tokens are used for each search query or AI interaction. One token equals one search request (flights, hotels, weather, etc.) or one AI chat message. Unused tokens don't roll over to the next billing period.",
   },
   {
     question: 'Can I change my plan at any time?',
-    answer: 'Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately, and we\'ll prorate the billing accordingly. Downgrades take effect at the next billing cycle.'
+    answer:
+      "Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate the billing accordingly. Downgrades take effect at the next billing cycle.",
   },
   {
     question: 'Is my data safe and private?',
-    answer: 'Absolutely. We never trace your data or use it for AI training. All processing happens locally where possible, and your personal information stays completely private and secure with end-to-end encryption.'
+    answer:
+      'Absolutely. We never trace your data or use it for AI training. All processing happens locally where possible, and your personal information stays completely private and secure with end-to-end encryption.',
   },
   {
     question: 'Do you offer refunds?',
-    answer: 'We offer a 30-day money-back guarantee for all paid plans. If you\'re not satisfied with TripRadar, contact our support team for a full refund within 30 days of your purchase.'
+    answer:
+      "We offer a 30-day money-back guarantee for all paid plans. If you're not satisfied with TripRadar, contact our support team for a full refund within 30 days of your purchase.",
   },
   {
     question: 'How does the AI chat assistant work?',
-    answer: 'Our AI assistant integrates with Telegram and WhatsApp, allowing you to manage your trips through simple chat messages. You can check budgets, get weather updates, set reminders, and receive personalized recommendations - all while maintaining complete privacy.'
-  }
+    answer:
+      'Our AI assistant integrates with Telegram and WhatsApp, allowing you to manage your trips through simple chat messages. You can check budgets, get weather updates, set reminders, and receive personalized recommendations - all while maintaining complete privacy.',
+  },
 ];
 
 export default function Pricing() {
@@ -122,7 +119,7 @@ export default function Pricing() {
 
   useEffect(() => {
     setIsVisible(true);
-    
+
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -139,7 +136,7 @@ export default function Pricing() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 pt-16">
       {/* Mouse Follower Spotlight - Only in dark mode */}
       {actualTheme === 'dark' && (
-        <div 
+        <div
           className="fixed pointer-events-none z-0 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
           style={{
             background: `radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`,
@@ -156,7 +153,10 @@ export default function Pricing() {
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 animate-slide-up">
               Simple, Transparent Pricing
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <p
+              className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-slide-up"
+              style={{ animationDelay: '0.1s' }}
+            >
               Start free and scale as you grow. No hidden fees, no complicated tiers.
             </p>
           </div>
@@ -219,16 +219,14 @@ export default function Pricing() {
                 <div className="text-center mb-8">
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{tier.name}</h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-4">{tier.description}</p>
-                  
+
                   <div className="mb-4">
                     <div className="flex items-baseline justify-center">
                       <span className="text-5xl font-bold text-gray-900 dark:text-white">
                         ${isAnnual ? tier.price.annual : tier.price.monthly}
                       </span>
                       {tier.price.monthly > 0 && (
-                        <span className="text-gray-600 dark:text-gray-400 ml-2">
-                          /{isAnnual ? 'month' : 'month'}
-                        </span>
+                        <span className="text-gray-600 dark:text-gray-400 ml-2">/{isAnnual ? 'month' : 'month'}</span>
                       )}
                     </div>
                     {isAnnual && tier.price.monthly > 0 && (
@@ -261,7 +259,7 @@ export default function Pricing() {
 
                 {/* CTA Button */}
                 <Link
-                  to={tier.price.monthly > 0 ? "/checkout" : "/signup"}
+                  to={tier.price.monthly > 0 ? '/checkout' : '/signup'}
                   className={`w-full py-3 px-6 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2 ${
                     tier.popular
                       ? 'bg-primary-600 text-white hover:bg-primary-700 shadow-lg hover:shadow-xl'
@@ -277,19 +275,28 @@ export default function Pricing() {
         </div>
 
         {/* Feature Comparison */}
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-8 mb-16 animate-slide-up" style={{ animationDelay: '0.6s' }}>
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
-            Compare Features
-          </h3>
-          
+        <div
+          className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-8 mb-16 animate-slide-up"
+          style={{ animationDelay: '0.6s' }}
+        >
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">Compare Features</h3>
+
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead>
                 <tr>
-                  <th className="py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Feature</th>
-                  <th className="py-3 text-center text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Basic</th>
-                  <th className="py-3 text-center text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Essential</th>
-                  <th className="py-3 text-center text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Advanced</th>
+                  <th className="py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Feature
+                  </th>
+                  <th className="py-3 text-center text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Basic
+                  </th>
+                  <th className="py-3 text-center text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Essential
+                  </th>
+                  <th className="py-3 text-center text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Advanced
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -355,35 +362,40 @@ export default function Pricing() {
         </div>
 
         {/* Why Choose TripRadar */}
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-8 mb-16 animate-slide-up" style={{ animationDelay: '0.7s' }}>
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
-            Why Choose TripRadar?
-          </h3>
-          
+        <div
+          className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-8 mb-16 animate-slide-up"
+          style={{ animationDelay: '0.7s' }}
+        >
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">Why Choose TripRadar?</h3>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
                 icon: Bot,
                 title: 'AI-Powered Assistant',
-                description: 'Chat with our AI via Telegram/WhatsApp for instant trip management'
+                description: 'Chat with our AI via Telegram/WhatsApp for instant trip management',
               },
               {
                 icon: Shield,
                 title: 'Privacy First',
-                description: 'Your data is never traced or used for AI training - complete privacy protection'
+                description: 'Your data is never traced or used for AI training - complete privacy protection',
               },
               {
                 icon: Users,
                 title: 'Group Collaboration',
-                description: 'Plan trips together with shared budgets, voting, and real-time coordination'
+                description: 'Plan trips together with shared budgets, voting, and real-time coordination',
               },
               {
                 icon: Globe,
                 title: 'Global Coverage',
-                description: 'Access travel data for 200+ countries with multi-language support'
-              }
+                description: 'Access travel data for 200+ countries with multi-language support',
+              },
             ].map((feature, index) => (
-              <div key={index} className="text-center animate-slide-up" style={{ animationDelay: `${0.8 + index * 0.1}s` }}>
+              <div
+                key={index}
+                className="text-center animate-slide-up"
+                style={{ animationDelay: `${0.8 + index * 0.1}s` }}
+              >
                 <div className="inline-flex p-3 bg-primary-50 dark:bg-primary-900/20 rounded-xl mb-4">
                   <feature.icon className="h-6 w-6 text-primary-600 dark:text-primary-400" />
                 </div>
@@ -395,18 +407,22 @@ export default function Pricing() {
         </div>
 
         {/* Token Usage Explanation */}
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-8 mb-16 animate-slide-up" style={{ animationDelay: '0.9s' }}>
+        <div
+          className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-8 mb-16 animate-slide-up"
+          style={{ animationDelay: '0.9s' }}
+        >
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
             Understanding Token Usage
           </h3>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">What are tokens?</h4>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Tokens are the units of consumption for our API and AI features. Each API call or AI interaction consumes a specific number of tokens based on complexity and resource usage.
+                Tokens are the units of consumption for our API and AI features. Each API call or AI interaction
+                consumes a specific number of tokens based on complexity and resource usage.
               </p>
-              
+
               <div className="space-y-4 mt-6">
                 <div className="flex items-start space-x-3">
                   <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg mt-1">
@@ -419,7 +435,7 @@ export default function Pricing() {
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start space-x-3">
                   <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg mt-1">
                     <Bot className="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -431,7 +447,7 @@ export default function Pricing() {
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start space-x-3">
                   <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg mt-1">
                     <MapPin className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -445,16 +461,14 @@ export default function Pricing() {
                 </div>
               </div>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Token Usage Examples</h4>
-              
+
               <div className="space-y-6">
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <h5 className="font-medium text-gray-900 dark:text-white mb-2">Basic Plan Example</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                    With 5 tokens per month, you could:
-                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">With 5 tokens per month, you could:</p>
                   <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                     <li className="flex items-start space-x-2">
                       <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
@@ -470,12 +484,10 @@ export default function Pricing() {
                     </li>
                   </ul>
                 </div>
-                
+
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <h5 className="font-medium text-gray-900 dark:text-white mb-2">Essential Plan Example</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                    With 20 tokens per day, you could:
-                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">With 20 tokens per day, you could:</p>
                   <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                     <li className="flex items-start space-x-2">
                       <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
@@ -492,10 +504,10 @@ export default function Pricing() {
                   </ul>
                 </div>
               </div>
-              
+
               <div className="mt-6 flex justify-center">
-                <Link 
-                  to="/settings/usage" 
+                <Link
+                  to="/settings/usage"
                   className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium flex items-center space-x-1"
                 >
                   <BarChart className="h-4 w-4" />
@@ -507,11 +519,14 @@ export default function Pricing() {
         </div>
 
         {/* FAQ Section */}
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-8 animate-slide-up" style={{ animationDelay: '1s' }}>
+        <div
+          className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-8 animate-slide-up"
+          style={{ animationDelay: '1s' }}
+        >
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
             Frequently Asked Questions
           </h3>
-          
+
           <div className="max-w-3xl mx-auto space-y-4">
             {faqs.map((faq, index) => (
               <div key={index} className="border border-gray-200 dark:border-gray-600 rounded-lg">
@@ -540,22 +555,20 @@ export default function Pricing() {
         {/* Bottom CTA */}
         <div className="text-center mt-16 animate-slide-up" style={{ animationDelay: '1.1s' }}>
           <div className="bg-gradient-to-r from-primary-600 to-blue-700 rounded-2xl p-8 text-white">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Ready to Transform Your Travel Experience?
-            </h3>
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">Ready to Transform Your Travel Experience?</h3>
             <p className="text-xl text-blue-100 mb-6 max-w-2xl mx-auto">
-              Join thousands of travelers who trust TripRadar for intelligent, 
-              collaborative, and privacy-first trip planning.
+              Join thousands of travelers who trust TripRadar for intelligent, collaborative, and privacy-first trip
+              planning.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link 
-                to="/signup" 
+              <Link
+                to="/signup"
                 className="bg-white text-primary-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-colors"
               >
                 Start Free Trial
               </Link>
-              <Link 
-                to="/contact" 
+              <Link
+                to="/contact"
                 className="bg-white/10 backdrop-blur-sm text-white px-8 py-3 rounded-xl font-semibold hover:bg-white/20 transition-colors"
               >
                 Contact Sales
@@ -566,61 +579,68 @@ export default function Pricing() {
       </div>
 
       {/* Feature Highlights */}
-      <section className="py-24 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 animate-slide-up" style={{ animationDelay: '1.2s' }}>
+      <section
+        className="py-24 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 animate-slide-up"
+        style={{ animationDelay: '1.2s' }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-16">
             Everything You Need for <span className="text-primary-600 dark:text-primary-400">Perfect Trips</span>
           </h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
             {[
               {
                 icon: Search,
                 title: 'Powerful Search',
-                description: 'Find flights, hotels, activities, and more with our comprehensive search engine'
+                description: 'Find flights, hotels, activities, and more with our comprehensive search engine',
               },
               {
                 icon: Bot,
                 title: 'AI Travel Assistant',
-                description: 'Get personalized recommendations and assistance via Telegram or WhatsApp'
+                description: 'Get personalized recommendations and assistance via Telegram or WhatsApp',
               },
               {
                 icon: DollarSign,
                 title: 'Budget Management',
-                description: 'Track expenses, set budgets, and receive alerts to stay on financial track'
+                description: 'Track expenses, set budgets, and receive alerts to stay on financial track',
               },
               {
                 icon: Users,
                 title: 'Group Planning',
-                description: 'Collaborate with friends and family on trip planning with voting and shared itineraries'
+                description: 'Collaborate with friends and family on trip planning with voting and shared itineraries',
               },
               {
                 icon: Calendar,
                 title: 'Smart Scheduling',
-                description: 'Optimize your itinerary with AI-powered scheduling suggestions'
+                description: 'Optimize your itinerary with AI-powered scheduling suggestions',
               },
               {
                 icon: MessageSquare,
                 title: 'Real-time Notifications',
-                description: 'Stay updated with alerts about flight changes, weather, and travel advisories'
+                description: 'Stay updated with alerts about flight changes, weather, and travel advisories',
               },
               {
                 icon: Smartphone,
                 title: 'Mobile Access',
-                description: 'Access your travel plans anywhere with our responsive mobile-first design'
+                description: 'Access your travel plans anywhere with our responsive mobile-first design',
               },
               {
                 icon: MapPin,
                 title: 'Location Intelligence',
-                description: 'Discover hidden gems and local favorites with our location-based recommendations'
+                description: 'Discover hidden gems and local favorites with our location-based recommendations',
               },
               {
                 icon: Lock,
                 title: 'Privacy Protection',
-                description: 'Your data is never used for AI training and stays completely private'
-              }
+                description: 'Your data is never used for AI training and stays completely private',
+              },
             ].map((feature, index) => (
-              <div key={index} className="flex flex-col items-center text-center animate-slide-up" style={{ animationDelay: `${1.3 + index * 0.1}s` }}>
+              <div
+                key={index}
+                className="flex flex-col items-center text-center animate-slide-up"
+                style={{ animationDelay: `${1.3 + index * 0.1}s` }}
+              >
                 <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-full mb-4">
                   <feature.icon className="h-8 w-8 text-primary-600 dark:text-primary-400" />
                 </div>
@@ -638,33 +658,43 @@ export default function Pricing() {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-16">
             Trusted by Travelers <span className="text-primary-600 dark:text-primary-400">Worldwide</span>
           </h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                quote: "TripRadar has completely transformed how I plan trips. The AI assistant is like having a personal travel agent in my pocket!",
-                author: "Sarah K.",
-                role: "Digital Nomad",
-                image: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1"
+                quote:
+                  'TripRadar has completely transformed how I plan trips. The AI assistant is like having a personal travel agent in my pocket!',
+                author: 'Sarah K.',
+                role: 'Digital Nomad',
+                image:
+                  'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1',
               },
               {
-                quote: "The budget tracking feature alone is worth the subscription. I've saved hundreds on my last trip by staying aware of my spending.",
-                author: "Michael T.",
-                role: "Business Traveler",
-                image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1"
+                quote:
+                  "The budget tracking feature alone is worth the subscription. I've saved hundreds on my last trip by staying aware of my spending.",
+                author: 'Michael T.',
+                role: 'Business Traveler',
+                image:
+                  'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1',
               },
               {
-                quote: "Planning group trips used to be a nightmare. With TripRadar's voting and shared itineraries, it's actually fun now!",
-                author: "Emma L.",
-                role: "Family Traveler",
-                image: "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1"
-              }
+                quote:
+                  "Planning group trips used to be a nightmare. With TripRadar's voting and shared itineraries, it's actually fun now!",
+                author: 'Emma L.',
+                role: 'Family Traveler',
+                image:
+                  'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1',
+              },
             ].map((testimonial, index) => (
-              <div key={index} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all animate-slide-up" style={{ animationDelay: `${1.5 + index * 0.1}s` }}>
+              <div
+                key={index}
+                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all animate-slide-up"
+                style={{ animationDelay: `${1.5 + index * 0.1}s` }}
+              >
                 <div className="flex items-center space-x-4 mb-4">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.author} 
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.author}
                     className="w-12 h-12 rounded-full object-cover"
                   />
                   <div>
@@ -693,14 +723,14 @@ export default function Pricing() {
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
             Begin with our free plan and upgrade as your needs grow. No credit card required to get started.
           </p>
-          <Link 
-            to="/signup" 
+          <Link
+            to="/signup"
             className="bg-gradient-to-r from-primary-600 to-blue-700 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-primary-500/25 transition-all inline-flex items-center space-x-2 transform hover:-translate-y-1"
           >
             <span>Get Started Free</span>
             <ArrowRight className="h-5 w-5" />
           </Link>
-          
+
           <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
             <div className="flex items-center space-x-2">
               <Check className="h-4 w-4 text-green-500" />
