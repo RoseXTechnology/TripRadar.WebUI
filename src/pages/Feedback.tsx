@@ -1,7 +1,6 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import { MessageSquare, Star, Send, CheckCircle, Bug, Lightbulb, Zap, Palette, FileText, Search } from 'lucide-react';
 import React, { useState } from 'react';
-
-import { useTheme } from '../context/ThemeContext';
 
 interface FeedbackItem {
   id: string;

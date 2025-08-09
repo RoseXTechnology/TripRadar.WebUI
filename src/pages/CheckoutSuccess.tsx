@@ -1,8 +1,7 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import { CheckCircle, ArrowRight, Shield, Bot, DollarSign, Users, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-import { useTheme } from '../context/ThemeContext';
 
 export default function CheckoutSuccess() {
   const [isVisible, setIsVisible] = useState(false);

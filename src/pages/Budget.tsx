@@ -1,3 +1,5 @@
+import { useApp } from 'app/providers/AppContext';
+import { useAuth } from 'app/providers/AuthContext';
 import { BudgetForm } from 'features/budget-tracking';
 import {
   DollarSign,
@@ -12,9 +14,6 @@ import {
   Trash2,
 } from 'lucide-react';
 import { useState } from 'react';
-
-import { useApp } from '../context/AppContext';
-import { useAuth } from '../context/AuthContext';
 
 // Backend-provided budget categories
 const BUDGET_CATEGORIES = [

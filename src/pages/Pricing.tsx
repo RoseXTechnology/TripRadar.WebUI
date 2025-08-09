@@ -1,3 +1,4 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import {
   Check,
   X,
@@ -18,8 +19,6 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-import { useTheme } from '../context/ThemeContext';
 
 const pricingTiers = [
   {

@@ -1,3 +1,5 @@
+import { useApp } from 'app/providers/AppContext';
+import { useTheme } from 'app/providers/ThemeContext';
 import {
   User,
   Lock,
@@ -39,8 +41,6 @@ import {
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useApp } from '../context/AppContext';
-import { useTheme } from '../context/ThemeContext';
 // Define types locally since they're specific to this component
 interface PreferenceCategory {
   id: string;

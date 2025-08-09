@@ -1,8 +1,7 @@
+import { useApp } from 'app/providers/AppContext';
 import { AIBotIntegration, BudgetOverview, GroupTripManager, SatisfactionPredictor } from 'features/dashboard';
 import { Plus, MapPin, Calendar, Users, TrendingUp, DollarSign, ArrowRight, Shield, Bot } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-import { useApp } from '../../../context/AppContext';
 
 export default function DashboardOverview() {
   const { user, trips, currentTrip, aiBot, setAiBot } = useApp();

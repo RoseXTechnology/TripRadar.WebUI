@@ -1,3 +1,4 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import {
   User,
   Shield,
@@ -21,8 +22,6 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useAnimation } from 'shared/ui/animation-provider';
-
-import { useTheme } from '../context/ThemeContext';
 
 const Features = () => {
   const [isVisible, setIsVisible] = useState(false);

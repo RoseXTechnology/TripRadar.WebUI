@@ -1,3 +1,4 @@
+import { useAuth } from 'app/providers/AuthContext';
 import {
   FileText,
   Calendar,
@@ -15,8 +16,6 @@ import {
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-
-import { useAuth } from '../context/AuthContext';
 
 // Sample blog data
 const blogPosts = [

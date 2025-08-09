@@ -1,9 +1,8 @@
+import { useAuth } from 'app/providers/AuthContext';
+import { useTheme } from 'app/providers/ThemeContext';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Chrome, Github, Radar, Shield, Zap } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-
-import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);

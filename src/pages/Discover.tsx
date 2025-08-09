@@ -1,3 +1,5 @@
+import { useApp } from 'app/providers/AppContext';
+import { useAuth } from 'app/providers/AuthContext';
 import {
   Star,
   Clock,
@@ -19,9 +21,6 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { useApp } from '../context/AppContext';
-import { useAuth } from '../context/AuthContext';
 
 const destinations = [
   {

@@ -1,3 +1,4 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import {
   Mail,
   Code,
@@ -20,8 +21,6 @@ import {
   Linkedin,
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
-
-import { useTheme } from '../context/ThemeContext';
 
 // Define SVG pattern as a constant to avoid parsing issues
 const dotPattern =

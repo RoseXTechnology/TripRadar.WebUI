@@ -1,3 +1,4 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import {
   ArrowRight,
   Play,
@@ -17,8 +18,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { VideoModal } from 'shared/ui';
 import { useAnimation } from 'shared/ui/animation-provider';
-
-import { useTheme } from '../context/ThemeContext';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);

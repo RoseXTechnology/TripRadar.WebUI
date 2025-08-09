@@ -1,6 +1,5 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-
-import { useTheme } from '../../../context/ThemeContext';
 
 interface AnimationContextType {
   createParticles: (containerId: string) => void;

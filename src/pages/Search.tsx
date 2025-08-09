@@ -1,3 +1,4 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import {
   Search as SearchIcon,
   MapPin,
@@ -17,8 +18,6 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
-
-import { useTheme } from '../context/ThemeContext';
 
 const searchCategories = [
   { id: 'flights', name: 'Flights', icon: Plane, color: 'bg-blue-500' },

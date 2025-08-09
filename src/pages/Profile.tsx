@@ -1,3 +1,5 @@
+import { useApp } from 'app/providers/AppContext';
+import { useTheme } from 'app/providers/ThemeContext';
 import {
   User,
   Mail,
@@ -22,9 +24,6 @@ import {
   DollarSign,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-
-import { useApp } from '../context/AppContext';
-import { useTheme } from '../context/ThemeContext';
 
 export default function Profile() {
   const { user, setUser } = useApp();

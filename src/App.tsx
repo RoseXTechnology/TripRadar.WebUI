@@ -1,3 +1,7 @@
+import { AppProvider } from 'app/providers/AppContext';
+import { AuthProvider } from 'app/providers/AuthContext';
+import { useAuth } from 'app/providers/AuthContext';
+import { ThemeProvider } from 'app/providers/ThemeContext';
 import { ProtectedRoute } from 'features/auth';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimationProvider } from 'shared/ui/animation-provider';
@@ -5,10 +9,6 @@ import { Footer } from 'widgets/footer';
 import { Header } from 'widgets/header';
 import { LandingHeader } from 'widgets/landing-header';
 
-import { AppProvider } from './context/AppContext';
-import { AuthProvider } from './context/AuthContext';
-import { useAuth } from './context/AuthContext';
-import { ThemeProvider } from './context/ThemeContext';
 import About from './pages/About';
 import ApiDocs from './pages/ApiDocs';
 import Billing from './pages/Billing';

@@ -1,3 +1,4 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import {
   MapPin,
   Users,
@@ -13,8 +14,6 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-
-import { useTheme } from '../context/ThemeContext';
 
 export default function About() {
   const [isVisible, setIsVisible] = useState(false);

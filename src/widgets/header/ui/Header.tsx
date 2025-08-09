@@ -1,9 +1,8 @@
+import { useAuth } from 'app/providers/AuthContext';
 import { QuickSearch } from 'features/search';
 import { Radar, Menu, X, Search, Bell, User, LogOut, Settings, CreditCard, DollarSign, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
-import { useAuth } from '../../../context/AuthContext';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

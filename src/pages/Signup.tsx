@@ -1,8 +1,7 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Chrome, Github, Radar, Shield, Check } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
-import { useTheme } from '../context/ThemeContext';
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);

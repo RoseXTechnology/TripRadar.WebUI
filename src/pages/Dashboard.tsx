@@ -1,8 +1,7 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import { DashboardOverview } from 'features/dashboard';
 import { useEffect } from 'react';
 import { useAnimation } from 'shared/ui/animation-provider';
-
-import { useTheme } from '../context/ThemeContext';
 
 export default function Dashboard() {
   const { actualTheme } = useTheme();

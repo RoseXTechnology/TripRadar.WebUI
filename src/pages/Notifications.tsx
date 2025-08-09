@@ -1,3 +1,4 @@
+import { useTheme } from 'app/providers/ThemeContext';
 import {
   Bell,
   Check,
@@ -14,8 +15,6 @@ import {
   Settings,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-
-import { useTheme } from '../context/ThemeContext';
 
 interface Notification {
   id: string;

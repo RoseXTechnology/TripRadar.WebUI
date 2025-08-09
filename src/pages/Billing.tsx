@@ -1,3 +1,5 @@
+import { useApp } from 'app/providers/AppContext';
+import { useTheme } from 'app/providers/ThemeContext';
 import {
   CreditCard,
   Download,
@@ -13,9 +15,6 @@ import {
   Bot,
 } from 'lucide-react';
 import React, { useState } from 'react';
-
-import { useApp } from '../context/AppContext';
-import { useTheme } from '../context/ThemeContext';
 
 export default function Billing() {
   const { user } = useApp();

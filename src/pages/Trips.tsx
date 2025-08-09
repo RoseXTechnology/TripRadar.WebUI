@@ -1,10 +1,9 @@
+import { useApp } from 'app/providers/AppContext';
+import { useTheme } from 'app/providers/ThemeContext';
 import { Plus, Calendar, Users, MapPin, DollarSign } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAnimation } from 'shared/ui/animation-provider';
-
-import { useApp } from '../context/AppContext';
-import { useTheme } from '../context/ThemeContext';
 
 export default function Trips() {
   const { trips } = useApp();

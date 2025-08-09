@@ -1,3 +1,5 @@
+import { useApp } from 'app/providers/AppContext';
+import { useTheme } from 'app/providers/ThemeContext';
 import {
   BarChart,
   Calendar,
@@ -18,9 +20,6 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-import { useApp } from '../context/AppContext';
-import { useTheme } from '../context/ThemeContext';
 
 // Define token usage data types
 interface TokenUsage {

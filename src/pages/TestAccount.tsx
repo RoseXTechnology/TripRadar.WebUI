@@ -1,7 +1,6 @@
+import { useAuth } from 'app/providers/AuthContext';
 import { User, Key, Info, CheckCircle, AlertTriangle, Clock, FileText, ArrowRight, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-
-import { useAuth } from '../context/AuthContext';
 
 export default function TestAccount() {
   const { login } = useAuth();
