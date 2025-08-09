@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Star,
   Clock,
@@ -19,8 +17,11 @@ import {
   Bus,
   Globe,
 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 
 const destinations = [
   {

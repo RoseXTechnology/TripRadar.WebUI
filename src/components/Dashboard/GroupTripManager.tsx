@@ -1,6 +1,7 @@
-import { useState } from 'react';
 import { Users, UserPlus, Crown, Mail, Check, X, MessageSquare, Vote, DollarSign } from 'lucide-react';
-import { GroupMember, Vote as VoteType } from '../../types';
+import { useState } from 'react';
+
+import { GroupMember, Vote as VoteType } from '../../entities/trip';
 
 interface GroupTripManagerProps {
   groupMembers: GroupMember[];

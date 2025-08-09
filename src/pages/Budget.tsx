@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   DollarSign,
   Plus,
@@ -11,9 +10,11 @@ import {
   Edit,
   Trash2,
 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
-import { useApp } from '../context/AppContext';
+import { useState } from 'react';
+
 import BudgetForm from '../components/Budget/BudgetForm';
+import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 
 // Backend-provided budget categories
 const BUDGET_CATEGORIES = [

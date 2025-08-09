@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import {
   Radar,
   Github,
@@ -12,6 +11,7 @@ import {
   MessageSquare,
   Smartphone,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (

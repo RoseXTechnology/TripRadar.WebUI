@@ -1,6 +1,6 @@
+import { tripApi, type Trip } from 'entities/trip';
 import { useState, useEffect } from 'react';
 import { useApi } from 'shared/lib';
-import { tripApi, type Trip } from 'entities/trip';
 
 export function useTripManagement() {
   const [trips, setTrips] = useState<Trip[]>([]);

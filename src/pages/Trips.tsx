@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Plus, Calendar, Users, MapPin, DollarSign } from 'lucide-react';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
+import { useAnimation } from '../components/AnimationProvider';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
-import { useAnimation } from '../components/AnimationProvider';
 
 export default function Trips() {
   const { trips } = useApp();

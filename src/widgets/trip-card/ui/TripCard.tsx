@@ -1,7 +1,7 @@
-import { Badge, Button } from 'shared/ui';
-import { formatDate, formatCurrency } from 'shared/lib';
 import { type Trip } from 'entities/trip';
 import { MapPin, Calendar, DollarSign, Users } from 'lucide-react';
+import { formatDate, formatCurrency } from 'shared/lib';
+import { Badge, Button } from 'shared/ui';
 
 interface TripCardProps {
   trip: Trip;

@@ -1,6 +1,6 @@
+import { authApi } from 'features/auth';
 import { useState } from 'react';
 import { useApi } from 'shared/lib';
-import { authApi } from '../api/authApi';
 
 interface LoginData {
   email: string;

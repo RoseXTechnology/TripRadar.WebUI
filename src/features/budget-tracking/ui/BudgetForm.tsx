@@ -1,5 +1,6 @@
-import { Button, Input, Select } from 'shared/ui';
 import { useForm, validateRequired } from 'shared/lib';
+import { Button, Input, Select } from 'shared/ui';
+
 import { useBudget } from '../model/useBudget';
 
 interface BudgetFormProps {

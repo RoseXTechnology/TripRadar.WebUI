@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import {
   Shield,
   Lock,
@@ -15,6 +14,7 @@ import {
   CheckCircle,
   MapPin,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function PrivacyPolicy() {
   return (

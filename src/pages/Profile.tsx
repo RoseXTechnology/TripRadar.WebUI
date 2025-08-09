@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   User,
   Mail,
@@ -22,6 +21,8 @@ import {
   MapPin,
   DollarSign,
 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
 

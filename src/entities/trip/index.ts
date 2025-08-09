@@ -6,3 +6,5 @@ export type {
   SatisfactionPrediction,
   SatisfactionFactor,
 } from './model/types';
+
+export { tripApi } from './api';

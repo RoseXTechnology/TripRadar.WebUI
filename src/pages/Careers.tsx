@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import {
   MapPin,
   Clock,
@@ -19,6 +18,8 @@ import {
   FileUp,
   AlertTriangle,
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
 import { useTheme } from '../context/ThemeContext';
 
 export default function Careers() {

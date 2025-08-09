@@ -1,6 +1,6 @@
+import { ArrowRight, Play, Star, MessageSquare, Smartphone } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Play, Star, MessageSquare, Smartphone } from 'lucide-react';
 import { VideoModal } from 'shared/ui';
 
 export default function Hero() {

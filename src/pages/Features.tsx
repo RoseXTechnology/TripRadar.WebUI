@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   User,
   Shield,
@@ -20,8 +19,10 @@ import {
   Gauge,
   Sparkles,
 } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+import { useEffect, useState } from 'react';
+
 import { useAnimation } from '../components/AnimationProvider';
+import { useTheme } from '../context/ThemeContext';
 
 const Features = () => {
   const [isVisible, setIsVisible] = useState(false);

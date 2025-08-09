@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+
+import { useAnimation } from '../components/AnimationProvider';
 import DashboardOverview from '../components/Dashboard/DashboardOverview';
 import { useTheme } from '../context/ThemeContext';
-import { useAnimation } from '../components/AnimationProvider';
 
 export default function Dashboard() {
   const { actualTheme } = useTheme();

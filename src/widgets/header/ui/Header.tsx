@@ -1,7 +1,7 @@
-import { Button } from 'shared/ui';
 import { useAuth } from 'features/auth';
 import { User, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { Button } from 'shared/ui';
 
 export function Header() {
   const { isAuthenticated, logout } = useAuth();

@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import {
   BarChart,
   Calendar,
@@ -17,9 +16,11 @@ import {
   AlertTriangle,
   ArrowRight,
 } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
-import { useApp } from '../context/AppContext';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
+import { useApp } from '../context/AppContext';
+import { useTheme } from '../context/ThemeContext';
 
 // Define token usage data types
 interface TokenUsage {

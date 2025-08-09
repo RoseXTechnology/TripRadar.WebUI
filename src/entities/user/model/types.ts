@@ -32,3 +32,17 @@ export interface PrivacySettings {
   readonly analytics: boolean;
   readonly marketing: boolean;
 }
+
+export interface AIBotIntegration {
+  readonly telegram: {
+    readonly enabled: boolean;
+    readonly botUsername?: string;
+    readonly chatId?: string;
+  };
+  readonly whatsapp: {
+    readonly enabled: boolean;
+    readonly phoneNumber?: string;
+    readonly verified?: boolean;
+  };
+  readonly features: readonly string[];
+}

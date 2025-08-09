@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Play,
   MessageSquare,
@@ -15,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+import { useState } from 'react';
 
 const botExamples = [
   {

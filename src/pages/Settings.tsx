@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   User,
   Lock,
@@ -37,10 +36,22 @@ import {
   UserPlus,
   Star,
 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
-import { Link } from 'react-router-dom';
-import { PreferenceCategory, PreferenceSchema } from '../types';
+// Define types locally since they're specific to this component
+interface PreferenceCategory {
+  id: string;
+  name: string;
+  description: string;
+  options: { id: string; label: string }[];
+}
+
+interface PreferenceSchema {
+  categories: PreferenceCategory[];
+}
 
 type SettingsSection = 'account' | 'notifications' | 'security' | 'integrations' | 'preferences' | 'group';
 

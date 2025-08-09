@@ -11,11 +11,7 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
   { ignores: ['dist', 'build', 'node_modules'] },
   {
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommended,
-      prettierConfig,
-    ],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended, prettierConfig],
     files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
       ecmaVersion: 2020,
@@ -35,10 +31,7 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'prettier/prettier': 'error',
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
@@ -49,14 +42,7 @@ export default tseslint.config(
       'import/order': [
         'error',
         {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index',
-          ],
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
           'newlines-between': 'always',
           alphabetize: { order: 'asc', caseInsensitive: true },
         },

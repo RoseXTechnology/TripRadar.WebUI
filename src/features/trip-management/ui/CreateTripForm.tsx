@@ -1,6 +1,6 @@
-import { Button, Input, Select } from 'shared/ui';
-import { useForm, validateRequired } from 'shared/lib';
 import { useTripManagement } from 'features/trip-management';
+import { useForm, validateRequired } from 'shared/lib';
+import { Button, Input, Select } from 'shared/ui';
 
 interface CreateTripFormProps {
   onSuccess?: () => void;

@@ -1,6 +1,7 @@
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Chrome, Github, Radar, Shield, Zap } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, Chrome, Github, Radar, Shield, Zap } from 'lucide-react';
+
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 

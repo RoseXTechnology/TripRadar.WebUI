@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useApi } from 'shared/lib';
+
 import { aiApi } from '../api/aiApi';
 
 interface ChatMessage {

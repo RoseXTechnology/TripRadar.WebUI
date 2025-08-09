@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Search,
   MapPin,
@@ -13,6 +12,7 @@ import {
   Banknote,
   PartyPopper,
 } from 'lucide-react';
+import { useState } from 'react';
 
 const searchCategories = [
   { id: 'flights', name: 'Flights', icon: Plane, color: 'bg-blue-500' },

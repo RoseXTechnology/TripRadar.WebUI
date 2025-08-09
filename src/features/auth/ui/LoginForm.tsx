@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Button, Input } from 'shared/ui';
 import { useForm, authValidation } from 'shared/lib';
+import { Button, Input } from 'shared/ui';
+
 import { useAuth } from '../model/useAuth';
 
 interface LoginFormProps {

@@ -1,5 +1,6 @@
 import { Smile, TrendingUp, Target, Lightbulb, Star, BarChart3 } from 'lucide-react';
-import { SatisfactionPrediction } from '../../types';
+
+import { SatisfactionPrediction } from '../../entities/trip';
 
 interface SatisfactionPredictorProps {
   prediction: SatisfactionPrediction;

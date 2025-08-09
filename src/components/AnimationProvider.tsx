@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+
 import { useTheme } from '../context/ThemeContext';
 
 interface AnimationContextType {

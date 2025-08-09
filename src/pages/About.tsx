@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   MapPin,
   Users,
@@ -13,6 +12,8 @@ import {
   ArrowRight,
   ExternalLink,
 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
 import { useTheme } from '../context/ThemeContext';
 
 export default function About() {

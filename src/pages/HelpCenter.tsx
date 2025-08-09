@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Search,
   Book,
@@ -16,6 +15,7 @@ import {
   Globe,
   Mail,
 } from 'lucide-react';
+import React, { useState } from 'react';
 
 interface FAQItem {
   id: string;

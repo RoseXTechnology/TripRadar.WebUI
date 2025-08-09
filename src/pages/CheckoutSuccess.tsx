@@ -1,6 +1,7 @@
+import { CheckCircle, ArrowRight, Shield, Bot, DollarSign, Users, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle, ArrowRight, Shield, Bot, DollarSign, Users, Download } from 'lucide-react';
+
 import { useTheme } from '../context/ThemeContext';
 
 export default function CheckoutSuccess() {

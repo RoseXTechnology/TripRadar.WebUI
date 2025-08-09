@@ -9,10 +9,10 @@ export const apiRequest = async (endpoint: string, options: RequestInit = {}) =>
     },
     ...options,
   });
-  
+
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
   }
-  
+
   return response.json();
 };

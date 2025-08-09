@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
 import { Search, X, ArrowRight, FileText, Book, Code, Users, MapPin, Calendar, Command, Clock } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface QuickSearchProps {

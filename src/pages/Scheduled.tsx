@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Calendar,
   Clock,
@@ -15,6 +14,7 @@ import {
   Settings,
   Search,
 } from 'lucide-react';
+import { useState } from 'react';
 
 interface ScheduledItem {
   id: string;

@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { DollarSign, Plus, Save, X } from 'lucide-react';
+import { useState } from 'react';
 
 // Backend-provided budget categories
 const BUDGET_CATEGORIES = [

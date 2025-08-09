@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button, Input } from 'shared/ui';
+
 import { useAI } from '../model/useAI';
 
 export function AIChat() {

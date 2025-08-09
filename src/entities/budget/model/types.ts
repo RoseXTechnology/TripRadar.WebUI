@@ -6,6 +6,7 @@ export interface Budget {
   readonly currency: string;
   readonly categories: readonly BudgetCategory[];
   readonly alerts: readonly BudgetAlert[];
+  readonly expenses: readonly Expense[];
   readonly createdAt: string;
   readonly updatedAt: string;
 }

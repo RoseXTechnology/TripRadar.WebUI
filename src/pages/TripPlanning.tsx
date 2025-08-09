@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   MapPin,
   Calendar,
@@ -15,6 +14,7 @@ import {
   Navigation,
   CheckCircle,
 } from 'lucide-react';
+import { useState } from 'react';
 
 interface TripPlan {
   id: string;

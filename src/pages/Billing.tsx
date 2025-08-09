@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   CreditCard,
   Download,
@@ -13,6 +12,8 @@ import {
   MapPin,
   Bot,
 } from 'lucide-react';
+import React, { useState } from 'react';
+
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
 

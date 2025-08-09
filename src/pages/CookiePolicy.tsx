@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import { Cookie, Info, Settings, Globe, Mail, CheckCircle, HelpCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function CookiePolicy() {
   return (

@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import { FileText, Scale, AlertTriangle, Shield, Globe, CreditCard, Mail, Clock, HelpCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function TermsOfService() {
   return (

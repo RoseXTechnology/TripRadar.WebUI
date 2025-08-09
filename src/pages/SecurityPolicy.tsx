@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import {
   Shield,
   Lock,
@@ -16,6 +15,7 @@ import {
   Clock,
   HelpCircle,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function SecurityPolicy() {
   return (

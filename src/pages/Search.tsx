@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import {
   Search as SearchIcon,
   MapPin,
   Calendar,
   Users,
-  Filter,
   Plane,
   Building,
   Ticket,
@@ -18,6 +16,8 @@ import {
   ChevronLeft,
   ExternalLink,
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
 import { useTheme } from '../context/ThemeContext';
 
 const searchCategories = [

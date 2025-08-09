@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   Bell,
   Check,
@@ -14,6 +13,8 @@ import {
   MapPin,
   Settings,
 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
 import { useTheme } from '../context/ThemeContext';
 
 interface Notification {

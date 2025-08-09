@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import {
   Mail,
   Code,
@@ -20,6 +19,8 @@ import {
   Github,
   Linkedin,
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
 import { useTheme } from '../context/ThemeContext';
 
 // Define SVG pattern as a constant to avoid parsing issues

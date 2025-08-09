@@ -1,6 +1,6 @@
+import { budgetApi, type Budget, type Expense } from 'entities/budget';
 import { useState, useEffect } from 'react';
 import { useApi } from 'shared/lib';
-import { budgetApi, type Budget, type Expense } from 'entities/budget';
 
 export function useBudget(tripId: string) {
   const [budget, setBudget] = useState<Budget | null>(null);

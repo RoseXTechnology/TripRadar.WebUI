@@ -1,6 +1,7 @@
+import { XCircle, ArrowRight, AlertTriangle, HelpCircle, Mail, MessageSquare } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { XCircle, ArrowRight, AlertTriangle, HelpCircle, Mail, MessageSquare } from 'lucide-react';
+
 import { useTheme } from '../context/ThemeContext';
 
 export default function CheckoutCancel() {

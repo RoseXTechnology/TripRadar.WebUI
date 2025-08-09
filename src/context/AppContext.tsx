@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
+
 import { User, Trip, AIBotIntegration } from '../types';
 
 interface AppContextType {

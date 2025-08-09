@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import {
   ArrowRight,
   Play,
@@ -15,9 +13,12 @@ import {
   Vote,
   Lock,
 } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
-import { useAnimation } from '../components/AnimationProvider';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { VideoModal } from 'shared/ui';
+
+import { useAnimation } from '../components/AnimationProvider';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);

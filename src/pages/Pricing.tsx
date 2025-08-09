@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   Check,
   X,
@@ -17,7 +16,9 @@ import {
   Smartphone,
   Lock,
 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
 import { useTheme } from '../context/ThemeContext';
 
 const pricingTiers = [

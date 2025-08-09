@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
 import { MessageSquare, Star, Send, CheckCircle, Bug, Lightbulb, Zap, Palette, FileText, Search } from 'lucide-react';
+import React, { useState } from 'react';
+
 import { useTheme } from '../context/ThemeContext';
 
 interface FeedbackItem {

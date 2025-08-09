@@ -1,5 +1,3 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import {
   Calendar,
   Globe,
@@ -22,6 +20,9 @@ import {
   Star,
   Sparkles,
 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+
 import { useTheme } from '../context/ThemeContext';
 
 interface FeatureCard {
