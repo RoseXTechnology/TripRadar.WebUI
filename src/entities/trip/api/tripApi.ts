@@ -1,4 +1,4 @@
-import type { Trip } from '../model/types';
+import type { Trip } from 'entities/trip';
 
 export const tripApi = {
   getTrips: async (): Promise<Trip[]> => {

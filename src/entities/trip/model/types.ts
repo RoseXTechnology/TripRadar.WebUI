@@ -51,3 +51,21 @@ export interface SatisfactionFactor {
   readonly impact: number;
   readonly description: string;
 }
+
+export interface Vote {
+  readonly id: string;
+  readonly tripId: string;
+  readonly title: string;
+  readonly description: string;
+  readonly options: readonly VoteOption[];
+  readonly deadline: string;
+  readonly status: 'active' | 'completed' | 'cancelled';
+  readonly createdBy: string;
+}
+
+export interface VoteOption {
+  readonly id: string;
+  readonly title: string;
+  readonly votes: readonly string[];
+  readonly cost?: number;
+}

@@ -5,6 +5,8 @@ export type {
   GroupMember,
   SatisfactionPrediction,
   SatisfactionFactor,
+  Vote,
+  VoteOption,
 } from './model/types';
 
 export { tripApi } from './api';
