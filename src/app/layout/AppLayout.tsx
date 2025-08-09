@@ -1,4 +1,5 @@
 import { useAuth } from 'app/providers/AuthContext';
+import { ErrorBoundary } from 'shared/ui';
 import { Footer } from 'widgets/footer';
 import { Header } from 'widgets/header';
 import { LandingHeader } from 'widgets/landing-header';
@@ -13,7 +14,9 @@ export function AppLayout() {
       {isAuthenticated ? <Header /> : <LandingHeader />}
 
       <main className="flex-1">
-        <AppRoutes />
+        <ErrorBoundary>
+          <AppRoutes />
+        </ErrorBoundary>
       </main>
 
       <Footer />

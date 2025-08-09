@@ -1,12 +1,13 @@
 import { ProtectedRoute } from 'features/auth';
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { LoadingSpinner } from 'shared/ui';
 
 // Lazy components
 const LazyRoute = ({ importFn }: { importFn: () => Promise<{ default: React.ComponentType }> }) => {
   const Component = lazy(importFn);
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingSpinner />}>
       <Component />
     </Suspense>
   );
