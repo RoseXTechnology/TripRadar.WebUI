@@ -1,6 +1,6 @@
 import { DollarSign, AlertTriangle } from 'lucide-react';
 
-import { Budget as TripBudget, BudgetCategory } from '../../entities/budget';
+import { Budget as TripBudget, BudgetCategory } from '../../../entities/budget';
 
 interface BudgetOverviewProps {
   budget: TripBudget;

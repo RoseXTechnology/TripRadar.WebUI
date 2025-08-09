@@ -1,8 +1,7 @@
+import { QuickSearch } from 'features/search';
 import { Radar, Menu, X, ArrowRight, Search } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
-import QuickSearch from '../Search/QuickSearch';
 
 export default function LandingHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

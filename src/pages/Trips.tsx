@@ -1,8 +1,8 @@
 import { Plus, Calendar, Users, MapPin, DollarSign } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAnimation } from 'shared/ui/animation-provider';
 
-import { useAnimation } from '../components/AnimationProvider';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
 

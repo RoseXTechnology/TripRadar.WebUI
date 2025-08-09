@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-import { AIBotIntegration as AIBotType } from '../../entities/user';
+import { AIBotIntegration as AIBotType } from '../../../entities/user';
 
 interface AIBotIntegrationProps {
   aiBot: AIBotType;

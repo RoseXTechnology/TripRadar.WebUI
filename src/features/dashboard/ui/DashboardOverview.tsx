@@ -1,12 +1,8 @@
+import { AIBotIntegration, BudgetOverview, GroupTripManager, SatisfactionPredictor } from 'features/dashboard';
 import { Plus, MapPin, Calendar, Users, TrendingUp, DollarSign, ArrowRight, Shield, Bot } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { useApp } from '../../context/AppContext';
-
-import AIBotIntegration from './AIBotIntegration';
-import BudgetOverview from './BudgetOverview';
-import GroupTripManager from './GroupTripManager';
-import SatisfactionPredictor from './SatisfactionPredictor';
+import { useApp } from '../../../context/AppContext';
 
 export default function DashboardOverview() {
   const { user, trips, currentTrip, aiBot, setAiBot } = useApp();

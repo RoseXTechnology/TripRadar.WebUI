@@ -1,10 +1,10 @@
+import { ProtectedRoute } from 'features/auth';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AnimationProvider } from 'shared/ui/animation-provider';
+import { Footer } from 'widgets/footer';
+import { Header } from 'widgets/header';
+import { LandingHeader } from 'widgets/landing-header';
 
-import { AnimationProvider } from './components/AnimationProvider';
-import ProtectedRoute from './components/Auth/ProtectedRoute';
-import Footer from './components/Layout/Footer';
-import Header from './components/Layout/Header';
-import LandingHeader from './components/Layout/LandingHeader';
 import { AppProvider } from './context/AppContext';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './context/AuthContext';

@@ -16,8 +16,8 @@ import {
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { VideoModal } from 'shared/ui';
+import { useAnimation } from 'shared/ui/animation-provider';
 
-import { useAnimation } from '../components/AnimationProvider';
 import { useTheme } from '../context/ThemeContext';
 
 export default function Home() {

@@ -1,3 +1,4 @@
+import { BudgetForm } from 'features/budget-tracking';
 import {
   DollarSign,
   Plus,
@@ -12,7 +13,6 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-import BudgetForm from '../components/Budget/BudgetForm';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 

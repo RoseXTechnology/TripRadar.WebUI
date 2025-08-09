@@ -1,7 +1,7 @@
+import { DashboardOverview } from 'features/dashboard';
 import { useEffect } from 'react';
+import { useAnimation } from 'shared/ui/animation-provider';
 
-import { useAnimation } from '../components/AnimationProvider';
-import DashboardOverview from '../components/Dashboard/DashboardOverview';
 import { useTheme } from '../context/ThemeContext';
 
 export default function Dashboard() {

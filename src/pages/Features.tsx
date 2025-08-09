@@ -20,8 +20,8 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useAnimation } from 'shared/ui/animation-provider';
 
-import { useAnimation } from '../components/AnimationProvider';
 import { useTheme } from '../context/ThemeContext';
 
 const Features = () => {
