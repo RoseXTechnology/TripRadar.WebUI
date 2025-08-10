@@ -1,26 +1,48 @@
-import { useTheme } from 'app/providers/ThemeContext';
-import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Chrome, Github, Radar, Shield, Check } from 'lucide-react';
-import React, { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signupSchema, type SignupFormData } from 'features/auth';
+import { AUTH_MESSAGES } from 'features/auth';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import {
+  FaGoogle,
+  FaGithub,
+  FaMicrosoft,
+  FaEnvelope,
+  FaLock,
+  FaUser,
+  FaArrowRight,
+  FaPlane,
+  FaShieldAlt,
+  FaCheck,
+} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { cn } from 'shared/lib/utils';
+import { FormInput } from 'shared/ui';
 
-export default function Signup() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+export const Signup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const { actualTheme } = useTheme();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+    mode: 'onChange',
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
+  const onSubmit = async (data: SignupFormData) => {
     if (!agreedToTerms) return;
 
     setIsLoading(true);
+    console.log('Form data:', data);
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
     setIsLoading(false);
@@ -38,8 +60,14 @@ export default function Signup() {
     console.log('Microsoft Sign Up');
   };
 
-  const passwordsMatch = formData.password === formData.confirmPassword;
-  const isFormValid = formData.name && formData.email && formData.password && passwordsMatch && agreedToTerms;
+  const isFormValid = isValid && agreedToTerms;
+
+  const oauthButtonStyles = cn(
+    'w-full flex items-center justify-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-200',
+    'border border-gray-300 dark:border-gray-600',
+    'text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800',
+    'hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500'
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
@@ -48,43 +76,32 @@ export default function Signup() {
         <div className="text-center">
           <Link to="/" className="inline-flex items-center space-x-2 group mb-8">
             <div className="p-2 bg-primary-500 rounded-lg group-hover:bg-primary-600 transition-colors">
-              <Radar className="h-6 w-6 text-white" />
+              <FaPlane className="h-6 w-6 text-white" />
             </div>
             <span className="text-xl font-bold text-gray-900 dark:text-white">TripRadar</span>
           </Link>
 
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Create your account</h2>
-          <p className="text-gray-600 dark:text-gray-400">Start planning amazing trips with our AI-powered platform</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{AUTH_MESSAGES.ui.createAccount}</h2>
+          <p className="text-gray-600 dark:text-gray-400">{AUTH_MESSAGES.ui.subtitle}</p>
         </div>
 
         {/* Main Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
           {/* OAuth Buttons */}
           <div className="space-y-3 mb-6">
-            <button
-              onClick={handleGoogleSignUp}
-              className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 font-medium"
-            >
-              <Chrome className="h-5 w-5" />
-              <span>Continue with Google</span>
+            <button onClick={handleGoogleSignUp} className={oauthButtonStyles}>
+              <FaGoogle className="h-5 w-5" />
+              <span>{AUTH_MESSAGES.ui.continueWith} Google</span>
             </button>
 
-            <button
-              onClick={handleGithubSignUp}
-              className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 font-medium"
-            >
-              <Github className="h-5 w-5" />
-              <span>Continue with GitHub</span>
+            <button onClick={handleGithubSignUp} className={oauthButtonStyles}>
+              <FaGithub className="h-5 w-5" />
+              <span>{AUTH_MESSAGES.ui.continueWith} GitHub</span>
             </button>
 
-            <button
-              onClick={handleMicrosoftSignUp}
-              className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 font-medium"
-            >
-              <div className="w-5 h-5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-sm flex items-center justify-center">
-                <span className="text-white text-xs font-bold">M</span>
-              </div>
-              <span>Continue with Microsoft</span>
+            <button onClick={handleMicrosoftSignUp} className={oauthButtonStyles}>
+              <FaMicrosoft className="h-5 w-5" />
+              <span>{AUTH_MESSAGES.ui.continueWith} Microsoft</span>
             </button>
           </div>
 
@@ -95,183 +112,108 @@ export default function Signup() {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
-                or continue with email
+                {AUTH_MESSAGES.ui.orContinueEmail}
               </span>
             </div>
           </div>
 
           {/* Sign Up Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Full name
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  required
-                  value={formData.name}
-                  onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-xl placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Enter your full name"
-                />
-              </div>
-            </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <FormInput
+              {...register('name')}
+              id="name"
+              type="text"
+              label={AUTH_MESSAGES.ui.fullName}
+              placeholder={AUTH_MESSAGES.placeholders.enterFullName}
+              icon={<FaUser className="h-5 w-5 text-gray-400" />}
+              autoComplete="name"
+              error={errors.name?.message}
+              required
+            />
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Email address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-xl placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Enter your email"
-                />
-              </div>
-            </div>
+            <FormInput
+              {...register('email')}
+              id="email"
+              type="email"
+              label={AUTH_MESSAGES.ui.emailAddress}
+              placeholder={AUTH_MESSAGES.placeholders.enterEmail}
+              icon={<FaEnvelope className="h-5 w-5 text-gray-400" />}
+              autoComplete="email"
+              error={errors.email?.message}
+              required
+            />
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
-                  required
-                  value={formData.password}
-                  onChange={e => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                  className="block w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Create a password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
-                  )}
-                </button>
-              </div>
-            </div>
+            <FormInput
+              {...register('password')}
+              id="password"
+              type="password"
+              label={AUTH_MESSAGES.ui.password}
+              placeholder={AUTH_MESSAGES.placeholders.createPassword}
+              icon={<FaLock className="h-5 w-5 text-gray-400" />}
+              autoComplete="new-password"
+              error={errors.password?.message}
+              required
+            />
 
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-              >
-                Confirm password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
-                  required
-                  value={formData.confirmPassword}
-                  onChange={e =>
-                    setFormData(prev => ({
-                      ...prev,
-                      confirmPassword: e.target.value,
-                    }))
-                  }
-                  className={`block w-full pl-10 pr-10 py-3 border rounded-xl placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${
-                    formData.confirmPassword && !passwordsMatch
-                      ? 'border-red-300 dark:border-red-700 focus:ring-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
-                  }`}
-                  placeholder="Confirm your password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
-                  )}
-                </button>
-              </div>
-              {formData.confirmPassword && !passwordsMatch && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">Passwords don't match</p>
-              )}
-            </div>
+            <FormInput
+              {...register('confirmPassword')}
+              id="confirmPassword"
+              type="password"
+              label={AUTH_MESSAGES.ui.confirmPassword}
+              placeholder={AUTH_MESSAGES.placeholders.confirmPassword}
+              icon={<FaLock className="h-5 w-5 text-gray-400" />}
+              autoComplete="new-password"
+              error={errors.confirmPassword?.message}
+              required
+            />
 
             <div className="flex items-start">
-              <div className="flex items-center h-5">
-                <input
-                  id="terms"
-                  name="terms"
-                  type="checkbox"
-                  checked={agreedToTerms}
-                  onChange={e => setAgreedToTerms(e.target.checked)}
-                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
-                />
-              </div>
-              <div className="ml-3 text-sm">
-                <label htmlFor="terms" className="text-gray-700 dark:text-gray-300">
-                  I agree to the{' '}
-                  <Link
-                    to="/terms"
-                    className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
-                  >
-                    Terms of Service
-                  </Link>{' '}
-                  and{' '}
-                  <Link
-                    to="/privacy"
-                    className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
-                  >
-                    Privacy Policy
-                  </Link>
-                </label>
-              </div>
+              <input
+                id="terms"
+                name="terms"
+                type="checkbox"
+                checked={agreedToTerms}
+                onChange={e => setAgreedToTerms(e.target.checked)}
+                className="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
+              />
+              <label htmlFor="terms" className="ml-3 text-sm text-gray-700 dark:text-gray-300">
+                {AUTH_MESSAGES.ui.agreeToTerms}{' '}
+                <Link
+                  to="/terms"
+                  className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
+                >
+                  {AUTH_MESSAGES.ui.termsOfService}
+                </Link>{' '}
+                and{' '}
+                <Link
+                  to="/privacy"
+                  className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
+                >
+                  {AUTH_MESSAGES.ui.privacyPolicy}
+                </Link>
+              </label>
             </div>
 
             <button
               type="submit"
               disabled={isLoading || !isFormValid}
-              className="group relative w-full flex justify-center items-center space-x-2 py-3 px-4 border border-transparent text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-xl font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className={cn(
+                'group relative w-full flex justify-center items-center space-x-2 py-3 px-4 rounded-xl font-semibold transition-all duration-200',
+                'border border-transparent text-white bg-primary-600 hover:bg-primary-700',
+                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500',
+                'shadow-lg hover:shadow-xl transform hover:-translate-y-0.5',
+                'disabled:opacity-50 disabled:cursor-not-allowed'
+              )}
             >
               {isLoading ? (
                 <>
                   <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
-                  <span>Creating account...</span>
+                  <span>{AUTH_MESSAGES.ui.creatingAccount}</span>
                 </>
               ) : (
                 <>
-                  <span>Create account</span>
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  <span>{AUTH_MESSAGES.ui.createAccountBtn}</span>
+                  <FaArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                 </>
               )}
             </button>
@@ -280,12 +222,12 @@ export default function Signup() {
           {/* Sign In Link */}
           <div className="mt-6 text-center">
             <p className="text-gray-600 dark:text-gray-400">
-              Already have an account?{' '}
+              {AUTH_MESSAGES.ui.alreadyHaveAccount}{' '}
               <Link
                 to="/login"
                 className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-semibold"
               >
-                Sign in
+                {AUTH_MESSAGES.ui.signIn}
               </Link>
             </p>
           </div>
@@ -295,30 +237,30 @@ export default function Signup() {
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center space-x-6 text-sm text-gray-500 dark:text-gray-400">
             <div className="flex items-center space-x-2">
-              <Shield className="h-4 w-4" />
-              <span>Secure & Private</span>
+              <FaShieldAlt className="h-4 w-4" />
+              <span>{AUTH_MESSAGES.ui.securePrivate}</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Check className="h-4 w-4" />
-              <span>Free to Start</span>
+              <FaCheck className="h-4 w-4" />
+              <span>{AUTH_MESSAGES.ui.freeToStart}</span>
             </div>
           </div>
 
           <div className="flex items-center justify-center space-x-4 text-xs text-gray-400 dark:text-gray-500">
             <Link to="/privacy" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-              Privacy Policy
+              {AUTH_MESSAGES.ui.privacyPolicy}
             </Link>
             <span>•</span>
             <Link to="/terms" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-              Terms of Service
+              {AUTH_MESSAGES.ui.termsOfService}
             </Link>
             <span>•</span>
             <Link to="/support" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-              Support
+              {AUTH_MESSAGES.ui.support}
             </Link>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};

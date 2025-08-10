@@ -25,10 +25,7 @@ export const AuthActions = ({ onSearchClick }: AuthActionsProps) => {
       </button>
 
       {/* Sign In Link */}
-      <Link
-        to="/login"
-        className={cn('inline-flex font-medium transition-colors relative group', baseTextStyles)}
-      >
+      <Link to="/login" className={cn('inline-flex font-medium transition-colors relative group', baseTextStyles)}>
         Sign In
         <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-900 dark:bg-white transition-all duration-200 group-hover:w-full" />
       </Link>
