@@ -1,1 +1,1 @@
-export { default as LandingHeader } from './ui/LandingHeader';
+export { LandingHeader } from './ui/LandingHeader';
