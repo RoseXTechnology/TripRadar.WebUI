@@ -5,3 +5,4 @@ export { default as TestAccount } from './ui/TestAccount';
 export * from './model/types';
 export * from './model/validation';
 export * from './model/constants';
+export * from './lib/oauth';

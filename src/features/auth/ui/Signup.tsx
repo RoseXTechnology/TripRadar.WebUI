@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   FaGoogle,
-  FaGithub,
   FaMicrosoft,
+  FaGithub,
   FaEnvelope,
   FaLock,
   FaUser,
@@ -18,6 +18,8 @@ import {
 import { Link } from 'react-router-dom';
 import { cn } from 'shared/lib/utils';
 import { FormInput } from 'shared/ui';
+
+import { handleGoogleSignUp, handleGithubSignUp, handleMicrosoftSignUp } from '../lib/oauth';
 
 export const Signup = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -46,18 +48,6 @@ export const Signup = () => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
     setIsLoading(false);
-  };
-
-  const handleGoogleSignUp = () => {
-    console.log('Google Sign Up');
-  };
-
-  const handleGithubSignUp = () => {
-    console.log('GitHub Sign Up');
-  };
-
-  const handleMicrosoftSignUp = () => {
-    console.log('Microsoft Sign Up');
   };
 
   const isFormValid = isValid && agreedToTerms;
