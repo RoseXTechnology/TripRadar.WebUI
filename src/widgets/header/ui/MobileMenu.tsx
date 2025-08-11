@@ -1,6 +1,7 @@
 import { useAuth } from 'app/providers/AuthContext';
 import { Link, useLocation } from 'react-router-dom';
 import { APP_NAVIGATION, LANDING_NAVIGATION } from 'shared/config';
+import { ROUTES } from 'shared/config/routes';
 import { cn } from 'shared/lib/utils';
 
 interface MobileMenuProps {
@@ -65,7 +66,7 @@ export const MobileMenu = ({ isOpen, onClose, onSearchClick }: MobileMenuProps) 
           {!isAuthenticated && (
             <>
               <Link
-                to="/login"
+                to={ROUTES.LOGIN}
                 className={cn(
                   'block px-3 py-2 rounded-xl font-medium transition-colors',
                   linkBaseStyles,
@@ -76,7 +77,7 @@ export const MobileMenu = ({ isOpen, onClose, onSearchClick }: MobileMenuProps) 
                 Sign In
               </Link>
               <Link
-                to="/signup"
+                to={ROUTES.SIGNUP}
                 className={cn(
                   'block px-3 py-2.5 rounded-xl font-semibold text-center transition-all',
                   'bg-gradient-to-r from-blue-500 to-purple-600 text-white',

@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { ROUTES } from 'shared/config/routes';
 import { VideoModal } from 'shared/ui';
 import { useAnimation } from 'shared/ui/animation-provider';
 
@@ -204,7 +205,7 @@ export default function Home() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
               <Link
-                to="/signup"
+                to={ROUTES.SIGNUP}
                 className="group relative bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 flex items-center space-x-2 transform hover:-translate-y-1"
               >
                 <span>Get Started Free</span>
@@ -358,7 +359,7 @@ export default function Home() {
               planning.
             </p>
             <Link
-              to="/signup"
+              to={ROUTES.SIGNUP}
               className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:-translate-y-1"
             >
               Get Started Free

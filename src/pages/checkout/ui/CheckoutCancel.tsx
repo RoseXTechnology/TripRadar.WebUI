@@ -2,6 +2,7 @@ import { useTheme } from 'app/providers/ThemeContext';
 import { XCircle, ArrowRight, AlertTriangle, HelpCircle, Mail, MessageSquare } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ROUTES } from 'shared/config/routes';
 
 export default function CheckoutCancel() {
   const [isVisible, setIsVisible] = useState(false);
@@ -108,7 +109,7 @@ export default function CheckoutCancel() {
             </Link>
 
             <Link
-              to="/dashboard"
+              to={ROUTES.DASHBOARD}
               className="block w-full sm:w-auto sm:inline-flex items-center justify-center space-x-2 px-8 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors mt-4 sm:mt-0 sm:ml-4"
             >
               <span>Go to Dashboard</span>

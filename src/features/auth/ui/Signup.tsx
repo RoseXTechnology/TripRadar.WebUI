@@ -16,6 +16,7 @@ import {
   FaCheck,
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { ROUTES } from 'shared/config/routes';
 import { cn } from 'shared/lib/utils';
 import { FormInput } from 'shared/ui';
 
@@ -64,7 +65,7 @@ export const Signup = () => {
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <Link to="/" className="inline-flex items-center space-x-2 group mb-8">
+          <Link to={ROUTES.HOME} className="inline-flex items-center space-x-2 group mb-8">
             <div className="p-2 bg-primary-500 rounded-lg group-hover:bg-primary-600 transition-colors">
               <FaPlane className="h-6 w-6 text-white" />
             </div>
@@ -214,7 +215,7 @@ export const Signup = () => {
             <p className="text-gray-600 dark:text-gray-400">
               {AUTH_MESSAGES.ui.alreadyHaveAccount}{' '}
               <Link
-                to="/login"
+                to={ROUTES.LOGIN}
                 className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-semibold"
               >
                 {AUTH_MESSAGES.ui.signIn}

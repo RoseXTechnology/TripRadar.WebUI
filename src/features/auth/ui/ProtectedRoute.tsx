@@ -1,6 +1,7 @@
 import { useAuth } from 'app/providers/AuthContext';
 import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { ROUTES } from 'shared/config/routes';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -12,7 +13,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (!isAuthenticated) {
     // Redirect to login with the current location
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to={ROUTES.LOGIN} state={{ from: location }} replace />;
   }
 
   return <>{children}</>;

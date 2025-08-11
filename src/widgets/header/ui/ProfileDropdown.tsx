@@ -2,6 +2,7 @@ import { useAuth } from 'app/providers/AuthContext';
 import { useState } from 'react';
 import { FaUser, FaSignOutAlt, FaCog, FaCreditCard, FaDollarSign, FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { ROUTES } from 'shared/config/routes';
 import { cn } from 'shared/lib/utils';
 
 export const ProfileDropdown = () => {
@@ -47,7 +48,7 @@ export const ProfileDropdown = () => {
               </p>
             </div>
             <Link
-              to="/profile"
+              to={ROUTES.PROFILE}
               className={cn(
                 'flex items-center px-4 py-2 text-sm transition-colors',
                 linkBaseStyles,
@@ -59,7 +60,7 @@ export const ProfileDropdown = () => {
               Profile
             </Link>
             <Link
-              to="/budget"
+              to={ROUTES.BUDGET}
               className={cn(
                 'flex items-center px-4 py-2 text-sm transition-colors',
                 linkBaseStyles,
@@ -71,7 +72,7 @@ export const ProfileDropdown = () => {
               Budget
             </Link>
             <Link
-              to="/settings"
+              to={ROUTES.SETTINGS}
               className={cn(
                 'flex items-center px-4 py-2 text-sm transition-colors',
                 linkBaseStyles,
@@ -83,7 +84,7 @@ export const ProfileDropdown = () => {
               Settings
             </Link>
             <Link
-              to="/billing"
+              to={ROUTES.BILLING}
               className={cn(
                 'flex items-center px-4 py-2 text-sm transition-colors',
                 linkBaseStyles,

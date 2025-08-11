@@ -2,6 +2,7 @@ import { useTheme } from 'app/providers/ThemeContext';
 import { CheckCircle, ArrowRight, Shield, Bot, DollarSign, Users, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ROUTES } from 'shared/config/routes';
 
 export default function CheckoutSuccess() {
   const [isVisible, setIsVisible] = useState(false);
@@ -171,7 +172,7 @@ export default function CheckoutSuccess() {
         <div className="text-center animate-slide-up" style={{ animationDelay: '0.7s' }}>
           <div className="space-y-4 mb-8">
             <Link
-              to="/dashboard"
+              to={ROUTES.DASHBOARD}
               className="block w-full sm:w-auto sm:inline-flex items-center justify-center space-x-2 px-8 py-3 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors"
             >
               <span>Go to Dashboard</span>
@@ -179,7 +180,7 @@ export default function CheckoutSuccess() {
             </Link>
 
             <Link
-              to="/billing"
+              to={ROUTES.BILLING}
               className="block w-full sm:w-auto sm:inline-flex items-center justify-center space-x-2 px-8 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors mt-4 sm:mt-0 sm:ml-4"
             >
               <span>Manage Subscription</span>

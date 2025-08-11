@@ -1,6 +1,7 @@
 import { Search, X, ArrowRight, FileText, Book, Code, Users, MapPin, Calendar, Command, Clock } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ROUTES } from 'shared/config/routes';
 
 interface QuickSearchProps {
   onClose: () => void;
@@ -12,7 +13,7 @@ interface SearchResult {
   description: string;
   url: string;
   category: 'pages' | 'features' | 'help' | 'api';
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<{ className?: string }>;
 }
 
 const searchData: SearchResult[] = [
@@ -198,22 +199,6 @@ export default function QuickSearch({ onClose }: QuickSearchProps) {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [results, selectedIndex, onClose, navigate]);
-
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'pages':
-        return MapPin;
-      case 'features':
-        return Users;
-      case 'help':
-        return Book;
-      case 'api':
-        return Code;
-      default:
-        return FileText;
-    }
-  };
-
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'pages':
@@ -281,7 +266,7 @@ export default function QuickSearch({ onClose }: QuickSearchProps) {
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <Link
-                    to="/dashboard"
+                    to={ROUTES.DASHBOARD}
                     onClick={onClose}
                     className="flex items-center space-x-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                   >
@@ -303,7 +288,6 @@ export default function QuickSearch({ onClose }: QuickSearchProps) {
             /* Search Results */
             <div className="p-2">
               {results.map((result, index) => {
-                const CategoryIcon = getCategoryIcon(result.category);
                 const isSelected = index === selectedIndex;
 
                 return (

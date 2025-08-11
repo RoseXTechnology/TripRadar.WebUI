@@ -1,6 +1,7 @@
 import { useAuth } from 'app/providers/AuthContext';
 import { FaSearch, FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { ROUTES } from 'shared/config/routes';
 import { cn } from 'shared/lib/utils';
 import { ProfileDropdown } from 'widgets/header';
 
@@ -16,11 +17,11 @@ export const UserActions = ({ onSearchClick }: UserActionsProps) => {
   if (!isAuthenticated) {
     return (
       <div className="hidden md:flex items-center space-x-4">
-        <Link to="/login" className={cn('text-sm font-medium transition-colors', linkBaseStyles)}>
+        <Link to={ROUTES.LOGIN} className={cn('text-sm font-medium transition-colors', linkBaseStyles)}>
           Sign in
         </Link>
         <Link
-          to="/signup"
+          to={ROUTES.SIGNUP}
           className={cn(
             'px-4 py-2 rounded-xl text-sm font-medium transition-all transform',
             'bg-gradient-to-r from-blue-500 to-purple-600 text-white',
@@ -49,7 +50,7 @@ export const UserActions = ({ onSearchClick }: UserActionsProps) => {
       </button>
 
       <Link
-        to="/notifications"
+        to={ROUTES.NOTIFICATIONS}
         className={cn(buttonStyles, linkBaseStyles, 'hover:bg-gray-100 dark:hover:bg-gray-800 relative')}
       >
         <FaBell className="h-5 w-5" />

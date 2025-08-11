@@ -1,6 +1,7 @@
 import { useAuth } from 'app/providers/AuthContext';
 import { User, Key, Info, CheckCircle, AlertTriangle, Clock, FileText, ArrowRight, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ROUTES } from 'shared/config/routes';
 
 export default function TestAccount() {
   const { login } = useAuth();
@@ -21,7 +22,7 @@ export default function TestAccount() {
     login(testUser);
 
     // Navigate to dashboard
-    navigate('/dashboard');
+    navigate(ROUTES.DASHBOARD);
   };
 
   return (

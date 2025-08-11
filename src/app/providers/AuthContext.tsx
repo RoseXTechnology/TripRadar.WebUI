@@ -1,10 +1,19 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { ROUTES } from 'shared/config/routes';
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  subscription?: string;
+}
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: any;
-  login: (userData: any) => void;
+  user: User | null;
+  login: (userData: User) => void;
   logout: () => void;
   requireAuth: (action?: () => void) => boolean;
   redirectAfterLogin: string | null;
@@ -15,7 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [redirectAfterLogin, setRedirectAfterLogin] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const login = (userData: any) => {
+  const login = (userData: User) => {
     setIsAuthenticated(true);
     setUser(userData);
     localStorage.setItem('tripradar-auth', JSON.stringify({ user: userData }));
@@ -40,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       navigate(redirectAfterLogin);
       setRedirectAfterLogin(null);
     } else {
-      navigate('/dashboard');
+      navigate(ROUTES.DASHBOARD);
     }
   };
 
@@ -48,14 +57,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAuthenticated(false);
     setUser(null);
     localStorage.removeItem('tripradar-auth');
-    navigate('/');
+    navigate(ROUTES.HOME);
   };
 
   const requireAuth = (action?: () => void) => {
     if (!isAuthenticated) {
       // Store current path for redirect after login
       setRedirectAfterLogin(location.pathname);
-      navigate('/login');
+      navigate(ROUTES.LOGIN);
       return false;
     }
 
