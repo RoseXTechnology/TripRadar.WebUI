@@ -1,6 +1,6 @@
-import { ProtectedRoute } from 'features/auth';
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { ProtectedRoute } from 'features/auth';
 import { LoadingSpinner } from 'shared/ui';
 
 // Lazy components

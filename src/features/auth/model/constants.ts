@@ -21,9 +21,6 @@ export const AUTH_MESSAGES = {
     creatingAccount: 'Creating account...',
     alreadyHaveAccount: 'Already have an account?',
     signIn: 'Sign in',
-    securePrivate: 'Secure & Private',
-    freeToStart: 'Free to Start',
-    support: 'Support',
   },
   placeholders: {
     enterFullName: 'Enter your full name',

@@ -48,9 +48,15 @@ const signInWithProvider = async (
     const result = await signInWithPopup(auth, provider);
     const userData = createUserData(result.user, providerName);
 
-    // Сохраняем в localStorage и перенаправляем
+    // Save to localStorage in format expected by AuthContext
+    localStorage.setItem('tripradar-auth', JSON.stringify({ user: userData }));
     localStorage.setItem('user', JSON.stringify(userData));
-    window.location.href = '/dashboard';
+    localStorage.setItem('isAuthenticated', 'true');
+
+    console.log('OAuth signup successful:', userData);
+
+    // Reload page so AuthContext picks up the changes
+    window.location.reload();
 
     return { success: true, user: userData };
   } catch (error: unknown) {

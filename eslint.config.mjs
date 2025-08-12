@@ -42,9 +42,29 @@ export default tseslint.config(
       'import/order': [
         'error',
         {
-          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-          'newlines-between': 'always',
+          groups: [
+            'builtin',    // Node.js built-in modules
+            'external',   // npm packages (react, react-router-dom)
+            'internal',   // internal aliases (shared/, features/)
+            'parent',     // ../
+            'sibling',    // ./
+            'index'       // ./index
+          ],
+          'newlines-between': 'never',
           alphabetize: { order: 'asc', caseInsensitive: true },
+          pathGroups: [
+            {
+              pattern: 'react',
+              group: 'external',
+              position: 'before'
+            },
+            {
+              pattern: '{shared,features,entities,widgets,pages,app}/**',
+              group: 'internal',
+              position: 'before'
+            }
+          ],
+          pathGroupsExcludedImportTypes: ['react']
         },
       ],
       'prefer-const': 'error',

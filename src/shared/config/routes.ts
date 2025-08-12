@@ -8,4 +8,6 @@ export const ROUTES = {
   SETTINGS: '/settings',
   BILLING: '/billing',
   BUDGET: '/budget',
+  TERMS: '/terms',
+  PRIVACY: '/privacy',
 } as const;

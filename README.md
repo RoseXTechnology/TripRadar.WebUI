@@ -15,6 +15,7 @@ A modern travel planning and budget tracking web application built with React, T
 ## Tech Stack
 
 ### Core Technologies
+
 - **Frontend**: React 18, TypeScript 5.5
 - **Build Tool**: Vite 5.4
 - **Styling**: Tailwind CSS 3.4
@@ -23,11 +24,13 @@ A modern travel planning and budget tracking web application built with React, T
 - **Routing**: React Router DOM 6.21
 
 ### State Management
+
 - **Client State**: Zustand 4.5 (replacing React Context)
 - **Server State**: TanStack React Query 5.0
 - **Validation**: Zod 3.22 for runtime type checking
 
 ### Development Tools
+
 - **Linting**: ESLint 9.9 with TypeScript strict rules
 - **Formatting**: Prettier 3.6
 - **Testing**: Vitest + Testing Library (planned)
@@ -45,16 +48,26 @@ A modern travel planning and budget tracking web application built with React, T
 1. Clone the repository
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
 
 4. Open your browser and navigate to `http://localhost:5173`
+
+### Test Accounts
+
+For testing authentication (mock data for development):
+
+- **Email**: john@example.com **Password**: password123
+
+> 💡 OAuth buttons (Google, GitHub, Microsoft) also work with mock data for quick testing
 
 ### Development Commands
 
@@ -118,6 +131,7 @@ import { Dashboard } from 'pages/dashboard'; // Page from feature
 ## Architecture Decisions
 
 ### Why Zustand over Redux?
+
 - **Simplicity**: 5 lines vs 50+ lines for same functionality
 - **TypeScript**: Excellent built-in TypeScript support
 - **Size**: 2.9KB vs 11KB+ for Redux Toolkit
@@ -125,12 +139,14 @@ import { Dashboard } from 'pages/dashboard'; // Page from feature
 - **Persistence**: Built-in localStorage integration
 
 ### Why Zod for validation?
+
 - **Type Safety**: Runtime validation + TypeScript types
 - **Developer Experience**: Excellent error messages
 - **Composability**: Easy to combine and extend schemas
 - **Security**: Prevents invalid data from entering the system
 
 ### Why React Query?
+
 - **Server State**: Perfect separation from client state
 - **Caching**: Intelligent background updates
 - **Performance**: Automatic request deduplication

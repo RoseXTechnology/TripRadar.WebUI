@@ -1,5 +1,4 @@
 import { z } from 'zod';
-
 import { AUTH_MESSAGES } from './constants';
 
 export const signupSchema = z

@@ -1,5 +1,5 @@
-import { LucideIcon } from 'lucide-react';
 import { InputHTMLAttributes } from 'react';
+import { LucideIcon } from 'lucide-react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;

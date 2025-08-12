@@ -1,6 +1,6 @@
-import { useAuth } from 'app/providers/AuthContext';
 import { FaSearch, FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useAuth } from 'app/providers/AuthContext';
 import { ROUTES } from 'shared/config/routes';
 import { cn } from 'shared/lib/utils';
 import { ProfileDropdown } from 'widgets/header';

@@ -31,18 +31,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Check for existing authentication on app load
-    const savedAuth = localStorage.getItem('tripradar-auth');
-    if (savedAuth) {
-      const authData = JSON.parse(savedAuth);
+    const savedAuth = localStorage.getItem('tripradar-auth') || localStorage.getItem('user');
+    const isAuth = localStorage.getItem('isAuthenticated') === 'true';
+
+    if (savedAuth && isAuth) {
+      const userData = JSON.parse(savedAuth);
       setIsAuthenticated(true);
-      setUser(authData.user);
+      setUser(userData.user || userData); // Handle both formats
+
+      // Redirect authenticated users away from auth pages
+      if (location.pathname === '/login' || location.pathname === '/signup') {
+        navigate(ROUTES.DASHBOARD);
+      }
     }
-  }, []);
+  }, [location.pathname, navigate]);
 
   const login = (userData: User) => {
     setIsAuthenticated(true);
     setUser(userData);
     localStorage.setItem('tripradar-auth', JSON.stringify({ user: userData }));
+    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('isAuthenticated', 'true');
 
     // Redirect to intended page after login
     if (redirectAfterLogin) {
@@ -57,6 +66,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAuthenticated(false);
     setUser(null);
     localStorage.removeItem('tripradar-auth');
+    localStorage.removeItem('user');
+    localStorage.removeItem('isAuthenticated');
     navigate(ROUTES.HOME);
   };
 

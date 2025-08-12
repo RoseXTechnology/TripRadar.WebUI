@@ -1,12 +1,11 @@
-import { QuickSearch } from 'features/search';
 import { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
+import { QuickSearch } from 'features/search';
 import { isTransparentPage } from 'shared/config';
 import { useScrollDetection, useKeyboardShortcuts } from 'shared/lib/hooks';
 import { cn } from 'shared/lib/utils';
 import { Logo, ThemeToggle } from 'shared/ui';
-
 import { MobileMenu } from './MobileMenu';
 import { Navigation } from './Navigation';
 import { UserActions } from './UserActions';
