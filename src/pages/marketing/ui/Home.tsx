@@ -18,13 +18,11 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from 'shared/config/routes';
 import { VideoModal } from 'shared/ui';
-import { useAnimation } from 'shared/ui/animation-provider';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const { actualTheme } = useTheme();
-  const { mousePosition } = useAnimation();
 
   useEffect(() => {
     setIsVisible(true);
@@ -132,17 +130,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 overflow-hidden pt-16">
-      {/* Mouse Follower Spotlight - In both light and dark themes */}
-      <div
-        className="fixed pointer-events-none z-0 w-96 h-96 rounded-full transition-all duration-300 ease-out"
-        style={{
-          background: `radial-gradient(circle, ${actualTheme === 'dark' ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.1)'} 0%, transparent 70%)`,
-          opacity: actualTheme === 'dark' ? '0.2' : '0.6',
-          left: mousePosition.x - 192,
-          top: mousePosition.y - 192,
-        }}
-      />
-
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Animated Background Shapes - In both light and dark themes */}
@@ -206,7 +193,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
               <Link
                 to={ROUTES.SIGNUP}
-                className="group relative bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 flex items-center space-x-2 transform hover:-translate-y-1"
+                className="group relative bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-400 hover:to-purple-500 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:shadow-2xl hover:shadow-primary-500/25 transition-all duration-500 flex items-center space-x-2"
               >
                 <span>Get Started Free</span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />

@@ -1,11 +1,11 @@
 import { QuickSearch } from 'features/search';
-import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import { isTransparentPage } from 'shared/config';
 import { useScrollDetection, useKeyboardShortcuts } from 'shared/lib/hooks';
 import { cn } from 'shared/lib/utils';
-import { Logo } from 'shared/ui';
+import { Logo, ThemeToggle } from 'shared/ui';
 
 import { MobileMenu } from './MobileMenu';
 import { Navigation } from './Navigation';
@@ -44,6 +44,8 @@ export const Header = () => {
             <div className="flex items-center space-x-4">
               <UserActions onSearchClick={() => setShowQuickSearch(true)} />
 
+              <ThemeToggle />
+
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className={cn(
@@ -52,7 +54,7 @@ export const Header = () => {
                   'hover:bg-gray-100 dark:hover:bg-gray-800'
                 )}
               >
-                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {isMenuOpen ? <FaTimes className="h-5 w-5" /> : <FaBars className="h-5 w-5" />}
               </button>
             </div>
           </div>

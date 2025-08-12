@@ -7,3 +7,4 @@ export { ErrorBoundary } from './ErrorBoundary';
 export { LoadingSpinner } from './LoadingSpinner';
 export { Logo } from './Logo';
 export { FormInput } from './FormInput';
+export { ThemeToggle } from './ThemeToggle';
