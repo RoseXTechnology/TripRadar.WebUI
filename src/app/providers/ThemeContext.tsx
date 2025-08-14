@@ -1,10 +1,11 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { THEME } from 'shared/config/constants';
 
-type Theme = 'light' | 'dark' | 'system';
+type Theme = typeof THEME.LIGHT | typeof THEME.DARK | 'system';
 
 interface ThemeContextType {
   theme: Theme;
-  actualTheme: 'light' | 'dark';
+  actualTheme: typeof THEME.LIGHT | typeof THEME.DARK;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
 }
@@ -15,20 +16,20 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
     // Check localStorage first, then system preference
     const savedTheme = localStorage.getItem('tripradar-theme') as Theme;
-    if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
+    if (savedTheme && [THEME.LIGHT, THEME.DARK, 'system'].includes(savedTheme)) {
       return savedTheme;
     }
     return 'system';
   });
 
-  const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light');
+  const [actualTheme, setActualTheme] = useState<typeof THEME.LIGHT | typeof THEME.DARK>(THEME.LIGHT);
 
   useEffect(() => {
     const updateActualTheme = () => {
-      let newActualTheme: 'light' | 'dark';
+      let newActualTheme: typeof THEME.LIGHT | typeof THEME.DARK;
 
       if (theme === 'system') {
-        newActualTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        newActualTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? THEME.DARK : THEME.LIGHT;
       } else {
         newActualTheme = theme;
       }
@@ -38,12 +39,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       // Apply theme to document
       const root = document.documentElement;
 
-      if (newActualTheme === 'dark') {
+      if (newActualTheme === THEME.DARK) {
         root.classList.add('dark');
-        root.style.colorScheme = 'dark';
+        root.style.colorScheme = THEME.DARK;
       } else {
         root.classList.remove('dark');
-        root.style.colorScheme = 'light';
+        root.style.colorScheme = THEME.LIGHT;
       }
     };
 
@@ -69,9 +70,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const toggleTheme = () => {
     setThemeState(prev => {
-      if (prev === 'light') return 'dark';
-      if (prev === 'dark') return 'system';
-      return 'light';
+      if (prev === THEME.LIGHT) return THEME.DARK;
+      if (prev === THEME.DARK) return 'system';
+      return THEME.LIGHT;
     });
   };
 

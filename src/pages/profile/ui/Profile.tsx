@@ -1,5 +1,4 @@
-import { useApp } from 'app/providers/AppContext';
-import { useTheme } from 'app/providers/ThemeContext';
+import { useState, useEffect } from 'react';
 import {
   User,
   Mail,
@@ -23,7 +22,9 @@ import {
   MapPin,
   DollarSign,
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useApp } from 'app/providers/AppContext';
+import { useTheme } from 'app/providers/ThemeContext';
+import { THEME } from 'shared/config/constants';
 
 export default function Profile() {
   const { user, setUser } = useApp();
@@ -38,8 +39,15 @@ export default function Profile() {
     bio: 'Travel enthusiast and digital nomad exploring the world one trip at a time.',
     email: user?.email || '',
   });
-  const [preferences, setPreferences] = useState({
-    theme: 'light',
+  const [preferences, setPreferences] = useState<{
+    theme: 'light' | 'dark';
+    language: string;
+    emailNotifications: boolean;
+    pushNotifications: boolean;
+    marketingEmails: boolean;
+    weeklyDigest: boolean;
+  }>({
+    theme: THEME.LIGHT,
     language: 'en',
     emailNotifications: true,
     pushNotifications: true,
@@ -109,7 +117,7 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 pt-16">
       {/* Mouse Follower Spotlight - Only in dark theme */}
-      {actualTheme === 'dark' && (
+      {actualTheme === THEME.DARK && (
         <div
           className="fixed pointer-events-none z-0 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
           style={{
@@ -383,9 +391,9 @@ export default function Profile() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Theme</label>
                   <div className="flex space-x-3">
                     <button
-                      onClick={() => setPreferences(prev => ({ ...prev, theme: 'light' }))}
+                      onClick={() => setPreferences(prev => ({ ...prev, theme: THEME.LIGHT }))}
                       className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 transition-colors ${
-                        preferences.theme === 'light'
+                        preferences.theme === THEME.LIGHT
                           ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
                           : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300'
                       }`}
@@ -394,9 +402,9 @@ export default function Profile() {
                       <span>Light</span>
                     </button>
                     <button
-                      onClick={() => setPreferences(prev => ({ ...prev, theme: 'dark' }))}
+                      onClick={() => setPreferences(prev => ({ ...prev, theme: THEME.DARK }))}
                       className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 transition-colors ${
-                        preferences.theme === 'dark'
+                        preferences.theme === THEME.DARK
                           ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
                           : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300'
                       }`}

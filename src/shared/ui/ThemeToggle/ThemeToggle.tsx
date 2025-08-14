@@ -1,5 +1,6 @@
 import { Sun, Moon, Monitor } from 'lucide-react';
 import { useTheme } from 'app/providers/ThemeContext';
+import { THEME } from 'shared/config/constants';
 import { cn } from 'shared/lib/utils';
 
 interface ThemeToggleProps {
@@ -21,8 +22,8 @@ export const ThemeToggle = ({ className }: ThemeToggleProps) => {
       )}
       aria-label="Toggle theme"
     >
-      {theme === 'light' && <Sun className="h-5 w-5" />}
-      {theme === 'dark' && <Moon className="h-5 w-5" />}
+      {theme === THEME.LIGHT && <Sun className="h-5 w-5" />}
+      {theme === THEME.DARK && <Moon className="h-5 w-5" />}
       {theme === 'system' && <Monitor className="h-5 w-5" />}
     </button>
   );

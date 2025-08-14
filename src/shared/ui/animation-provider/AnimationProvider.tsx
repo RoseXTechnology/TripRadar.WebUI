@@ -1,5 +1,6 @@
-import { useTheme } from 'app/providers/ThemeContext';
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { useTheme } from 'app/providers/ThemeContext';
+import { THEME } from 'shared/config/constants';
 
 interface AnimationContextType {
   createParticles: (containerId: string) => void;
@@ -35,7 +36,7 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
     for (let i = 0; i < 50; i++) {
       const particle = document.createElement('div');
       particle.className = `floating-particle ${
-        actualTheme === 'dark' ? 'floating-particle-dark' : 'floating-particle-light'
+        actualTheme === THEME.DARK ? 'floating-particle-dark' : `floating-particle-${THEME.LIGHT}`
       }`;
 
       // Random position

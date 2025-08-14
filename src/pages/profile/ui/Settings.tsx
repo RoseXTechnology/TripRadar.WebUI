@@ -1,8 +1,6 @@
-import { useApp } from 'app/providers/AppContext';
-import { useTheme } from 'app/providers/ThemeContext';
+import { useState, useEffect } from 'react';
 import {
   User,
-  Lock,
   Bell,
   Shield,
   Plug,
@@ -19,8 +17,6 @@ import {
   Sun,
   Settings as SettingsIcon,
   ChevronRight,
-  Save,
-  RefreshCw,
   Sparkles,
   Palette,
   Monitor,
@@ -37,9 +33,14 @@ import {
   Users,
   UserPlus,
   Star,
+  RefreshCw,
+  Save,
+  Lock,
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useApp } from 'app/providers/AppContext';
+import { useTheme } from 'app/providers/ThemeContext';
+import { THEME } from 'shared/config/constants';
 
 // Define types locally since they're specific to this component
 interface PreferenceCategory {
@@ -56,13 +57,13 @@ interface PreferenceSchema {
 type SettingsSection = 'account' | 'notifications' | 'security' | 'integrations' | 'preferences' | 'group';
 
 export default function Settings() {
-  const { user, setUser } = useApp();
+  const { user } = useApp();
   const { theme, actualTheme, setTheme } = useTheme();
   const [activeSection, setActiveSection] = useState<SettingsSection>('account');
   const [isLoading, setIsLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [show2FAModal, setShow2FAModal] = useState(false);
+
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [preferenceSchema, setPreferenceSchema] = useState<PreferenceSchema | null>(null);
@@ -112,14 +113,44 @@ export default function Settings() {
     },
   ]);
 
+  const fetchPreferenceSchema = async () => {
+    // Mock preference schema
+    const mockSchema: PreferenceSchema = {
+      categories: [
+        {
+          id: 'dietary',
+          name: 'Dietary Preferences',
+          description: 'Select your dietary requirements and preferences',
+          options: [
+            { id: 'vegetarian', label: 'Vegetarian' },
+            { id: 'vegan', label: 'Vegan' },
+            { id: 'gluten-free', label: 'Gluten-free' },
+            { id: 'halal', label: 'Halal' },
+            { id: 'kosher', label: 'Kosher' },
+          ],
+        },
+        {
+          id: 'accommodation',
+          name: 'Accommodation Type',
+          description: 'Choose your preferred types of accommodation',
+          options: [
+            { id: 'hotel', label: 'Hotel' },
+            { id: 'airbnb', label: 'Airbnb' },
+            { id: 'hostel', label: 'Hostel' },
+            { id: 'resort', label: 'Resort' },
+          ],
+        },
+      ],
+    };
+    setPreferenceSchema(mockSchema);
+  };
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-
-    // Fetch preference schema
     fetchPreferenceSchema();
 
     // Initialize user preferences
@@ -166,7 +197,7 @@ export default function Settings() {
     groupUpdates: true,
   });
 
-  const [securitySettings, setSecuritySettings] = useState({
+  const [securitySettings] = useState({
     twoFactorEnabled: false,
     sessionTimeout: '24h',
     loginNotifications: true,
@@ -211,104 +242,7 @@ export default function Settings() {
     },
   ];
 
-  // Mock preference schema
-  const fetchPreferenceSchema = () => {
-    // This would be an API call in a real application
-    const mockSchema: PreferenceSchema = {
-      categories: [
-        {
-          id: 'dietary',
-          name: 'Dietary Preferences',
-          description: 'Your food preferences while traveling',
-          options: [
-            { id: 'vegetarian', label: 'Vegetarian' },
-            { id: 'vegan', label: 'Vegan' },
-            { id: 'halal', label: 'Halal' },
-            { id: 'kosher', label: 'Kosher' },
-            { id: 'gluten-free', label: 'Gluten Free' },
-            { id: 'dairy-free', label: 'Dairy Free' },
-          ],
-        },
-        {
-          id: 'accommodation',
-          name: 'Accommodation Type',
-          description: 'Your preferred places to stay',
-          options: [
-            { id: 'hotel', label: 'Hotels' },
-            { id: 'hostel', label: 'Hostels' },
-            { id: 'airbnb', label: 'Vacation Rentals' },
-            { id: 'resort', label: 'Resorts' },
-            { id: 'camping', label: 'Camping' },
-          ],
-        },
-        {
-          id: 'transport',
-          name: 'Transportation',
-          description: 'How you prefer to get around',
-          options: [
-            { id: 'public-transport', label: 'Public Transport' },
-            { id: 'rental-car', label: 'Rental Car' },
-            { id: 'taxi', label: 'Taxi/Rideshare' },
-            { id: 'walking', label: 'Walking' },
-            { id: 'cycling', label: 'Cycling' },
-          ],
-        },
-        {
-          id: 'tripType',
-          name: 'Trip Type',
-          description: 'Your travel style preferences',
-          options: [
-            { id: 'adventure', label: 'Adventure' },
-            { id: 'relaxation', label: 'Relaxation' },
-            { id: 'cultural', label: 'Cultural' },
-            { id: 'budget', label: 'Budget' },
-            { id: 'luxury', label: 'Luxury' },
-          ],
-        },
-        {
-          id: 'accessibility',
-          name: 'Accessibility',
-          description: 'Your accessibility requirements',
-          options: [
-            { id: 'wheelchair', label: 'Wheelchair Access' },
-            { id: 'limited-mobility', label: 'Limited Mobility' },
-            { id: 'kid-friendly', label: 'Kid Friendly' },
-            { id: 'pet-friendly', label: 'Pet Friendly' },
-          ],
-        },
-        {
-          id: 'languages',
-          name: 'Languages',
-          description: 'Languages you speak or prefer',
-          options: [
-            { id: 'english', label: 'English' },
-            { id: 'spanish', label: 'Spanish' },
-            { id: 'french', label: 'French' },
-            { id: 'german', label: 'German' },
-            { id: 'japanese', label: 'Japanese' },
-            { id: 'chinese', label: 'Chinese' },
-          ],
-        },
-        {
-          id: 'activities',
-          name: 'Activities',
-          description: 'Activities you enjoy while traveling',
-          options: [
-            { id: 'sightseeing', label: 'Sightseeing' },
-            { id: 'food', label: 'Food & Dining' },
-            { id: 'shopping', label: 'Shopping' },
-            { id: 'nature', label: 'Nature & Outdoors' },
-            { id: 'museums', label: 'Museums & Culture' },
-            { id: 'nightlife', label: 'Nightlife' },
-          ],
-        },
-      ],
-    };
-
-    setPreferenceSchema(mockSchema);
-  };
-
-  const handleSave = async (section: string) => {
+  const handleSave = async () => {
     setIsLoading(true);
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -451,9 +385,9 @@ export default function Settings() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Light Theme */}
           <button
-            onClick={() => setTheme('light')}
+            onClick={() => setTheme(THEME.LIGHT)}
             className={`group relative p-6 rounded-2xl border-2 transition-all duration-300 ${
-              theme === 'light'
+              theme === THEME.LIGHT
                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/10'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
             }`}
@@ -466,7 +400,7 @@ export default function Settings() {
                 <h4 className="font-semibold text-gray-900 dark:text-white">Light</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Clean and bright interface</p>
               </div>
-              {theme === 'light' && (
+              {theme === THEME.LIGHT && (
                 <div className="absolute top-3 right-3">
                   <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
                     <Check className="h-4 w-4 text-white" />
@@ -478,9 +412,9 @@ export default function Settings() {
 
           {/* Dark Theme */}
           <button
-            onClick={() => setTheme('dark')}
+            onClick={() => setTheme(THEME.DARK)}
             className={`group relative p-6 rounded-2xl border-2 transition-all duration-300 ${
-              theme === 'dark'
+              theme === THEME.DARK
                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/10'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
             }`}
@@ -493,7 +427,7 @@ export default function Settings() {
                 <h4 className="font-semibold text-gray-900 dark:text-white">Dark</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Easy on the eyes</p>
               </div>
-              {theme === 'dark' && (
+              {theme === THEME.DARK && (
                 <div className="absolute top-3 right-3">
                   <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
                     <Check className="h-4 w-4 text-white" />
@@ -819,7 +753,7 @@ export default function Settings() {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {Object.entries(member.preferences || {}).flatMap(([category, values]) =>
-                      values.map(value => (
+                      values.map((value: string) => (
                         <span
                           key={`${category}-${value}`}
                           className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs"
@@ -1068,7 +1002,7 @@ export default function Settings() {
             </div>
           </div>
           <button
-            onClick={() => setShow2FAModal(true)}
+            onClick={() => {}}
             className={`font-medium ${
               securitySettings.twoFactorEnabled
                 ? 'text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300'
@@ -1303,7 +1237,7 @@ export default function Settings() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 pt-16">
       {/* Mouse Follower Spotlight - Only in dark mode */}
-      {actualTheme === 'dark' && (
+      {actualTheme === THEME.DARK && (
         <div
           className="fixed pointer-events-none z-0 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
           style={{
@@ -1351,7 +1285,7 @@ export default function Settings() {
             <div className="mt-8 flex items-center justify-between bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
               <div className="text-sm text-gray-600 dark:text-gray-400">Changes are saved automatically</div>
               <button
-                onClick={() => handleSave(activeSection)}
+                onClick={() => handleSave()}
                 disabled={isLoading}
                 className="flex items-center space-x-2 bg-gradient-to-r from-primary-500 to-purple-600 text-white px-6 py-2 rounded-xl font-medium hover:shadow-lg hover:shadow-primary-500/25 transition-all disabled:opacity-50"
               >

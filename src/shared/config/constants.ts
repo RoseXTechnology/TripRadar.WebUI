@@ -1,5 +1,10 @@
 export const APP_NAME = 'TripRadar';
 
+export const THEME = {
+  LIGHT: 'light',
+  DARK: 'dark',
+} as const;
+
 export const ROUTES = {
   HOME: '/',
   DASHBOARD: '/dashboard',

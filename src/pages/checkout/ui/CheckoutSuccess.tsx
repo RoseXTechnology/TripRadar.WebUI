@@ -1,7 +1,8 @@
-import { useTheme } from 'app/providers/ThemeContext';
-import { CheckCircle, ArrowRight, Shield, Bot, DollarSign, Users, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { CheckCircle, ArrowRight, Shield, Bot, DollarSign, Users, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTheme } from 'app/providers/ThemeContext';
+import { THEME } from 'shared/config/constants';
 import { ROUTES } from 'shared/config/routes';
 
 export default function CheckoutSuccess() {
@@ -34,7 +35,7 @@ export default function CheckoutSuccess() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 pt-16">
       {/* Mouse Follower Spotlight - Only in dark mode */}
-      {actualTheme === 'dark' && (
+      {actualTheme === THEME.DARK && (
         <div
           className="fixed pointer-events-none z-0 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
           style={{
