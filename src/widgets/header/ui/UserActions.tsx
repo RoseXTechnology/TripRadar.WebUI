@@ -23,9 +23,9 @@ export const UserActions = ({ onSearchClick }: UserActionsProps) => {
         <Link
           to={ROUTES.SIGNUP}
           className={cn(
-            'px-4 py-2 rounded-xl text-sm font-medium transition-all transform',
+            'px-4 py-2 rounded-xl text-sm font-medium transition-all',
             'bg-gradient-to-r from-blue-500 to-purple-600 text-white',
-            'hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5'
+            'hover:from-blue-600 hover:to-purple-700'
           )}
         >
           Get Started

@@ -1,8 +1,8 @@
-import { useAuth } from 'app/providers/AuthContext';
-import { useTheme } from 'app/providers/ThemeContext';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, Chrome, Github, Radar, Shield, Zap } from 'lucide-react';
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight, FaGoogle, FaGithub, FaMicrosoft } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { useAuth } from 'app/providers/AuthContext';
+import { handleGoogleSignUp, handleGithubSignUp, handleMicrosoftSignUp } from 'features/auth/lib/oauth';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,11 +12,6 @@ export default function Login() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { actualTheme } = useTheme();
-
-  const from = location.state?.from?.pathname || '/dashboard';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,16 +34,25 @@ export default function Login() {
     setIsLoading(false);
   };
 
-  const handleGoogleSignIn = () => {
-    console.log('Google Sign In');
+  const handleGoogleSignIn = async () => {
+    const result = await handleGoogleSignUp();
+    if (!result.success) {
+      console.error('Google sign in failed:', result.error);
+    }
   };
 
-  const handleGithubSignIn = () => {
-    console.log('GitHub Sign In');
+  const handleGithubSignIn = async () => {
+    const result = await handleGithubSignUp();
+    if (!result.success) {
+      console.error('GitHub sign in failed:', result.error);
+    }
   };
 
-  const handleMicrosoftSignIn = () => {
-    console.log('Microsoft Sign In');
+  const handleMicrosoftSignIn = async () => {
+    const result = await handleMicrosoftSignUp();
+    if (!result.success) {
+      console.error('Microsoft sign in failed:', result.error);
+    }
   };
 
   return (
@@ -56,12 +60,7 @@ export default function Login() {
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <Link to="/" className="inline-flex items-center space-x-2 group mb-8">
-            <div className="p-2 bg-primary-500 rounded-lg group-hover:bg-primary-600 transition-colors">
-              <Radar className="h-6 w-6 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900 dark:text-white">TripRadar</span>
-          </Link>
+          <Link to="/" className="inline-flex items-center space-x-2 group mb-8"></Link>
 
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome back</h2>
           <p className="text-gray-600 dark:text-gray-400">Sign in to your account to continue your travel journey</p>
@@ -75,7 +74,7 @@ export default function Login() {
               onClick={handleGoogleSignIn}
               className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 font-medium"
             >
-              <Chrome className="h-5 w-5" />
+              <FaGoogle className="h-5 w-5" />
               <span>Continue with Google</span>
             </button>
 
@@ -83,7 +82,7 @@ export default function Login() {
               onClick={handleGithubSignIn}
               className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 font-medium"
             >
-              <Github className="h-5 w-5" />
+              <FaGithub className="h-5 w-5" />
               <span>Continue with GitHub</span>
             </button>
 
@@ -91,9 +90,7 @@ export default function Login() {
               onClick={handleMicrosoftSignIn}
               className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 font-medium"
             >
-              <div className="w-5 h-5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-sm flex items-center justify-center">
-                <span className="text-white text-xs font-bold">M</span>
-              </div>
+              <FaMicrosoft className="h-5 w-5" />
               <span>Continue with Microsoft</span>
             </button>
           </div>
@@ -118,7 +115,7 @@ export default function Login() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <FaEnvelope className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   id="email"
@@ -140,7 +137,7 @@ export default function Login() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <FaLock className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   id="password"
@@ -159,9 +156,9 @@ export default function Login() {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
+                    <FaEyeSlash className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
+                    <FaEye className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
                   )}
                 </button>
               </div>
@@ -201,7 +198,7 @@ export default function Login() {
               ) : (
                 <>
                   <span>Sign in</span>
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  <FaArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                 </>
               )}
             </button>
@@ -218,34 +215,6 @@ export default function Login() {
                 Create account
               </Link>
             </p>
-          </div>
-        </div>
-
-        {/* Trust Indicators */}
-        <div className="text-center space-y-4">
-          <div className="flex items-center justify-center space-x-6 text-sm text-gray-500 dark:text-gray-400">
-            <div className="flex items-center space-x-2">
-              <Shield className="h-4 w-4" />
-              <span>Secure & Private</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Zap className="h-4 w-4" />
-              <span>Lightning Fast</span>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center space-x-4 text-xs text-gray-400 dark:text-gray-500">
-            <Link to="/privacy" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-              Privacy Policy
-            </Link>
-            <span>•</span>
-            <Link to="/terms" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-              Terms of Service
-            </Link>
-            <span>•</span>
-            <Link to="/support" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-              Support
-            </Link>
           </div>
         </div>
       </div>
