@@ -17,12 +17,12 @@ export const tripApi = {
     };
   },
 
-  updateTrip: async (id: string, tripData: Partial<Trip>): Promise<Trip> => {
+  updateTrip: async (): Promise<Trip> => {
     // Mock implementation - replace with actual API call
     throw new Error('Not implemented');
   },
 
-  deleteTrip: async (id: string): Promise<void> => {
+  deleteTrip: async (): Promise<void> => {
     // Mock implementation - replace with actual API call
     return;
   },
