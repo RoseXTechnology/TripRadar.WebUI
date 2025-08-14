@@ -41,8 +41,14 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     
     steps:
+    - uses: actions/checkout@v4
+    
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
