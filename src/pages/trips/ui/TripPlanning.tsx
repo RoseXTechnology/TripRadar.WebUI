@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   MapPin,
   Calendar,
@@ -14,7 +15,6 @@ import {
   Navigation,
   CheckCircle,
 } from 'lucide-react';
-import { useState } from 'react';
 
 interface TripPlan {
   id: string;
@@ -123,8 +123,7 @@ const sampleTrip: TripPlan = {
 };
 
 export default function TripPlanning() {
-  const [trip, setTrip] = useState<TripPlan>(sampleTrip);
-  const [isEditing, setIsEditing] = useState(false);
+  const trip = sampleTrip;
   const [showAddActivity, setShowAddActivity] = useState(false);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [viewMode, setViewMode] = useState<'timeline' | 'overview'>('timeline');

@@ -1,5 +1,5 @@
-import { Code, Zap, Copy, Check, Play, Book, Clock, AlertTriangle, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
+import { Code, Zap, Copy, Check, Play, Book, Clock, AlertTriangle, ChevronDown } from 'lucide-react';
 
 interface APIEndpoint {
   method: string;

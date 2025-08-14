@@ -1,4 +1,4 @@
-import { useTheme } from 'app/providers/ThemeContext';
+import React, { useState, useEffect } from 'react';
 import {
   Search as SearchIcon,
   MapPin,
@@ -17,7 +17,7 @@ import {
   ChevronLeft,
   ExternalLink,
 } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { useTheme } from 'app/providers/ThemeContext';
 
 const searchCategories = [
   { id: 'flights', name: 'Flights', icon: Plane, color: 'bg-blue-500' },
@@ -188,17 +188,10 @@ const mockPlaces = [
 export default function Search() {
   const [activeCategory, setActiveCategory] = useState('flights');
   const [searchQuery, setSearchQuery] = useState('');
-  const [filters, setFilters] = useState({
-    location: '',
-    startDate: '',
-    endDate: '',
-    guests: 1,
-    budget: '',
-  });
+
   const { actualTheme } = useTheme();
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [formData, setFormData] = useState({
     from: '',
@@ -456,7 +449,7 @@ export default function Search() {
                   <button className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                     <ChevronLeft className="h-5 w-5" />
                   </button>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Page {currentPage} of 3</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Page {1} of 3</span>
                   <button className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                     <ChevronRight className="h-5 w-5" />
                   </button>
@@ -532,7 +525,7 @@ export default function Search() {
                   <button className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                     <ChevronLeft className="h-5 w-5" />
                   </button>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Page {currentPage} of 5</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Page {1} of 5</span>
                   <button className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                     <ChevronRight className="h-5 w-5" />
                   </button>
@@ -622,7 +615,7 @@ export default function Search() {
                   <button className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                     <ChevronLeft className="h-5 w-5" />
                   </button>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Page {currentPage} of 4</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Page {1} of 4</span>
                   <button className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                     <ChevronRight className="h-5 w-5" />
                   </button>
@@ -687,7 +680,7 @@ export default function Search() {
             </div>
           );
 
-        default:
+        default: {
           const CategoryIcon = searchCategories.find(c => c.id === activeCategory)?.icon;
           return (
             <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 text-center">
@@ -710,6 +703,7 @@ export default function Search() {
               </div>
             </div>
           );
+        }
       }
     }
 

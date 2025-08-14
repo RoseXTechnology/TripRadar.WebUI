@@ -1,4 +1,4 @@
-import { useTheme } from 'app/providers/ThemeContext';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Calendar,
   Globe,
@@ -21,14 +21,14 @@ import {
   Star,
   Sparkles,
 } from 'lucide-react';
-import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useTheme } from 'app/providers/ThemeContext';
 
 interface FeatureCard {
   id: string;
   title: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<{ className?: string }>;
   status: 'coming-soon' | 'in-development' | 'beta';
   eta: string;
   isPremium: boolean;

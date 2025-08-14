@@ -1,4 +1,4 @@
-import { useTheme } from 'app/providers/ThemeContext';
+import { useState, useEffect } from 'react';
 import {
   Check,
   X,
@@ -17,8 +17,8 @@ import {
   Smartphone,
   Lock,
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTheme } from 'app/providers/ThemeContext';
 
 const pricingTiers = [
   {
@@ -113,13 +113,10 @@ const faqs = [
 export default function Pricing() {
   const [isAnnual, setIsAnnual] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { actualTheme } = useTheme();
 
   useEffect(() => {
-    setIsVisible(true);
-
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };

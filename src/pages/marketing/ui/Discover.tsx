@@ -1,5 +1,4 @@
-import { useApp } from 'app/providers/AppContext';
-import { useAuth } from 'app/providers/AuthContext';
+import { useState, useEffect } from 'react';
 import {
   Star,
   Clock,
@@ -19,8 +18,9 @@ import {
   Bus,
   Globe,
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useApp } from 'app/providers/AppContext';
+import { useAuth } from 'app/providers/AuthContext';
 
 const destinations = [
   {
@@ -246,7 +246,7 @@ export default function Discover() {
     setFilteredDestinations(filtered);
   }, [selectedCategory, searchQuery, activeFilters]);
 
-  const handleCreateTrip = (destination: any) => {
+  const handleCreateTrip = (destination: (typeof destinations)[0]) => {
     if (!requireAuth()) return;
 
     // Navigate to trip planning with pre-populated data
@@ -261,7 +261,7 @@ export default function Discover() {
     });
   };
 
-  const handleAddToTrip = (destination: any) => {
+  const handleAddToTrip = (destination: (typeof destinations)[0]) => {
     if (!requireAuth()) return;
 
     // Navigate to trips page with option to add to existing trip

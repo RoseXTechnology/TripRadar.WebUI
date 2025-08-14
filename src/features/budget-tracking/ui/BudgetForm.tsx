@@ -1,5 +1,19 @@
-import { DollarSign, Plus, Save, X } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { FaDollarSign, FaPlus, FaSave, FaTimes } from 'react-icons/fa';
+
+interface BudgetCategory {
+  id: string;
+  name: string;
+  allocated: string | number;
+  color: string;
+  spent?: number;
+}
+
+interface BudgetData {
+  total: string | number;
+  currency: string;
+  categories: BudgetCategory[];
+}
 
 // Backend-provided budget categories
 const BUDGET_CATEGORIES = [
@@ -14,8 +28,8 @@ const BUDGET_CATEGORIES = [
 
 interface BudgetFormProps {
   onClose: () => void;
-  onSave: (budgetData: any) => void;
-  initialData?: any;
+  onSave: (budgetData: BudgetData) => void;
+  initialData?: Partial<BudgetData>;
   isEditing?: boolean;
 }
 
@@ -122,7 +136,7 @@ export default function BudgetForm({ onClose, onSave, initialData, isEditing = f
       categories: formData.categories.map(cat => ({
         ...cat,
         allocated: Number(cat.allocated),
-        spent: initialData?.categories?.find((c: any) => c.id === cat.id)?.spent || 0,
+        spent: initialData?.categories?.find((c: BudgetCategory) => c.id === cat.id)?.spent || 0,
       })),
     };
 
@@ -144,7 +158,7 @@ export default function BudgetForm({ onClose, onSave, initialData, isEditing = f
             onClick={onClose}
             className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           >
-            <X className="h-5 w-5" />
+            <FaTimes className="h-5 w-5" />
           </button>
         </div>
 
@@ -153,7 +167,7 @@ export default function BudgetForm({ onClose, onSave, initialData, isEditing = f
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Total Budget</label>
             <div className="relative">
-              <DollarSign className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+              <FaDollarSign className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
               <input
                 type="number"
                 name="total"
@@ -196,7 +210,7 @@ export default function BudgetForm({ onClose, onSave, initialData, isEditing = f
                 disabled={formData.categories.length >= BUDGET_CATEGORIES.length}
                 className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 text-sm font-medium flex items-center space-x-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Plus className="h-4 w-4" />
+                <FaPlus className="h-4 w-4" />
                 <span>Add Category</span>
               </button>
             </div>
@@ -226,7 +240,7 @@ export default function BudgetForm({ onClose, onSave, initialData, isEditing = f
                   </select>
 
                   <div className="relative w-32">
-                    <DollarSign className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <FaDollarSign className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                     <input
                       type="number"
                       value={category.allocated}
@@ -246,7 +260,7 @@ export default function BudgetForm({ onClose, onSave, initialData, isEditing = f
                       onClick={() => removeCategory(index)}
                       className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
-                      <X className="h-4 w-4" />
+                      <FaTimes className="h-4 w-4" />
                     </button>
                   )}
                 </div>
@@ -275,7 +289,7 @@ export default function BudgetForm({ onClose, onSave, initialData, isEditing = f
                 </>
               ) : (
                 <>
-                  <Save className="h-4 w-4" />
+                  <FaSave className="h-4 w-4" />
                   <span>{isEditing ? 'Update Budget' : 'Create Budget'}</span>
                 </>
               )}

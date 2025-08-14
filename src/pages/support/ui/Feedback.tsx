@@ -1,6 +1,6 @@
-import { useTheme } from 'app/providers/ThemeContext';
-import { MessageSquare, Star, Send, CheckCircle, Bug, Lightbulb, Zap, Palette, FileText, Search } from 'lucide-react';
 import React, { useState } from 'react';
+import { MessageSquare, Star, Send, CheckCircle, Bug, Lightbulb, Zap, Palette, FileText, Search } from 'lucide-react';
+import { useTheme } from 'app/providers/ThemeContext';
 
 interface FeedbackItem {
   id: string;
@@ -86,7 +86,7 @@ export default function Feedback() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [filter, setFilter] = useState('all');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const categoryFilter = 'all';
   const [searchQuery, setSearchQuery] = useState('');
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { actualTheme } = useTheme();
@@ -226,7 +226,7 @@ export default function Feedback() {
                         onClick={() => {
                           setFormData(prev => ({
                             ...prev,
-                            category: category.id as any,
+                            category: category.id as typeof formData.category,
                           }));
                           setFormErrors(prev => ({ ...prev, category: '' }));
                         }}

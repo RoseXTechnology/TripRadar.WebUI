@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   Search,
   Book,
@@ -15,7 +16,6 @@ import {
   Globe,
   Mail,
 } from 'lucide-react';
-import React, { useState } from 'react';
 
 interface FAQItem {
   id: string;
@@ -28,7 +28,7 @@ interface HelpCategory {
   id: string;
   title: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<{ className?: string }>;
   color: string;
   articles: number;
 }

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Calendar,
   Clock,
@@ -14,7 +15,6 @@ import {
   Settings,
   Search,
 } from 'lucide-react';
-import { useState } from 'react';
 
 interface ScheduledItem {
   id: string;
@@ -187,7 +187,7 @@ export default function Scheduled() {
               {['all', 'active', 'paused'].map(filterOption => (
                 <button
                   key={filterOption}
-                  onClick={() => setFilter(filterOption as any)}
+                  onClick={() => setFilter(filterOption as 'all' | 'active' | 'paused')}
                   className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
                     filter === filterOption
                       ? 'bg-primary-600 text-white'

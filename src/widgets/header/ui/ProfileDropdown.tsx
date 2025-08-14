@@ -1,7 +1,7 @@
-import { useAuth } from 'app/providers/AuthContext';
 import { useState } from 'react';
 import { FaUser, FaSignOutAlt, FaCog, FaCreditCard, FaDollarSign, FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useAuth } from 'app/providers/AuthContext';
 import { ROUTES } from 'shared/config/routes';
 import { cn } from 'shared/lib/utils';
 

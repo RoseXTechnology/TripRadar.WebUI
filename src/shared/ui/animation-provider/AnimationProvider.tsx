@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useTheme } from 'app/providers/ThemeContext';
 import { THEME } from 'shared/config/constants';

@@ -1,8 +1,8 @@
+import { useEffect } from 'react';
+import { Plus, Calendar, Users, MapPin, DollarSign } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useApp } from 'app/providers/AppContext';
 import { useTheme } from 'app/providers/ThemeContext';
-import { Plus, Calendar, Users, MapPin, DollarSign } from 'lucide-react';
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useAnimation } from 'shared/ui/animation-provider';
 
 export default function Trips() {

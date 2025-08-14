@@ -1,4 +1,4 @@
-import { useTheme } from 'app/providers/ThemeContext';
+import React, { useState, useEffect } from 'react';
 import {
   MapPin,
   Clock,
@@ -19,7 +19,7 @@ import {
   FileUp,
   AlertTriangle,
 } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { useTheme } from 'app/providers/ThemeContext';
 
 export default function Careers() {
   const [isVisible, setIsVisible] = useState(false);

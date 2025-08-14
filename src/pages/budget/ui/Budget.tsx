@@ -1,6 +1,4 @@
-import { useApp } from 'app/providers/AppContext';
-import { useAuth } from 'app/providers/AuthContext';
-import { BudgetForm } from 'features/budget-tracking';
+import { useState } from 'react';
 import {
   DollarSign,
   Plus,
@@ -13,7 +11,9 @@ import {
   Edit,
   Trash2,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useApp } from 'app/providers/AppContext';
+import { useAuth } from 'app/providers/AuthContext';
+import { BudgetForm } from 'features/budget-tracking';
 
 // Backend-provided budget categories
 const BUDGET_CATEGORIES = [
@@ -57,15 +57,23 @@ export default function Budget() {
     setShowAddExpense(true);
   };
 
-  const handleSaveBudget = (budgetData: any) => {
+  const handleSaveBudget = (budgetData: {
+    total: string | number;
+    currency: string;
+    categories: Array<{ id: string; name: string; allocated: string | number; spent?: number; color: string }>;
+  }) => {
     if (currentTrip) {
       const updatedTrip = {
         ...currentTrip,
         budget: {
           ...currentTrip.budget,
-          total: budgetData.total,
+          total: typeof budgetData.total === 'string' ? Number(budgetData.total) : budgetData.total,
           currency: budgetData.currency,
-          categories: budgetData.categories,
+          categories: budgetData.categories.map(cat => ({
+            ...cat,
+            allocated: typeof cat.allocated === 'string' ? Number(cat.allocated) : cat.allocated,
+            spent: cat.spent || 0,
+          })),
         },
       };
 
@@ -322,14 +330,14 @@ export default function Budget() {
                     <div
                       key={alert.id}
                       className={`p-4 rounded-lg border-l-4 ${
-                        alert.type === 'critical'
+                        alert.type === 'danger'
                           ? 'bg-red-50 dark:bg-red-900/20 border-red-500'
                           : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-500'
                       }`}
                     >
                       <div className="flex items-start space-x-2">
                         <AlertTriangle
-                          className={`h-4 w-4 mt-0.5 ${alert.type === 'critical' ? 'text-red-500' : 'text-yellow-500'}`}
+                          className={`h-4 w-4 mt-0.5 ${alert.type === 'danger' ? 'text-red-500' : 'text-yellow-500'}`}
                         />
                         <div className="flex-1">
                           <p className="font-medium text-gray-900 dark:text-white">{alert.message}</p>

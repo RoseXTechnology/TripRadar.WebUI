@@ -1,5 +1,5 @@
-import { useAuth } from 'app/providers/AuthContext';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from 'app/providers/AuthContext';
 import { APP_NAVIGATION, LANDING_NAVIGATION } from 'shared/config';
 import { ROUTES } from 'shared/config/routes';
 import { cn } from 'shared/lib/utils';

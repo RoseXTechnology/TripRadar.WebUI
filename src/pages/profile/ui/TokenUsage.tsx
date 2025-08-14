@@ -1,5 +1,4 @@
-import { useApp } from 'app/providers/AppContext';
-import { useTheme } from 'app/providers/ThemeContext';
+import { useState, useEffect } from 'react';
 import {
   BarChart,
   Calendar,
@@ -18,21 +17,9 @@ import {
   AlertTriangle,
   ArrowRight,
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-// Define token usage data types
-interface TokenUsage {
-  date: string;
-  tokens: number;
-  operation: string;
-  category: string;
-}
-
-interface DailyUsage {
-  date: string;
-  tokens: number;
-}
+import { useApp } from 'app/providers/AppContext';
+import { useTheme } from 'app/providers/ThemeContext';
 
 export default function TokenUsage() {
   const { actualTheme } = useTheme();
@@ -46,7 +33,7 @@ export default function TokenUsage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   // Mock data for token usage
-  const [tokenUsageData, setTokenUsageData] = useState<TokenUsage[]>([
+  const tokenUsageData = [
     {
       date: '2025-02-15',
       tokens: 1250,
@@ -131,17 +118,17 @@ export default function TokenUsage() {
       operation: 'AI Trip Planning',
       category: 'ai',
     },
-  ]);
+  ];
 
   // Monthly data (aggregated)
-  const [monthlyData, setMonthlyData] = useState<DailyUsage[]>([
+  const monthlyData = [
     { date: '2025-02', tokens: 12280 },
     { date: '2025-01', tokens: 10450 },
     { date: '2024-12', tokens: 8920 },
     { date: '2024-11', tokens: 7650 },
     { date: '2024-10', tokens: 9340 },
     { date: '2024-09', tokens: 6780 },
-  ]);
+  ];
 
   // Token limits based on subscription
   const tokenLimits = {
@@ -182,8 +169,6 @@ export default function TokenUsage() {
 
   // Function to download CSV
   const downloadCSV = () => {
-    const data = timeframe === 'daily' ? tokenUsageData : monthlyData;
-
     // Create CSV content
     let csvContent = 'data:text/csv;charset=utf-8,';
 
@@ -191,13 +176,13 @@ export default function TokenUsage() {
     if (timeframe === 'daily') {
       csvContent += 'Date,Tokens,Operation,Category\n';
       // Add rows
-      data.forEach((item: any) => {
+      tokenUsageData.forEach(item => {
         csvContent += `${item.date},${item.tokens},${item.operation},${item.category}\n`;
       });
     } else {
       csvContent += 'Month,Tokens\n';
       // Add rows
-      data.forEach((item: any) => {
+      monthlyData.forEach(item => {
         csvContent += `${item.date},${item.tokens}\n`;
       });
     }

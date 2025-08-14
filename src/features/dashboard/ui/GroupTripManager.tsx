@@ -1,6 +1,6 @@
-import { GroupMember, Vote as VoteType } from 'entities/trip';
-import { Users, UserPlus, Crown, Mail, Check, X, MessageSquare, Vote, DollarSign } from 'lucide-react';
 import { useState } from 'react';
+import { Users, UserPlus, Crown, Mail, Check, X, MessageSquare, Vote, DollarSign } from 'lucide-react';
+import { GroupMember, Vote as VoteType } from 'entities/trip';
 
 interface GroupTripManagerProps {
   groupMembers: GroupMember[];
@@ -32,7 +32,6 @@ export default function GroupTripManager({ groupMembers, tripId }: GroupTripMana
     },
   ]);
 
-  const organizer = groupMembers.find(member => member.role === 'organizer');
   const acceptedMembers = groupMembers.filter(member => member.status === 'accepted');
   const pendingMembers = groupMembers.filter(member => member.status === 'invited');
 

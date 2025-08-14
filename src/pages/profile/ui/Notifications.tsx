@@ -1,4 +1,4 @@
-import { useTheme } from 'app/providers/ThemeContext';
+import { useState, useEffect } from 'react';
 import {
   Bell,
   Check,
@@ -14,7 +14,7 @@ import {
   MapPin,
   Settings,
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useTheme } from 'app/providers/ThemeContext';
 
 interface Notification {
   id: string;
@@ -234,7 +234,7 @@ export default function Notifications() {
               {['all', 'unread', 'read'].map(filterOption => (
                 <button
                   key={filterOption}
-                  onClick={() => setFilter(filterOption as any)}
+                  onClick={() => setFilter(filterOption as 'all' | 'unread' | 'read')}
                   className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
                     filter === filterOption
                       ? 'bg-primary-600 text-white'

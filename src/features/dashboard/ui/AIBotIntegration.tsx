@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Bot,
   MessageSquare,
@@ -11,8 +12,6 @@ import {
   Image as ImageIcon,
   ArrowRight,
 } from 'lucide-react';
-import { useState } from 'react';
-
 import { AIBotIntegration as AIBotType } from '../../../entities/user';
 
 interface AIBotIntegrationProps {
