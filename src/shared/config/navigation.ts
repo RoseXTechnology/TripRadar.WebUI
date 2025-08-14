@@ -5,7 +5,6 @@ export interface NavigationItem {
 }
 
 export const LANDING_NAVIGATION: NavigationItem[] = [
-  { name: 'Features', href: '/features' },
   { name: 'Pricing', href: '/pricing' },
   { name: 'Blog', href: '/blog' },
   { name: 'Help', href: '/help' },

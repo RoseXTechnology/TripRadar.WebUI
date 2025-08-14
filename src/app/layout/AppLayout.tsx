@@ -1,7 +1,5 @@
+import { Header, Footer } from 'widgets';
 import { ErrorBoundary } from 'shared/ui';
-import { Footer } from 'widgets/footer';
-import { Header } from 'widgets/header';
-
 import { AppRoutes } from '../router/routes';
 
 export function AppLayout() {

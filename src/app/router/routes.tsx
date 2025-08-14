@@ -25,7 +25,7 @@ const publicRoutes = [
   { path: '/search', component: () => import('../../pages/marketing').then(m => ({ default: m.Search })) },
   { path: '/discover', component: () => import('../../pages/marketing').then(m => ({ default: m.Discover })) },
   { path: '/pricing', component: () => import('../../pages/marketing').then(m => ({ default: m.Pricing })) },
-  { path: '/features', component: () => import('../../pages/marketing').then(m => ({ default: m.Features })) },
+
   { path: '/about', component: () => import('../../pages/marketing').then(m => ({ default: m.About })) },
   { path: '/careers', component: () => import('../../pages/marketing').then(m => ({ default: m.Careers })) },
   { path: '/blog', component: () => import('../../pages/marketing').then(m => ({ default: m.Blog })) },

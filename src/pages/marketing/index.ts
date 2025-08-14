@@ -3,7 +3,7 @@ export { default as Blog } from './ui/Blog';
 export { default as Careers } from './ui/Careers';
 export { default as ComingSoon } from './ui/ComingSoon';
 export { default as Discover } from './ui/Discover';
-export { default as Features } from './ui/Features';
+
 export { default as Home } from './ui/Home';
 export { default as Pricing } from './ui/Pricing';
 export { default as Search } from './ui/Search';
