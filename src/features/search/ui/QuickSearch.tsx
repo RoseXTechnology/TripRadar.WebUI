@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, X, ArrowRight, FileText, Book, Code, Users, MapPin, Calendar, Command, Clock } from 'lucide-react';
+import { Search, X, ArrowRight, Book, Code, Users, MapPin, Calendar, Command, Clock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from 'shared/config/routes';
 
@@ -50,14 +50,7 @@ const searchData: SearchResult[] = [
     category: 'pages',
     icon: MapPin,
   },
-  {
-    id: '5',
-    title: 'Blog',
-    description: 'Travel tips and insights',
-    url: '/blog',
-    category: 'pages',
-    icon: FileText,
-  },
+
   {
     id: '6',
     title: 'Help Center',

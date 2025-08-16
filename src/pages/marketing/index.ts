@@ -1,5 +1,4 @@
 export { default as About } from './ui/About';
-export { default as Blog } from './ui/Blog';
 export { default as Careers } from './ui/Careers';
 export { default as ComingSoon } from './ui/ComingSoon';
 export { default as Discover } from './ui/Discover';

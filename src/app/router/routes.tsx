@@ -28,13 +28,10 @@ const publicRoutes = [
 
   { path: '/about', component: () => import('../../pages/marketing').then(m => ({ default: m.About })) },
   { path: '/careers', component: () => import('../../pages/marketing').then(m => ({ default: m.Careers })) },
-  { path: '/blog', component: () => import('../../pages/marketing').then(m => ({ default: m.Blog })) },
-  { path: '/blog/:id', component: () => import('../../pages/marketing').then(m => ({ default: m.Blog })) },
-  { path: '/blog/new', component: () => import('../../pages/marketing').then(m => ({ default: m.Blog })) },
+
   { path: '/coming-soon', component: () => import('../../pages/marketing').then(m => ({ default: m.ComingSoon })) },
 
   // Support
-  { path: '/contact', component: () => import('../../pages/support').then(m => ({ default: m.Contact })) },
   { path: '/help', component: () => import('../../pages/support').then(m => ({ default: m.HelpCenter })) },
   { path: '/api-docs', component: () => import('../../pages/support').then(m => ({ default: m.ApiDocs })) },
 
