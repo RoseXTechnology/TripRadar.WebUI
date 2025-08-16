@@ -466,7 +466,7 @@ export default function About() {
             </button>
 
             <button className="group bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/20 text-gray-900 dark:text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-50 dark:hover:bg-white/10 transition-all duration-300 flex items-center space-x-2">
-              <span>Contact Us</span>
+              <span>Help Center</span>
               <ExternalLink className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>

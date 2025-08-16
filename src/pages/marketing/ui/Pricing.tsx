@@ -565,10 +565,10 @@ export default function Pricing() {
                 Start Free Trial
               </Link>
               <Link
-                to="/contact"
+                to="/help"
                 className="bg-white/10 backdrop-blur-sm text-white px-8 py-3 rounded-xl font-semibold hover:bg-white/20 transition-colors"
               >
-                Contact Sales
+                Get Support
               </Link>
             </div>
           </div>

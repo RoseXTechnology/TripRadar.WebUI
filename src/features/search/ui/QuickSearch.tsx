@@ -59,14 +59,6 @@ const searchData: SearchResult[] = [
     category: 'pages',
     icon: Book,
   },
-  {
-    id: '7',
-    title: 'Contact Us',
-    description: 'Get in touch with our team',
-    url: '/contact',
-    category: 'pages',
-    icon: Users,
-  },
 
   // Features
   {
