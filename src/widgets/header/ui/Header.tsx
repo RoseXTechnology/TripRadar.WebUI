@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
-import { QuickSearch } from 'features/search';
 import { isTransparentPage } from 'shared/config';
-import { useScrollDetection, useKeyboardShortcuts } from 'shared/lib/hooks';
+import { useScrollDetection } from 'shared/lib/hooks';
 import { cn } from 'shared/lib/utils';
 import { Logo, ThemeToggle } from 'shared/ui';
 import { MobileMenu } from './MobileMenu';
@@ -12,15 +11,9 @@ import { UserActions } from './UserActions';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showQuickSearch, setShowQuickSearch] = useState(false);
   const location = useLocation();
 
   const { isScrolled, sentinelRef } = useScrollDetection();
-
-  useKeyboardShortcuts({
-    onSearch: !showQuickSearch ? () => setShowQuickSearch(true) : undefined,
-    onEscape: () => setShowQuickSearch(false),
-  });
 
   const isPageTransparent = isTransparentPage(location.pathname);
 
@@ -41,7 +34,7 @@ export const Header = () => {
             <Navigation />
 
             <div className="flex items-center space-x-4">
-              <UserActions onSearchClick={() => setShowQuickSearch(true)} />
+              <UserActions />
 
               <ThemeToggle />
 
@@ -58,15 +51,9 @@ export const Header = () => {
             </div>
           </div>
 
-          <MobileMenu
-            isOpen={isMenuOpen}
-            onClose={() => setIsMenuOpen(false)}
-            onSearchClick={() => setShowQuickSearch(true)}
-          />
+          <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         </div>
       </header>
-
-      {showQuickSearch && <QuickSearch onClose={() => setShowQuickSearch(false)} />}
     </>
   );
 };

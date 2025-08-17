@@ -1,15 +1,11 @@
-import { FaSearch, FaBell } from 'react-icons/fa';
+import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useAuth } from 'app/providers/AuthContext';
 import { ROUTES } from 'shared/config/routes';
 import { cn } from 'shared/lib/utils';
 import { ProfileDropdown } from 'widgets/header';
 
-interface UserActionsProps {
-  onSearchClick: () => void;
-}
-
-export const UserActions = ({ onSearchClick }: UserActionsProps) => {
+export const UserActions = () => {
   const { isAuthenticated } = useAuth();
   const linkBaseStyles = 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white';
   const buttonStyles = 'p-2 rounded-xl transition-colors';
@@ -36,19 +32,6 @@ export const UserActions = ({ onSearchClick }: UserActionsProps) => {
 
   return (
     <>
-      <button
-        onClick={onSearchClick}
-        className={cn(
-          'hidden sm:flex items-center space-x-2',
-          buttonStyles,
-          linkBaseStyles,
-          'hover:bg-gray-100 dark:hover:bg-gray-800'
-        )}
-      >
-        <FaSearch className="h-5 w-5" />
-        <span className="text-sm text-gray-500 dark:text-gray-400">Press / to search</span>
-      </button>
-
       <Link
         to={ROUTES.NOTIFICATIONS}
         className={cn(buttonStyles, linkBaseStyles, 'hover:bg-gray-100 dark:hover:bg-gray-800 relative')}

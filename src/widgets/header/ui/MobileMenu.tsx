@@ -7,10 +7,9 @@ import { cn } from 'shared/lib/utils';
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  onSearchClick: () => void;
 }
 
-export const MobileMenu = ({ isOpen, onClose, onSearchClick }: MobileMenuProps) => {
+export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
 
@@ -48,48 +47,32 @@ export const MobileMenu = ({ isOpen, onClose, onSearchClick }: MobileMenuProps) 
           );
         })}
 
-        <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
-          <button
-            onClick={() => {
-              onSearchClick();
-              onClose();
-            }}
-            className={cn(
-              'flex items-center w-full px-3 py-2 rounded-xl font-medium transition-colors',
-              linkBaseStyles,
-              'hover:bg-gray-100 dark:hover:bg-gray-700'
-            )}
-          >
-            Search
-          </button>
-
-          {!isAuthenticated && (
-            <>
-              <Link
-                to={ROUTES.LOGIN}
-                className={cn(
-                  'block px-3 py-2 rounded-xl font-medium transition-colors',
-                  linkBaseStyles,
-                  'hover:bg-gray-100 dark:hover:bg-gray-700'
-                )}
-                onClick={onClose}
-              >
-                Sign In
-              </Link>
-              <Link
-                to={ROUTES.SIGNUP}
-                className={cn(
-                  'block px-3 py-2.5 rounded-xl font-semibold text-center transition-all',
-                  'bg-gradient-to-r from-blue-500 to-purple-600 text-white',
-                  'hover:shadow-lg hover:shadow-blue-500/25'
-                )}
-                onClick={onClose}
-              >
-                Get Started
-              </Link>
-            </>
-          )}
-        </div>
+        {!isAuthenticated && (
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
+            <Link
+              to={ROUTES.LOGIN}
+              className={cn(
+                'block px-3 py-2 rounded-xl font-medium transition-colors',
+                linkBaseStyles,
+                'hover:bg-gray-100 dark:hover:bg-gray-700'
+              )}
+              onClick={onClose}
+            >
+              Sign In
+            </Link>
+            <Link
+              to={ROUTES.SIGNUP}
+              className={cn(
+                'block px-3 py-2.5 rounded-xl font-semibold text-center transition-all',
+                'bg-gradient-to-r from-blue-500 to-purple-600 text-white',
+                'hover:shadow-lg hover:shadow-blue-500/25'
+              )}
+              onClick={onClose}
+            >
+              Get Started
+            </Link>
+          </div>
+        )}
       </nav>
     </div>
   );

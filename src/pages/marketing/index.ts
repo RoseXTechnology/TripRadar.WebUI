@@ -5,4 +5,3 @@ export { default as Discover } from './ui/Discover';
 
 export { Home } from './ui/Home';
 export { Pricing } from './ui/Pricing';
-export { default as Search } from './ui/Search';
