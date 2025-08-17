@@ -22,7 +22,6 @@ const publicRoutes = [
 
   // Marketing
   { path: '/', component: () => import('../../pages/marketing').then(m => ({ default: m.Home })) },
-  { path: '/discover', component: () => import('../../pages/marketing').then(m => ({ default: m.Discover })) },
   { path: '/pricing', component: () => import('../../pages/marketing').then(m => ({ default: m.Pricing })) },
 
   { path: '/about', component: () => import('../../pages/marketing').then(m => ({ default: m.About })) },
