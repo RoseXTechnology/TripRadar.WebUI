@@ -1,21 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
-  Search,
-  Book,
-  MessageSquare,
-  Bot,
-  CreditCard,
-  User,
-  AlertTriangle,
-  ChevronRight,
-  ChevronDown,
-  ExternalLink,
-  Play,
-  FileText,
-  Zap,
-  Globe,
-  Mail,
-} from 'lucide-react';
+  FiSearch,
+  FiBook,
+  FiMessageSquare,
+  FiCreditCard,
+  FiUser,
+  FiAlertTriangle,
+  FiChevronRight,
+  FiChevronDown,
+  FiMapPin,
+} from 'react-icons/fi';
 
 interface FAQItem {
   id: string;
@@ -38,7 +32,7 @@ const helpCategories: HelpCategory[] = [
     id: 'getting-started',
     title: 'Getting Started',
     description: 'Learn the basics of using TripRadar',
-    icon: Book,
+    icon: FiBook,
     color: 'bg-blue-500',
     articles: 12,
   },
@@ -46,15 +40,15 @@ const helpCategories: HelpCategory[] = [
     id: 'ai-bot',
     title: 'AI Travel Assistant',
     description: 'How to use our AI bot via Telegram/WhatsApp',
-    icon: Bot,
+    icon: FiMessageSquare,
     color: 'bg-purple-500',
     articles: 8,
   },
   {
-    id: 'search',
-    title: 'Search & Booking',
-    description: 'Find flights, hotels, and plan your trips',
-    icon: Search,
+    id: 'trip-planning',
+    title: 'Trip Planning',
+    description: 'Create itineraries and organize your travel plans',
+    icon: FiMapPin,
     color: 'bg-green-500',
     articles: 15,
   },
@@ -62,7 +56,7 @@ const helpCategories: HelpCategory[] = [
     id: 'billing',
     title: 'Billing & Subscriptions',
     description: 'Manage your account and payments',
-    icon: CreditCard,
+    icon: FiCreditCard,
     color: 'bg-orange-500',
     articles: 10,
   },
@@ -70,7 +64,7 @@ const helpCategories: HelpCategory[] = [
     id: 'account',
     title: 'Account Management',
     description: 'Profile settings and security',
-    icon: User,
+    icon: FiUser,
     color: 'bg-indigo-500',
     articles: 7,
   },
@@ -78,7 +72,7 @@ const helpCategories: HelpCategory[] = [
     id: 'troubleshooting',
     title: 'Troubleshooting',
     description: 'Common issues and solutions',
-    icon: AlertTriangle,
+    icon: FiAlertTriangle,
     color: 'bg-red-500',
     articles: 9,
   },
@@ -94,23 +88,23 @@ const faqs: FAQItem[] = [
   },
   {
     id: '2',
-    question: 'How does the flight search work?',
+    question: 'How do I create a trip itinerary?',
     answer:
-      "Our flight search aggregates data from multiple airlines and booking platforms. Simply enter your departure and destination cities, select dates, and we'll show you the best options sorted by price, duration, and convenience.",
-    category: 'search',
+      "To create an itinerary: 1) Click 'New Trip' on your dashboard, 2) Add your destinations and dates, 3) Use our planning tools to add activities, restaurants, and attractions, 4) Organize your schedule day by day, 5) Share with travel companions for collaboration.",
+    category: 'trip-planning',
   },
   {
     id: '3',
     question: 'What payment methods do you accept?',
     answer:
-      'We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers. All payments are processed securely through Stripe.',
+      'We accept all major credit cards (Visa, MasterCard, American Express) and PayPal for subscription payments. All transactions are processed securely.',
     category: 'billing',
   },
   {
     id: '4',
     question: 'How do I create my first trip?',
     answer:
-      'Creating your first trip is easy: 1) Click "New Trip" on your dashboard, 2) Enter your destination and dates, 3) Set your budget and preferences, 4) Start adding flights, hotels, and activities, 5) Invite friends if it\'s a group trip.',
+      'Creating your first trip is easy: 1) Click "New Trip" on your dashboard, 2) Enter your destination and dates, 3) Set your budget and preferences, 4) Start planning activities and places to visit, 5) Invite friends if it\'s a group trip.',
     category: 'getting-started',
   },
   {
@@ -129,10 +123,10 @@ const faqs: FAQItem[] = [
   },
   {
     id: '7',
-    question: 'Why is my search taking so long?',
+    question: 'How do I track my travel budget?',
     answer:
-      'Search times can vary based on destination popularity and current demand. International flights typically take 10-30 seconds. If searches consistently take longer, try clearing your browser cache or contact support.',
-    category: 'troubleshooting',
+      'Budget tracking is easy: 1) Set your total trip budget when creating a trip, 2) Add estimated costs for activities, meals, and transportation, 3) Track actual expenses as you plan, 4) Get alerts when approaching budget limits, 5) View spending breakdown by category.',
+    category: 'trip-planning',
   },
   {
     id: '8',
@@ -143,7 +137,7 @@ const faqs: FAQItem[] = [
   },
 ];
 
-export default function HelpCenter() {
+const HelpCenter = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [openFAQ, setOpenFAQ] = useState<string | null>(null);
@@ -177,7 +171,7 @@ export default function HelpCenter() {
         {/* Search */}
         <div className="max-w-2xl mx-auto mb-12">
           <div className="relative">
-            <Search className="absolute left-4 top-4 h-6 w-6 text-gray-400" />
+            <FiSearch className="absolute left-4 top-4 h-6 w-6 text-gray-400" />
             <input
               type="text"
               placeholder="Search for help articles..."
@@ -190,33 +184,27 @@ export default function HelpCenter() {
 
         {/* Categories */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {helpCategories.map((category, index) => (
+          {helpCategories.map(category => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(selectedCategory === category.id ? null : category.id)}
-              className={`group text-left p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 animate-slide-up ${
+              className={`text-left p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-shadow ${
                 selectedCategory === category.id ? 'ring-2 ring-primary-500 border-primary-500' : ''
               }`}
-              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="flex items-start justify-between mb-4">
-                <div
-                  className={`p-3 rounded-xl ${category.color} group-hover:scale-110 transition-transform duration-300`}
-                >
+                <div className={`p-3 rounded-xl ${category.color}`}>
                   <category.icon className="h-6 w-6 text-white" />
                 </div>
                 <div className="text-sm text-gray-500 dark:text-gray-400">{category.articles} articles</div>
               </div>
 
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                {category.title}
-              </h3>
-
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{category.title}</h3>
               <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{category.description}</p>
 
               <div className="flex items-center mt-4 text-primary-600 dark:text-primary-400 text-sm font-medium">
                 <span>Browse articles</span>
-                <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                <FiChevronRight className="h-4 w-4 ml-1" />
               </div>
             </button>
           ))}
@@ -243,33 +231,30 @@ export default function HelpCenter() {
           <div className="space-y-4">
             {filteredFAQs.length === 0 ? (
               <div className="text-center py-12">
-                <Search className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <FiSearch className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No results found</h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Try adjusting your search or browse our categories above.
+                  Try adjusting your search or browse our help categories above.
                 </p>
               </div>
             ) : (
               filteredFAQs.map(faq => (
                 <div
                   key={faq.id}
-                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden"
+                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm"
                 >
                   <button
                     onClick={() => toggleFAQ(faq.id)}
-                    className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   >
-                    <h3 className="font-medium text-gray-900 dark:text-white pr-4">{faq.question}</h3>
-                    <div className={`transform transition-transform ${openFAQ === faq.id ? 'rotate-180' : ''}`}>
-                      <ChevronDown className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                    </div>
+                    <span className="font-medium text-gray-900 dark:text-white pr-4">{faq.question}</span>
+                    <FiChevronDown
+                      className={`h-5 w-5 text-gray-400 transition-transform ${openFAQ === faq.id ? 'rotate-180' : ''}`}
+                    />
                   </button>
-
                   {openFAQ === faq.id && (
-                    <div className="px-6 pb-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-                      <div className="pt-4">
-                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{faq.answer}</p>
-                      </div>
+                    <div className="px-6 pb-4 border-t border-gray-200 dark:border-gray-700">
+                      <p className="text-gray-600 dark:text-gray-400 pt-4 leading-relaxed">{faq.answer}</p>
                     </div>
                   )}
                 </div>
@@ -278,93 +263,21 @@ export default function HelpCenter() {
           </div>
         </div>
 
-        {/* Quick Links */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-xl w-fit mx-auto mb-4">
-              <FileText className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-            </div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Documentation</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Comprehensive guides and API docs</p>
-            <button className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium flex items-center space-x-1 mx-auto">
-              <span>View Docs</span>
-              <ExternalLink className="h-3 w-3" />
+        {/* Contact Support */}
+        <div className="max-w-4xl mx-auto mt-16 text-center">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-8">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Still need help?</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              Can't find what you're looking for? Our support team is here to help.
+            </p>
+            <button className="bg-primary-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-primary-700 transition-colors inline-flex items-center space-x-2">
+              <span>Contact Support</span>
             </button>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center">
-            <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-xl w-fit mx-auto mb-4">
-              <Play className="h-6 w-6 text-green-600 dark:text-green-400" />
-            </div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Video Tutorials</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Step-by-step video guides</p>
-            <button className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 text-sm font-medium flex items-center space-x-1 mx-auto">
-              <span>Watch Videos</span>
-              <ExternalLink className="h-3 w-3" />
-            </button>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center">
-            <div className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-xl w-fit mx-auto mb-4">
-              <MessageSquare className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-            </div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Community</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Connect with other travelers</p>
-            <button className="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 text-sm font-medium flex items-center space-x-1 mx-auto">
-              <span>Join Community</span>
-              <ExternalLink className="h-3 w-3" />
-            </button>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center">
-            <div className="p-3 bg-orange-100 dark:bg-orange-900/20 rounded-xl w-fit mx-auto mb-4">
-              <Mail className="h-6 w-6 text-orange-600 dark:text-orange-400" />
-            </div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Contact Support</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Get personalized help</p>
-            <button className="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 text-sm font-medium flex items-center space-x-1 mx-auto">
-              <span>Contact Us</span>
-              <ExternalLink className="h-3 w-3" />
-            </button>
-          </div>
-        </div>
-
-        {/* Contact Section */}
-        <div className="mt-16 bg-gradient-to-r from-primary-600 to-blue-700 rounded-2xl p-8 text-white text-center">
-          <h3 className="text-2xl md:text-3xl font-bold mb-4">Still Need Help?</h3>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Our support team is here to help you get the most out of TripRadar. Reach out anytime for personalized
-            assistance.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <button className="bg-white text-primary-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-colors flex items-center space-x-2">
-              <Mail className="h-5 w-5" />
-              <span>Email Support</span>
-            </button>
-
-            <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-3 rounded-xl font-semibold hover:bg-white/20 transition-colors flex items-center space-x-2 border border-white/20">
-              <MessageSquare className="h-5 w-5" />
-              <span>Live Chat</span>
-            </button>
-          </div>
-
-          <div className="mt-8 flex items-center justify-center space-x-8 text-blue-200 text-sm">
-            <div className="flex items-center space-x-2">
-              <Zap className="h-4 w-4" />
-              <span>24/7 Support</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Zap className="h-4 w-4" />
-              <span>Fast Response</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Globe className="h-4 w-4" />
-              <span>Global Team</span>
-            </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default HelpCenter;
