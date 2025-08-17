@@ -4,7 +4,6 @@ export const ROUTES = {
   SIGNUP: '/signup',
   CHECKOUT: '/checkout',
   DASHBOARD: '/dashboard',
-  NOTIFICATIONS: '/notifications',
   PROFILE: '/profile',
   SETTINGS: '/settings',
   BILLING: '/billing',

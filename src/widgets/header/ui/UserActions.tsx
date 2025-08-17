@@ -1,4 +1,3 @@
-import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useAuth } from 'app/providers/AuthContext';
 import { ROUTES } from 'shared/config/routes';
@@ -8,7 +7,6 @@ import { ProfileDropdown } from 'widgets/header';
 export const UserActions = () => {
   const { isAuthenticated } = useAuth();
   const linkBaseStyles = 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white';
-  const buttonStyles = 'p-2 rounded-xl transition-colors';
 
   if (!isAuthenticated) {
     return (
@@ -32,16 +30,6 @@ export const UserActions = () => {
 
   return (
     <>
-      <Link
-        to={ROUTES.NOTIFICATIONS}
-        className={cn(buttonStyles, linkBaseStyles, 'hover:bg-gray-100 dark:hover:bg-gray-800 relative')}
-      >
-        <FaBell className="h-5 w-5" />
-        <span className="absolute -top-1 -right-1 h-4 w-4 bg-gradient-to-r from-pink-500 to-red-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
-          3
-        </span>
-      </Link>
-
       <ProfileDropdown />
     </>
   );

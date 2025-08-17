@@ -57,7 +57,7 @@ const protectedRoutes = [
   // Profile
   { path: '/profile', component: () => import('../../pages/profile').then(m => ({ default: m.Profile })) },
   { path: '/settings', component: () => import('../../pages/profile').then(m => ({ default: m.Settings })) },
-  { path: '/notifications', component: () => import('../../pages/profile').then(m => ({ default: m.Notifications })) },
+
   { path: '/billing', component: () => import('../../pages/profile').then(m => ({ default: m.Billing })) },
   { path: '/settings/usage', component: () => import('../../pages/profile').then(m => ({ default: m.TokenUsage })) },
 
