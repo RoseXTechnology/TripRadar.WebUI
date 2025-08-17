@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   FiSearch,
   FiBook,
@@ -137,7 +137,7 @@ const faqs: FAQItem[] = [
   },
 ];
 
-const HelpCenter = () => {
+export const HelpCenter = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [openFAQ, setOpenFAQ] = useState<string | null>(null);
@@ -279,5 +279,3 @@ const HelpCenter = () => {
     </div>
   );
 };
-
-export default HelpCenter;

@@ -1,7 +1,11 @@
-export { HeroSection } from './HeroSection';
-export { AIAssistantSection } from './AIAssistantSection';
-export { FeaturesSection } from './FeaturesSection';
-export { BillingToggle } from './BillingToggle';
-export { PricingCard } from './PricingCard';
-export { FeatureComparison } from './FeatureComparison';
-export { TokenUsageSection } from './TokenUsageSection';
+// Home page components
+export * from './home';
+
+// Pricing page components
+export * from './pricing';
+
+// About page components
+export * from './about';
+
+// Shared components (if any)
+export * from './shared';

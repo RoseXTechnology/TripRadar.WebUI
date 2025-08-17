@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BillingToggle, PricingCard, FeatureComparison, TokenUsageSection } from '../components';
+import { BillingToggle, PricingCard, FeatureComparison, TokenUsageSection } from '../components/pricing';
 
 const pricingTiers = [
   {
@@ -63,7 +63,7 @@ const pricingTiers = [
   },
 ];
 
-export default function Pricing() {
+export const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(false);
   const [selectedTier, setSelectedTier] = useState('Essential');
 
@@ -104,4 +104,4 @@ export default function Pricing() {
       </div>
     </div>
   );
-}
+};
