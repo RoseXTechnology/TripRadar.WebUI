@@ -55,15 +55,6 @@ const protectedRoutes = [
   // Dashboard
   { path: '/dashboard', component: () => import('../../pages/dashboard').then(m => ({ default: m.Dashboard })) },
 
-  // Trips
-  { path: '/trips', component: () => import('../../pages/trips').then(m => ({ default: m.Trips })) },
-  { path: '/trips/:id', component: () => import('../../pages/trips').then(m => ({ default: m.TripPlanning })) },
-  { path: '/scheduled', component: () => import('../../pages/trips').then(m => ({ default: m.Scheduled })) },
-  { path: '/trip-planning', component: () => import('../../pages/trips').then(m => ({ default: m.TripPlanning })) },
-
-  // Budget
-  { path: '/budget', component: () => import('../../pages/budget').then(m => ({ default: m.Budget })) },
-
   // Profile
   { path: '/profile', component: () => import('../../pages/profile').then(m => ({ default: m.Profile })) },
   { path: '/settings', component: () => import('../../pages/profile').then(m => ({ default: m.Settings })) },

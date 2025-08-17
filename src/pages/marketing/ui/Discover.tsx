@@ -8,17 +8,14 @@ import {
   Building,
   TreePine,
   Waves,
-  Plus,
   Search,
   Filter,
-  ArrowRight,
   Heart,
   Utensils,
   Armchair as Wheelchair,
   Bus,
   Globe,
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useApp } from 'app/providers/AppContext';
 import { useAuth } from 'app/providers/AuthContext';
 
@@ -182,7 +179,6 @@ export default function Discover() {
   const [showFilters, setShowFilters] = useState(false);
   const { requireAuth } = useAuth();
   const { user } = useApp();
-  const navigate = useNavigate();
   const [filteredDestinations, setFilteredDestinations] = useState(destinations);
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({});
 
@@ -245,32 +241,6 @@ export default function Discover() {
 
     setFilteredDestinations(filtered);
   }, [selectedCategory, searchQuery, activeFilters]);
-
-  const handleCreateTrip = (destination: (typeof destinations)[0]) => {
-    if (!requireAuth()) return;
-
-    // Navigate to trip planning with pre-populated data
-    navigate('/trip-planning', {
-      state: {
-        destination: destination.name,
-        estimatedCost: destination.estimatedCost,
-        duration: destination.duration,
-        highlights: destination.highlights,
-        type: destination.type,
-      },
-    });
-  };
-
-  const handleAddToTrip = (destination: (typeof destinations)[0]) => {
-    if (!requireAuth()) return;
-
-    // Navigate to trips page with option to add to existing trip
-    navigate('/trips', {
-      state: {
-        addDestination: destination,
-      },
-    });
-  };
 
   const toggleFilter = (category: string, option: string) => {
     setActiveFilters(prev => {
@@ -550,23 +520,6 @@ export default function Discover() {
                       {highlight}
                     </span>
                   ))}
-                </div>
-
-                <div className="flex space-x-3">
-                  <button
-                    onClick={() => handleCreateTrip(destination)}
-                    className="flex-1 bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2"
-                  >
-                    <Plus className="h-4 w-4" />
-                    <span>New Trip</span>
-                  </button>
-                  <button
-                    onClick={() => handleAddToTrip(destination)}
-                    className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center justify-center space-x-2"
-                  >
-                    <span>Add to Trip</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
                 </div>
               </div>
             </div>

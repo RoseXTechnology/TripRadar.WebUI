@@ -10,8 +10,6 @@ export const ROUTES = {
   DASHBOARD: '/dashboard',
   LOGIN: '/login',
   SIGNUP: '/signup',
-  TRIPS: '/trips',
-  BUDGET: '/budget',
   PROFILE: '/profile',
   SETTINGS: '/settings',
 } as const;

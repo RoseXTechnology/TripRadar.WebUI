@@ -1,7 +1,7 @@
-import { Plus, MapPin, Calendar, Users, TrendingUp, DollarSign, ArrowRight, Shield, Bot } from 'lucide-react';
+import { Plus, MapPin, Calendar, Users, TrendingUp, DollarSign, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useApp } from 'app/providers/AppContext';
-import { AIBotIntegration, BudgetOverview, GroupTripManager, SatisfactionPredictor } from 'features/dashboard';
+import { AIBotIntegration, SatisfactionPredictor } from 'features/dashboard';
 
 export default function DashboardOverview() {
   const { user, trips, currentTrip, aiBot, setAiBot } = useApp();
@@ -85,11 +85,11 @@ export default function DashboardOverview() {
             </div>
           </div>
           <Link
-            to="/trips/new"
+            to="/dashboard"
             className="mt-4 md:mt-0 bg-white text-primary-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-colors flex items-center space-x-2"
           >
             <Plus className="h-5 w-5" />
-            <span>New Trip</span>
+            <span>Plan Trip</span>
           </Link>
         </div>
       </div>
@@ -115,88 +115,6 @@ export default function DashboardOverview() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Current Trip */}
-        {currentTrip && (
-          <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700">
-              <div className="relative h-48">
-                <img src={currentTrip.image} alt={currentTrip.title} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="text-xl font-bold">{currentTrip.title}</h3>
-                  <p className="text-sm opacity-90">{currentTrip.destination}</p>
-                </div>
-                {currentTrip.isGroupTrip && (
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-gray-900 px-3 py-1 rounded-full text-sm font-medium flex items-center space-x-1">
-                    <Users className="h-4 w-4" />
-                    <span>Group Trip</span>
-                  </div>
-                )}
-                {currentTrip.aiChatEnabled && (
-                  <div className="absolute top-4 left-4 bg-primary-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium flex items-center space-x-1">
-                    <Bot className="h-4 w-4" />
-                    <span>AI Enabled</span>
-                  </div>
-                )}
-              </div>
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="h-4 w-4" />
-                      <span>{new Date(currentTrip.startDate).toLocaleDateString()}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Users className="h-4 w-4" />
-                      <span>{currentTrip.participants} travelers</span>
-                    </div>
-                    {currentTrip.budget && (
-                      <div className="flex items-center space-x-1">
-                        <DollarSign className="h-4 w-4" />
-                        <span>${currentTrip.budget.total.toLocaleString()}</span>
-                      </div>
-                    )}
-                  </div>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      currentTrip.status === 'planning'
-                        ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400'
-                        : currentTrip.status === 'active'
-                          ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                          : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
-                    }`}
-                  >
-                    {currentTrip.status}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
-                      <div className="bg-primary-600 h-2 rounded-full" style={{ width: '65%' }}></div>
-                    </div>
-                    <span>Planning Progress: 65%</span>
-                  </div>
-                  <Link
-                    to={`/trips/${currentTrip.id}`}
-                    className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium flex items-center space-x-1"
-                  >
-                    <span>View Details</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Budget Overview */}
-            {currentTrip.budget && <BudgetOverview budget={currentTrip.budget} />}
-
-            {/* Group Trip Manager */}
-            {currentTrip.isGroupTrip && currentTrip.groupMembers && (
-              <GroupTripManager groupMembers={currentTrip.groupMembers} tripId={currentTrip.id} />
-            )}
-          </div>
-        )}
-
         {/* Right Sidebar */}
         <div className="space-y-6">
           {/* AI Bot Integration */}

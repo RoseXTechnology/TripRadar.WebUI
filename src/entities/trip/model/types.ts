@@ -1,5 +1,3 @@
-import type { BudgetCategory, BudgetAlert } from '../../../entities/budget';
-
 export interface Trip {
   readonly id: string;
   readonly title: string;
@@ -23,8 +21,6 @@ export type TripStatus = 'planning' | 'active' | 'completed' | 'cancelled';
 export interface TripBudget {
   readonly total: number;
   readonly spent: number;
-  readonly categories: readonly BudgetCategory[];
-  readonly alerts: readonly BudgetAlert[];
   readonly currency: string;
 }
 
