@@ -25,7 +25,6 @@ const publicRoutes = [
   { path: '/pricing', component: () => import('../../pages/marketing').then(m => ({ default: m.Pricing })) },
 
   { path: '/about', component: () => import('../../pages/marketing').then(m => ({ default: m.About })) },
-  { path: '/careers', component: () => import('../../pages/marketing').then(m => ({ default: m.Careers })) },
 
   { path: '/coming-soon', component: () => import('../../pages/marketing').then(m => ({ default: m.ComingSoon })) },
 
@@ -38,16 +37,6 @@ const publicRoutes = [
   { path: '/terms', component: () => import('shared/ui/legal').then(m => ({ default: m.TermsOfService })) },
   { path: '/cookies', component: () => import('shared/ui/legal').then(m => ({ default: m.CookiePolicy })) },
   { path: '/security', component: () => import('shared/ui/legal').then(m => ({ default: m.SecurityPolicy })) },
-
-  // Checkout
-  {
-    path: '/checkout/success',
-    component: () => import('../../pages/checkout').then(m => ({ default: m.CheckoutSuccess })),
-  },
-  {
-    path: '/checkout/cancel',
-    component: () => import('../../pages/checkout').then(m => ({ default: m.CheckoutCancel })),
-  },
 ];
 
 const protectedRoutes = [

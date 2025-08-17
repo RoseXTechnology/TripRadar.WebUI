@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 import React from 'react';
-import { FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 interface LinkItem {
@@ -36,14 +35,8 @@ export const FooterLinks = ({ title, links }: FooterLinksProps) => {
 };
 
 export const FOOTER_LINKS = {
-  product: [
-    { name: 'Trip Planning', href: '/trip-planning' },
-    { name: 'Scheduled', href: '/scheduled' },
-    { name: 'Coming Soon', href: '/coming-soon', icon: <FaStar className="h-3 w-3" /> },
-  ],
   resources: [
     { name: 'API Documentation', href: '/api-docs' },
     { name: 'Feedback', href: '/feedback' },
   ],
-  company: [{ name: 'Careers', href: '/careers' }],
 };
