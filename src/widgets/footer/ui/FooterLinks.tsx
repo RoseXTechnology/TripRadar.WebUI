@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -15,28 +14,19 @@ interface FooterLinksProps {
 
 export const FooterLinks = ({ title, links }: FooterLinksProps) => {
   return (
-    <div>
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">{title}</h3>
-      <ul className="space-y-3 text-sm">
+    <div className="space-y-4">
+      <h4 className="text-lg font-semibold text-footer-text">{title}</h4>
+      <nav className="flex flex-col space-y-2">
         {links.map(link => (
-          <li key={link.name}>
-            <Link
-              to={link.href}
-              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center space-x-1"
-            >
-              <span>{link.name}</span>
-              {link.icon}
-            </Link>
-          </li>
+          <Link
+            key={link.name}
+            to={link.href}
+            className="text-footer-text hover:text-footer-accent transition-colors duration-200 hover:underline"
+          >
+            {link.name}
+          </Link>
         ))}
-      </ul>
+      </nav>
     </div>
   );
-};
-
-export const FOOTER_LINKS = {
-  resources: [
-    { name: 'API Documentation', href: '/api-docs' },
-    { name: 'Feedback', href: '/feedback' },
-  ],
 };

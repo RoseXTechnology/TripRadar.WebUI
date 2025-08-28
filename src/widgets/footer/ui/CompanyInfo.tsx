@@ -1,38 +1,40 @@
-import { FaTwitter, FaGithub, FaLinkedin, FaPlane } from 'react-icons/fa';
+import { FaTelegram, FaInstagram, FaTwitter, FaEnvelope } from 'react-icons/fa';
 
 export const CompanyInfo = () => {
   return (
-    <div className="md:col-span-2 space-y-6">
-      <div className="flex items-center space-x-3">
-        <div className="relative">
-          <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg">
-            <FaPlane className="h-6 w-6 text-white" />
-          </div>
-        </div>
-        <span className="text-xl font-bold text-gray-900 dark:text-white">TripRadar</span>
+    <div className="space-y-6">
+      <div className="space-y-3">
+        <h3 className="text-3xl font-bold text-footer-text tracking-tight">TripRadar</h3>
+        <p className="text-footer-muted text-lg font-medium">AI-путешествия за один клик</p>
       </div>
-      <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-        Smart travel management platform for modern travelers. Plan, track, and optimize your trips with AI-powered
-        intelligence and comprehensive travel data.
-      </p>
-      <div className="flex space-x-4">
+      <div className="flex justify-center space-x-6">
         <a
-          href="#"
-          className="p-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+          href="https://t.me/TripRadarBot"
+          className="p-3 rounded-full bg-footer-text/10 text-footer-text hover:bg-footer-text/20 hover:scale-110 transition-all duration-200 shadow-sm"
+          aria-label="Telegram"
         >
-          <FaTwitter className="h-5 w-5" />
+          <FaTelegram className="w-6 h-6" />
         </a>
         <a
           href="#"
-          className="p-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+          className="p-3 rounded-full bg-footer-text/10 text-footer-text hover:bg-footer-text/20 hover:scale-110 transition-all duration-200 shadow-sm"
+          aria-label="Instagram"
         >
-          <FaGithub className="h-5 w-5" />
+          <FaInstagram className="w-6 h-6" />
         </a>
         <a
           href="#"
-          className="p-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+          className="p-3 rounded-full bg-footer-text/10 text-footer-text hover:bg-footer-text/20 hover:scale-110 transition-all duration-200 shadow-sm"
+          aria-label="Twitter"
         >
-          <FaLinkedin className="h-5 w-5" />
+          <FaTwitter className="w-6 h-6" />
+        </a>
+        <a
+          href="mailto:support@tripradar.com"
+          className="p-3 rounded-full bg-footer-text/10 text-footer-text hover:bg-footer-text/20 hover:scale-110 transition-all duration-200 shadow-sm"
+          aria-label="Email"
+        >
+          <FaEnvelope className="w-6 h-6" />
         </a>
       </div>
     </div>
