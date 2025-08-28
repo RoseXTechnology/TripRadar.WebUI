@@ -65,6 +65,13 @@ export default {
           800: '#991b1b',
           900: '#7f1d1d',
         },
+        chart: {
+          1: '#0066FF',
+          2: '#10B981',
+          3: '#F59E0B',
+          4: '#EF4444',
+          5: '#8B5CF6',
+        },
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
