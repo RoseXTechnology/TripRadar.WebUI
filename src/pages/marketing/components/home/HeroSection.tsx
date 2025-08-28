@@ -6,7 +6,7 @@ export const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 dark:bg-blue-900 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
@@ -85,7 +85,7 @@ export const HeroSection = () => {
                   <div className="bg-[#17212b] dark:bg-gray-800 px-4 py-4 text-white dark:text-gray-200 flex items-center gap-3 border-b border-gray-700/50 dark:border-gray-600/50">
                     <button className="text-[#8bb4f1] dark:text-blue-400 text-lg font-bold">←</button>
                     <div className="relative">
-                      <div className="w-12 h-12 bg-gradient-to-br from-[#4fc3f7] to-[#29b6f6] rounded-full flex items-center justify-center shadow-lg border-2 border-white/20">
+                      <div className="w-12 h-12 from-[#4fc3f7] to-[#29b6f6] rounded-full flex items-center justify-center shadow-lg border-2 border-white/20">
                         <span className="text-xl">🤖</span>
                       </div>
                       <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-[#17212b] dark:border-gray-800"></div>
