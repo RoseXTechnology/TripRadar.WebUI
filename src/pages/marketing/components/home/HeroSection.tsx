@@ -68,16 +68,13 @@ export const HeroSection = () => {
                   <div className="bg-[#17212b] dark:bg-gray-800 px-6 py-4 pt-10 flex justify-between items-center text-sm text-white dark:text-gray-200">
                     <span className="font-semibold">9:41</span>
                     <div className="flex items-center gap-2">
-                      <div className="flex gap-0.5">
-                        <div className="w-1 h-3 bg-white rounded-full"></div>
-                        <div className="w-1 h-3 bg-white rounded-full"></div>
-                        <div className="w-1 h-3 bg-white rounded-full"></div>
-                        <div className="w-1 h-2 bg-white/50 rounded-full"></div>
+                      <div className="flex gap-0.5 items-end">
+                        <div className="w-1 h-1 bg-white rounded-sm"></div>
+                        <div className="w-1 h-2 bg-white rounded-sm"></div>
+                        <div className="w-1 h-3 bg-white rounded-sm"></div>
+                        <div className="w-1 h-4 bg-white rounded-sm"></div>
                       </div>
-                      <div className="w-7 h-3.5 border border-white rounded-sm relative">
-                        <div className="w-5 h-2 bg-green-400 rounded-sm absolute top-0.5 left-0.5"></div>
-                        <div className="w-1 h-1 bg-white rounded-sm absolute -right-0.5 top-1"></div>
-                      </div>
+                      <span className="text-white text-sm">🔋</span>
                     </div>
                   </div>
 
