@@ -24,13 +24,7 @@ const publicRoutes = [
   { path: '/', component: () => import('../../pages/marketing').then(m => ({ default: m.Home })) },
   { path: '/pricing', component: () => import('../../pages/marketing').then(m => ({ default: m.Pricing })) },
 
-  { path: '/about', component: () => import('../../pages/marketing').then(m => ({ default: m.About })) },
-
-  { path: '/coming-soon', component: () => import('../../pages/marketing').then(m => ({ default: m.ComingSoon })) },
-
   // Support
-  { path: '/help', component: () => import('../../pages/support').then(m => ({ default: m.HelpCenter })) },
-  { path: '/api-docs', component: () => import('../../pages/support').then(m => ({ default: m.ApiDocs })) },
 
   // Legal
   { path: '/privacy', component: () => import('shared/ui/legal').then(m => ({ default: m.PrivacyPolicy })) },
