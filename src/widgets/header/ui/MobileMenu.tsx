@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from 'app/providers/AuthContext';
 import { APP_NAVIGATION, LANDING_NAVIGATION } from 'shared/config';
 import { ROUTES } from 'shared/config/routes';
@@ -9,9 +9,31 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 
+const scrollToSection = (href: string) => {
+  if (href.startsWith('#')) {
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+};
+
+const handleTelegramClick = () => {
+  window.open('https://t.me/TripRadarBot', '_blank');
+};
+
+const handleAnchorClick = (href: string, navigate: ReturnType<typeof useNavigate>, currentPath: string) => {
+  if (currentPath === '/') {
+    scrollToSection(href);
+  } else {
+    navigate('/' + href);
+  }
+};
+
 export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   if (!isOpen) return null;
 
@@ -30,13 +52,34 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
         {navigation.map(item => {
           if (item.protected && !isAuthenticated) return null;
 
+          const isAnchor = item.href.startsWith('#');
+          const isActive = location.pathname === item.href;
+
+          if (isAnchor) {
+            return (
+              <button
+                key={item.name}
+                onClick={() => {
+                  handleAnchorClick(item.href, navigate, location.pathname);
+                  onClose();
+                }}
+                className={cn(
+                  'block w-full text-left px-3 py-2 font-medium rounded-xl transition-colors',
+                  `${linkBaseStyles} hover:bg-gray-100 dark:hover:bg-gray-700`
+                )}
+              >
+                {item.name}
+              </button>
+            );
+          }
+
           return (
             <Link
               key={item.name}
               to={item.href}
               className={cn(
                 'block px-3 py-2 font-medium rounded-xl transition-colors',
-                location.pathname === item.href
+                isActive
                   ? `${linkActiveStyles} bg-gray-100 dark:bg-gray-700`
                   : `${linkBaseStyles} hover:bg-gray-100 dark:hover:bg-gray-700`
               )}
@@ -58,19 +101,21 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
               )}
               onClick={onClose}
             >
-              Sign In
+              Login
             </Link>
-            <Link
-              to={ROUTES.SIGNUP}
+            <button
+              onClick={() => {
+                handleTelegramClick();
+                onClose();
+              }}
               className={cn(
-                'block px-3 py-2.5 rounded-xl font-semibold text-center transition-all',
+                'block w-full px-3 py-2.5 rounded-xl font-semibold text-center transition-all',
                 'bg-gradient-to-r from-blue-500 to-purple-600 text-white',
                 'hover:shadow-lg hover:shadow-blue-500/25'
               )}
-              onClick={onClose}
             >
-              Get Started
-            </Link>
+              Открыть в Telegram
+            </button>
           </div>
         )}
       </nav>

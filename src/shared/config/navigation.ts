@@ -4,9 +4,17 @@ export interface NavigationItem {
   protected?: boolean;
 }
 
-export const LANDING_NAVIGATION: NavigationItem[] = [{ name: 'Pricing', href: '/pricing' }];
+export const LANDING_NAVIGATION: NavigationItem[] = [
+  { name: 'Home', href: '#hero' },
+  { name: 'About', href: '#how-it-works' },
+  { name: 'Features', href: '#features' },
+  { name: 'Pricing', href: '/pricing' },
+];
 
 export const APP_NAVIGATION: NavigationItem[] = [
   { name: 'Dashboard', href: '/dashboard', protected: true },
+  { name: 'Home', href: '#hero' },
+  { name: 'About', href: '#how-it-works' },
+  { name: 'Features', href: '#features' },
   { name: 'Pricing', href: '/pricing' },
 ];
