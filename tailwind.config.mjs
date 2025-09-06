@@ -6,22 +6,22 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#fef2f2',
-          500: '#ff7f7f',
-          600: '#ef4444',
-          700: '#dc2626',
+          50: '#fdf2f8',
+          500: '#ec4899',
+          600: '#db2777',
+          700: '#be185d',
         },
         secondary: {
-          50: '#f0fdfa',
-          500: '#4ecdc4',
-          600: '#14b8a6',
-          700: '#0d9488',
+          50: '#ecfeff',
+          500: '#06b6d4',
+          600: '#0891b2',
+          700: '#0e7490',
         },
         surface: {
           DEFAULT: '#ffffff',
-          dark: '#0f0f0f',
-          accent: '#fef2f2',
-          'accent-dark': '#1a1a1a',
+          dark: '#0c0c0c',
+          accent: '#fdf2f8',
+          'accent-dark': '#1a0a14',
         },
         content: {
           DEFAULT: '#0f172a',
@@ -39,16 +39,16 @@ export default {
         interactive: {
           DEFAULT: '#f1f5f9',
           dark: '#374151',
-          active: '#ff7f7f',
-          'active-dark': '#4ecdc4',
+          active: '#ec4899',
+          'active-dark': '#06b6d4',
         },
         button: {
           DEFAULT: '#0f172a',
           dark: '#ffffff',
           text: '#ffffff',
           'text-dark': '#0f172a',
-          hover: '#ff7f7f',
-          'hover-dark': '#4ecdc4',
+          hover: '#1f2937',
+          'hover-dark': '#f3f4f6',
         },
       },
       fontFamily: {
