@@ -1,61 +1,51 @@
-import { FaComments, FaMapMarkerAlt, FaPlane } from 'react-icons/fa';
-
 const steps = [
   {
-    icon: FaComments,
-    title: 'Напиши в бота',
-    description: 'Расскажи о своих предпочтениях, бюджете и желаемом направлении',
+    number: '01',
+    title: 'Chat with AI',
+    description: 'Tell our AI about your travel preferences, budget, and desired destination in natural language.',
   },
   {
-    icon: FaMapMarkerAlt,
-    title: 'Получи маршрут',
-    description: 'ИИ создаст персональный маршрут с отелями, достопримечательностями и активностями',
+    number: '02',
+    title: 'Get Itinerary',
+    description: 'Receive a personalized travel plan with hotels, attractions, and activities tailored to you.',
   },
   {
-    icon: FaPlane,
-    title: 'Путешествуй легко',
-    description: 'Следуй готовому плану и наслаждайся идеально организованным путешествием',
+    number: '03',
+    title: 'Travel Smart',
+    description: 'Follow your custom itinerary and enjoy a perfectly organized trip without the planning stress.',
   },
 ];
 
-const StepCard = ({ step }: { step: (typeof steps)[0] }) => {
-  const IconComponent = step.icon;
-
-  return (
-    <div className="text-center group">
-      <div className="mb-8">
-        <div className="w-32 h-32 bg-steps-card-bg rounded-full shadow-sm border border-gray-200 flex items-center justify-center mx-auto group-hover:shadow-md transition-all duration-300">
-          <IconComponent size={40} className="text-steps-icon" />
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <h3 className="text-2xl text-steps-title">{step.title}</h3>
-        <p className="text-steps-text leading-relaxed max-w-sm mx-auto">{step.description}</p>
-      </div>
-    </div>
-  );
-};
-
 export function HowItWorks() {
   return (
-    <section className="py-24 px-6 bg-hero-bg">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl text-steps-title mb-6 tracking-tight">Как это работает</h2>
-          <p className="text-xl text-steps-text max-w-lg mx-auto leading-relaxed">
-            Всего три простых шага до идеального путешествия
+    <section className="py-24 px-6 bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">How it works</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Three simple steps to your perfect trip
           </p>
         </div>
 
-        <div className="relative">
-          <div className="hidden md:block absolute top-16 left-0 right-0 h-px bg-steps-details z-0"></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {steps.map((step, index) => (
+            <div key={index} className="relative">
+              {/* Connection line */}
+              {index < steps.length - 1 && (
+                <div className="hidden md:block absolute top-8 left-full w-full h-px bg-gray-200 dark:bg-gray-700 z-0" />
+              )}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 relative z-10">
-            {steps.map((step, index) => (
-              <StepCard key={index} step={step} />
-            ))}
-          </div>
+              <div className="relative bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-black dark:bg-white rounded-full flex items-center justify-center">
+                    <span className="text-white dark:text-black font-bold text-sm">{step.number}</span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{step.title}</h3>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{step.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

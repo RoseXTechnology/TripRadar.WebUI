@@ -10,16 +10,8 @@ interface MobileMenuProps {
 }
 
 const scrollToSection = (href: string) => {
-  if (href.startsWith('#')) {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-};
-
-const handleTelegramClick = () => {
-  window.open('https://t.me/TripRadarBot', '_blank');
+  const element = document.querySelector(href);
+  element?.scrollIntoView({ behavior: 'smooth' });
 };
 
 const handleAnchorClick = (href: string, navigate: ReturnType<typeof useNavigate>, currentPath: string) => {
@@ -38,84 +30,64 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   if (!isOpen) return null;
 
   const navigation = isAuthenticated ? APP_NAVIGATION : LANDING_NAVIGATION;
-  const linkBaseStyles = 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white';
-  const linkActiveStyles = 'text-gray-900 dark:text-white';
 
   return (
-    <div
-      className={cn(
-        'md:hidden py-4 animate-slide-down',
-        'bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700'
-      )}
-    >
-      <nav className="space-y-2">
-        {navigation.map(item => {
-          if (item.protected && !isAuthenticated) return null;
+    <div className="md:hidden py-4 bg-white dark:bg-black border-t border-gray-200 dark:border-gray-800">
+      <nav className="space-y-1">
+        {navigation
+          .filter(item => !item.protected || isAuthenticated)
+          .map(item => {
+            const isAnchor = item.href.startsWith('#');
+            const isActive = location.pathname === item.href;
 
-          const isAnchor = item.href.startsWith('#');
-          const isActive = location.pathname === item.href;
+            if (isAnchor) {
+              return (
+                <button
+                  key={item.name}
+                  onClick={() => {
+                    handleAnchorClick(item.href, navigate, location.pathname);
+                    onClose();
+                  }}
+                  className="block w-full text-left px-4 py-3 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+                >
+                  {item.name}
+                </button>
+              );
+            }
 
-          if (isAnchor) {
             return (
-              <button
+              <Link
                 key={item.name}
-                onClick={() => {
-                  handleAnchorClick(item.href, navigate, location.pathname);
-                  onClose();
-                }}
+                to={item.href}
+                onClick={onClose}
                 className={cn(
-                  'block w-full text-left px-3 py-2 font-medium rounded-xl transition-colors',
-                  `${linkBaseStyles} hover:bg-gray-100 dark:hover:bg-gray-700`
+                  'block px-4 py-3 text-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-900',
+                  isActive
+                    ? 'text-gray-900 dark:text-white'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                 )}
               >
                 {item.name}
-              </button>
+              </Link>
             );
-          }
-
-          return (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={cn(
-                'block px-3 py-2 font-medium rounded-xl transition-colors',
-                isActive
-                  ? `${linkActiveStyles} bg-gray-100 dark:bg-gray-700`
-                  : `${linkBaseStyles} hover:bg-gray-100 dark:hover:bg-gray-700`
-              )}
-              onClick={onClose}
-            >
-              {item.name}
-            </Link>
-          );
-        })}
+          })}
 
         {!isAuthenticated && (
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-800 space-y-2">
             <Link
               to={ROUTES.LOGIN}
-              className={cn(
-                'block px-3 py-2 rounded-xl font-medium transition-colors',
-                linkBaseStyles,
-                'hover:bg-gray-100 dark:hover:bg-gray-700'
-              )}
               onClick={onClose}
+              className="block px-4 py-3 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
             >
               Login
             </Link>
-            <button
-              onClick={() => {
-                handleTelegramClick();
-                onClose();
-              }}
-              className={cn(
-                'block w-full px-3 py-2.5 rounded-xl font-semibold text-center transition-all',
-                'bg-gradient-to-r from-blue-500 to-purple-600 text-white',
-                'hover:shadow-lg hover:shadow-blue-500/25'
-              )}
+            <Link
+              to={ROUTES.SIGNUP}
+              onClick={onClose}
+              className="block w-full mx-4 px-4 py-3 text-sm text-center bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
             >
-              Открыть в Telegram
-            </button>
+              Register
+            </Link>
           </div>
         )}
       </nav>

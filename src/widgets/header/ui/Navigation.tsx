@@ -4,12 +4,8 @@ import { APP_NAVIGATION, LANDING_NAVIGATION } from 'shared/config';
 import { cn } from 'shared/lib/utils';
 
 const scrollToSection = (href: string) => {
-  if (href.startsWith('#')) {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
+  const element = document.querySelector(href);
+  element?.scrollIntoView({ behavior: 'smooth' });
 };
 
 const handleAnchorClick = (href: string, navigate: ReturnType<typeof useNavigate>, currentPath: string) => {
@@ -26,46 +22,42 @@ export const Navigation = () => {
   const navigate = useNavigate();
 
   const navigation = isAuthenticated ? APP_NAVIGATION : LANDING_NAVIGATION;
-  const linkBaseStyles = 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white';
-  const linkActiveStyles = 'text-gray-900 dark:text-white';
 
   return (
-    <nav className="hidden md:flex space-x-8">
-      {navigation.map(item => {
-        if (item.protected && !isAuthenticated) return null;
+    <nav className="hidden md:flex items-center gap-6">
+      {navigation
+        .filter(item => !item.protected || isAuthenticated)
+        .map(item => {
+          const isAnchor = item.href.startsWith('#');
+          const isActive = location.pathname === item.href;
 
-        const isAnchor = item.href.startsWith('#');
-        const isActive = location.pathname === item.href;
+          if (isAnchor) {
+            return (
+              <button
+                key={item.name}
+                onClick={() => handleAnchorClick(item.href, navigate, location.pathname)}
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                {item.name}
+              </button>
+            );
+          }
 
-        if (isAnchor) {
           return (
-            <button
+            <Link
               key={item.name}
-              onClick={() => handleAnchorClick(item.href, navigate, location.pathname)}
-              className={cn('relative font-medium transition-colors group', linkBaseStyles)}
+              to={item.href}
+              className={cn(
+                'text-sm transition-colors',
+                isActive
+                  ? 'text-gray-900 dark:text-white'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              )}
             >
               {item.name}
-              <span className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-200 w-0 group-hover:w-full" />
-            </button>
+            </Link>
           );
-        }
-
-        return (
-          <Link
-            key={item.name}
-            to={item.href}
-            className={cn('relative font-medium transition-colors group', isActive ? linkActiveStyles : linkBaseStyles)}
-          >
-            {item.name}
-            <span
-              className={cn(
-                'absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-200',
-                isActive ? 'w-full' : 'w-0 group-hover:w-full'
-              )}
-            />
-          </Link>
-        );
-      })}
+        })}
     </nav>
   );
 };
