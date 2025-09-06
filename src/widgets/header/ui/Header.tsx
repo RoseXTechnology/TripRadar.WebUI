@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { Menu, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { isTransparentPage } from 'shared/config';
 import { useScrollDetection } from 'shared/lib/hooks';
@@ -19,35 +19,31 @@ export const Header = () => {
 
   return (
     <>
-      <div ref={sentinelRef} className="h-5" />
+      <div ref={sentinelRef} className="h-1" />
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-200',
           isScrolled || !isPageTransparent
-            ? 'bg-header-footer-bg/95 backdrop-blur-xl border-b shadow-lg'
-            : 'bg-header-footer-bg border-b'
+            ? 'bg-white/80 dark:bg-black/80 backdrop-blur-md'
+            : 'bg-white/60 dark:bg-black/60 backdrop-blur-sm'
         )}
-        style={{ borderColor: 'var(--footer-border)' }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex justify-between items-center h-14">
             <Logo />
             <Navigation />
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-2">
               <UserActions />
-
+              <div className="w-px h-4 bg-gray-300 dark:bg-gray-700 mx-2" />
               <ThemeToggle />
 
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className={cn(
-                  'md:hidden p-2 rounded-xl transition-colors',
-                  'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white',
-                  'hover:bg-gray-100 dark:hover:bg-gray-800'
-                )}
+                className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                aria-label="Toggle menu"
               >
-                {isMenuOpen ? <FaTimes className="h-5 w-5" /> : <FaBars className="h-5 w-5" />}
+                {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               </button>
             </div>
           </div>
