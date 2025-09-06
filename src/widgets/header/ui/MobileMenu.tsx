@@ -32,7 +32,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const navigation = isAuthenticated ? APP_NAVIGATION : LANDING_NAVIGATION;
 
   return (
-    <div className="md:hidden py-4 bg-white dark:bg-black border-t border-gray-200 dark:border-gray-800">
+    <div className="md:hidden py-4 bg-surface dark:bg-surface-dark border-t border-outline dark:border-outline-dark">
       <nav className="space-y-1">
         {navigation
           .filter(item => !item.protected || isAuthenticated)
@@ -48,7 +48,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                     handleAnchorClick(item.href, navigate, location.pathname);
                     onClose();
                   }}
-                  className="block w-full text-left px-4 py-3 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+                  className="block w-full text-left px-4 py-3 text-sm text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50 dark:hover:bg-surface-accent-dark transition-colors"
                 >
                   {item.name}
                 </button>
@@ -61,10 +61,10 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                 to={item.href}
                 onClick={onClose}
                 className={cn(
-                  'block px-4 py-3 text-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-900',
+                  'block px-4 py-3 text-sm transition-colors hover:bg-primary-50 dark:hover:bg-surface-accent-dark',
                   isActive
-                    ? 'text-gray-900 dark:text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                    ? 'text-content dark:text-content-dark'
+                    : 'text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark'
                 )}
               >
                 {item.name}
@@ -73,18 +73,18 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
           })}
 
         {!isAuthenticated && (
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-800 space-y-2">
+          <div className="pt-4 border-t border-outline dark:border-outline-dark space-y-2">
             <Link
               to={ROUTES.LOGIN}
               onClick={onClose}
-              className="block px-4 py-3 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+              className="block px-4 py-3 text-sm text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50 dark:hover:bg-surface-accent-dark transition-colors"
             >
               Login
             </Link>
             <Link
               to={ROUTES.SIGNUP}
               onClick={onClose}
-              className="block w-full mx-4 px-4 py-3 text-sm text-center bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
+              className="block w-full mx-4 px-4 py-3 text-sm text-center bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark rounded-lg hover:bg-button-hover dark:hover:bg-button-hover-dark transition-colors"
             >
               Register
             </Link>

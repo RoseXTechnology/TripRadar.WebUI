@@ -40,7 +40,7 @@ export const Header = () => {
 
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="md:hidden p-2 rounded-lg hover:bg-primary-50 dark:hover:bg-surface-accent-dark transition-colors"
                 aria-label="Toggle menu"
               >
                 {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}

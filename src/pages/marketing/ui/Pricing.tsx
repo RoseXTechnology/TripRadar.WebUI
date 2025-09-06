@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, Sparkles } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from 'shared/config/routes';
 
@@ -48,49 +48,49 @@ export const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-surface to-secondary-50 dark:from-surface-dark dark:via-surface-accent-dark dark:to-surface-dark">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 dark:from-blue-400/5 dark:to-purple-400/5" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-600/10 to-secondary-600/10 dark:from-primary-400/5 dark:to-secondary-400/5" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 rounded-full text-blue-600 dark:text-blue-400 text-sm font-medium mb-6">
-              <Sparkles className="w-4 h-4" />
-              Simple, transparent pricing
-            </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-4 leading-tight">
+            <h1
+              className="text-4xl md:text-6xl lg:text-7xl font-bold text-content dark:text-content-dark mb-12 tracking-tight"
+              style={{ lineHeight: '1.3' }}
+            >
               Choose your plan
             </h1>
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
-              Start free and scale as you grow. No hidden fees, cancel anytime.
-            </p>
 
             {/* Billing Toggle */}
-            <div className="flex items-center justify-center gap-3 mb-12">
+            <div className="relative flex items-center justify-center gap-3 mb-12">
               <span
-                className={`text-sm font-medium ${!isAnnual ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}
+                className={`text-sm font-medium ${!isAnnual ? 'text-content dark:text-content-dark' : 'text-content-muted dark:text-content-secondary-dark'}`}
               >
                 Monthly
               </span>
               <button
                 onClick={() => setIsAnnual(!isAnnual)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  isAnnual ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'
+                  isAnnual
+                    ? 'bg-interactive-active dark:bg-interactive-active-dark'
+                    : 'bg-interactive dark:bg-interactive-dark'
                 }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  className={`inline-block h-4 w-4 transform rounded-full bg-surface dark:bg-surface transition-transform ${
                     isAnnual ? 'translate-x-6' : 'translate-x-1'
                   }`}
                 />
               </button>
               <span
-                className={`text-sm font-medium ${isAnnual ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}
+                className={`text-sm font-medium ${isAnnual ? 'text-content dark:text-content-dark' : 'text-content-muted dark:text-content-secondary-dark'}`}
               >
                 Annual
               </span>
+
+              {/* Save badge positioned absolutely */}
               {isAnnual && (
-                <span className="ml-2 px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400 text-xs font-medium rounded-full">
+                <span className="absolute left-1/2 translate-x-24 px-2 py-1 bg-primary-50 dark:bg-surface-accent-dark text-primary-600 dark:text-primary-500 text-xs font-medium rounded-full whitespace-nowrap">
                   Save 20%
                 </span>
               )}
@@ -111,25 +111,31 @@ export const Pricing = () => {
                 key={tier.name}
                 className={`relative rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:scale-105 flex flex-col h-full ${
                   isPopular
-                    ? 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-700 shadow-xl'
-                    : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl'
+                    ? 'bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-600/20 dark:to-secondary-600/20 border-2 border-primary-500 dark:border-primary-600 shadow-xl'
+                    : 'bg-surface dark:bg-surface-accent-dark border border-outline dark:border-outline-dark shadow-lg hover:shadow-xl'
                 }`}
               >
                 {isPopular && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-full text-xs font-medium">
+                    <span className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white px-3 py-1.5 rounded-full text-xs font-medium">
                       Most Popular
                     </span>
                   </div>
                 )}
 
                 <div className="text-center mb-6">
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">{tier.name}</h3>
-                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4">{tier.description}</p>
+                  <h3 className="text-xl sm:text-2xl font-bold text-content dark:text-content-dark mb-2">
+                    {tier.name}
+                  </h3>
+                  <p className="text-sm sm:text-base text-content-secondary dark:text-content-secondary-dark mb-4">
+                    {tier.description}
+                  </p>
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">${price}</span>
+                    <span className="text-3xl sm:text-4xl font-bold text-content dark:text-content-dark">${price}</span>
                     {price > 0 && (
-                      <span className="text-sm text-gray-600 dark:text-gray-400">/{isAnnual ? 'year' : 'month'}</span>
+                      <span className="text-sm text-content-secondary dark:text-content-secondary-dark">
+                        /{isAnnual ? 'year' : 'month'}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -137,8 +143,8 @@ export const Pricing = () => {
                 <ul className="space-y-3 mb-6 flex-grow">
                   {tier.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-3">
-                      <Check className="w-4 h-4 text-green-500 flex-shrink-0 mt-1" />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
+                      <Check className="w-4 h-4 text-primary-600 dark:text-primary-500 flex-shrink-0 mt-1" />
+                      <span className="text-sm text-content dark:text-content-dark">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -147,8 +153,8 @@ export const Pricing = () => {
                   to={tier.name === 'Enterprise' ? '/contact' : ROUTES.SIGNUP}
                   className={`block w-full py-3 px-6 rounded-xl text-center font-medium transition-all duration-200 ${
                     isPopular
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl'
-                      : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100'
+                      ? 'bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark hover:bg-button-hover dark:hover:bg-button-hover-dark shadow-lg hover:shadow-xl'
+                      : 'bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark hover:bg-button-hover dark:hover:bg-button-hover-dark'
                   }`}
                 >
                   {tier.cta}
@@ -160,13 +166,13 @@ export const Pricing = () => {
 
         {/* FAQ Section */}
         <div className="mt-16 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">Questions?</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-content dark:text-content-dark mb-3">Questions?</h2>
+          <p className="text-content-secondary dark:text-content-secondary-dark mb-6">
             We're here to help. Contact our team for any questions about pricing or features.
           </p>
           <Link
             to="/contact"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-50 dark:bg-surface-accent-dark text-content dark:text-content-dark rounded-xl hover:bg-secondary-50 dark:hover:bg-outline-dark transition-colors text-sm font-medium"
           >
             Contact Support
           </Link>

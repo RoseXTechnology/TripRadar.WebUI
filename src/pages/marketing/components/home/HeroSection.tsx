@@ -19,18 +19,11 @@ export const HeroSection = () => {
           trip in seconds
         </h1>
 
-        {/* Subtitle */}
-        <p className="text-xl md:text-2xl text-content-secondary dark:text-content-secondary-dark mb-12 max-w-3xl mx-auto leading-relaxed">
-          The AI-powered travel planner that understands you.
-          <br className="hidden md:block" />
-          Chat with our bot and get personalized itineraries instantly.
-        </p>
-
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
           <button
             onClick={handleTelegramClick}
-            className="group px-8 py-4 bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-lg font-medium hover:from-primary-700 hover:to-secondary-700 transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
+            className="group px-8 py-4 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark rounded-lg font-medium hover:bg-button-hover dark:hover:bg-button-hover-dark transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
           >
             Try TripRadar
             <svg
@@ -49,69 +42,130 @@ export const HeroSection = () => {
         </div>
 
         {/* Demo preview */}
-        <div className="relative max-w-2xl mx-auto">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-            {/* Terminal header */}
-            <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 bg-red-500 rounded-full" />
-                <div className="w-3 h-3 bg-yellow-500 rounded-full" />
-                <div className="w-3 h-3 bg-green-500 rounded-full" />
+        <div className="relative max-w-3xl mx-auto">
+          <div className="bg-surface dark:bg-surface-dark rounded-3xl shadow-2xl border border-outline dark:border-outline-dark overflow-hidden backdrop-blur-sm">
+            {/* Chat header */}
+            <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-surface-accent-dark dark:to-surface-accent-dark border-b border-outline dark:border-outline-dark">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">🤖</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-content dark:text-content-dark">TripRadar AI</h3>
+                  <p className="text-xs text-content-secondary dark:text-content-secondary-dark">
+                    Online • Ready to help
+                  </p>
+                </div>
               </div>
-              <div className="flex-1 text-center">
-                <span className="text-sm text-gray-500 dark:text-gray-400 font-mono">TripRadar Bot</span>
+              <div className="flex gap-2">
+                <div className="w-3 h-3 bg-primary-500 rounded-full animate-pulse" />
+                <div
+                  className="w-3 h-3 bg-secondary-500 rounded-full animate-pulse"
+                  style={{ animationDelay: '0.2s' }}
+                />
+                <div className="w-3 h-3 bg-primary-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
               </div>
             </div>
 
             {/* Chat content */}
-            <div className="p-6 space-y-4 min-h-[300px]">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                  AI
+            <div className="p-6 space-y-6 min-h-[400px] max-h-[400px] overflow-y-auto">
+              {/* AI Message */}
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-white text-xs font-bold">AI</span>
                 </div>
                 <div className="flex-1">
-                  <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-tl-sm px-4 py-3">
-                    <p className="text-gray-900 dark:text-white text-sm">
-                      Hi! I'm your AI travel assistant. Where would you like to go?
+                  <div className="bg-primary-50 dark:bg-surface-accent-dark rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+                    <p className="text-content dark:text-content-dark text-sm">
+                      👋 Hi! I'm your AI travel assistant. Tell me about your dream destination and I'll create the
+                      perfect itinerary for you!
                     </p>
                   </div>
+                  <p className="text-xs text-content-muted mt-1 ml-2">Just now</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 justify-end">
-                <div className="flex-1 max-w-xs">
-                  <div className="bg-blue-500 rounded-2xl rounded-tr-sm px-4 py-3">
-                    <p className="text-white text-sm">Plan a 5-day trip to Tokyo for $2000</p>
+              {/* User Message */}
+              <div className="flex items-start gap-4 justify-end">
+                <div className="flex-1 max-w-sm">
+                  <div className="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm">
+                    <p className="text-white text-sm">
+                      I want to visit Paris for 4 days with a budget of $1500. I love art, good food, and romantic
+                      spots! ✨
+                    </p>
                   </div>
+                  <p className="text-xs text-content-muted mt-1 mr-2 text-right">2 min ago</p>
                 </div>
-                <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 text-sm font-bold">
-                  You
+                <div className="w-8 h-8 bg-outline dark:bg-outline-dark rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-content-secondary dark:text-content-secondary-dark text-xs font-bold">You</span>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                  AI
+              {/* AI Response */}
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-white text-xs font-bold">AI</span>
                 </div>
                 <div className="flex-1">
-                  <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-tl-sm px-4 py-3">
-                    <p className="text-gray-900 dark:text-white text-sm mb-2">
-                      Perfect! Here's your personalized Tokyo itinerary:
+                  <div className="bg-primary-50 dark:bg-surface-accent-dark rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+                    <p className="text-content dark:text-content-dark text-sm mb-3">
+                      🎨 Perfect! Here's your romantic Paris itinerary:
                     </p>
-                    <div className="space-y-2 text-xs text-gray-600 dark:text-gray-400">
-                      <div className="flex items-center gap-2">
-                        <span>🏨</span>
-                        <span>Hotel in Shibuya - $120/night</span>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-start gap-3 p-2 bg-surface dark:bg-surface-dark rounded-lg">
+                        <span className="text-lg">🏨</span>
+                        <div>
+                          <p className="font-medium text-content dark:text-content-dark">Hotel des Grands Boulevards</p>
+                          <p className="text-xs text-content-secondary dark:text-content-secondary-dark">
+                            Boutique hotel in Marais • $95/night
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span>🗼</span>
-                        <span>Tokyo Tower, Senso-ji Temple</span>
+                      <div className="flex items-start gap-3 p-2 bg-surface dark:bg-surface-dark rounded-lg">
+                        <span className="text-lg">🎨</span>
+                        <div>
+                          <p className="font-medium text-content dark:text-content-dark">Louvre & Musée d'Orsay</p>
+                          <p className="text-xs text-content-secondary dark:text-content-secondary-dark">
+                            World-class art collections • Skip-the-line tickets
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span>🍜</span>
-                        <span>Best ramen spots & sushi bars</span>
+                      <div className="flex items-start gap-3 p-2 bg-surface dark:bg-surface-dark rounded-lg">
+                        <span className="text-lg">🥐</span>
+                        <div>
+                          <p className="font-medium text-content dark:text-content-dark">Le Comptoir du Relais</p>
+                          <p className="text-xs text-content-secondary dark:text-content-secondary-dark">
+                            Authentic bistro • Michelin recommended
+                          </p>
+                        </div>
                       </div>
                     </div>
+                    <div className="mt-3 pt-3 border-t border-outline dark:border-outline-dark">
+                      <p className="text-xs text-content-secondary dark:text-content-secondary-dark">
+                        💰 Total estimated cost: $1,420 • 📍 Interactive map included
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-content-muted mt-1 ml-2">Just now</p>
+                </div>
+              </div>
+
+              {/* Typing indicator */}
+              <div className="flex items-center gap-4">
+                <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-white text-xs font-bold">AI</span>
+                </div>
+                <div className="bg-primary-50 dark:bg-surface-accent-dark rounded-2xl px-4 py-3">
+                  <div className="flex gap-1">
+                    <div className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" />
+                    <div
+                      className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
+                      style={{ animationDelay: '0.1s' }}
+                    />
+                    <div
+                      className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
+                      style={{ animationDelay: '0.2s' }}
+                    />
                   </div>
                 </div>
               </div>

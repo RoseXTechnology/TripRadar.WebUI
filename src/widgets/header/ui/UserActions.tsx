@@ -11,13 +11,13 @@ export const UserActions = () => {
       <div className="hidden md:flex items-center gap-4">
         <Link
           to={ROUTES.LOGIN}
-          className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          className="text-sm text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark transition-colors"
         >
           Login
         </Link>
         <Link
           to={ROUTES.SIGNUP}
-          className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black text-sm rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
+          className="px-4 py-2 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark text-sm rounded-lg hover:bg-button-hover dark:hover:bg-button-hover-dark transition-colors"
         >
           Register
         </Link>
