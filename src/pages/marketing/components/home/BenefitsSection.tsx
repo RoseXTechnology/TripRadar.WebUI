@@ -33,11 +33,13 @@ const features = [
 
 export function BenefitsSection() {
   return (
-    <section className="py-24 px-6 bg-white dark:bg-black">
+    <section className="py-24 px-6 bg-surface dark:bg-surface-dark">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Why choose TripRadar?</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-content dark:text-content-dark mb-4">
+            Why choose TripRadar?
+          </h2>
+          <p className="text-lg text-content-secondary dark:text-content-secondary-dark max-w-2xl mx-auto">
             Everything you need to plan the perfect trip, powered by AI
           </p>
         </div>
@@ -46,11 +48,13 @@ export function BenefitsSection() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
+              className="group p-6 rounded-2xl border border-outline dark:border-outline-dark hover:border-outline-secondary dark:hover:border-outline-secondary-dark transition-colors"
             >
               <div className="text-3xl mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{feature.description}</p>
+              <h3 className="text-xl font-semibold text-content dark:text-content-dark mb-3">{feature.title}</h3>
+              <p className="text-content-secondary dark:text-content-secondary-dark leading-relaxed">
+                {feature.description}
+              </p>
             </div>
           ))}
         </div>

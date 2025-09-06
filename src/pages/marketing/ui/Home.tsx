@@ -17,7 +17,7 @@ export const Home = () => {
   }, [location.hash]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
+    <div className="min-h-screen bg-surface dark:bg-surface-dark transition-colors duration-300">
       <div id="hero">
         <HeroSection />
       </div>

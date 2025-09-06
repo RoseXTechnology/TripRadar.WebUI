@@ -4,25 +4,23 @@ export const HeroSection = () => {
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-center bg-white dark:bg-black">
+    <section className="relative h-screen flex items-center justify-center bg-surface dark:bg-surface-dark">
       {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-black dark:to-gray-900" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-surface to-secondary-50 dark:from-surface-dark dark:via-gray-800 dark:to-primary-600/20" />
 
       {/* Grid pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Main heading */}
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-content dark:text-content-dark mb-6 tracking-tight">
           Build your perfect
           <br />
-          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            trip in seconds
-          </span>
+          trip in seconds
         </h1>
 
         {/* Subtitle */}
-        <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+        <p className="text-xl md:text-2xl text-content-secondary dark:text-content-secondary-dark mb-12 max-w-3xl mx-auto leading-relaxed">
           The AI-powered travel planner that understands you.
           <br className="hidden md:block" />
           Chat with our bot and get personalized itineraries instantly.
@@ -32,7 +30,7 @@ export const HeroSection = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
           <button
             onClick={handleTelegramClick}
-            className="group px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-200 flex items-center gap-2"
+            className="group px-8 py-4 bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-lg font-medium hover:from-primary-700 hover:to-secondary-700 transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
           >
             Try TripRadar
             <svg
@@ -45,7 +43,7 @@ export const HeroSection = () => {
             </svg>
           </button>
 
-          <button className="px-8 py-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium">
+          <button className="px-8 py-4 text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark transition-colors font-medium">
             Watch demo
           </button>
         </div>
