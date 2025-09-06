@@ -1,5 +1,6 @@
 import { signInWithPopup, GoogleAuthProvider, GithubAuthProvider, OAuthProvider, User } from 'firebase/auth';
 import { auth } from 'shared/lib/firebase';
+import { useAuthStore } from 'shared/store/auth';
 
 type OAuthProviderType = 'google' | 'github' | 'microsoft';
 
@@ -10,17 +11,17 @@ interface OAuthResult {
     name: string;
     email: string;
     avatar: string;
-    provider: OAuthProviderType;
+    subscription: 'free' | 'premium' | 'enterprise';
   };
   error?: string;
 }
 
-const createUserData = (user: User, provider: OAuthProviderType) => ({
+const createUserData = (user: User) => ({
   id: user.uid,
   name: user.displayName || user.email?.split('@')[0] || 'User',
   email: user.email || '',
   avatar: user.photoURL || '',
-  provider,
+  subscription: 'free' as const,
 });
 
 const handleOAuthError = (error: { code?: string; message?: string }, provider: string): string => {
@@ -46,17 +47,10 @@ const signInWithProvider = async (
 ): Promise<OAuthResult> => {
   try {
     const result = await signInWithPopup(auth, provider);
-    const userData = createUserData(result.user, providerName);
+    const userData = createUserData(result.user);
 
-    // Save to localStorage in format expected by AuthContext
-    localStorage.setItem('tripradar-auth', JSON.stringify({ user: userData }));
-    localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('isAuthenticated', 'true');
-
-    console.log('OAuth signup successful:', userData);
-
-    // Reload page so AuthContext picks up the changes
-    window.location.reload();
+    useAuthStore.getState().login(userData);
+    window.location.href = '/profile';
 
     return { success: true, user: userData };
   } catch (error: unknown) {

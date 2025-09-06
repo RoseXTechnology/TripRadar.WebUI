@@ -12,7 +12,6 @@ export const LANDING_NAVIGATION: NavigationItem[] = [
 ];
 
 export const APP_NAVIGATION: NavigationItem[] = [
-  { name: 'Dashboard', href: '/dashboard', protected: true },
   { name: 'Home', href: '#hero' },
   { name: 'About', href: '#how-it-works' },
   { name: 'Features', href: '#features' },

@@ -13,11 +13,11 @@ import {
   MapPin,
   Bot,
 } from 'lucide-react';
-import { useApp } from 'app/providers/AppContext';
 import { useTheme } from 'app/providers/ThemeContext';
+import { useAuthStore } from 'shared/store/auth';
 
 export default function Billing() {
-  const { user } = useApp();
+  const user = useAuthStore(state => state.user);
   const { actualTheme } = useTheme();
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

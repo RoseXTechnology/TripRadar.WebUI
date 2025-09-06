@@ -18,12 +18,12 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useApp } from 'app/providers/AppContext';
 import { useTheme } from 'app/providers/ThemeContext';
+import { useAuthStore } from 'shared/store/auth';
 
 export default function TokenUsage() {
   const { actualTheme } = useTheme();
-  const { user } = useApp();
+  const user = useAuthStore(state => state.user);
   const [timeframe, setTimeframe] = useState<'daily' | 'monthly'>('daily');
   const [sortField, setSortField] = useState<'date' | 'tokens' | 'operation'>('date');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');

@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from 'app/providers/AuthContext';
 import { APP_NAVIGATION, LANDING_NAVIGATION } from 'shared/config';
 import { cn } from 'shared/lib/utils';
+import { useAuthStore } from 'shared/store/auth';
 
 const scrollToSection = (href: string) => {
   const element = document.querySelector(href);
@@ -17,7 +17,7 @@ const handleAnchorClick = (href: string, navigate: ReturnType<typeof useNavigate
 };
 
 export const Navigation = () => {
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   const location = useLocation();
   const navigate = useNavigate();
 

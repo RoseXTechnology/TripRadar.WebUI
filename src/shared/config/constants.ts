@@ -7,7 +7,7 @@ export const THEME = {
 
 export const ROUTES = {
   HOME: '/',
-  DASHBOARD: '/dashboard',
+
   LOGIN: '/login',
   SIGNUP: '/signup',
   PROFILE: '/profile',

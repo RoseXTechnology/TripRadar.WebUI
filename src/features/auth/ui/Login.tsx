@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight, FaGoogle, FaGithub, FaMicrosoft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useAuth } from 'app/providers/AuthContext';
 import { handleGoogleSignUp, handleGithubSignUp, handleMicrosoftSignUp } from 'features/auth/lib/oauth';
+import { useAuthStore } from 'shared/store/auth';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,49 +11,29 @@ export default function Login() {
     password: '',
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const login = useAuthStore(state => state.login);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    // Mock user data
-    const userData = {
-      id: '1',
-      name: 'Alex Thompson',
+    // Mock authentication - in production, validate credentials with backend
+    const userName = formData.email.split('@')[0].replace(/[^a-zA-Z]/g, '');
+    login({
+      id: Date.now().toString(),
+      name: userName.charAt(0).toUpperCase() + userName.slice(1),
       email: formData.email,
-      avatar:
-        'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&dpr=1',
-      subscription: 'premium',
-    };
-
-    login(userData);
+      avatar: `https://ui-avatars.com/api/?name=${userName}&background=6366f1&color=fff`,
+      subscription: 'free',
+    });
     setIsLoading(false);
   };
 
-  const handleGoogleSignIn = async () => {
-    const result = await handleGoogleSignUp();
-    if (!result.success) {
-      console.error('Google sign in failed:', result.error);
-    }
-  };
-
-  const handleGithubSignIn = async () => {
-    const result = await handleGithubSignUp();
-    if (!result.success) {
-      console.error('GitHub sign in failed:', result.error);
-    }
-  };
-
-  const handleMicrosoftSignIn = async () => {
-    const result = await handleMicrosoftSignUp();
-    if (!result.success) {
-      console.error('Microsoft sign in failed:', result.error);
-    }
-  };
+  const handleGoogleSignIn = () => handleGoogleSignUp();
+  const handleGithubSignIn = () => handleGithubSignUp();
+  const handleMicrosoftSignIn = () => handleMicrosoftSignUp();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">

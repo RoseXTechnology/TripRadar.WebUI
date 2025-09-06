@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from 'app/providers/AuthContext';
 import { ROUTES } from 'shared/config/routes';
+import { useAuthStore } from 'shared/store/auth';
 import { ProfileDropdown } from 'widgets/header';
 
 export const UserActions = () => {
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
   if (!isAuthenticated) {
     return (

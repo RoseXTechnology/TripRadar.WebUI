@@ -60,7 +60,7 @@ export const Signup = () => {
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('isAuthenticated', 'true');
     console.log('Mock signup successful:', user);
-    window.location.href = '/dashboard';
+    window.location.href = '/profile';
 
     setIsLoading(false);
   };

@@ -4,7 +4,7 @@ export const HeroSection = () => {
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-center bg-surface dark:bg-surface-dark">
+    <section className="relative min-h-screen flex items-center justify-center bg-surface dark:bg-surface-dark py-20">
       {/* Gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-surface to-secondary-50 dark:from-surface-dark dark:via-gray-800 dark:to-primary-600/20" />
 

@@ -1,8 +1,8 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from 'app/providers/AuthContext';
 import { APP_NAVIGATION, LANDING_NAVIGATION } from 'shared/config';
 import { ROUTES } from 'shared/config/routes';
 import { cn } from 'shared/lib/utils';
+import { useAuthStore } from 'shared/store/auth';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -23,7 +23,7 @@ const handleAnchorClick = (href: string, navigate: ReturnType<typeof useNavigate
 };
 
 export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   const location = useLocation();
   const navigate = useNavigate();
 

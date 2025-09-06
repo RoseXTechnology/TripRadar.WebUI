@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { FaUser, FaSignOutAlt, FaCog, FaCreditCard, FaDollarSign, FaStar } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaCog, FaCreditCard } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useAuth } from 'app/providers/AuthContext';
 import { ROUTES } from 'shared/config/routes';
 import { cn } from 'shared/lib/utils';
+import { useAuthStore } from 'shared/store/auth';
 
 export const ProfileDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuthStore();
   const linkBaseStyles = 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white';
 
   const handleLogout = () => {
@@ -40,17 +40,10 @@ export const ProfileDropdown = () => {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl animate-slide-down z-50">
           <div className="py-1">
-            <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-              <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.name || 'User'}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 capitalize flex items-center space-x-1">
-                <FaStar className="h-3 w-3" />
-                <span>{user?.subscription || 'free'} Plan</span>
-              </p>
-            </div>
             <Link
               to={ROUTES.PROFILE}
               className={cn(
-                'flex items-center px-4 py-2 text-sm transition-colors',
+                'flex items-center px-4 py-2 text-sm transition-colors rounded-t-xl',
                 linkBaseStyles,
                 'hover:bg-gray-100 dark:hover:bg-gray-700'
               )}
@@ -58,18 +51,6 @@ export const ProfileDropdown = () => {
             >
               <FaUser className="h-4 w-4 mr-3" />
               Profile
-            </Link>
-            <Link
-              to={ROUTES.BUDGET}
-              className={cn(
-                'flex items-center px-4 py-2 text-sm transition-colors',
-                linkBaseStyles,
-                'hover:bg-gray-100 dark:hover:bg-gray-700'
-              )}
-              onClick={() => setIsOpen(false)}
-            >
-              <FaDollarSign className="h-4 w-4 mr-3" />
-              Budget
             </Link>
             <Link
               to={ROUTES.SETTINGS}

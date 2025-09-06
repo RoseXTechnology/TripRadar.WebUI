@@ -4,25 +4,6 @@ export interface User {
   email: string;
   avatar: string;
   subscription: 'free' | 'premium' | 'enterprise';
-  preferences: {
-    budgetRange: [number, number];
-    accommodationType: string[];
-    activities: string[];
-    travelStyle: string;
-    groupSize: string;
-    dietary?: string[];
-    transport?: string[];
-    tripType?: string[];
-    accessibility?: string[];
-    languages?: string[];
-    timePreference?: 'day' | 'night' | 'both';
-  };
-  privacySettings: {
-    dataRetention: string;
-    aiTraining: boolean;
-    analytics: boolean;
-    marketing: boolean;
-  };
 }
 
 export interface BudgetCategory {

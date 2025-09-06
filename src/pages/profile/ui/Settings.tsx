@@ -38,9 +38,9 @@ import {
   Lock,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useApp } from 'app/providers/AppContext';
 import { useTheme } from 'app/providers/ThemeContext';
 import { THEME } from 'shared/config/constants';
+import { useAuthStore } from 'shared/store/auth';
 
 // Define types locally since they're specific to this component
 interface PreferenceCategory {
@@ -57,7 +57,7 @@ interface PreferenceSchema {
 type SettingsSection = 'account' | 'notifications' | 'security' | 'integrations' | 'preferences' | 'group';
 
 export default function Settings() {
-  const { user } = useApp();
+  const user = useAuthStore(state => state.user);
   const { theme, actualTheme, setTheme } = useTheme();
   const [activeSection, setActiveSection] = useState<SettingsSection>('account');
   const [isLoading, setIsLoading] = useState(false);
@@ -153,20 +153,8 @@ export default function Settings() {
     window.addEventListener('mousemove', handleMouseMove);
     fetchPreferenceSchema();
 
-    // Initialize user preferences
-    if (user?.preferences) {
-      const formattedPreferences: Record<string, string[]> = {};
-
-      if (user.preferences.dietary) formattedPreferences.dietary = user.preferences.dietary;
-      if (user.preferences.accommodationType) formattedPreferences.accommodation = user.preferences.accommodationType;
-      if (user.preferences.activities) formattedPreferences.activities = user.preferences.activities;
-      if (user.preferences.travelStyle) formattedPreferences.tripType = [user.preferences.travelStyle];
-      if (user.preferences.transport) formattedPreferences.transport = user.preferences.transport;
-      if (user.preferences.languages) formattedPreferences.languages = user.preferences.languages;
-      if (user.preferences.accessibility) formattedPreferences.accessibility = user.preferences.accessibility;
-
-      setUserPreferences(formattedPreferences);
-    }
+    // Initialize empty user preferences since User type no longer has preferences field
+    setUserPreferences({});
 
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [user]);

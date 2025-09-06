@@ -18,34 +18,22 @@ const publicRoutes = [
   // Auth
   { path: '/login', component: () => import('features/auth').then(m => ({ default: m.Login })) },
   { path: '/signup', component: () => import('features/auth').then(m => ({ default: m.Signup })) },
-  { path: '/test-account', component: () => import('features/auth').then(m => ({ default: m.TestAccount })) },
 
   // Marketing
   { path: '/', component: () => import('../../pages/marketing').then(m => ({ default: m.Home })) },
   { path: '/pricing', component: () => import('../../pages/marketing').then(m => ({ default: m.Pricing })) },
 
-  // Support
-
   // Legal
   { path: '/privacy', component: () => import('shared/ui/legal').then(m => ({ default: m.PrivacyPolicy })) },
   { path: '/terms', component: () => import('shared/ui/legal').then(m => ({ default: m.TermsOfService })) },
-  { path: '/cookies', component: () => import('shared/ui/legal').then(m => ({ default: m.CookiePolicy })) },
-  { path: '/security', component: () => import('shared/ui/legal').then(m => ({ default: m.SecurityPolicy })) },
+  { path: '/contact', component: () => import('../../pages/support').then(m => ({ default: m.HelpCenter })) },
 ];
 
 const protectedRoutes = [
-  // Dashboard
-  { path: '/dashboard', component: () => import('../../pages/dashboard').then(m => ({ default: m.Dashboard })) },
-
   // Profile
   { path: '/profile', component: () => import('../../pages/profile').then(m => ({ default: m.Profile })) },
   { path: '/settings', component: () => import('../../pages/profile').then(m => ({ default: m.Settings })) },
-
   { path: '/billing', component: () => import('../../pages/profile').then(m => ({ default: m.Billing })) },
-  { path: '/settings/usage', component: () => import('../../pages/profile').then(m => ({ default: m.TokenUsage })) },
-
-  // Support
-  { path: '/feedback', component: () => import('../../pages/support').then(m => ({ default: m.Feedback })) },
 ];
 
 export function AppRoutes() {
