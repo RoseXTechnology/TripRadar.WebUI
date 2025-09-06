@@ -34,12 +34,16 @@ export const Header = () => {
             <Logo />
 
             {/* Mobile: Actions + Menu Button */}
+            {/* Desktop: Centered Navigation */}
+            <div className="hidden md:block">
+              <Navigation />
+            </div>
+
             <div className="flex items-center gap-2 md:gap-4">
-              {/* Desktop: Show UserActions and Navigation inline */}
-              <div className="hidden md:flex items-center gap-6">
-                <Navigation />
-                <div className="w-px h-4 bg-outline-secondary dark:bg-outline-secondary-dark" />
+              {/* Desktop: Show UserActions */}
+              <div className="hidden md:flex items-center gap-4">
                 <UserActions />
+                <div className="w-px h-4 bg-outline-secondary dark:bg-outline-secondary-dark" />
               </div>
 
               {/* Mobile: Show only essential actions */}
