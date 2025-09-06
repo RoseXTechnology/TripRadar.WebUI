@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { isTransparentPage } from 'shared/config';
@@ -17,6 +17,32 @@ export const Header = () => {
 
   const isPageTransparent = isTransparentPage(location.pathname);
 
+  // Add blur and block interactions when menu is open
+  React.useEffect(() => {
+    const mainContent = document.getElementById('main-content');
+    const headerContent = document.getElementById('header-content');
+
+    if (isMenuOpen) {
+      // Blur content
+      if (mainContent) {
+        mainContent.style.filter = 'blur(4px)';
+        mainContent.style.transition = 'filter 0.2s ease-in-out';
+      }
+      if (headerContent) {
+        headerContent.style.filter = 'blur(4px)';
+        headerContent.style.transition = 'filter 0.2s ease-in-out';
+        headerContent.style.pointerEvents = 'none';
+      }
+    } else {
+      // Remove blur and restore interactions
+      if (mainContent) mainContent.style.filter = 'none';
+      if (headerContent) {
+        headerContent.style.filter = 'none';
+        headerContent.style.pointerEvents = 'auto';
+      }
+    }
+  }, [isMenuOpen]);
+
   return (
     <>
       <div ref={sentinelRef} className="h-1" />
@@ -28,7 +54,7 @@ export const Header = () => {
             : 'bg-surface/60 dark:bg-surface-dark/60 backdrop-blur-sm'
         )}
       >
-        <div className="px-4 sm:px-6 max-w-6xl mx-auto">
+        <div id="header-content" className="px-4 sm:px-6 max-w-6xl mx-auto">
           {/* Mobile-first layout: Logo + Actions */}
           <div className="flex justify-between items-center h-14">
             <Logo />
@@ -63,10 +89,10 @@ export const Header = () => {
               </button>
             </div>
           </div>
-
-          {/* Mobile menu */}
-          <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         </div>
+
+        {/* Mobile menu - outside header-content to avoid blur */}
+        <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
       </header>
     </>
   );

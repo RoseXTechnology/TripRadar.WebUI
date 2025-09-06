@@ -1,9 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Logo } from 'shared/ui';
 
 export default function Footer() {
+  const location = useLocation();
+  const isAuthPage = ['/login', '/signup'].includes(location.pathname);
+
   return (
-    <footer className="border-t border-outline dark:border-outline-dark bg-surface dark:bg-surface-dark">
+    <footer
+      className={`border-t border-outline dark:border-outline-dark bg-surface dark:bg-surface-dark ${isAuthPage ? 'hidden md:block' : ''}`}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 md:py-12">
         {/* Mobile-first: Stack vertically, center align */}
         <div className="flex flex-col items-center gap-6 md:flex-row md:justify-between">

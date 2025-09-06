@@ -36,165 +36,184 @@ export default function Login() {
   const handleMicrosoftSignIn = () => handleMicrosoftSignUp();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
-      <div className="max-w-md w-full space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <Link to="/" className="inline-flex items-center space-x-2 group mb-8"></Link>
+    <div className="relative min-h-screen flex items-center justify-center p-4 md:p-8 transition-colors duration-300">
+      {/* Hero-style background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-surface to-secondary-50 dark:from-surface-dark dark:via-surface-dark-secondary dark:to-primary-600/20" />
 
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome back</h2>
-          <p className="text-gray-600 dark:text-gray-400">Sign in to your account to continue your travel journey</p>
-        </div>
+      {/* Grid pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
 
-        {/* Main Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
-          {/* OAuth Buttons */}
-          <div className="space-y-3 mb-6">
-            <button
-              onClick={handleGoogleSignIn}
-              className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 font-medium"
-            >
-              <FaGoogle className="h-5 w-5" />
-              <span>Continue with Google</span>
-            </button>
+      <div className="relative z-10">
+        <div className="w-full space-y-6 md:space-y-8">
+          {/* Header */}
+          <div className="text-center">
+            <Link to="/" className="inline-flex items-center space-x-2 group mb-8"></Link>
 
-            <button
-              onClick={handleGithubSignIn}
-              className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 font-medium"
-            >
-              <FaGithub className="h-5 w-5" />
-              <span>Continue with GitHub</span>
-            </button>
-
-            <button
-              onClick={handleMicrosoftSignIn}
-              className="w-full flex items-center justify-center space-x-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 font-medium"
-            >
-              <FaMicrosoft className="h-5 w-5" />
-              <span>Continue with Microsoft</span>
-            </button>
-          </div>
-
-          {/* Divider */}
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
-                or continue with email
-              </span>
-            </div>
-          </div>
-
-          {/* Email/Password Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Email address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaEnvelope className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-xl placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Enter your email"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaLock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="current-password"
-                  required
-                  value={formData.password}
-                  onChange={e => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                  className="block w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Enter your password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  {showPassword ? (
-                    <FaEyeSlash className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
-                  ) : (
-                    <FaEye className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                  Remember me
-                </label>
-              </div>
-
-              <Link
-                to="/forgot-password"
-                className="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
-              >
-                Forgot password?
-              </Link>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="group relative w-full flex justify-center items-center space-x-2 py-3 px-4 border border-transparent text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-xl font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              {isLoading ? (
-                <>
-                  <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
-                  <span>Signing in...</span>
-                </>
-              ) : (
-                <>
-                  <span>Sign in</span>
-                  <FaArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Sign Up Link */}
-          <div className="mt-6 text-center">
-            <p className="text-gray-600 dark:text-gray-400">
-              Don't have an account?{' '}
-              <Link
-                to="/signup"
-                className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-semibold"
-              >
-                Create account
-              </Link>
+            <h2 className="text-2xl md:text-3xl font-bold text-content dark:text-content-dark mb-2">Welcome back</h2>
+            <p className="text-content-secondary dark:text-content-secondary-dark">
+              Sign in to your account to continue your travel journey
             </p>
+          </div>
+
+          {/* Main Card */}
+          <div className="bg-surface dark:bg-surface-dark rounded-xl md:rounded-2xl shadow-lg md:shadow-xl border border-outline dark:border-outline-dark p-6 md:p-8">
+            {/* OAuth Buttons */}
+            <div className="space-y-2 md:space-y-3 mb-4 md:mb-6">
+              <button
+                onClick={handleGoogleSignIn}
+                className="w-full flex items-center justify-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border border-outline dark:border-outline-dark rounded-lg md:rounded-xl text-content dark:text-content-dark bg-surface dark:bg-surface-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark hover:border-outline-secondary dark:hover:border-outline-secondary-dark transition-all duration-200 font-medium text-sm md:text-base"
+              >
+                <FaGoogle className="h-4 w-4 md:h-5 md:w-5" />
+                <span>Continue with Google</span>
+              </button>
+
+              <button
+                onClick={handleGithubSignIn}
+                className="w-full flex items-center justify-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border border-outline dark:border-outline-dark rounded-lg md:rounded-xl text-content dark:text-content-dark bg-surface dark:bg-surface-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark hover:border-outline-secondary dark:hover:border-outline-secondary-dark transition-all duration-200 font-medium text-sm md:text-base"
+              >
+                <FaGithub className="h-4 w-4 md:h-5 md:w-5" />
+                <span>Continue with GitHub</span>
+              </button>
+
+              <button
+                onClick={handleMicrosoftSignIn}
+                className="w-full flex items-center justify-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border border-outline dark:border-outline-dark rounded-lg md:rounded-xl text-content dark:text-content-dark bg-surface dark:bg-surface-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark hover:border-outline-secondary dark:hover:border-outline-secondary-dark transition-all duration-200 font-medium text-sm md:text-base"
+              >
+                <FaMicrosoft className="h-4 w-4 md:h-5 md:w-5" />
+                <span>Continue with Microsoft</span>
+              </button>
+            </div>
+
+            {/* Divider */}
+            <div className="relative mb-4 md:mb-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-outline dark:border-outline-dark"></div>
+              </div>
+              <div className="relative flex justify-center text-xs md:text-sm">
+                <span className="px-3 md:px-4 bg-surface dark:bg-surface-dark text-content-muted font-medium">
+                  or continue with email
+                </span>
+              </div>
+            </div>
+
+            {/* Email/Password Form */}
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-xs md:text-sm font-medium text-content dark:text-content-dark mb-1.5 md:mb-2"
+                >
+                  Email address
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FaEnvelope className="h-4 w-4 md:h-5 md:w-5 text-content-muted" />
+                  </div>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={formData.email}
+                    onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    className="block w-full pl-8 md:pl-10 pr-3 py-2.5 md:py-3 border border-outline dark:border-outline-dark rounded-lg md:rounded-xl placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-surface dark:bg-surface-dark text-content dark:text-content-dark text-sm md:text-base"
+                    placeholder="Enter your email"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-xs md:text-sm font-medium text-content dark:text-content-dark mb-1.5 md:mb-2"
+                >
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FaLock className="h-4 w-4 md:h-5 md:w-5 text-content-muted" />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
+                    required
+                    value={formData.password}
+                    onChange={e => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                    className="block w-full pl-8 md:pl-10 pr-8 md:pr-10 py-2.5 md:py-3 border border-outline dark:border-outline-dark rounded-lg md:rounded-xl placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-surface dark:bg-surface-dark text-content dark:text-content-dark text-sm md:text-base"
+                    placeholder="Enter your password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    {showPassword ? (
+                      <FaEyeSlash className="h-4 w-4 md:h-5 md:w-5 text-content-muted hover:text-content dark:hover:text-content-dark" />
+                    ) : (
+                      <FaEye className="h-4 w-4 md:h-5 md:w-5 text-content-muted hover:text-content dark:hover:text-content-dark" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    className="h-3 w-3 md:h-4 md:w-4 text-primary-600 focus:ring-primary-500 border-outline dark:border-outline-dark rounded"
+                  />
+                  <label
+                    htmlFor="remember-me"
+                    className="ml-2 block text-xs md:text-sm text-content dark:text-content-dark"
+                  >
+                    Remember me
+                  </label>
+                </div>
+
+                <Link
+                  to="/forgot-password"
+                  className="text-xs md:text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="group relative w-full flex justify-center items-center gap-2 py-2.5 md:py-3 px-4 border border-content dark:border-outline text-surface dark:text-content bg-content dark:bg-surface hover:bg-content-secondary dark:hover:bg-surface-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-lg md:rounded-xl font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md md:shadow-lg hover:shadow-lg md:hover:shadow-xl transform hover:-translate-y-0.5 text-sm md:text-base"
+              >
+                {isLoading ? (
+                  <>
+                    <div className="animate-spin h-4 w-4 md:h-5 md:w-5 border-2 border-surface dark:border-content border-t-transparent rounded-full"></div>
+                    <span>Signing in...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Sign in</span>
+                    <FaArrowRight className="h-3 w-3 md:h-4 md:w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Sign Up Link */}
+            <div className="mt-4 md:mt-6 text-center">
+              <p className="text-content-secondary dark:text-content-secondary-dark text-sm md:text-base">
+                Don't have an account?{' '}
+                <Link
+                  to="/signup"
+                  className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-semibold"
+                >
+                  Create account
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

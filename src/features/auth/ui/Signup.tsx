@@ -72,10 +72,16 @@ export const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
-      <div className="max-w-md w-full space-y-8">
+    <div className="relative min-h-screen flex items-center justify-center p-4 md:p-8 transition-colors duration-300">
+      {/* Hero-style background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-surface to-secondary-50 dark:from-surface-dark dark:via-surface-dark-secondary dark:to-primary-600/20" />
+
+      {/* Grid pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
+
+      <div className="relative z-10 w-full max-w-md md:max-w-lg lg:max-w-xl space-y-6 md:space-y-8">
         {/* Main Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+        <div className="bg-surface dark:bg-surface-dark rounded-xl md:rounded-2xl shadow-lg md:shadow-xl border border-outline dark:border-outline-dark p-4 md:p-6 lg:p-8">
           {/* Progress */}
           <SignupProgress
             steps={steps}
@@ -90,12 +96,12 @@ export const Signup = () => {
               <OAuthButtons />
 
               {/* Divider */}
-              <div className="relative mb-8">
+              <div className="relative mb-6 md:mb-8">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                  <div className="w-full border-t border-outline dark:border-outline-dark"></div>
                 </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
+                <div className="relative flex justify-center text-xs md:text-sm">
+                  <span className="px-3 md:px-4 bg-surface dark:bg-surface-dark text-content-muted font-medium">
                     {AUTH_MESSAGES.ui.orContinueEmail}
                   </span>
                 </div>
@@ -104,7 +110,7 @@ export const Signup = () => {
           )}
 
           {/* Sign Up Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
             <SignupSteps
               currentStep={currentStep}
               register={register}
@@ -128,8 +134,8 @@ export const Signup = () => {
           </form>
 
           {/* Sign In Link */}
-          <div className="mt-8 text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="mt-6 md:mt-8 text-center">
+            <p className="text-content-secondary dark:text-content-secondary-dark text-sm md:text-base">
               {AUTH_MESSAGES.ui.alreadyHaveAccount}{' '}
               <Link
                 to={ROUTES.LOGIN}

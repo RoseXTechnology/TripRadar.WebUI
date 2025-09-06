@@ -6,7 +6,7 @@ export const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-surface dark:bg-surface-dark py-20">
       {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-surface to-secondary-50 dark:from-surface-dark dark:via-gray-800 dark:to-primary-600/20" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-surface to-secondary-50 dark:from-surface-dark dark:via-surface-dark-secondary dark:to-primary-600/20" />
 
       {/* Grid pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />

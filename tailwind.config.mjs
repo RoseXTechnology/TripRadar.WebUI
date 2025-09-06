@@ -20,8 +20,9 @@ export default {
         surface: {
           DEFAULT: '#ffffff',
           dark: '#0c0c0c',
-          accent: '#fdf2f8',
-          'accent-dark': '#1a0a14',
+          accent: '#fefce8',
+          'accent-dark': '#1c1917',
+          'dark-secondary': '#1f2937',
         },
         content: {
           DEFAULT: '#0f172a',

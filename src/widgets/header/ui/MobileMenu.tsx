@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Home, DollarSign, Info, User, LogIn } from 'lucide-react';
+import { Home, DollarSign, Info, User, LogIn, X } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { APP_NAVIGATION, LANDING_NAVIGATION } from 'shared/config';
 import { ROUTES } from 'shared/config/routes';
@@ -64,7 +64,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden animate-fade-in"
+        className="fixed inset-0 bg-black/30 backdrop-blur-md z-40 md:hidden animate-fade-in"
         onClick={onClose}
         onTouchStart={e => {
           const startY = e.touches[0].clientY;
@@ -84,7 +84,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             <div className="space-y-1">
               {navigation
                 .filter(item => !item.protected || isAuthenticated)
-                .map(item => {
+                .map((item, index) => {
                   const isAnchor = item.href.startsWith('#');
                   const isActive = location.pathname === item.href;
 
@@ -92,40 +92,60 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
                   if (isAnchor) {
                     return (
-                      <button
-                        key={item.name}
-                        onClick={() => {
-                          handleAnchorClick(item.href, navigate, location.pathname);
-                          onClose();
-                        }}
-                        className="group flex items-center w-full px-3 py-2.5 text-sm font-medium text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50/50 dark:hover:bg-surface-accent-dark/50 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-                      >
-                        <Icon className="h-4 w-4 mr-3 text-content-muted group-hover:text-primary-500 transition-colors" />
-                        {item.name}
-                      </button>
+                      <div key={item.name} className={`flex items-center justify-between ${index === 0 ? '' : ''}`}>
+                        <button
+                          onClick={() => {
+                            handleAnchorClick(item.href, navigate, location.pathname);
+                            onClose();
+                          }}
+                          className="group flex items-center flex-1 px-3 py-2.5 text-sm font-medium text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50/50 dark:hover:bg-surface-accent-dark/50 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                          <Icon className="h-4 w-4 mr-3 text-content-muted group-hover:text-primary-500 transition-colors" />
+                          {item.name}
+                        </button>
+                        {index === 0 && (
+                          <button
+                            onClick={onClose}
+                            className="p-1.5 ml-2 text-content-muted hover:text-content dark:hover:text-content-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark rounded-md transition-colors"
+                            aria-label="Close menu"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
                     );
                   }
 
                   return (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      onClick={onClose}
-                      className={cn(
-                        'group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]',
-                        isActive
-                          ? 'text-content dark:text-content-dark bg-primary-50 dark:bg-primary-500/10'
-                          : 'text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50/50 dark:hover:bg-surface-accent-dark/50'
-                      )}
-                    >
-                      <Icon
+                    <div key={item.name} className="flex items-center justify-between">
+                      <Link
+                        to={item.href}
+                        onClick={onClose}
                         className={cn(
-                          'h-4 w-4 mr-3 transition-colors',
-                          isActive ? 'text-primary-500' : 'text-content-muted group-hover:text-primary-500'
+                          'group flex items-center flex-1 px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]',
+                          isActive
+                            ? 'text-content dark:text-content-dark bg-primary-50 dark:bg-primary-500/10'
+                            : 'text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50/50 dark:hover:bg-surface-accent-dark/50'
                         )}
-                      />
-                      {item.name}
-                    </Link>
+                      >
+                        <Icon
+                          className={cn(
+                            'h-4 w-4 mr-3 transition-colors',
+                            isActive ? 'text-primary-500' : 'text-content-muted group-hover:text-primary-500'
+                          )}
+                        />
+                        {item.name}
+                      </Link>
+                      {index === 0 && (
+                        <button
+                          onClick={onClose}
+                          className="p-1.5 ml-2 text-content-muted hover:text-content dark:hover:text-content-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark rounded-md transition-colors"
+                          aria-label="Close menu"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
                   );
                 })}
             </div>
