@@ -35,10 +35,10 @@ export const SignupNavigation = ({
         disabled={isDisabled}
         className={cn(
           'group relative flex-1 flex justify-center items-center gap-2 py-2.5 md:py-3 px-4 rounded-lg md:rounded-xl font-semibold transition-all duration-200 text-sm md:text-base',
-          'border border-content dark:border-outline text-surface dark:text-content bg-content dark:bg-surface hover:bg-content-secondary dark:hover:bg-surface-accent',
+          'bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark hover:bg-button-hover dark:hover:bg-button-hover-dark',
           'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500',
-          'shadow-md md:shadow-lg hover:shadow-lg md:hover:shadow-xl transform hover:-translate-y-0.5',
-          'disabled:opacity-50 disabled:cursor-not-allowed'
+          'shadow-lg hover:shadow-xl',
+          'disabled:opacity-50 disabled:cursor-not-allowed font-medium'
         )}
       >
         {isLoading ? (
