@@ -24,7 +24,7 @@ export const Navigation = () => {
   const navigation = isAuthenticated ? APP_NAVIGATION : LANDING_NAVIGATION;
 
   return (
-    <nav className="hidden md:flex items-center gap-6">
+    <nav className="flex items-center gap-6">
       {navigation
         .filter(item => !item.protected || isAuthenticated)
         .map(item => {
@@ -36,7 +36,7 @@ export const Navigation = () => {
               <button
                 key={item.name}
                 onClick={() => handleAnchorClick(item.href, navigate, location.pathname)}
-                className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                className="text-sm text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark transition-colors"
               >
                 {item.name}
               </button>
@@ -50,8 +50,8 @@ export const Navigation = () => {
               className={cn(
                 'text-sm transition-colors',
                 isActive
-                  ? 'text-gray-900 dark:text-white'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  ? 'text-content dark:text-content-dark'
+                  : 'text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark'
               )}
             >
               {item.name}

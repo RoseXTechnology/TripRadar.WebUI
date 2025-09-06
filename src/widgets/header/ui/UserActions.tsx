@@ -17,7 +17,7 @@ export const UserActions = () => {
         </Link>
         <Link
           to={ROUTES.SIGNUP}
-          className="px-4 py-2 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark text-sm rounded-lg hover:bg-button-hover dark:hover:bg-button-hover-dark transition-colors"
+          className="px-4 py-2 bg-primary-500 text-white text-sm rounded-lg hover:bg-primary-600 transition-colors"
         >
           Register
         </Link>

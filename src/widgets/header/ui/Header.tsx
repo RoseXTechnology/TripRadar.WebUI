@@ -28,19 +28,31 @@ export const Header = () => {
             : 'bg-surface/60 dark:bg-surface-dark/60 backdrop-blur-sm'
         )}
       >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="px-4 sm:px-6 max-w-6xl mx-auto">
+          {/* Mobile-first layout: Logo + Actions */}
           <div className="flex justify-between items-center h-14">
             <Logo />
-            <Navigation />
 
-            <div className="flex items-center gap-2">
-              <UserActions />
-              <div className="w-px h-4 bg-outline-secondary dark:bg-outline-secondary-dark mx-2" />
+            {/* Mobile: Actions + Menu Button */}
+            <div className="flex items-center gap-2 md:gap-4">
+              {/* Desktop: Show UserActions and Navigation inline */}
+              <div className="hidden md:flex items-center gap-6">
+                <Navigation />
+                <div className="w-px h-4 bg-outline-secondary dark:bg-outline-secondary-dark" />
+                <UserActions />
+              </div>
+
+              {/* Mobile: Show only essential actions */}
+              <div className="flex items-center gap-2 md:hidden">
+                <UserActions />
+              </div>
+
               <ThemeToggle />
 
+              {/* Mobile menu button */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 rounded-lg hover:bg-primary-50 dark:hover:bg-surface-accent-dark transition-colors"
+                className="p-2 rounded-lg hover:bg-primary-50 dark:hover:bg-surface-accent-dark transition-colors md:hidden"
                 aria-label="Toggle menu"
               >
                 {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -48,6 +60,7 @@ export const Header = () => {
             </div>
           </div>
 
+          {/* Mobile menu */}
           <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         </div>
       </header>

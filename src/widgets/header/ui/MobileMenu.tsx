@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { Home, DollarSign, Info, User, LogIn } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { APP_NAVIGATION, LANDING_NAVIGATION } from 'shared/config';
 import { ROUTES } from 'shared/config/routes';
@@ -22,75 +24,139 @@ const handleAnchorClick = (href: string, navigate: ReturnType<typeof useNavigate
   }
 };
 
+const getMenuIcon = (name: string) => {
+  const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+    Home: Home,
+    Pricing: DollarSign,
+    About: Info,
+    Features: Info,
+  };
+  return iconMap[name] || Home;
+};
+
 export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Keyboard support
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   const navigation = isAuthenticated ? APP_NAVIGATION : LANDING_NAVIGATION;
 
   return (
-    <div className="md:hidden py-4 bg-surface dark:bg-surface-dark border-t border-outline dark:border-outline-dark">
-      <nav className="space-y-1">
-        {navigation
-          .filter(item => !item.protected || isAuthenticated)
-          .map(item => {
-            const isAnchor = item.href.startsWith('#');
-            const isActive = location.pathname === item.href;
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden animate-fade-in"
+        onClick={onClose}
+        onTouchStart={e => {
+          const startY = e.touches[0].clientY;
+          const handleTouchMove = (e: TouchEvent) => {
+            const currentY = e.touches[0].clientY;
+            if (currentY - startY > 50) onClose();
+          };
+          document.addEventListener('touchmove', handleTouchMove, { once: true });
+        }}
+      />
 
-            if (isAnchor) {
-              return (
-                <button
-                  key={item.name}
-                  onClick={() => {
-                    handleAnchorClick(item.href, navigate, location.pathname);
-                    onClose();
-                  }}
-                  className="block w-full text-left px-4 py-3 text-sm text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50 dark:hover:bg-surface-accent-dark transition-colors"
-                >
-                  {item.name}
-                </button>
-              );
-            }
+      {/* Menu Panel */}
+      <div className="fixed top-14 left-0 right-0 z-50 md:hidden animate-slide-down">
+        <div className="mx-4 mt-2 bg-surface dark:bg-surface-dark backdrop-blur-sm border border-outline dark:border-outline-dark rounded-2xl shadow-2xl overflow-hidden">
+          <nav className="p-2">
+            {/* Navigation Items */}
+            <div className="space-y-1">
+              {navigation
+                .filter(item => !item.protected || isAuthenticated)
+                .map(item => {
+                  const isAnchor = item.href.startsWith('#');
+                  const isActive = location.pathname === item.href;
 
-            return (
-              <Link
-                key={item.name}
-                to={item.href}
-                onClick={onClose}
-                className={cn(
-                  'block px-4 py-3 text-sm transition-colors hover:bg-primary-50 dark:hover:bg-surface-accent-dark',
-                  isActive
-                    ? 'text-content dark:text-content-dark'
-                    : 'text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark'
-                )}
-              >
-                {item.name}
-              </Link>
-            );
-          })}
+                  const Icon = getMenuIcon(item.name);
 
-        {!isAuthenticated && (
-          <div className="pt-4 border-t border-outline dark:border-outline-dark space-y-2">
-            <Link
-              to={ROUTES.LOGIN}
-              onClick={onClose}
-              className="block px-4 py-3 text-sm text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50 dark:hover:bg-surface-accent-dark transition-colors"
-            >
-              Login
-            </Link>
-            <Link
-              to={ROUTES.SIGNUP}
-              onClick={onClose}
-              className="block w-full mx-4 px-4 py-3 text-sm text-center bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark rounded-lg hover:bg-button-hover dark:hover:bg-button-hover-dark transition-colors"
-            >
-              Register
-            </Link>
-          </div>
-        )}
-      </nav>
-    </div>
+                  if (isAnchor) {
+                    return (
+                      <button
+                        key={item.name}
+                        onClick={() => {
+                          handleAnchorClick(item.href, navigate, location.pathname);
+                          onClose();
+                        }}
+                        className="group flex items-center w-full px-3 py-2.5 text-sm font-medium text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50/50 dark:hover:bg-surface-accent-dark/50 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                      >
+                        <Icon className="h-4 w-4 mr-3 text-content-muted group-hover:text-primary-500 transition-colors" />
+                        {item.name}
+                      </button>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      onClick={onClose}
+                      className={cn(
+                        'group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]',
+                        isActive
+                          ? 'text-content dark:text-content-dark bg-primary-50 dark:bg-primary-500/10'
+                          : 'text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50/50 dark:hover:bg-surface-accent-dark/50'
+                      )}
+                    >
+                      <Icon
+                        className={cn(
+                          'h-4 w-4 mr-3 transition-colors',
+                          isActive ? 'text-primary-500' : 'text-content-muted group-hover:text-primary-500'
+                        )}
+                      />
+                      {item.name}
+                    </Link>
+                  );
+                })}
+            </div>
+
+            {/* Auth Section */}
+            {!isAuthenticated && (
+              <>
+                <div className="my-4 h-px bg-gradient-to-r from-transparent via-outline/30 dark:via-outline-dark/30 to-transparent" />
+                <div className="space-y-2">
+                  <Link
+                    to={ROUTES.LOGIN}
+                    onClick={onClose}
+                    className="group flex items-center justify-center px-3 py-2.5 text-sm font-medium text-content dark:text-content-dark border border-outline dark:border-outline-dark hover:bg-primary-50 dark:hover:bg-surface-accent-dark rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    <LogIn className="h-4 w-4 mr-2 text-content-muted group-hover:text-primary-500 transition-colors" />
+                    Login
+                  </Link>
+                  <Link
+                    to={ROUTES.SIGNUP}
+                    onClick={onClose}
+                    className="flex items-center justify-center px-3 py-2.5 text-sm font-semibold bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-xl transition-all duration-200 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    <User className="h-4 w-4 mr-2" />
+                    Register
+                  </Link>
+                </div>
+              </>
+            )}
+          </nav>
+        </div>
+      </div>
+    </>
   );
 };
