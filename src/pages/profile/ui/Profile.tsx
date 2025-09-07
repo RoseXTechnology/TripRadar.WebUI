@@ -131,7 +131,7 @@ export default function Profile() {
         </div>
 
         {/* Subscription */}
-        <div className="border-b border-gray-200 dark:border-outline-dark pb-4">
+        <div>
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <label className="block text-sm font-medium text-gray-700 dark:text-content-dark mb-1">
@@ -287,7 +287,7 @@ export default function Profile() {
 
           {/* Main Content */}
           <div className="flex-1 min-w-0">
-            <div className="bg-surface dark:bg-surface-accent-dark rounded-lg shadow-sm border border-gray-200 dark:border-outline-dark min-h-[600px]">
+            <div className="bg-surface dark:bg-surface-accent-dark rounded-lg shadow-sm border border-gray-200 dark:border-outline-dark">
               {renderContent()}
             </div>
           </div>
