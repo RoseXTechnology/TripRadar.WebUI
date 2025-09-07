@@ -4,10 +4,8 @@ export interface NavigationItem {
   protected?: boolean;
 }
 
-export const LANDING_NAVIGATION: NavigationItem[] = [
+export const NAVIGATION: NavigationItem[] = [
   { name: 'Home', href: '#hero' },
   { name: 'Features', href: '#features' },
   { name: 'Pricing', href: '/pricing' },
 ];
-
-export const APP_NAVIGATION: NavigationItem[] = [{ name: 'Profile', href: '/profile' }];
