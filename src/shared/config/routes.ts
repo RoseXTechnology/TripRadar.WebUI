@@ -6,6 +6,3 @@ export const ROUTES = {
   TERMS: '/terms',
   PRIVACY: '/privacy',
 } as const;
-
-// Default redirect after login
-export const DEFAULT_AUTHENTICATED_ROUTE = ROUTES.PROFILE;

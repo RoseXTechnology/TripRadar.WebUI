@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
-import { isTransparentPage } from 'shared/config';
 import { useScrollDetection } from 'shared/lib/hooks';
-import { cn } from 'shared/lib/utils';
 import { Logo, ThemeToggle } from 'shared/ui';
 import { MobileMenu } from './MobileMenu';
 import { Navigation } from './Navigation';
@@ -11,11 +8,7 @@ import { UserActions } from './UserActions';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
-
-  const { isScrolled, sentinelRef } = useScrollDetection();
-
-  const isPageTransparent = isTransparentPage(location.pathname);
+  const { sentinelRef } = useScrollDetection();
 
   // Add blur and block interactions when menu is open
   React.useEffect(() => {
@@ -46,14 +39,7 @@ export const Header = () => {
   return (
     <>
       <div ref={sentinelRef} className="h-1" />
-      <header
-        className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-200',
-          isScrolled || !isPageTransparent
-            ? 'bg-surface/80 dark:bg-surface-dark/80 backdrop-blur-md'
-            : 'bg-surface/60 dark:bg-surface-dark/60 backdrop-blur-sm'
-        )}
-      >
+      <header className="fixed top-0 left-0 right-0 z-50 bg-surface/60 dark:bg-surface-dark/60 backdrop-blur-sm transition-all duration-200">
         <div id="header-content" className="px-4 sm:px-6 max-w-6xl mx-auto">
           {/* Mobile-first layout: Logo + Actions */}
           <div className="flex justify-between items-center h-14">
