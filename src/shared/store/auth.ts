@@ -6,6 +6,7 @@ import { getUsernameFromToken } from 'shared/lib/jwt-utils';
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   login: (user: User) => void;
   logout: () => void;
   updateUser: (updates: Partial<User>) => void;
@@ -15,6 +16,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()((set, get) => ({
   user: null,
   isAuthenticated: false,
+  isLoading: true,
 
   login: user =>
     set({
@@ -39,8 +41,13 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
   // Восстанавливаем состояние из токенов при загрузке
   initializeAuth: () => {
+    set({ isLoading: true });
+
     const token = authStorage.getToken();
-    if (!token) return;
+    if (!token) {
+      set({ isLoading: false });
+      return;
+    }
 
     try {
       // Получаем username из JWT токена
@@ -56,12 +63,15 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
           subscription: 'free',
         };
 
-        set({ user, isAuthenticated: true });
+        set({ user, isAuthenticated: true, isLoading: false });
+      } else {
+        set({ isLoading: false });
       }
     } catch (error) {
       console.error('Failed to initialize auth:', error);
       // Очищаем невалидные токены
       authStorage.clearTokens();
+      set({ isLoading: false });
     }
   },
 }));

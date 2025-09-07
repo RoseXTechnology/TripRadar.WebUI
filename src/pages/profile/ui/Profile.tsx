@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User, Settings, CreditCard, LogOut, Edit2, Check, X, Camera } from 'lucide-react';
+import { User, Settings, CreditCard, LogOut, Edit2, Check, X } from 'lucide-react';
 import { useAuthStore } from 'shared/store/auth';
 
 export default function Profile() {
@@ -38,33 +38,10 @@ export default function Profile() {
   const renderProfileSection = () => (
     <div className="p-8">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-content-dark mb-2">Profile Information</h2>
-        <p className="text-gray-600 dark:text-content-secondary-dark">
-          Update your personal details and account settings
-        </p>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-content-dark mb-2">Profile Information</h2>
       </div>
 
       <div className="space-y-8">
-        {/* Avatar */}
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-          <div className="relative group">
-            <div className="w-24 h-24 rounded-2xl overflow-hidden bg-gradient-to-br from-primary-500 to-primary-600 p-0.5">
-              <img src={user?.avatar} alt={user?.name} className="w-full h-full rounded-2xl object-cover" />
-            </div>
-            <button className="absolute inset-0 bg-surface-dark/60 backdrop-blur-sm rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-105">
-              <Camera className="h-6 w-6 text-surface" />
-            </button>
-          </div>
-          <div className="text-center sm:text-left space-y-2">
-            <h3 className="text-lg font-semibold text-content dark:text-content-dark">{user?.name}</h3>
-            <p className="text-sm text-content-secondary dark:text-content-secondary-dark">{user?.email}</p>
-            <button className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-primary-600 dark:text-primary-500 hover:text-primary-700 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-500/10 rounded-lg transition-all duration-200">
-              <Camera className="h-4 w-4" />
-              Change photo
-            </button>
-          </div>
-        </div>
-
         {/* Name */}
         <div className="border-b border-gray-200 dark:border-outline-dark pb-4">
           <div className="flex items-center justify-between">
@@ -202,18 +179,10 @@ export default function Profile() {
     }
   };
 
+  // Если нет пользователя - редирект на логин
   if (!user) {
-    return (
-      <div className="min-h-screen bg-surface dark:bg-surface-dark flex items-center justify-center">
-        <div className="text-center">
-          <User className="h-16 w-16 text-content-muted mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-content dark:text-content-dark mb-2">Please sign in</h2>
-          <p className="text-content-secondary dark:text-content-secondary-dark">
-            You need to be logged in to view your profile.
-          </p>
-        </div>
-      </div>
-    );
+    window.location.href = '/login';
+    return null;
   }
 
   return (

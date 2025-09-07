@@ -9,11 +9,22 @@ interface ProvidersProps {
 }
 
 function AuthInitializer({ children }: { children: ReactNode }) {
-  const initializeAuth = useAuthStore(state => state.initializeAuth);
+  const { initializeAuth, isLoading } = useAuthStore();
 
   useEffect(() => {
     initializeAuth();
   }, [initializeAuth]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-surface dark:bg-surface-dark flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+          <p className="text-content-secondary dark:text-content-secondary-dark">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return <>{children}</>;
 }
