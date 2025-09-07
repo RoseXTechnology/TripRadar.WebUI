@@ -1,58 +1,31 @@
-import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ProtectedRoute } from 'features/auth';
-import { LoadingSpinner } from 'shared/ui';
-
-// Lazy components
-const LazyRoute = ({ importFn }: { importFn: () => Promise<{ default: React.ComponentType }> }) => {
-  const Component = lazy(importFn);
-  return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <Component />
-    </Suspense>
-  );
-};
-
-// Route configurations
-const publicRoutes = [
-  // Auth
-  { path: '/login', component: () => import('features/auth').then(m => ({ default: m.Login })) },
-  { path: '/signup', component: () => import('features/auth').then(m => ({ default: m.Signup })) },
-
-  // Marketing
-  { path: '/', component: () => import('../../pages/marketing').then(m => ({ default: m.Home })) },
-  { path: '/pricing', component: () => import('../../pages/marketing').then(m => ({ default: m.Pricing })) },
-
-  // Legal
-  { path: '/privacy', component: () => import('shared/ui/legal').then(m => ({ default: m.PrivacyPolicy })) },
-  { path: '/terms', component: () => import('shared/ui/legal').then(m => ({ default: m.TermsOfService })) },
-];
-
-const protectedRoutes = [
-  // Profile
-  { path: '/profile', component: () => import('../../pages/profile').then(m => ({ default: m.Profile })) },
-];
+import { Login, Signup } from 'features/auth';
+import { Home } from 'pages/marketing/ui/Home';
+import { Pricing } from 'pages/marketing/ui/Pricing';
+import Profile from 'pages/profile/ui/Profile';
+import { PrivacyPolicy, TermsOfService } from 'shared/ui/legal';
 
 export function AppRoutes() {
   return (
     <Routes>
       {/* Public Routes */}
-      {publicRoutes.map(({ path, component }) => (
-        <Route key={path} path={path} element={<LazyRoute importFn={component} />} />
-      ))}
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/pricing" element={<Pricing />} />
+      <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<TermsOfService />} />
 
       {/* Protected Routes */}
-      {protectedRoutes.map(({ path, component }) => (
-        <Route
-          key={path}
-          path={path}
-          element={
-            <ProtectedRoute>
-              <LazyRoute importFn={component} />
-            </ProtectedRoute>
-          }
-        />
-      ))}
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

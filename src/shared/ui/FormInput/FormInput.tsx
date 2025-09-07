@@ -5,7 +5,7 @@ import { cn } from 'shared/lib/utils';
 interface FormInputProps {
   id: string;
   name: string;
-  type: 'text' | 'email' | 'password';
+  type: 'text' | 'email' | 'password' | 'tel';
   label: string;
   placeholder: string;
   icon: React.ReactNode;

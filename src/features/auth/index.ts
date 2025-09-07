@@ -11,3 +11,4 @@ export * from './model/constants';
 export * from './model/steps';
 export * from './lib/oauth';
 export * from './lib/useSignupSteps';
+export * from './api';

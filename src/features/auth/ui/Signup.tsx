@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   type SignupFormData,
   OAuthButtons,
@@ -8,13 +7,14 @@ import {
   useSignupSteps,
   SignupProgress,
   AUTH_MESSAGES,
+  useRegister,
 } from 'features/auth';
 import { ROUTES } from 'shared/config/routes';
 import { SignupSteps } from './SignupSteps';
 
 export const Signup = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const navigate = useNavigate();
+  const registerMutation = useRegister();
 
   const { currentStep, steps, progress, nextStep, prevStep, canGoPrev, isStepCompleted } = useSignupSteps();
 
@@ -26,10 +26,14 @@ export const Signup = () => {
   } = useForm<SignupFormData>({
     mode: 'onChange',
     defaultValues: {
-      name: '',
+      username: '',
       email: '',
       password: '',
       confirmPassword: '',
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      hasDataStorageConsent: false,
     },
   });
 
@@ -40,29 +44,31 @@ export const Signup = () => {
   };
 
   const handleDetailsStep = (data: SignupFormData) => {
-    if (data.name && data.password && data.confirmPassword) {
+    if (data.username && data.password && data.confirmPassword) {
       nextStep();
     }
   };
 
   const handleFinalStep = async (data: SignupFormData) => {
-    if (!agreedToTerms) return;
+    if (!data.hasDataStorageConsent) return;
 
-    setIsLoading(true);
+    try {
+      await registerMutation.mutateAsync({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        firstName: data.firstName || undefined,
+        lastName: data.lastName || undefined,
+        phoneNumber: data.phoneNumber || undefined,
+        hasDataStorageConsent: data.hasDataStorageConsent,
+      });
 
-    // Mock signup for development
-    const user = {
-      id: '1',
-      name: data.name,
-      email: data.email,
-      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name)}&background=6366f1&color=fff`,
-    };
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('isAuthenticated', 'true');
-    console.log('Mock signup successful:', user);
-    window.location.href = '/profile';
-
-    setIsLoading(false);
+      // Успешная регистрация и автоматический логин
+      navigate('/profile');
+    } catch (error) {
+      console.error('Registration failed:', error);
+      // Ошибка будет отображена через registerMutation.error
+    }
   };
 
   const onSubmit = async (data: SignupFormData) => {
@@ -72,7 +78,7 @@ export const Signup = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-4 md:p-8 transition-colors duration-300">
+    <div className="relative min-h-[100dvh] flex items-center justify-center p-4 md:p-8 transition-colors duration-300">
       {/* Hero-style background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-surface to-secondary-50 dark:from-surface-dark dark:via-surface-dark-secondary dark:to-primary-600/20" />
 
@@ -109,25 +115,27 @@ export const Signup = () => {
             </>
           )}
 
+          {/* Error Message */}
+          {registerMutation.error && (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+              <p className="text-sm text-red-600 dark:text-red-400">{registerMutation.error.message}</p>
+            </div>
+          )}
+
           {/* Sign Up Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
-            <SignupSteps
-              currentStep={currentStep}
-              register={register}
-              errors={errors}
-              agreedToTerms={agreedToTerms}
-              setAgreedToTerms={setAgreedToTerms}
-            />
+            <SignupSteps currentStep={currentStep} register={register} errors={errors} />
 
             <SignupNavigation
               currentStep={currentStep}
               canGoPrev={canGoPrev}
-              isLoading={isLoading}
+              isLoading={registerMutation.isPending}
               isDisabled={
-                isLoading ||
+                registerMutation.isPending ||
                 (currentStep === 'email' && !watch('email')) ||
-                (currentStep === 'details' && (!watch('name') || !watch('password') || !watch('confirmPassword'))) ||
-                (currentStep === 'confirmation' && !agreedToTerms)
+                (currentStep === 'details' &&
+                  (!watch('username') || !watch('password') || !watch('confirmPassword'))) ||
+                (currentStep === 'confirmation' && !watch('hasDataStorageConsent'))
               }
               onPrevStep={prevStep}
             />
