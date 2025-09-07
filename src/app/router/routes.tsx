@@ -26,14 +26,11 @@ const publicRoutes = [
   // Legal
   { path: '/privacy', component: () => import('shared/ui/legal').then(m => ({ default: m.PrivacyPolicy })) },
   { path: '/terms', component: () => import('shared/ui/legal').then(m => ({ default: m.TermsOfService })) },
-  { path: '/contact', component: () => import('../../pages/support').then(m => ({ default: m.HelpCenter })) },
 ];
 
 const protectedRoutes = [
   // Profile
   { path: '/profile', component: () => import('../../pages/profile').then(m => ({ default: m.Profile })) },
-  { path: '/settings', component: () => import('../../pages/profile').then(m => ({ default: m.Settings })) },
-  { path: '/billing', component: () => import('../../pages/profile').then(m => ({ default: m.Billing })) },
 ];
 
 export function AppRoutes() {

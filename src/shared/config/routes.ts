@@ -3,8 +3,9 @@ export const ROUTES = {
   LOGIN: '/login',
   SIGNUP: '/signup',
   PROFILE: '/profile',
-  SETTINGS: '/settings',
-  BILLING: '/billing',
   TERMS: '/terms',
   PRIVACY: '/privacy',
 } as const;
+
+// Default redirect after login
+export const DEFAULT_AUTHENTICATED_ROUTE = ROUTES.PROFILE;

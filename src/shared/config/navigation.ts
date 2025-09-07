@@ -10,8 +10,4 @@ export const LANDING_NAVIGATION: NavigationItem[] = [
   { name: 'Pricing', href: '/pricing' },
 ];
 
-export const APP_NAVIGATION: NavigationItem[] = [
-  { name: 'Dashboard', href: '/dashboard' },
-  { name: 'Trips', href: '/trips' },
-  { name: 'Profile', href: '/profile' },
-];
+export const APP_NAVIGATION: NavigationItem[] = [{ name: 'Profile', href: '/profile' }];
