@@ -27,18 +27,18 @@ export default {
         content: {
           DEFAULT: '#0f172a',
           dark: '#ffffff',
-          secondary: '#64748b',
+          secondary: '#475569', // было #64748b - сделал темнее
           'secondary-dark': '#cbd5e1',
-          muted: '#94a3b8',
+          muted: '#64748b', // было #94a3b8 - сделал темнее
         },
         outline: {
-          DEFAULT: '#e2e8f0',
+          DEFAULT: '#cbd5e1', // было #e2e8f0 - сделал темнее
           dark: '#374151',
-          secondary: '#cbd5e1',
+          secondary: '#94a3b8', // было #cbd5e1 - сделал темнее
           'secondary-dark': '#4b5563',
         },
         interactive: {
-          DEFAULT: '#f1f5f9',
+          DEFAULT: '#e2e8f0', // было #f1f5f9 - сделал темнее
           dark: '#374151',
           active: '#ec4899',
           'active-dark': '#06b6d4',

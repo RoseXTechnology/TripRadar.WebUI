@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User, Settings, CreditCard, LogOut, ChevronRight, Edit2, Check, X, Camera } from 'lucide-react';
+import { User, Settings, CreditCard, LogOut, Edit2, Check, X, Camera } from 'lucide-react';
 import { useAuthStore } from 'shared/store/auth';
 
 export default function Profile() {
@@ -36,15 +36,15 @@ export default function Profile() {
   ];
 
   const renderProfileSection = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-bold text-content dark:text-content-dark mb-2">Profile</h2>
-        <p className="text-content-secondary dark:text-content-secondary-dark">
-          Manage your personal information and account settings
+    <div className="p-8">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-content-dark mb-2">Profile Information</h2>
+        <p className="text-gray-600 dark:text-content-secondary-dark">
+          Update your personal details and account settings
         </p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Avatar */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <div className="relative group">
@@ -66,100 +66,118 @@ export default function Profile() {
         </div>
 
         {/* Name */}
-        <div className="bg-surface-accent/50 dark:bg-surface-accent-dark/50 rounded-xl p-4 border border-outline/30 dark:border-outline-dark/30">
-          <label className="block text-sm font-semibold text-content dark:text-content-dark mb-3">Display Name</label>
-          {isEditing.name ? (
-            <div className="flex items-center gap-3">
-              <input
-                type="text"
-                value={editValues.name}
-                onChange={e => setEditValues(prev => ({ ...prev, name: e.target.value }))}
-                className="flex-1 px-4 py-3 bg-surface dark:bg-surface-dark border border-outline dark:border-outline-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-content dark:text-content-dark transition-all duration-200"
-                autoFocus
-              />
-              <button
-                onClick={() => handleSave('name')}
-                className="p-3 text-primary-600 dark:text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-500/10 rounded-xl transition-all duration-200 hover:scale-105"
-              >
-                <Check className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => handleCancel('name')}
-                className="p-3 text-content-secondary dark:text-content-secondary-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark rounded-xl transition-all duration-200 hover:scale-105"
-              >
-                <X className="h-4 w-4" />
-              </button>
+        <div className="border-b border-gray-200 dark:border-outline-dark pb-4">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-content-dark mb-1">
+                Display Name
+              </label>
+              {isEditing.name ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={editValues.name}
+                    onChange={e => setEditValues(prev => ({ ...prev, name: e.target.value }))}
+                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-outline-dark rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-content-dark bg-white dark:bg-surface-dark"
+                    autoFocus
+                  />
+                  <button
+                    onClick={() => handleSave('name')}
+                    className="p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-500/10 rounded-md transition-colors"
+                  >
+                    <Check className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => handleCancel('name')}
+                    className="p-2 text-gray-400 hover:bg-gray-50 dark:hover:bg-surface-accent-dark rounded-md transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="group flex items-center justify-between py-2">
+                  <span className="text-gray-900 dark:text-content-dark font-medium">{user?.name}</span>
+                  <button
+                    onClick={() => setIsEditing(prev => ({ ...prev, name: true }))}
+                    className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200"
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="group flex items-center justify-between px-4 py-3 bg-surface/50 dark:bg-surface-dark/50 rounded-xl hover:bg-surface dark:hover:bg-surface-dark transition-all duration-200">
-              <span className="text-content dark:text-content-dark font-medium">{user?.name}</span>
-              <button
-                onClick={() => setIsEditing(prev => ({ ...prev, name: true }))}
-                className="p-2 text-content-muted group-hover:text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-500/10 rounded-lg transition-all duration-200"
-              >
-                <Edit2 className="h-4 w-4" />
-              </button>
-            </div>
-          )}
+          </div>
         </div>
 
         {/* Email */}
-        <div className="bg-surface-accent/50 dark:bg-surface-accent-dark/50 rounded-xl p-4 border border-outline/30 dark:border-outline-dark/30">
-          <label className="block text-sm font-semibold text-content dark:text-content-dark mb-3">Email Address</label>
-          {isEditing.email ? (
-            <div className="flex items-center gap-3">
-              <input
-                type="email"
-                value={editValues.email}
-                onChange={e => setEditValues(prev => ({ ...prev, email: e.target.value }))}
-                className="flex-1 px-4 py-3 bg-surface dark:bg-surface-dark border border-outline dark:border-outline-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-content dark:text-content-dark transition-all duration-200"
-                autoFocus
-              />
-              <button
-                onClick={() => handleSave('email')}
-                className="p-3 text-primary-600 dark:text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-500/10 rounded-xl transition-all duration-200 hover:scale-105"
-              >
-                <Check className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => handleCancel('email')}
-                className="p-3 text-content-secondary dark:text-content-secondary-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark rounded-xl transition-all duration-200 hover:scale-105"
-              >
-                <X className="h-4 w-4" />
-              </button>
+        <div className="border-b border-gray-200 dark:border-outline-dark pb-4">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-content-dark mb-1">
+                Email Address
+              </label>
+              {isEditing.email ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="email"
+                    value={editValues.email}
+                    onChange={e => setEditValues(prev => ({ ...prev, email: e.target.value }))}
+                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-outline-dark rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-content-dark bg-white dark:bg-surface-dark"
+                    autoFocus
+                  />
+                  <button
+                    onClick={() => handleSave('email')}
+                    className="p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-500/10 rounded-md transition-colors"
+                  >
+                    <Check className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => handleCancel('email')}
+                    className="p-2 text-gray-400 hover:bg-gray-50 dark:hover:bg-surface-accent-dark rounded-md transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="group flex items-center justify-between py-2">
+                  <span className="text-gray-900 dark:text-content-dark font-medium">{user?.email}</span>
+                  <button
+                    onClick={() => setIsEditing(prev => ({ ...prev, email: true }))}
+                    className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200"
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="group flex items-center justify-between px-4 py-3 bg-surface/50 dark:bg-surface-dark/50 rounded-xl hover:bg-surface dark:hover:bg-surface-dark transition-all duration-200">
-              <span className="text-content dark:text-content-dark font-medium">{user?.email}</span>
-              <button
-                onClick={() => setIsEditing(prev => ({ ...prev, email: true }))}
-                className="p-2 text-content-muted group-hover:text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-500/10 rounded-lg transition-all duration-200"
-              >
-                <Edit2 className="h-4 w-4" />
-              </button>
-            </div>
-          )}
+          </div>
         </div>
 
         {/* Subscription */}
-        <div className="bg-surface-accent/50 dark:bg-surface-accent-dark/50 rounded-xl p-4 border border-outline/30 dark:border-outline-dark/30">
-          <label className="block text-sm font-semibold text-content dark:text-content-dark mb-3">
-            Subscription Plan
-          </label>
-          <div className="flex items-center justify-between px-4 py-3 bg-surface/50 dark:bg-surface-dark/50 rounded-xl">
-            <div className="flex items-center gap-3">
-              <span className="text-content dark:text-content-dark font-medium capitalize">{user?.subscription}</span>
-              {user?.subscription === 'premium' && (
-                <span className="px-3 py-1 bg-gradient-to-r from-primary-500 to-primary-600 text-surface text-xs font-semibold rounded-full shadow-sm">
-                  Pro
-                </span>
-              )}
+        <div className="border-b border-gray-200 dark:border-outline-dark pb-4">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-content-dark mb-1">
+                Subscription Plan
+              </label>
+              <div className="flex items-center justify-between py-2">
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-900 dark:text-content-dark font-medium capitalize">
+                    {user?.subscription}
+                  </span>
+                  {user?.subscription === 'premium' && (
+                    <span className="px-2 py-1 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400 text-xs font-medium rounded-full">
+                      Pro
+                    </span>
+                  )}
+                </div>
+                {user?.subscription !== 'premium' && (
+                  <button className="px-3 py-1.5 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark border border-outline dark:border-outline-dark hover:bg-button-hover dark:hover:bg-button-hover-dark text-sm font-medium rounded-md transition-colors">
+                    Upgrade
+                  </button>
+                )}
+              </div>
             </div>
-            {user?.subscription !== 'premium' && (
-              <button className="px-4 py-2 bg-surface text-content border border-content text-sm font-medium rounded-lg hover:bg-surface-accent transition-all duration-200 hover:scale-105 shadow-sm">
-                Upgrade
-              </button>
-            )}
           </div>
         </div>
       </div>
@@ -199,40 +217,57 @@ export default function Profile() {
   }
 
   return (
-    <div className="relative min-h-screen pt-16">
-      {/* Hero-style background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-surface to-secondary-50 dark:from-surface-dark dark:via-surface-dark-secondary dark:to-primary-600/20" />
+    <div className="relative min-h-screen pt-16 bg-surface-accent dark:bg-surface-accent-dark">
+      {/* CTA-style background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-surface-accent to-secondary-50 dark:from-surface-accent-dark dark:via-gray-800 dark:to-primary-600/20" />
+
+      {/* Floating elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-20 h-20 bg-primary-500/10 rounded-full blur-xl animate-pulse" />
+        <div
+          className="absolute top-40 right-20 w-32 h-32 bg-secondary-500/10 rounded-full blur-xl animate-pulse"
+          style={{ animationDelay: '1s' }}
+        />
+        <div
+          className="absolute bottom-40 left-20 w-24 h-24 bg-primary-600/10 rounded-full blur-xl animate-pulse"
+          style={{ animationDelay: '2s' }}
+        />
+        <div
+          className="absolute bottom-20 right-10 w-16 h-16 bg-secondary-600/10 rounded-full blur-xl animate-pulse"
+          style={{ animationDelay: '0.5s' }}
+        />
+      </div>
 
       {/* Grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] opacity-30" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-6 lg:px-8 lg:py-12">
+      <div className="relative z-10 max-w-5xl mx-auto px-6 py-12">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-content dark:text-content-dark mb-2">Settings</h1>
-          <p className="text-content-secondary dark:text-content-secondary-dark">Manage your account and preferences</p>
+        <div className="mb-12">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-content-dark mb-2">Account Settings</h1>
+          <p className="text-gray-600 dark:text-content-secondary-dark text-lg">
+            Manage your profile and account preferences
+          </p>
         </div>
 
         {/* Mobile Navigation */}
         <div className="lg:hidden mb-8">
-          <div className="bg-surface/80 dark:bg-surface-dark/80 backdrop-blur-xl border border-outline/50 dark:border-outline-dark/50 rounded-2xl p-3 shadow-lg">
-            <div className="grid grid-cols-3 gap-2">
-              {sidebarItems.map(item => (
+          <div className="bg-white dark:bg-surface-dark rounded-lg shadow-sm border border-gray-200 dark:border-outline-dark overflow-hidden">
+            <div className="flex">
+              {sidebarItems.map((item, index) => (
                 <button
                   key={item.id}
                   onClick={() => setActiveSection(item.id)}
-                  className={`group flex flex-col items-center gap-2 px-3 py-4 text-xs font-medium rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${
+                  className={`flex-1 px-4 py-3 text-sm font-medium transition-colors relative ${
                     activeSection === item.id
-                      ? 'bg-surface text-content shadow-lg border border-content'
-                      : 'text-content dark:text-content-dark hover:bg-surface-accent/50 dark:hover:bg-surface-accent-dark/50'
-                  }`}
+                      ? 'text-button-text dark:text-button-text-dark bg-button dark:bg-button-dark'
+                      : 'text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark'
+                  } ${index !== sidebarItems.length - 1 ? 'border-r border-gray-200 dark:border-outline-dark' : ''}`}
                 >
-                  <item.icon
-                    className={`h-5 w-5 transition-colors ${
-                      activeSection === item.id ? 'text-content' : 'text-content-muted group-hover:text-primary-500'
-                    }`}
-                  />
-                  <span className="truncate">{item.label}</span>
+                  {activeSection === item.id && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-500" />
+                  )}
+                  {item.label}
                 </button>
               ))}
             </div>
@@ -243,42 +278,37 @@ export default function Profile() {
           {/* Desktop Sidebar */}
           <div className="hidden lg:block w-72 flex-shrink-0">
             <div className="sticky top-24">
-              <div className="bg-surface/80 dark:bg-surface-dark/80 backdrop-blur-xl border border-outline/50 dark:border-outline-dark/50 rounded-2xl p-4 shadow-lg">
+              <div className="bg-surface dark:bg-surface-accent-dark rounded-lg shadow-sm border border-gray-200 dark:border-outline-dark p-6">
                 <nav className="space-y-2">
                   {sidebarItems.map(item => (
                     <button
                       key={item.id}
                       onClick={() => setActiveSection(item.id)}
-                      className={`group w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] ${
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 border ${
                         activeSection === item.id
-                          ? 'bg-surface text-content shadow-lg border border-content'
-                          : 'text-content dark:text-content-dark hover:bg-surface-accent/50 dark:hover:bg-surface-accent-dark/50'
+                          ? 'bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark border-outline dark:border-outline-dark shadow-sm'
+                          : 'text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark border-transparent'
                       }`}
                     >
                       <item.icon
-                        className={`h-5 w-5 transition-colors ${
-                          activeSection === item.id ? 'text-content' : 'text-content-muted group-hover:text-primary-500'
-                        }`}
-                      />
-                      <span className="flex-1 text-left">{item.label}</span>
-                      <ChevronRight
-                        className={`h-4 w-4 transition-transform ${
+                        className={`h-5 w-5 ${
                           activeSection === item.id
-                            ? 'rotate-90 text-content'
-                            : 'text-content-muted group-hover:text-primary-500'
+                            ? 'text-button-text dark:text-button-text-dark'
+                            : 'text-content-muted'
                         }`}
                       />
+                      <span>{item.label}</span>
                     </button>
                   ))}
                 </nav>
 
                 {/* Sign Out */}
-                <div className="mt-6 pt-4 border-t border-outline/30 dark:border-outline-dark/30">
+                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-outline-dark">
                   <button
                     onClick={logout}
-                    className="group w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-surface-accent/50 dark:hover:bg-surface-accent-dark/50 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-content-secondary dark:text-content-secondary-dark hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all duration-200"
                   >
-                    <LogOut className="h-5 w-5 text-content-muted group-hover:text-primary-500 transition-colors" />
+                    <LogOut className="h-5 w-5 text-gray-400 group-hover:text-red-500" />
                     <span>Sign out</span>
                   </button>
                 </div>
@@ -288,7 +318,7 @@ export default function Profile() {
 
           {/* Main Content */}
           <div className="flex-1 min-w-0">
-            <div className="bg-surface/80 dark:bg-surface-dark/80 backdrop-blur-xl border border-outline/50 dark:border-outline-dark/50 rounded-2xl p-6 lg:p-8 shadow-lg min-h-[600px]">
+            <div className="bg-surface dark:bg-surface-accent-dark rounded-lg shadow-sm border border-gray-200 dark:border-outline-dark min-h-[600px]">
               {renderContent()}
             </div>
           </div>
@@ -296,13 +326,15 @@ export default function Profile() {
 
         {/* Mobile Sign Out */}
         <div className="lg:hidden mt-8">
-          <button
-            onClick={logout}
-            className="group w-full flex items-center justify-center gap-3 px-6 py-4 text-sm font-medium text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark bg-surface/80 dark:bg-surface-dark/80 backdrop-blur-xl border border-outline/50 dark:border-outline-dark/50 rounded-2xl shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-          >
-            <LogOut className="h-5 w-5 text-content-muted group-hover:text-primary-500 transition-colors" />
-            <span>Sign out</span>
-          </button>
+          <div className="bg-surface dark:bg-surface-accent-dark rounded-lg shadow-sm border border-gray-200 dark:border-outline-dark">
+            <button
+              onClick={logout}
+              className="w-full flex items-center justify-center gap-3 px-6 py-4 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+            >
+              <LogOut className="h-5 w-5" />
+              <span>Sign out</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
