@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Home, DollarSign, Info, User, LogIn, X } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { APP_NAVIGATION, LANDING_NAVIGATION } from 'shared/config';
+import { NAVIGATION } from 'shared/config';
 import { ROUTES } from 'shared/config/routes';
 import { cn } from 'shared/lib/utils';
 import { useAuthStore } from 'shared/store/auth';
@@ -58,7 +58,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
   if (!isOpen) return null;
 
-  const navigation = isAuthenticated ? APP_NAVIGATION : LANDING_NAVIGATION;
+  const navigation = NAVIGATION;
 
   return (
     <>
@@ -82,60 +82,25 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
           <nav className="p-2">
             {/* Navigation Items */}
             <div className="space-y-1">
-              {navigation
-                .filter(item => !item.protected || isAuthenticated)
-                .map((item, index) => {
-                  const isAnchor = item.href.startsWith('#');
-                  const isActive = location.pathname === item.href;
+              {navigation.map((item, index) => {
+                const isAnchor = item.href.startsWith('#');
+                const isActive = location.pathname === item.href;
 
-                  const Icon = getMenuIcon(item.name);
+                const Icon = getMenuIcon(item.name);
 
-                  if (isAnchor) {
-                    return (
-                      <div key={item.name} className={`flex items-center justify-between ${index === 0 ? '' : ''}`}>
-                        <button
-                          onClick={() => {
-                            handleAnchorClick(item.href, navigate, location.pathname);
-                            onClose();
-                          }}
-                          className="group flex items-center flex-1 px-3 py-2.5 text-sm font-medium text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50/50 dark:hover:bg-surface-accent-dark/50 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-                        >
-                          <Icon className="h-4 w-4 mr-3 text-content-muted group-hover:text-primary-500 transition-colors" />
-                          {item.name}
-                        </button>
-                        {index === 0 && (
-                          <button
-                            onClick={onClose}
-                            className="p-1.5 ml-2 text-content-muted hover:text-content dark:hover:text-content-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark rounded-md transition-colors"
-                            aria-label="Close menu"
-                          >
-                            <X className="h-4 w-4" />
-                          </button>
-                        )}
-                      </div>
-                    );
-                  }
-
+                if (isAnchor) {
                   return (
-                    <div key={item.name} className="flex items-center justify-between">
-                      <Link
-                        to={item.href}
-                        onClick={onClose}
-                        className={cn(
-                          'group flex items-center flex-1 px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]',
-                          isActive
-                            ? 'text-content dark:text-content-dark bg-primary-50 dark:bg-primary-500/10'
-                            : 'text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50/50 dark:hover:bg-surface-accent-dark/50'
-                        )}
+                    <div key={item.name} className={`flex items-center justify-between ${index === 0 ? '' : ''}`}>
+                      <button
+                        onClick={() => {
+                          handleAnchorClick(item.href, navigate, location.pathname);
+                          onClose();
+                        }}
+                        className="group flex items-center flex-1 px-3 py-2.5 text-sm font-medium text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50/50 dark:hover:bg-surface-accent-dark/50 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                       >
-                        <Icon
-                          className={cn(
-                            'h-4 w-4 mr-3 transition-colors',
-                            isActive ? 'text-primary-500' : 'text-content-muted group-hover:text-primary-500'
-                          )}
-                        />
+                        <Icon className="h-4 w-4 mr-3 text-content-muted group-hover:text-primary-500 transition-colors" />
                         {item.name}
-                      </Link>
+                      </button>
                       {index === 0 && (
                         <button
                           onClick={onClose}
@@ -147,7 +112,40 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                       )}
                     </div>
                   );
-                })}
+                }
+
+                return (
+                  <div key={item.name} className="flex items-center justify-between">
+                    <Link
+                      to={item.href}
+                      onClick={onClose}
+                      className={cn(
+                        'group flex items-center flex-1 px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]',
+                        isActive
+                          ? 'text-content dark:text-content-dark bg-primary-50 dark:bg-primary-500/10'
+                          : 'text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark hover:bg-primary-50/50 dark:hover:bg-surface-accent-dark/50'
+                      )}
+                    >
+                      <Icon
+                        className={cn(
+                          'h-4 w-4 mr-3 transition-colors',
+                          isActive ? 'text-primary-500' : 'text-content-muted group-hover:text-primary-500'
+                        )}
+                      />
+                      {item.name}
+                    </Link>
+                    {index === 0 && (
+                      <button
+                        onClick={onClose}
+                        className="p-1.5 ml-2 text-content-muted hover:text-content dark:hover:text-content-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark rounded-md transition-colors"
+                        aria-label="Close menu"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Auth Section */}
