@@ -4,6 +4,8 @@ import { useAuthStore } from 'shared/store/auth';
 import { QueryProvider } from './QueryProvider';
 import { ThemeProvider } from './ThemeContext';
 
+const basename = process.env.NODE_ENV === 'production' ? '/TripRadar.WebUI' : '';
+
 interface ProvidersProps {
   children: ReactNode;
 }
@@ -33,7 +35,7 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <QueryProvider>
       <ThemeProvider>
-        <Router>
+        <Router basename={basename}>
           <AuthInitializer>{children}</AuthInitializer>
         </Router>
       </ThemeProvider>
