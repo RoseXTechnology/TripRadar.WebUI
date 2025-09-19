@@ -5,7 +5,13 @@ export const signupSchema = z
   .object({
     username: z.string().min(1, 'Username is required').max(50, 'Username too long'),
     email: z.string().email(AUTH_MESSAGES.validation.emailInvalid),
-    password: z.string().min(8, AUTH_MESSAGES.validation.passwordMin),
+    password: z
+      .string()
+      .min(8, AUTH_MESSAGES.validation.passwordMin)
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+        'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character'
+      ),
     confirmPassword: z.string(),
     firstName: z.string().max(64, 'First name too long').optional(),
     lastName: z.string().max(64, 'Last name too long').optional(),

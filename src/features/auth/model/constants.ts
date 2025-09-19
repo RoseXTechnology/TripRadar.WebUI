@@ -2,7 +2,7 @@ export const AUTH_MESSAGES = {
   validation: {
     nameMin: 'Name must be at least 2 characters',
     emailInvalid: 'Invalid email address',
-    passwordMin: 'Password must be at least 8 characters',
+    passwordMin: 'Password must be at least 8 characters with uppercase, lowercase, digit and special character',
     passwordsNoMatch: "Passwords don't match",
   },
   ui: {

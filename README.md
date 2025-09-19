@@ -168,3 +168,8 @@ import { Dashboard } from 'pages/dashboard'; // Page from feature
 - **Barrel exports** - Use index.ts files for clean imports
 - **Validation** - Use Zod schemas for all external data
 - **Error handling** - Wrap components in ErrorBoundary
+
+How to start backend
+
+- start.sh command from Infrastructure
+- Database: "Database=TripRadarServerDb;User Id=postgres;Password=Only4Test!",
