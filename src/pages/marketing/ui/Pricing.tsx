@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { usePricingQuery } from 'entities/pricing';
 import { ROUTES } from 'shared/config/routes';
@@ -8,11 +8,27 @@ export const Pricing = () => {
   const { data: pricingData, isLoading, error } = usePricingQuery();
   const [selectedTier, setSelectedTier] = useState<string | null>(null);
 
-  const pricingTiers = pricingData?.tiers || [];
+  const pricingTiers = useMemo(() => pricingData?.tiers || [], [pricingData]);
 
   // Set middle tier as default when data loads
-  const defaultTier =
-    pricingTiers.length > 0 && !selectedTier ? pricingTiers[Math.floor(pricingTiers.length / 2)]?.id : selectedTier;
+  useEffect(() => {
+    if (pricingTiers.length > 0 && !selectedTier) {
+      setSelectedTier(pricingTiers[Math.floor(pricingTiers.length / 2)]?.id);
+    }
+  }, [pricingTiers, selectedTier]);
+
+  // Calculate average discount for badge
+  const averageDiscount =
+    pricingTiers.length > 0
+      ? Math.round(
+          pricingTiers.reduce((acc, tier) => {
+            if (tier.price.monthly > 0 && tier.price.annual > 0) {
+              return acc + (1 - tier.price.annual / (tier.price.monthly * 12)) * 100;
+            }
+            return acc;
+          }, 0) / pricingTiers.filter(t => t.price.monthly > 0 && t.price.annual > 0).length
+        )
+      : 0;
 
   if (isLoading) {
     return (
@@ -72,9 +88,9 @@ export const Pricing = () => {
               </span>
 
               {/* Save badge positioned absolutely */}
-              {isAnnual && (
+              {isAnnual && averageDiscount > 0 && (
                 <span className="absolute left-1/2 translate-x-24 px-2 py-1 bg-primary-50 dark:bg-surface-accent-dark text-primary-600 dark:text-primary-500 text-xs font-medium rounded-full whitespace-nowrap">
-                  Save 20%
+                  Save {averageDiscount}%
                 </span>
               )}
             </div>
@@ -87,11 +103,11 @@ export const Pricing = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
           {pricingTiers.map(tier => {
             const price = isAnnual ? tier.price.annual : tier.price.monthly;
-            const isSelected = tier.id === defaultTier;
+            const isSelected = tier.id === selectedTier;
 
             return (
               <div
-                key={tier.name}
+                key={tier.id}
                 onClick={() => setSelectedTier(tier.id)}
                 className={`relative rounded-2xl p-6 sm:p-8 transition-all duration-300 flex flex-col h-full cursor-pointer ${
                   isSelected
@@ -126,7 +142,7 @@ export const Pricing = () => {
                 </div>
 
                 <Link
-                  to={tier.name === 'Enterprise' ? '/contact' : ROUTES.SIGNUP}
+                  to={tier.id === 'enterprise' ? '/contact' : ROUTES.SIGNUP}
                   className="block w-full py-3 px-6 rounded-xl text-center font-medium transition-all duration-200 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark hover:bg-button-hover dark:hover:bg-button-hover-dark"
                 >
                   {tier.cta}
