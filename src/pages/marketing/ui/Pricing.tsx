@@ -1,51 +1,34 @@
 import { useState } from 'react';
-import { Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { usePricingQuery } from 'entities/pricing';
 import { ROUTES } from 'shared/config/routes';
-
-const pricingTiers = [
-  {
-    name: 'Starter',
-    price: { monthly: 0, annual: 0 },
-    description: 'Perfect for exploring',
-    features: ['5 trips per month', 'Basic planning tools', 'Mobile app access', 'Community support'],
-    cta: 'Get Started',
-    popular: false,
-  },
-  {
-    name: 'Pro',
-    price: { monthly: 12, annual: 10 },
-    description: 'For serious travelers',
-    features: [
-      'Unlimited trips',
-      'AI travel assistant',
-      'Advanced analytics',
-      'Priority support',
-      'Team collaboration',
-      'Custom integrations',
-    ],
-    cta: 'Start Free Trial',
-    popular: true,
-  },
-  {
-    name: 'Enterprise',
-    price: { monthly: 49, annual: 39 },
-    description: 'For organizations',
-    features: [
-      'Everything in Pro',
-      'Advanced security',
-      'Custom branding',
-      'Dedicated support',
-      'API access',
-      'SLA guarantee',
-    ],
-    cta: 'Contact Sales',
-    popular: false,
-  },
-];
 
 export const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(false);
+  const { data: pricingData, isLoading, error } = usePricingQuery();
+  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+
+  const pricingTiers = pricingData?.tiers || [];
+
+  // Set middle tier as default when data loads
+  const defaultTier =
+    pricingTiers.length > 0 && !selectedTier ? pricingTiers[Math.floor(pricingTiers.length / 2)]?.id : selectedTier;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen pt-14 flex items-center justify-center">
+        <div className="text-content dark:text-content-dark">Loading pricing...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen pt-14 flex items-center justify-center">
+        <div className="text-red-600 dark:text-red-400">Failed to load pricing</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-14 bg-gradient-to-br from-primary-50 via-surface to-secondary-50 dark:from-surface-dark dark:via-surface-accent-dark dark:to-surface-dark">
@@ -104,32 +87,23 @@ export const Pricing = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
           {pricingTiers.map(tier => {
             const price = isAnnual ? tier.price.annual : tier.price.monthly;
-            const isPopular = tier.popular;
+            const isSelected = tier.id === defaultTier;
 
             return (
               <div
                 key={tier.name}
-                className={`relative rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:scale-105 flex flex-col h-full ${
-                  isPopular
-                    ? 'bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-600/20 dark:to-secondary-600/20 border-2 border-primary-500 dark:border-primary-600 shadow-xl'
-                    : 'bg-surface dark:bg-surface-accent-dark border border-outline dark:border-outline-dark shadow-lg hover:shadow-xl'
+                onClick={() => setSelectedTier(tier.id)}
+                className={`relative rounded-2xl p-6 sm:p-8 transition-all duration-300 flex flex-col h-full cursor-pointer ${
+                  isSelected
+                    ? 'bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-600/20 dark:to-secondary-600/20 border-2 border-primary-500 dark:border-primary-600 shadow-xl scale-105'
+                    : 'bg-surface dark:bg-surface-accent-dark border border-outline dark:border-outline-dark shadow-lg'
                 }`}
               >
-                {isPopular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white px-3 py-1.5 rounded-full text-xs font-medium">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-
                 <div className="text-center mb-6">
                   <h3 className="text-xl sm:text-2xl font-bold text-content dark:text-content-dark mb-2">
                     {tier.name}
                   </h3>
-                  <p className="text-sm sm:text-base text-content-secondary dark:text-content-secondary-dark mb-4">
-                    {tier.description}
-                  </p>
+
                   <div className="flex items-baseline justify-center gap-1">
                     <span className="text-3xl sm:text-4xl font-bold text-content dark:text-content-dark">${price}</span>
                     {price > 0 && (
@@ -140,22 +114,20 @@ export const Pricing = () => {
                   </div>
                 </div>
 
-                <ul className="space-y-3 mb-6 flex-grow">
-                  {tier.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start gap-3">
-                      <Check className="w-4 h-4 text-primary-600 dark:text-primary-500 flex-shrink-0 mt-1" />
-                      <span className="text-sm text-content dark:text-content-dark">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="mb-6 flex-grow">
+                  <div className="text-center p-4">
+                    <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                      {tier.tokensPerMonthLimit?.toLocaleString() || 'Unlimited'}
+                    </div>
+                    <div className="text-sm text-content-secondary dark:text-content-secondary-dark">
+                      tokens per month
+                    </div>
+                  </div>
+                </div>
 
                 <Link
                   to={tier.name === 'Enterprise' ? '/contact' : ROUTES.SIGNUP}
-                  className={`block w-full py-3 px-6 rounded-xl text-center font-medium transition-all duration-200 ${
-                    isPopular
-                      ? 'bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark hover:bg-button-hover dark:hover:bg-button-hover-dark shadow-lg hover:shadow-xl'
-                      : 'bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark hover:bg-button-hover dark:hover:bg-button-hover-dark'
-                  }`}
+                  className="block w-full py-3 px-6 rounded-xl text-center font-medium transition-all duration-200 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark hover:bg-button-hover dark:hover:bg-button-hover-dark"
                 >
                   {tier.cta}
                 </Link>
