@@ -1,55 +1,37 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { FaEnvelope, FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  type SignupFormData,
-  OAuthButtons,
-  SignupNavigation,
-  useSignupSteps,
-  SignupProgress,
-  AUTH_MESSAGES,
-  useRegisterMutation,
-} from 'features/auth';
+import { OAuthButtons, AUTH_MESSAGES, useRegisterMutation } from 'features/auth';
 import { ROUTES } from 'shared/config/routes';
-import { SignupSteps } from './SignupSteps';
+
+interface SignupFormData {
+  email: string;
+  username: string;
+  password: string;
+  hasDataStorageConsent: boolean;
+}
 
 export const Signup = () => {
   const navigate = useNavigate();
   const registerMutation = useRegisterMutation();
-
-  const { currentStep, steps, progress, nextStep, prevStep, canGoPrev, isStepCompleted } = useSignupSteps();
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<SignupFormData>({
     mode: 'onChange',
     defaultValues: {
-      username: '',
       email: '',
+      username: '',
       password: '',
-      confirmPassword: '',
-      firstName: '',
-      lastName: '',
-      phoneNumber: '',
       hasDataStorageConsent: false,
     },
   });
 
-  const handleEmailStep = (email: string) => {
-    if (email && email.includes('@')) {
-      nextStep();
-    }
-  };
-
-  const handleDetailsStep = (data: SignupFormData) => {
-    if (data.username && data.password && data.confirmPassword) {
-      nextStep();
-    }
-  };
-
-  const handleFinalStep = async (data: SignupFormData) => {
+  const onSubmit = async (data: SignupFormData) => {
     if (!data.hasDataStorageConsent) return;
 
     try {
@@ -57,9 +39,6 @@ export const Signup = () => {
         username: data.username,
         email: data.email,
         password: data.password,
-        firstName: data.firstName || undefined,
-        lastName: data.lastName || undefined,
-        phoneNumber: data.phoneNumber || undefined,
         hasDataStorageConsent: data.hasDataStorageConsent,
       });
 
@@ -67,14 +46,7 @@ export const Signup = () => {
       navigate('/profile');
     } catch (error) {
       console.error('Registration failed:', error);
-      // Ошибка будет отображена через registerMutation.error
     }
-  };
-
-  const onSubmit = async (data: SignupFormData) => {
-    if (currentStep === 'email') handleEmailStep(data.email);
-    if (currentStep === 'details') handleDetailsStep(data);
-    if (currentStep === 'confirmation') await handleFinalStep(data);
   };
 
   return (
@@ -85,65 +57,163 @@ export const Signup = () => {
       {/* Grid pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
 
-      <div className="relative z-10 w-full max-w-md md:max-w-lg lg:max-w-xl space-y-6 md:space-y-8">
+      <div className="relative z-10 w-full max-w-md space-y-6">
+        {/* Header */}
+        <div className="text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-content dark:text-content-dark mb-2">
+            Create your account
+          </h2>
+          <p className="text-content-secondary dark:text-content-secondary-dark">
+            Start planning your perfect trips today
+          </p>
+        </div>
+
         {/* Main Card */}
-        <div className="bg-surface dark:bg-surface-dark rounded-xl md:rounded-2xl shadow-lg md:shadow-xl border border-outline dark:border-outline-dark p-4 md:p-6 lg:p-8">
-          {/* Progress */}
-          <SignupProgress
-            steps={steps}
-            currentStep={currentStep}
-            isStepCompleted={isStepCompleted}
-            progress={progress}
-          />
+        <div className="bg-surface dark:bg-surface-dark rounded-xl shadow-lg border border-outline dark:border-outline-dark p-6">
+          {/* OAuth Buttons */}
+          <OAuthButtons />
 
-          {/* OAuth Buttons - only on first step */}
-          {currentStep === 'email' && (
-            <>
-              <OAuthButtons />
-
-              {/* Divider */}
-              <div className="relative mb-6 md:mb-8">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-outline dark:border-outline-dark"></div>
-                </div>
-                <div className="relative flex justify-center text-xs md:text-sm">
-                  <span className="px-3 md:px-4 bg-surface dark:bg-surface-dark text-content-muted font-medium">
-                    {AUTH_MESSAGES.ui.orContinueEmail}
-                  </span>
-                </div>
-              </div>
-            </>
-          )}
+          {/* Divider */}
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-outline dark:border-outline-dark"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-surface dark:bg-surface-dark text-content-muted font-medium">
+                {AUTH_MESSAGES.ui.orContinueEmail}
+              </span>
+            </div>
+          </div>
 
           {/* Error Message */}
           {registerMutation.error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
               <p className="text-sm text-red-600 dark:text-red-400">{registerMutation.error.message}</p>
             </div>
           )}
 
           {/* Sign Up Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
-            <SignupSteps currentStep={currentStep} register={register} errors={errors} />
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-content dark:text-content-dark mb-2">
+                Email address
+              </label>
+              <div className="relative">
+                <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-content-muted h-4 w-4" />
+                <input
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: 'Invalid email address',
+                    },
+                  })}
+                  type="email"
+                  className="w-full pl-10 pr-4 py-3 border border-outline dark:border-outline-dark rounded-lg bg-surface dark:bg-surface-dark text-content dark:text-content-dark placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  placeholder="Enter your email"
+                />
+              </div>
+              {errors.email && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.email.message}</p>}
+            </div>
 
-            <SignupNavigation
-              currentStep={currentStep}
-              canGoPrev={canGoPrev}
-              isLoading={registerMutation.isPending}
-              isDisabled={
-                registerMutation.isPending ||
-                (currentStep === 'email' && !watch('email')) ||
-                (currentStep === 'details' &&
-                  (!watch('username') || !watch('password') || !watch('confirmPassword'))) ||
-                (currentStep === 'confirmation' && !watch('hasDataStorageConsent'))
-              }
-              onPrevStep={prevStep}
-            />
+            {/* Username */}
+            <div>
+              <label className="block text-sm font-medium text-content dark:text-content-dark mb-2">Username</label>
+              <div className="relative">
+                <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-content-muted h-4 w-4" />
+                <input
+                  {...register('username', {
+                    required: 'Username is required',
+                    minLength: {
+                      value: 3,
+                      message: 'Username must be at least 3 characters',
+                    },
+                  })}
+                  type="text"
+                  className="w-full pl-10 pr-4 py-3 border border-outline dark:border-outline-dark rounded-lg bg-surface dark:bg-surface-dark text-content dark:text-content-dark placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  placeholder="Choose a username"
+                />
+              </div>
+              {errors.username && (
+                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.username.message}</p>
+              )}
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="block text-sm font-medium text-content dark:text-content-dark mb-2">Password</label>
+              <div className="relative">
+                <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-content-muted h-4 w-4" />
+                <input
+                  {...register('password', {
+                    required: 'Password is required',
+                    minLength: {
+                      value: 6,
+                      message: 'Password must be at least 6 characters',
+                    },
+                  })}
+                  type={showPassword ? 'text' : 'password'}
+                  className="w-full pl-10 pr-10 py-3 border border-outline dark:border-outline-dark rounded-lg bg-surface dark:bg-surface-dark text-content dark:text-content-dark placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  placeholder="Create a password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-content-muted hover:text-content dark:hover:text-content-dark"
+                >
+                  {showPassword ? <FaEyeSlash className="h-4 w-4" /> : <FaEye className="h-4 w-4" />}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.password.message}</p>
+              )}
+            </div>
+
+            {/* Consent */}
+            <div className="flex items-start gap-3">
+              <input
+                {...register('hasDataStorageConsent', {
+                  required: 'You must agree to continue',
+                })}
+                type="checkbox"
+                className="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 border-outline dark:border-outline-dark rounded"
+              />
+              <label className="text-sm text-content-secondary dark:text-content-secondary-dark">
+                I agree to the{' '}
+                <Link to="/terms" className="text-primary-600 hover:text-primary-700 dark:text-primary-400">
+                  Terms of Service
+                </Link>{' '}
+                and{' '}
+                <Link to="/privacy" className="text-primary-600 hover:text-primary-700 dark:text-primary-400">
+                  Privacy Policy
+                </Link>
+              </label>
+            </div>
+            {errors.hasDataStorageConsent && (
+              <p className="text-sm text-red-600 dark:text-red-400">{errors.hasDataStorageConsent.message}</p>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={registerMutation.isPending}
+              className="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+            >
+              {registerMutation.isPending ? (
+                <>
+                  <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                  Creating account...
+                </>
+              ) : (
+                'Create account'
+              )}
+            </button>
           </form>
 
           {/* Sign In Link */}
-          <div className="mt-6 md:mt-8 text-center">
-            <p className="text-content-secondary dark:text-content-secondary-dark text-sm md:text-base">
+          <div className="mt-6 text-center">
+            <p className="text-content-secondary dark:text-content-secondary-dark text-sm">
               {AUTH_MESSAGES.ui.alreadyHaveAccount}{' '}
               <Link
                 to={ROUTES.LOGIN}
