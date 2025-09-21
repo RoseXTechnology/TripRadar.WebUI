@@ -54,6 +54,28 @@ export class ApiClient {
     return result;
   }
 
+  async get<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'GET' });
+  }
+
+  async post<T, D = object>(endpoint: string, data?: D): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'POST',
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  async put<T, D = object>(endpoint: string, data?: D): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'PUT',
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  async delete<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'DELETE' });
+  }
+
   private async handleError(response: Response): Promise<never> {
     console.log('🚨 Handling error:', response.status, response.url);
 

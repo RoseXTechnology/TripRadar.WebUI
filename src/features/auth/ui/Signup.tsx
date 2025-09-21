@@ -7,14 +7,14 @@ import {
   useSignupSteps,
   SignupProgress,
   AUTH_MESSAGES,
-  useRegister,
+  useRegisterMutation,
 } from 'features/auth';
 import { ROUTES } from 'shared/config/routes';
 import { SignupSteps } from './SignupSteps';
 
 export const Signup = () => {
   const navigate = useNavigate();
-  const registerMutation = useRegister();
+  const registerMutation = useRegisterMutation();
 
   const { currentStep, steps, progress, nextStep, prevStep, canGoPrev, isStepCompleted } = useSignupSteps();
 

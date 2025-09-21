@@ -4,7 +4,7 @@ import { createUserFromRegistration } from 'shared/lib/user-utils';
 import { useAuthStore } from 'shared/store/auth';
 import { authApi, RegisterRequest } from './authApi';
 
-export function useRegister() {
+export function useRegisterMutation() {
   const login = useAuthStore(state => state.login);
 
   return useMutation({
