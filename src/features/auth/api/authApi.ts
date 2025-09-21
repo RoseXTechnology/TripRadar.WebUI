@@ -24,18 +24,20 @@ export interface LoginResponse {
   refreshToken: string;
 }
 
+export interface GoogleLoginRequest {
+  id_token: string;
+}
+
 export const authApi = {
   register: async (data: RegisterRequest): Promise<RegisterResponse> => {
-    return apiClient.request('/v1/users', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return apiClient.post('/v1/users', data);
   },
 
   login: async (data: LoginRequest): Promise<LoginResponse> => {
-    return apiClient.request('/v1.0/tokens/login', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return apiClient.post('/v1.0/tokens/login', data);
+  },
+
+  googleLogin: async (data: GoogleLoginRequest): Promise<LoginResponse> => {
+    return apiClient.post('/v1/tokens/google-login', data);
   },
 };

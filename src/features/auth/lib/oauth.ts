@@ -1,5 +1,8 @@
-import { signInWithPopup, GoogleAuthProvider, User } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { authApi } from 'features/auth';
+import { authStorage } from 'shared/api';
 import { auth } from 'shared/lib/firebase';
+import { createUserFromRegistration } from 'shared/lib/user-utils';
 import { useAuthStore } from 'shared/store/auth';
 
 type OAuthProviderType = 'google';
@@ -8,21 +11,14 @@ interface OAuthResult {
   success: boolean;
   user?: {
     id: string;
+    username: string;
     name: string;
     email: string;
     avatar: string;
-    subscription: 'free' | 'premium' | 'enterprise';
+    subscription: 'basic' | 'essential' | 'advanced';
   };
   error?: string;
 }
-
-const createUserData = (user: User) => ({
-  id: user.uid,
-  name: user.displayName || user.email?.split('@')[0] || 'User',
-  email: user.email || '',
-  avatar: user.photoURL || '',
-  subscription: 'free' as const,
-});
 
 const handleOAuthError = (error: { code?: string; message?: string }, provider: string): string => {
   console.error(`${provider} OAuth error:`, error);
@@ -47,12 +43,29 @@ const signInWithProvider = async (
 ): Promise<OAuthResult> => {
   try {
     const result = await signInWithPopup(auth, provider);
-    const userData = createUserData(result.user);
+    const idToken = await result.user.getIdToken();
 
-    useAuthStore.getState().login(userData);
+    // Отправляем ID token на backend
+    const loginResponse = await authApi.googleLogin({ id_token: idToken });
+
+    // Сохраняем токены
+    authStorage.setTokens({
+      authToken: loginResponse.token,
+      refreshToken: loginResponse.refreshToken,
+    });
+
+    // Создаем пользователя из Google данных
+    const userData = {
+      username: result.user.email?.split('@')[0] || 'user',
+      email: result.user.email || '',
+      name: result.user.displayName || 'User',
+    };
+
+    const user = createUserFromRegistration(userData);
+    useAuthStore.getState().login(user);
+
     window.location.href = '/profile';
-
-    return { success: true, user: userData };
+    return { success: true };
   } catch (error: unknown) {
     const authError = error as { code?: string; message?: string };
     const errorMessage = handleOAuthError(authError, providerName);
