@@ -1,22 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
-import { apiClient } from 'shared/api';
+import { apiClient, type PricesResponse, type PriceResponse } from 'shared/api';
 import { TIER_CONFIG } from 'shared/config/pricing/tierConfig';
-import { type Price, type PricesResponse, type PricingResponse, type PricingTier } from './pricingApi';
+import { type PricingResponse, type PricingTier } from './pricingApi';
 
 // Transform backend data to frontend format
-const transformPricesToTiers = (prices: Price[]): PricingTier[] => {
-  const tierMap = new Map<string, { monthly?: Price; annual?: Price }>();
+const transformPricesToTiers = (prices: PriceResponse[]): PricingTier[] => {
+  const tierMap = new Map<string, { monthly?: PriceResponse; annual?: PriceResponse }>();
 
   prices.forEach(price => {
-    const key = price.tierName;
+    const key = price.tierName || 'unknown';
     if (!tierMap.has(key)) {
       tierMap.set(key, {});
     }
     const tier = tierMap.get(key)!;
 
-    if (price.billingPeriodName.toLowerCase() === 'monthly') {
+    if (price.billingPeriodName?.toLowerCase() === 'monthly') {
       tier.monthly = price;
-    } else if (price.billingPeriodName.toLowerCase() === 'yearly') {
+    } else if (price.billingPeriodName?.toLowerCase() === 'yearly') {
       tier.annual = price;
     }
   });
@@ -25,8 +25,8 @@ const transformPricesToTiers = (prices: Price[]): PricingTier[] => {
     id: tierName.toLowerCase(),
     name: tierName,
     price: {
-      monthly: periods.monthly ? periods.monthly.amount : 0,
-      annual: periods.annual ? periods.annual.amount : 0,
+      monthly: periods.monthly?.amount || 0,
+      annual: periods.annual?.amount || 0,
     },
     cta: TIER_CONFIG.defaultCta,
     tokensPerMonthLimit: periods.monthly?.tokensPerMonthLimit || periods.annual?.tokensPerMonthLimit,
@@ -48,7 +48,7 @@ const transformPricesToTiers = (prices: Price[]): PricingTier[] => {
 const getPricing = async (): Promise<PricingResponse> => {
   const response: PricesResponse = await apiClient.get('/v1/payments/prices');
   return {
-    tiers: transformPricesToTiers(response.prices),
+    tiers: transformPricesToTiers(response.prices || []),
   };
 };
 

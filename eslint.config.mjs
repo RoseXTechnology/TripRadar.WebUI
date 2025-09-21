@@ -67,6 +67,9 @@ export default tseslint.config(
           pathGroupsExcludedImportTypes: ['react']
         },
       ],
+      'import/no-cycle': 'error',
+      'import/no-self-import': 'error',
+      'import/no-unused-modules': 'warn',
       'prefer-const': 'error',
       'no-var': 'error',
     },

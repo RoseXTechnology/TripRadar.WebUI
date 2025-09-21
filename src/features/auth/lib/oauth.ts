@@ -1,6 +1,6 @@
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { authApi } from 'features/auth';
-import { authStorage } from 'shared/api';
+import { authStorage } from 'shared/lib';
 import { auth } from 'shared/lib/firebase';
 import { createUserFromRegistration } from 'shared/lib/user-utils';
 import { useAuthStore } from 'shared/store/auth';
@@ -9,14 +9,6 @@ type OAuthProviderType = 'google';
 
 interface OAuthResult {
   success: boolean;
-  user?: {
-    id: string;
-    username: string;
-    name: string;
-    email: string;
-    avatar: string;
-    subscription: 'basic' | 'essential' | 'advanced';
-  };
   error?: string;
 }
 

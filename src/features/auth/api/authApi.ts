@@ -1,15 +1,6 @@
-import { apiClient } from 'shared/api';
+import { apiClient, type CreateUserRequest, type CreateGoogleLoginRequest } from 'shared/api';
 
-export interface RegisterRequest {
-  username: string;
-  password: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
-  hasDataStorageConsent: boolean;
-}
-
+// Custom types not in Swagger
 export interface RegisterResponse {
   message: string;
 }
@@ -24,20 +15,16 @@ export interface LoginResponse {
   refreshToken: string;
 }
 
-export interface GoogleLoginRequest {
-  id_token: string;
-}
-
 export const authApi = {
-  register: async (data: RegisterRequest): Promise<RegisterResponse> => {
+  register: async (data: CreateUserRequest): Promise<RegisterResponse> => {
     return apiClient.post('/v1/users', data);
   },
 
   login: async (data: LoginRequest): Promise<LoginResponse> => {
-    return apiClient.post('/v1.0/tokens/login', data);
+    return apiClient.post('/v1/tokens/login', data);
   },
 
-  googleLogin: async (data: GoogleLoginRequest): Promise<LoginResponse> => {
+  googleLogin: async (data: CreateGoogleLoginRequest): Promise<LoginResponse> => {
     return apiClient.post('/v1/tokens/google-login', data);
   },
 };

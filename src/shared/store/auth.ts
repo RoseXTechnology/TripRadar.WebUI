@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { User } from 'app/types';
-import { authStorage } from 'shared/api';
+import { authStorage } from 'shared/lib';
 import { getUsernameFromToken } from 'shared/lib/jwt-utils';
 
 interface AuthState {

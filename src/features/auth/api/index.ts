@@ -1,3 +1,3 @@
 export { authApi } from './authApi';
 export { useRegisterMutation } from './useRegister';
-export type { RegisterRequest, RegisterResponse, LoginRequest, LoginResponse, GoogleLoginRequest } from './authApi';
+export type { RegisterResponse, LoginRequest, LoginResponse } from './authApi';
