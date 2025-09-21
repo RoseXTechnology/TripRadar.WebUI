@@ -1,6 +1,6 @@
-import { FaGoogle, FaMicrosoft, FaGithub } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 import { AUTH_MESSAGES } from 'features/auth';
-import { handleGoogleSignUp, handleGithubSignUp, handleMicrosoftSignUp } from '../lib/oauth';
+import { handleGoogleSignUp } from '../lib/oauth';
 
 export const OAuthButtons = () => {
   const buttonStyles =
@@ -10,16 +10,6 @@ export const OAuthButtons = () => {
       <button onClick={handleGoogleSignUp} className={buttonStyles}>
         <FaGoogle className="h-5 w-5" />
         <span>{AUTH_MESSAGES.ui.continueWith} Google</span>
-      </button>
-
-      <button onClick={handleGithubSignUp} className={buttonStyles}>
-        <FaGithub className="h-5 w-5" />
-        <span>{AUTH_MESSAGES.ui.continueWith} GitHub</span>
-      </button>
-
-      <button onClick={handleMicrosoftSignUp} className={buttonStyles}>
-        <FaMicrosoft className="h-5 w-5" />
-        <span>{AUTH_MESSAGES.ui.continueWith} Microsoft</span>
       </button>
     </div>
   );

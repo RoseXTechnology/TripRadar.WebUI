@@ -19,13 +19,13 @@ export const HeroSection = () => {
           trip in seconds
         </h1>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+        {/* CTA Button */}
+        <div className="flex justify-center items-center mb-16">
           <button
             onClick={handleTelegramClick}
             className="group px-8 py-4 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark rounded-lg font-medium hover:bg-button-hover dark:hover:bg-button-hover-dark transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
           >
-            Try TripRadar
+            Start Planning Now
             <svg
               className="w-4 h-4 group-hover:translate-x-0.5 transition-transform"
               fill="none"
@@ -34,10 +34,6 @@ export const HeroSection = () => {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-          </button>
-
-          <button className="px-8 py-4 text-content-secondary dark:text-content-secondary-dark hover:text-content dark:hover:text-content-dark transition-colors font-medium">
-            Watch demo
           </button>
         </div>
 

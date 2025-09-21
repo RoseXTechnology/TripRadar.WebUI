@@ -1,8 +1,8 @@
-import { signInWithPopup, GoogleAuthProvider, GithubAuthProvider, OAuthProvider, User } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider, User } from 'firebase/auth';
 import { auth } from 'shared/lib/firebase';
 import { useAuthStore } from 'shared/store/auth';
 
-type OAuthProviderType = 'google' | 'github' | 'microsoft';
+type OAuthProviderType = 'google';
 
 interface OAuthResult {
   success: boolean;
@@ -42,7 +42,7 @@ const handleOAuthError = (error: { code?: string; message?: string }, provider: 
 };
 
 const signInWithProvider = async (
-  provider: GoogleAuthProvider | GithubAuthProvider | OAuthProvider,
+  provider: GoogleAuthProvider,
   providerName: OAuthProviderType
 ): Promise<OAuthResult> => {
   try {
@@ -65,17 +65,4 @@ export const handleGoogleSignUp = async (): Promise<OAuthResult> => {
   provider.addScope('email');
   provider.addScope('profile');
   return signInWithProvider(provider, 'google');
-};
-
-export const handleGithubSignUp = async (): Promise<OAuthResult> => {
-  const provider = new GithubAuthProvider();
-  provider.addScope('user:email');
-  return signInWithProvider(provider, 'github');
-};
-
-export const handleMicrosoftSignUp = async (): Promise<OAuthResult> => {
-  const provider = new OAuthProvider('microsoft.com');
-  provider.addScope('email');
-  provider.addScope('profile');
-  return signInWithProvider(provider, 'microsoft');
 };

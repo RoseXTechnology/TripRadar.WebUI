@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight, FaGoogle, FaGithub, FaMicrosoft } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight, FaGoogle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { handleGoogleSignUp, handleGithubSignUp, handleMicrosoftSignUp } from 'features/auth/lib/oauth';
+import { handleGoogleSignUp } from 'features/auth/lib/oauth';
 import { useAuthStore } from 'shared/store/auth';
 
 export default function Login() {
@@ -32,8 +32,6 @@ export default function Login() {
   };
 
   const handleGoogleSignIn = () => handleGoogleSignUp();
-  const handleGithubSignIn = () => handleGithubSignUp();
-  const handleMicrosoftSignIn = () => handleMicrosoftSignUp();
 
   return (
     <div className="relative min-h-screen flex items-center justify-center p-4 md:p-8 transition-colors duration-300">
@@ -57,30 +55,14 @@ export default function Login() {
 
           {/* Main Card */}
           <div className="bg-surface dark:bg-surface-dark rounded-xl md:rounded-2xl shadow-lg md:shadow-xl border border-outline dark:border-outline-dark p-6 md:p-8">
-            {/* OAuth Buttons */}
-            <div className="space-y-2 md:space-y-3 mb-4 md:mb-6">
+            {/* OAuth Button */}
+            <div className="mb-4 md:mb-6">
               <button
                 onClick={handleGoogleSignIn}
                 className="w-full flex items-center justify-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border border-outline dark:border-outline-dark rounded-lg md:rounded-xl text-content dark:text-content-dark bg-surface dark:bg-surface-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark hover:border-outline-secondary dark:hover:border-outline-secondary-dark transition-all duration-200 font-medium text-sm md:text-base"
               >
                 <FaGoogle className="h-4 w-4 md:h-5 md:w-5" />
                 <span>Continue with Google</span>
-              </button>
-
-              <button
-                onClick={handleGithubSignIn}
-                className="w-full flex items-center justify-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border border-outline dark:border-outline-dark rounded-lg md:rounded-xl text-content dark:text-content-dark bg-surface dark:bg-surface-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark hover:border-outline-secondary dark:hover:border-outline-secondary-dark transition-all duration-200 font-medium text-sm md:text-base"
-              >
-                <FaGithub className="h-4 w-4 md:h-5 md:w-5" />
-                <span>Continue with GitHub</span>
-              </button>
-
-              <button
-                onClick={handleMicrosoftSignIn}
-                className="w-full flex items-center justify-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border border-outline dark:border-outline-dark rounded-lg md:rounded-xl text-content dark:text-content-dark bg-surface dark:bg-surface-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark hover:border-outline-secondary dark:hover:border-outline-secondary-dark transition-all duration-200 font-medium text-sm md:text-base"
-              >
-                <FaMicrosoft className="h-4 w-4 md:h-5 md:w-5" />
-                <span>Continue with Microsoft</span>
               </button>
             </div>
 
