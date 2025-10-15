@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { ProtectedRoute } from 'features/auth';
 import { Login, Signup } from 'features/auth';
-import { EmailSent } from 'pages/auth';
+import { EmailSent, EmailConfirmation } from 'pages/auth';
 import { Home } from 'pages/marketing/ui/Home';
 import { Pricing } from 'pages/marketing/ui/Pricing';
 import Profile from 'pages/profile/ui/Profile';
@@ -14,6 +14,7 @@ export function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/email-sent" element={<EmailSent />} />
+      <Route path="/confirm-email/:username" element={<EmailConfirmation />} />
       <Route path="/" element={<Home />} />
       <Route path="/pricing" element={<Pricing />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
