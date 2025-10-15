@@ -137,7 +137,33 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'text/plain': components['schemas']['GetAllFeedbacksResponse'][];
+            'application/json': components['schemas']['GetAllFeedbacksResponse'][];
+            'text/json': components['schemas']['GetAllFeedbacksResponse'][];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
         };
       };
     };
@@ -172,7 +198,33 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'text/plain': components['schemas']['GetFeedbackCategoriesResponse'][];
+            'application/json': components['schemas']['GetFeedbackCategoriesResponse'][];
+            'text/json': components['schemas']['GetFeedbackCategoriesResponse'][];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
         };
       };
     };
@@ -184,7 +236,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/internal/token/deduct': {
+  '/api/v{version}/internals/users/{username}/tokens': {
     parameters: {
       query?: never;
       header?: never;
@@ -193,11 +245,18 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: {
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: {
       parameters: {
         query?: never;
         header?: never;
-        path?: never;
+        path: {
+          username: string;
+          version: string;
+        };
         cookie?: never;
       };
       requestBody?: {
@@ -214,9 +273,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'text/plain': components['schemas']['DeductTokensResponse'];
-            'application/json': components['schemas']['DeductTokensResponse'];
-            'text/json': components['schemas']['DeductTokensResponse'];
+            'text/plain': components['schemas']['DeductingTokensResponse'];
+            'application/json': components['schemas']['DeductingTokensResponse'];
+            'text/json': components['schemas']['DeductingTokensResponse'];
           };
         };
         /** @description Bad Request */
@@ -250,13 +309,9 @@ export interface paths {
         };
       };
     };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
     trace?: never;
   };
-  '/internal/feature/{featureName}/enabled': {
+  '/api/v{version}/internals/features/{featureName}': {
     parameters: {
       query?: never;
       header?: never;
@@ -271,6 +326,7 @@ export interface paths {
         header?: never;
         path: {
           featureName: string;
+          version: string;
         };
         cookie?: never;
       };
@@ -282,9 +338,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'text/plain': components['schemas']['IsFeatureEnabledResponse'];
-            'application/json': components['schemas']['IsFeatureEnabledResponse'];
-            'text/json': components['schemas']['IsFeatureEnabledResponse'];
+            'text/plain': components['schemas']['IsFeatureActiveResponse'];
+            'application/json': components['schemas']['IsFeatureActiveResponse'];
+            'text/json': components['schemas']['IsFeatureActiveResponse'];
           };
         };
         /** @description Bad Request */
@@ -315,31 +371,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/internal/payments/refund/{username}': {
+  '/api/v{version}/internals/languages': {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    get?: never;
-    put?: never;
-    post: {
+    get: {
       parameters: {
         query?: never;
         header?: never;
         path: {
-          username: string;
+          version: string;
         };
         cookie?: never;
       };
-      requestBody?: {
-        content: {
-          'application/json': components['schemas']['RefundRequestDto'];
-          'text/json': components['schemas']['RefundRequestDto'];
-          'application/*+json': components['schemas']['RefundRequestDto'];
-        };
-      };
+      requestBody?: never;
       responses: {
         /** @description OK */
         200: {
@@ -347,24 +395,13 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'text/plain': components['schemas']['RefundResultDto'];
-            'application/json': components['schemas']['RefundResultDto'];
-            'text/json': components['schemas']['RefundResultDto'];
+            'text/plain': components['schemas']['GetLanguagesResponse'];
+            'application/json': components['schemas']['GetLanguagesResponse'];
+            'text/json': components['schemas']['GetLanguagesResponse'];
           };
         };
         /** @description Bad Request */
         400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'text/plain': components['schemas']['ProblemDetails'];
-            'application/json': components['schemas']['ProblemDetails'];
-            'text/json': components['schemas']['ProblemDetails'];
-          };
-        };
-        /** @description Forbidden */
-        403: {
           headers: {
             [name: string]: unknown;
           };
@@ -383,13 +420,15 @@ export interface paths {
         };
       };
     };
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/payments/users/{username}/create-subscription-checkout': {
+  '/api/v{version}/payments/users/{username}/subscription-checkouts': {
     parameters: {
       query?: never;
       header?: never;
@@ -468,7 +507,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/payments/users/{username}/cancel-subscription': {
+  '/api/v{version}/payments/users/{username}/subscriptions': {
     parameters: {
       query?: never;
       header?: never;
@@ -477,7 +516,8 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: {
+    post?: never;
+    delete: {
       parameters: {
         query?: never;
         header?: never;
@@ -537,22 +577,9 @@ export interface paths {
         };
       };
     };
-    delete?: never;
     options?: never;
     head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/v{version}/payments/users/{username}/downgrade-subscription': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: {
+    patch: {
       parameters: {
         query?: never;
         header?: never;
@@ -612,13 +639,9 @@ export interface paths {
         };
       };
     };
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
     trace?: never;
   };
-  '/api/v{version}/payments/users/{username}/setup-intent': {
+  '/api/v{version}/payments/users/{username}/setup-intents': {
     parameters: {
       query?: never;
       header?: never;
@@ -737,7 +760,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/payments/users/{username}/refund': {
+  '/api/v{version}/payments/users/{username}/refunds': {
     parameters: {
       query?: never;
       header?: never;
@@ -858,7 +881,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/payments/users/{username}/overage-usage': {
+  '/api/v{version}/payments/users/{username}/overage-usages': {
     parameters: {
       query?: never;
       header?: never;
@@ -1122,7 +1145,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/preferences/user/{username}': {
+  '/api/v{version}/preferences/users/{username}': {
     parameters: {
       query?: never;
       header?: never;
@@ -1225,56 +1248,6 @@ export interface paths {
         };
       };
     };
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/v{version}/reference/languages': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          version: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description OK */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'text/plain': components['schemas']['GetLanguagesResponse'];
-            'application/json': components['schemas']['GetLanguagesResponse'];
-            'text/json': components['schemas']['GetLanguagesResponse'];
-          };
-        };
-        /** @description Bad Request */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'text/plain': components['schemas']['ProblemDetails'];
-            'application/json': components['schemas']['ProblemDetails'];
-            'text/json': components['schemas']['ProblemDetails'];
-          };
-        };
-      };
-    };
-    put?: never;
     post?: never;
     delete?: never;
     options?: never;
@@ -1808,7 +1781,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/tokens/login': {
+  '/api/v{version}/tokens/sessions': {
     parameters: {
       query?: never;
       header?: never;
@@ -1849,7 +1822,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/tokens/google-login': {
+  '/api/v{version}/tokens/sessions/google': {
     parameters: {
       query?: never;
       header?: never;
@@ -1890,7 +1863,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/tokens/refresh': {
+  '/api/v{version}/tokens/refresh-tokens': {
     parameters: {
       query?: never;
       header?: never;
@@ -1998,7 +1971,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/users/{username}/tier-usage': {
+  '/api/v{version}/users/{username}/tier-usages': {
     parameters: {
       query?: never;
       header?: never;
@@ -2071,7 +2044,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/users/confirm-email': {
+  '/api/v{version}/users/{username}/email-confirmations': {
     parameters: {
       query?: never;
       header?: never;
@@ -2081,11 +2054,11 @@ export interface paths {
     get: {
       parameters: {
         query?: {
-          username?: string;
           token?: string;
         };
         header?: never;
         path: {
+          username: string;
           version: string;
         };
         cookie?: never;
@@ -2131,7 +2104,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/users/forgot-password': {
+  '/api/v{version}/users/password-reset-requests': {
     parameters: {
       query?: never;
       header?: never;
@@ -2194,16 +2167,14 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/users/reset-password': {
+  '/api/v{version}/users/password-resets': {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    get?: never;
-    put?: never;
-    post: {
+    get: {
       parameters: {
         query?: never;
         header?: never;
@@ -2251,13 +2222,15 @@ export interface paths {
         };
       };
     };
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/users/{username}/toggle-status': {
+  '/api/v{version}/users/{username}/status': {
     parameters: {
       query?: never;
       header?: never;
@@ -2603,7 +2576,7 @@ export interface components {
       tokensToDeduct: number;
       serviceType: components['schemas']['ServiceType'];
     };
-    DeductTokensResponse: {
+    DeductingTokensResponse: {
       /** Format: double */
       remainingTokens: number;
       /** Format: double */
@@ -2650,6 +2623,19 @@ export interface components {
     ForgotPasswordRequest: {
       /** Format: email */
       email: string;
+    };
+    GetAllFeedbacksResponse: {
+      username?: string | null;
+      title?: string | null;
+      content?: string | null;
+      /** Format: int32 */
+      rating?: number;
+      categoryName?: string | null;
+      /** Format: date-time */
+      createdOn?: string;
+    };
+    GetFeedbackCategoriesResponse: {
+      name?: string | null;
     };
     GetFeedbackResponse: {
       /** Format: int64 */
@@ -2728,10 +2714,8 @@ export interface components {
     HotelRatingFilterType: 'rating35Plus' | 'rating40Plus' | 'rating45Plus';
     /** @enum {string} */
     HotelSortByType: 'lowestPrice' | 'highestRating' | 'mostReviewed';
-    IsFeatureEnabledResponse: {
-      featureName: string;
-      userId?: string | null;
-      isEnabled: boolean;
+    IsFeatureActiveResponse: {
+      isActive: boolean;
     };
     LanguageResponse: {
       languageCode: string;
