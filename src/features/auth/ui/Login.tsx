@@ -19,10 +19,14 @@ export default function Login() {
 
     await new Promise(resolve => setTimeout(resolve, 1500));
 
+    // TODO: Replace with real API call using authApi.login()
+    // Handle EmailNotConfirmed error from backend:
+    // - Show message: "Please confirm your email before logging in"
+    // - Provide button to resend confirmation email
     // Mock authentication - in production, validate credentials with backend
     const userName = formData.email.split('@')[0].replace(/[^a-zA-Z]/g, '');
     login({
-      id: Date.now().toString(),
+      username: userName,
       name: userName.charAt(0).toUpperCase() + userName.slice(1),
       email: formData.email,
       avatar: `https://ui-avatars.com/api/?name=${userName}&background=6366f1&color=fff`,

@@ -23,6 +23,10 @@ export const authApi = {
     return apiClient.post('/v1/users', data);
   },
 
+  // TODO: Handle EmailNotConfirmed error when backend adds email verification check
+  // When backend returns 400 with "EmailNotConfirmed" error:
+  // - Show user-friendly message: "Please confirm your email before logging in"
+  // - Provide link to resend confirmation email
   login: async (data: LoginRequest): Promise<LoginResponse> => {
     return apiClient.post('/v1/tokens/sessions', data);
   },

@@ -42,8 +42,8 @@ export const Signup = () => {
         hasDataStorageConsent: data.hasDataStorageConsent,
       });
 
-      // Успешная регистрация и автоматический логин
-      navigate('/profile');
+      // Перенаправляем на страницу с сообщением об email
+      navigate(ROUTES.EMAIL_SENT);
     } catch (error) {
       console.error('Registration failed:', error);
     }
