@@ -1,14 +1,36 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useCreateCheckoutMutation } from 'entities/payment/api';
 import { usePricingQuery } from 'entities/pricing';
+import type { UserTierType, BillingPeriod } from 'shared/api';
 import { ROUTES } from 'shared/config/routes';
 
 export const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(false);
   const { data: pricingData, isLoading, error } = usePricingQuery();
   const [selectedTier, setSelectedTier] = useState<string | null>(null);
+  const createCheckout = useCreateCheckoutMutation();
 
   const pricingTiers = useMemo(() => pricingData?.tiers || [], [pricingData]);
+
+  const handleGetStarted = (tierId: string) => {
+    // Map tier names to backend enum values
+    const tierMap: Record<string, UserTierType> = {
+      basic: 'basic',
+      essential: 'essential',
+      advanced: 'advanced',
+    };
+
+    const targetTierType = tierMap[tierId.toLowerCase()];
+    const billingPeriod: BillingPeriod = isAnnual ? 'yearly' : 'monthly';
+
+    if (targetTierType && targetTierType !== 'basic') {
+      createCheckout.mutate({
+        targetTierType,
+        billingPeriod,
+      });
+    }
+  };
 
   // Set middle tier as default when data loads
   useEffect(() => {
@@ -141,12 +163,29 @@ export const Pricing = () => {
                   </div>
                 </div>
 
-                <Link
-                  to={tier.id === 'enterprise' ? '/contact' : ROUTES.SIGNUP}
-                  className="block w-full py-3 px-6 rounded-xl text-center font-medium transition-all duration-200 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark hover:bg-button-hover dark:hover:bg-button-hover-dark"
-                >
-                  {tier.cta}
-                </Link>
+                {tier.id === 'basic' ? (
+                  <Link
+                    to={ROUTES.SIGNUP}
+                    className="block w-full py-3 px-6 rounded-xl text-center font-medium transition-all duration-200 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark hover:bg-button-hover dark:hover:bg-button-hover-dark"
+                  >
+                    {tier.cta}
+                  </Link>
+                ) : tier.id === 'enterprise' ? (
+                  <Link
+                    to="/contact"
+                    className="block w-full py-3 px-6 rounded-xl text-center font-medium transition-all duration-200 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark hover:bg-button-hover dark:hover:bg-button-hover-dark"
+                  >
+                    {tier.cta}
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => handleGetStarted(tier.id)}
+                    disabled={createCheckout.isPending}
+                    className="w-full py-3 px-6 rounded-xl text-center font-medium transition-all duration-200 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark hover:bg-button-hover dark:hover:bg-button-hover-dark disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {createCheckout.isPending ? 'Processing...' : tier.cta}
+                  </button>
+                )}
               </div>
             );
           })}

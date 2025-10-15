@@ -35,10 +35,17 @@ const signInWithProvider = async (
 ): Promise<OAuthResult> => {
   try {
     const result = await signInWithPopup(auth, provider);
-    const idToken = await result.user.getIdToken();
 
-    // Отправляем ID token на backend
-    const loginResponse = await authApi.googleLogin({ id_token: idToken });
+    // Получаем Google Access Token из credential
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const googleIdToken = credential?.idToken;
+
+    if (!googleIdToken) {
+      throw new Error('Failed to get Google ID token');
+    }
+
+    // Отправляем Google ID token на backend
+    const loginResponse = await authApi.googleLogin({ id_token: googleIdToken });
 
     // Сохраняем токены
     authStorage.setTokens({
