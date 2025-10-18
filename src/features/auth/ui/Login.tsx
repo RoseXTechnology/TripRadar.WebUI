@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight, FaGoogle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useLoginMutation } from 'features/auth/api';
 import { handleGoogleSignUp } from 'features/auth/lib/oauth';
 import { useAuthStore } from 'shared/store/auth';
 
@@ -10,29 +11,40 @@ export default function Login() {
     email: '',
     password: '',
   });
-  const [isLoading, setIsLoading] = useState(false);
   const login = useAuthStore(state => state.login);
+  const loginMutation = useLoginMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    loginMutation.mutate(
+      {
+        username: formData.email,
+        password: formData.password,
+      },
+      {
+        onSuccess: response => {
+          // Store tokens
+          if (response.token) localStorage.setItem('token', response.token);
+          if (response.refreshToken) localStorage.setItem('refreshToken', response.refreshToken);
 
-    // TODO: Replace with real API call using authApi.login()
-    // Handle EmailNotConfirmed error from backend:
-    // - Show message: "Please confirm your email before logging in"
-    // - Provide button to resend confirmation email
-    // Mock authentication - in production, validate credentials with backend
-    const userName = formData.email.split('@')[0].replace(/[^a-zA-Z]/g, '');
-    login({
-      username: userName,
-      name: userName.charAt(0).toUpperCase() + userName.slice(1),
-      email: formData.email,
-      avatar: `https://ui-avatars.com/api/?name=${userName}&background=6366f1&color=fff`,
-      subscription: 'free',
-    });
-    setIsLoading(false);
+          // Update auth store
+          const userName = formData.email.split('@')[0].replace(/[^a-zA-Z]/g, '');
+          login({
+            username: userName,
+            name: userName.charAt(0).toUpperCase() + userName.slice(1),
+            email: formData.email,
+            avatar: `https://ui-avatars.com/api/?name=${userName}&background=6366f1&color=fff`,
+            subscription: 'free',
+          });
+        },
+        onError: (error: Error) => {
+          console.error('Login failed:', error);
+          // TODO: Handle EmailNotConfirmed error
+          // Show user-friendly message and resend email option
+        },
+      }
+    );
   };
 
   const handleGoogleSignIn = () => handleGoogleSignUp();
@@ -171,10 +183,10 @@ export default function Login() {
 
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={loginMutation.isPending}
                 className="group relative w-full flex justify-center items-center gap-2 py-2.5 md:py-3 px-4 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark rounded-lg md:rounded-xl font-medium hover:bg-button-hover dark:hover:bg-button-hover-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl text-sm md:text-base"
               >
-                {isLoading ? (
+                {loginMutation.isPending ? (
                   <>
                     <div className="animate-spin h-4 w-4 md:h-5 md:w-5 border-2 border-surface dark:border-content border-t-transparent rounded-full"></div>
                     <span>Signing in...</span>

@@ -56,6 +56,17 @@ export interface paths {
             'text/json': components['schemas']['ProblemDetails'];
           };
         };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
       };
     };
     put?: never;
@@ -82,7 +93,11 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'text/plain': components['schemas']['GetUserFeedbackResponse'];
+            'application/json': components['schemas']['GetUserFeedbackResponse'];
+            'text/json': components['schemas']['GetUserFeedbackResponse'];
+          };
         };
         /** @description Bad Request */
         400: {
@@ -97,6 +112,17 @@ export interface paths {
         };
         /** @description Unauthorized */
         401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Too Many Requests */
+        429: {
           headers: {
             [name: string]: unknown;
           };
@@ -199,9 +225,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'text/plain': components['schemas']['GetFeedbackCategoriesResponse'][];
-            'application/json': components['schemas']['GetFeedbackCategoriesResponse'][];
-            'text/json': components['schemas']['GetFeedbackCategoriesResponse'][];
+            'text/plain': components['schemas']['GetFeedbackCategoriesResponse'];
+            'application/json': components['schemas']['GetFeedbackCategoriesResponse'];
+            'text/json': components['schemas']['GetFeedbackCategoriesResponse'];
           };
         };
         /** @description Bad Request */
@@ -1197,6 +1223,17 @@ export interface paths {
             'text/json': components['schemas']['ProblemDetails'];
           };
         };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
       };
     };
     put: {
@@ -1246,6 +1283,17 @@ export interface paths {
             'text/json': components['schemas']['ProblemDetails'];
           };
         };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
       };
     };
     post?: never;
@@ -1281,9 +1329,9 @@ export interface paths {
       };
       requestBody?: {
         content: {
-          'application/json': components['schemas']['UpdateScheduledExecutionConfigurationRequestBody'];
-          'text/json': components['schemas']['UpdateScheduledExecutionConfigurationRequestBody'];
-          'application/*+json': components['schemas']['UpdateScheduledExecutionConfigurationRequestBody'];
+          'application/json': components['schemas']['UpdateScheduledExecutionConfigurationRequest'];
+          'text/json': components['schemas']['UpdateScheduledExecutionConfigurationRequest'];
+          'application/*+json': components['schemas']['UpdateScheduledExecutionConfigurationRequest'];
         };
       };
       responses: {
@@ -1812,7 +1860,22 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'text/plain': components['schemas']['GetLoginResponse'];
+            'application/json': components['schemas']['GetLoginResponse'];
+            'text/json': components['schemas']['GetLoginResponse'];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
         };
       };
     };
@@ -1853,7 +1916,22 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'text/plain': components['schemas']['GetLoginResponse'];
+            'application/json': components['schemas']['GetLoginResponse'];
+            'text/json': components['schemas']['GetLoginResponse'];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
         };
       };
     };
@@ -1894,7 +1972,33 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'text/plain': components['schemas']['GetLoginResponse'];
+            'application/json': components['schemas']['GetLoginResponse'];
+            'text/json': components['schemas']['GetLoginResponse'];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
         };
       };
     };
@@ -2174,7 +2278,9 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: {
+    get?: never;
+    put?: never;
+    post: {
       parameters: {
         query?: never;
         header?: never;
@@ -2222,8 +2328,6 @@ export interface paths {
         };
       };
     };
-    put?: never;
-    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -2453,8 +2557,8 @@ export interface components {
       OpenData?: boolean | null;
     };
     CreateFeedbackRequest: {
-      title?: string | null;
-      content?: string | null;
+      title: string;
+      content: string;
       /** Format: int32 */
       rating?: number;
       feedbackCategoryType: components['schemas']['FeedbackCategoryType'];
@@ -2471,8 +2575,10 @@ export interface components {
       refreshToken?: string | null;
     };
     CreateScheduledCurrencyExchangeQueryRequest: {
-      baseCurrency: string;
-      targetCurrencies?: string[] | null;
+      fromCurrency: string;
+      toCurrency: string;
+      /** Format: double */
+      amount?: number;
       additionalParameters?: string | null;
       selectedColumns?: components['schemas']['QueryColumn'][] | null;
       /** Format: date-time */
@@ -2481,6 +2587,11 @@ export interface components {
     };
     CreateScheduledEventQueryRequest: {
       searchQuery: string;
+      location: string;
+      /** Format: date */
+      startDate?: string | null;
+      /** Format: date */
+      endDate?: string | null;
       additionalParameters?: {
         [key: string]: unknown;
       } | null;
@@ -2490,8 +2601,8 @@ export interface components {
       schedule: string;
     };
     CreateScheduledFlightQueryRequest: {
-      departureAirportCode: string;
-      destinationAirportCode: string;
+      origin: string;
+      destination: string;
       /** Format: date */
       departureDate: string;
       /** Format: date */
@@ -2520,6 +2631,9 @@ export interface components {
     };
     CreateScheduledLocalPlacesQueryRequest: {
       searchQuery: string;
+      location: string;
+      /** Format: int32 */
+      radius?: number | null;
       additionalParameters?: {
         [key: string]: unknown;
       } | null;
@@ -2594,6 +2708,9 @@ export interface components {
       Currency?: string | null;
       Language?: string | null;
     };
+    FeedbackCategoryDto: {
+      name?: string | null;
+    };
     /** @enum {string} */
     FeedbackCategoryType:
       | 'general'
@@ -2635,7 +2752,7 @@ export interface components {
       createdOn?: string;
     };
     GetFeedbackCategoriesResponse: {
-      name?: string | null;
+      categories?: components['schemas']['FeedbackCategoryDto'][] | null;
     };
     GetFeedbackResponse: {
       /** Format: int64 */
@@ -2653,8 +2770,21 @@ export interface components {
     GetLanguagesResponse: {
       languages: components['schemas']['LanguageResponse'][];
     };
+    GetLoginResponse: {
+      token: string | null;
+      refreshToken: string | null;
+    };
     GetPreferenceTypesResponse: {
       preferenceTypes?: components['schemas']['PreferenceTypeDto'][] | null;
+    };
+    GetUserFeedbackResponse: {
+      title?: string | null;
+      content?: string | null;
+      /** Format: int32 */
+      rating?: number;
+      categoryName?: string | null;
+      /** Format: date-time */
+      createdOn?: string;
     };
     GetUserPreferencesResponse: {
       preferences: components['schemas']['UserPreference'][];
@@ -2856,7 +2986,7 @@ export interface components {
     UpdatePayAsYouGoResponse: {
       enabled?: boolean;
     };
-    UpdateScheduledExecutionConfigurationRequestBody: {
+    UpdateScheduledExecutionConfigurationRequest: {
       isActive: boolean;
     };
     UpdateUserPreferencesRequest: {

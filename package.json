@@ -11,7 +11,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "preview": "vite preview",
-    "generate-types": "openapi-typescript http://localhost:5330/swagger/v1/swagger.json -o src/shared/api/generated-types.ts"
+    "generate-types": "openapi-typescript http://127.0.0.1:5330/swagger/v1/swagger.json -o src/shared/api/generated-types.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

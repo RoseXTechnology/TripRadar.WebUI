@@ -17,6 +17,7 @@ export type CreateSubscriptionCheckoutResponse = components['schemas']['CreateSu
 export type GetUserProfileResponse = components['schemas']['GetUserProfileResponse'];
 export type PricesResponse = components['schemas']['PricesResponse'];
 export type PriceResponse = components['schemas']['PriceResponse'];
+export type GetLoginResponse = components['schemas']['GetLoginResponse'];
 
 // Export existing API client
 export * from './interceptors';
