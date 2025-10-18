@@ -9,7 +9,7 @@ import { useAuthStore } from 'shared/store/auth';
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    username: '', // TODO: Change back to email when backend supports email login
+    usernameOrEmail: '', // Backend accepts both email and username in this field
     password: '',
   });
   const login = useAuthStore(state => state.login);
@@ -20,7 +20,7 @@ export default function Login() {
 
     loginMutation.mutate(
       {
-        username: formData.username,
+        usernameOrEmail: formData.usernameOrEmail,
         password: formData.password,
       },
       {
@@ -34,11 +34,13 @@ export default function Login() {
           }
 
           // Update auth store
+          const isEmail = formData.usernameOrEmail.includes('@');
+          const username = isEmail ? formData.usernameOrEmail.split('@')[0] : formData.usernameOrEmail;
           login({
-            username: formData.username,
-            name: formData.username.charAt(0).toUpperCase() + formData.username.slice(1),
-            email: `${formData.username}@example.com`, // TODO: Get real email from backend response
-            avatar: `https://ui-avatars.com/api/?name=${formData.username}&background=6366f1&color=fff`,
+            username,
+            name: username.charAt(0).toUpperCase() + username.slice(1),
+            email: isEmail ? formData.usernameOrEmail : `${formData.usernameOrEmail}@example.com`,
+            avatar: `https://ui-avatars.com/api/?name=${username}&background=6366f1&color=fff`,
             subscription: 'free',
           });
         },
@@ -102,7 +104,7 @@ export default function Login() {
               </div>
               <div className="relative flex justify-center text-xs md:text-sm">
                 <span className="px-3 md:px-4 bg-surface dark:bg-surface-dark text-content-muted font-medium">
-                  or continue with username
+                  or continue with email/username
                 </span>
               </div>
             </div>
@@ -111,25 +113,25 @@ export default function Login() {
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
               <div>
                 <label
-                  htmlFor="username"
+                  htmlFor="usernameOrEmail"
                   className="block text-xs md:text-sm font-medium text-content dark:text-content-dark mb-1.5 md:mb-2"
                 >
-                  Username
+                  Email or Username
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <FaEnvelope className="h-4 w-4 md:h-5 md:w-5 text-content-muted" />
                   </div>
                   <input
-                    id="username"
-                    name="username"
+                    id="usernameOrEmail"
+                    name="usernameOrEmail"
                     type="text"
                     autoComplete="username"
                     required
-                    value={formData.username}
-                    onChange={e => setFormData(prev => ({ ...prev, username: e.target.value }))}
+                    value={formData.usernameOrEmail}
+                    onChange={e => setFormData(prev => ({ ...prev, usernameOrEmail: e.target.value }))}
                     className="block w-full pl-8 md:pl-10 pr-3 py-2.5 md:py-3 border border-outline dark:border-outline-dark rounded-lg md:rounded-xl placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-surface dark:bg-surface-dark text-content dark:text-content-dark text-sm md:text-base"
-                    placeholder="Enter your username"
+                    placeholder="Enter your email or username"
                   />
                 </div>
               </div>

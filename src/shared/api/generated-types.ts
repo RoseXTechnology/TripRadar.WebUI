@@ -2544,7 +2544,7 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     /** @enum {string} */
-    BillingPeriod: 'monthly' | 'yearly';
+    BillingPeriodType: 'monthly' | 'yearly';
     CancelSubscriptionRequest: {
       cancellationReason?: string | null;
     };
@@ -2567,11 +2567,11 @@ export interface components {
       id_token: string;
     };
     CreateLoginRequest: {
-      username: string;
+      usernameOrEmail: string;
       password: string;
     };
     CreateRefreshTokenRequest: {
-      username: string;
+      usernameOrEmail: string;
       refreshToken?: string | null;
     };
     CreateScheduledCurrencyExchangeQueryRequest: {
@@ -2665,7 +2665,7 @@ export interface components {
     };
     CreateSubscriptionCheckoutRequest: {
       targetTierType: components['schemas']['UserTierType'];
-      billingPeriod?: components['schemas']['BillingPeriod'];
+      billingPeriodType?: components['schemas']['BillingPeriodType'];
     };
     CreateSubscriptionCheckoutResponse: {
       sessionId?: string | null;
@@ -2702,7 +2702,7 @@ export interface components {
     };
     DowngradeTierRequest: {
       targetTierType: components['schemas']['UserTierType'];
-      billingPeriod: components['schemas']['BillingPeriod'];
+      billingPeriodType: components['schemas']['BillingPeriodType'];
     };
     EventPreferences: {
       Currency?: string | null;
@@ -2732,7 +2732,7 @@ export interface components {
       /** Format: int32 */
       MaxPrice?: number | null;
       Currency?: string | null;
-      TravelClass?: components['schemas']['TravelClass'];
+      TravelClass?: components['schemas']['TravelClassType'];
       SortBy?: components['schemas']['FlightSortByType'];
     };
     /** @enum {string} */
@@ -2979,7 +2979,7 @@ export interface components {
       | 'pointsOfInterest'
       | 'publicTransport';
     /** @enum {string} */
-    TravelClass: 'economy' | 'premiumEconomy' | 'business' | 'first';
+    TravelClassType: 'economy' | 'premiumEconomy' | 'business' | 'first';
     UpdateMeteredBillingRequest: {
       enabled: boolean;
     };
