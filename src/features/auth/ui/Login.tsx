@@ -3,6 +3,7 @@ import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight, FaGoogle } from 'r
 import { Link } from 'react-router-dom';
 import { useLoginMutation } from 'features/auth/api';
 import { handleGoogleSignUp } from 'features/auth/lib/oauth';
+import { authStorage } from 'shared/lib';
 import { useAuthStore } from 'shared/store/auth';
 
 export default function Login() {
@@ -24,9 +25,13 @@ export default function Login() {
       },
       {
         onSuccess: response => {
-          // Store tokens
-          if (response.token) localStorage.setItem('token', response.token);
-          if (response.refreshToken) localStorage.setItem('refreshToken', response.refreshToken);
+          // Store tokens using authStorage for consistency
+          if (response.token && response.refreshToken) {
+            authStorage.setTokens({
+              authToken: response.token,
+              refreshToken: response.refreshToken,
+            });
+          }
 
           // Update auth store
           login({
@@ -37,10 +42,19 @@ export default function Login() {
             subscription: 'free',
           });
         },
-        onError: (error: Error) => {
+        onError: (error: { message?: string; response?: { data?: { title?: string } } }) => {
           console.error('Login failed:', error);
-          // TODO: Handle EmailNotConfirmed error
-          // Show user-friendly message and resend email option
+
+          // Handle EmailNotConfirmed error
+          if (
+            error?.message?.includes('EmailNotConfirmed') ||
+            error?.response?.data?.title?.includes('EmailNotConfirmed')
+          ) {
+            alert('Please confirm your email before logging in. Check your inbox for the confirmation link.');
+            // TODO: Add proper toast notification and resend email button
+          } else {
+            alert('Login failed. Please check your credentials and try again.');
+          }
         },
       }
     );

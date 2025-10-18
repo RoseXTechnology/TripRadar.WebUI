@@ -41,11 +41,16 @@ const signInWithProvider = async (
     const googleIdToken = credential?.idToken;
 
     if (!googleIdToken) {
-      throw new Error('Failed to get Google ID token');
+      return { success: false, error: 'Failed to get Google ID token' };
     }
 
     // Отправляем Google ID token на backend
     const loginResponse = await authApi.googleLogin({ id_token: googleIdToken });
+
+    // Проверяем что токены получены
+    if (!loginResponse.token || !loginResponse.refreshToken) {
+      return { success: false, error: 'Failed to get authentication tokens from server' };
+    }
 
     // Сохраняем токены
     authStorage.setTokens({
@@ -54,10 +59,13 @@ const signInWithProvider = async (
     });
 
     // Создаем пользователя из Google данных
+    const displayName = result.user.displayName || 'User';
+    const nameParts = displayName.split(' ');
     const userData = {
       username: result.user.email?.split('@')[0] || 'user',
       email: result.user.email || '',
-      name: result.user.displayName || 'User',
+      firstName: nameParts[0] || displayName,
+      lastName: nameParts.slice(1).join(' ') || undefined,
     };
 
     const user = createUserFromRegistration(userData);
