@@ -72,6 +72,10 @@ export default tseslint.config(
       'import/no-unused-modules': 'warn',
       'prefer-const': 'error',
       'no-var': 'error',
+      'prefer-arrow-callback': 'error',
+      'func-style': ['error', 'expression', { 'allowArrowFunctions': true }],
+      'import/no-default-export': 'error',
+      'import/prefer-default-export': 'off',
     },
     settings: {
       react: {

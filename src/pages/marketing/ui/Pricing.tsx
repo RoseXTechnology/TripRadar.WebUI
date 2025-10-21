@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useCreateCheckoutMutation } from 'entities/payment/api';
 import { usePricingQuery } from 'entities/pricing';
-import type { UserTierType, BillingPeriod } from 'shared/api';
+import type { UserTierType, BillingPeriodType } from 'shared/api';
 import { ROUTES } from 'shared/config/routes';
 
 export const Pricing = () => {
@@ -22,12 +22,12 @@ export const Pricing = () => {
     };
 
     const targetTierType = tierMap[tierId.toLowerCase()];
-    const billingPeriod: BillingPeriod = isAnnual ? 'yearly' : 'monthly';
+    const billingPeriodType: BillingPeriodType = isAnnual ? 'yearly' : 'monthly';
 
     if (targetTierType && targetTierType !== 'basic') {
       createCheckout.mutate({
         targetTierType,
-        billingPeriod,
+        billingPeriodType,
       });
     }
   };

@@ -4,7 +4,7 @@ export type { components } from './generated-types';
 
 // Commonly used types
 export type UserTierType = components['schemas']['UserTierType'];
-export type BillingPeriod = components['schemas']['BillingPeriod'];
+export type BillingPeriodType = components['schemas']['BillingPeriodType'];
 export type CreateUserRequest = components['schemas']['CreateUserRequest'];
 export type CreateLoginRequest = components['schemas']['CreateLoginRequest'];
 export type CreateGoogleLoginRequest = components['schemas']['CreateGoogleLoginRequest'];

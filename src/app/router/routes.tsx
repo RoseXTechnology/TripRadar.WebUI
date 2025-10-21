@@ -1,13 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 import { ProtectedRoute } from 'features/auth';
 import { Login, Signup } from 'features/auth';
-import { EmailSent, EmailConfirmed } from 'pages/auth';
+import { EmailSent, EmailConfirmed, ForgotPassword, ResetPassword } from 'pages/auth';
 import { Home } from 'pages/marketing/ui/Home';
 import { Pricing } from 'pages/marketing/ui/Pricing';
 import Profile from 'pages/profile/ui/Profile';
 import { PrivacyPolicy, TermsOfService } from 'shared/ui/legal';
 
-export function AppRoutes() {
+export const AppRoutes = () => {
   return (
     <Routes>
       {/* Public Routes */}
@@ -15,6 +15,8 @@ export function AppRoutes() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/email-sent" element={<EmailSent />} />
       <Route path="/email-confirmed" element={<EmailConfirmed />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/" element={<Home />} />
       <Route path="/pricing" element={<Pricing />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
@@ -31,4 +33,4 @@ export function AppRoutes() {
       />
     </Routes>
   );
-}
+};
