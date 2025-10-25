@@ -10,7 +10,7 @@ interface JWTPayload {
 /**
  * Декодирует JWT токен без проверки подписи (только для чтения данных)
  */
-export function decodeJWT(token: string): JWTPayload | null {
+export const decodeJWT = (token: string): JWTPayload | null => {
   try {
     const parts = token.split('.');
     if (parts.length !== 3) {
@@ -29,12 +29,12 @@ export function decodeJWT(token: string): JWTPayload | null {
   } catch {
     return null;
   }
-}
+};
 
 /**
  * Получает username из JWT токена
  */
-export function getUsernameFromToken(token: string): string | null {
+export const getUsernameFromToken = (token: string): string | null => {
   const payload = decodeJWT(token);
   return payload?.name || payload?.username || payload?.sub || null;
-}
+};

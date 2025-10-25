@@ -3,7 +3,7 @@ import { ErrorBoundary } from 'shared/ui';
 import { AppRoutes } from '../router/routes';
 import { ScrollToTop } from '../router/ScrollToTop';
 
-export function AppLayout() {
+export const AppLayout = () => {
   return (
     <div className="min-h-screen flex flex-col bg-surface-accent dark:bg-surface-dark transition-colors duration-300">
       <ScrollToTop />
@@ -18,4 +18,4 @@ export function AppLayout() {
       <Footer />
     </div>
   );
-}
+};

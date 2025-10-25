@@ -4,7 +4,7 @@ import { Login, Signup } from 'features/auth';
 import { EmailSent, EmailConfirmed, ForgotPassword, ResetPassword } from 'pages/auth';
 import { Home } from 'pages/marketing/ui/Home';
 import { Pricing } from 'pages/marketing/ui/Pricing';
-import Profile from 'pages/profile/ui/Profile';
+import { Profile } from 'pages/profile/ui/Profile';
 import { PrivacyPolicy, TermsOfService } from 'shared/ui/legal';
 
 export const AppRoutes = () => {

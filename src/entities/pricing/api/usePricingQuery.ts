@@ -52,10 +52,10 @@ const getPricing = async (): Promise<PricingResponse> => {
   };
 };
 
-export function usePricingQuery() {
+export const usePricingQuery = () => {
   return useQuery({
     queryKey: ['pricing'],
     queryFn: getPricing,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
-}
+};

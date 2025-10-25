@@ -6,7 +6,7 @@ interface UseApiState<T> {
   error: string | null;
 }
 
-export function useApi<T>() {
+export const useApi = <T>() => {
   const [state, setState] = useState<UseApiState<T>>({
     data: null,
     loading: false,
@@ -28,4 +28,4 @@ export function useApi<T>() {
   }, []);
 
   return { ...state, execute };
-}
+};

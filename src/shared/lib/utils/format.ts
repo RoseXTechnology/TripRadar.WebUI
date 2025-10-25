@@ -1,20 +1,20 @@
-export function formatCurrency(amount: number, currency: string = 'USD'): string {
+export const formatCurrency = (amount: number, currency: string = 'USD'): string => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
   }).format(amount);
-}
+};
 
-export function formatDate(date: Date | string): string {
+export const formatDate = (date: Date | string): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
   }).format(dateObj);
-}
+};
 
-export function formatRelativeTime(date: Date | string): string {
+export const formatRelativeTime = (date: Date | string): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - dateObj.getTime()) / 1000);
@@ -23,4 +23,4 @@ export function formatRelativeTime(date: Date | string): string {
   if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
   return `${Math.floor(diffInSeconds / 86400)}d ago`;
-}
+};

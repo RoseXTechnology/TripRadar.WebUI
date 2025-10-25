@@ -1,4 +1,4 @@
-export function CTASection() {
+export const CTASection = () => {
   const handleTelegramClick = () => {
     window.open('https://t.me/TripRadarBot', '_blank');
   };
@@ -42,4 +42,4 @@ export function CTASection() {
       </div>
     </section>
   );
-}
+};

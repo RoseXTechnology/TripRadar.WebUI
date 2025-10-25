@@ -10,7 +10,7 @@ interface ProvidersProps {
   children: ReactNode;
 }
 
-function AuthInitializer({ children }: { children: ReactNode }) {
+const AuthInitializer = ({ children }: { children: ReactNode }) => {
   const { initializeAuth, isLoading } = useAuthStore();
 
   useEffect(() => {
@@ -29,9 +29,9 @@ function AuthInitializer({ children }: { children: ReactNode }) {
   }
 
   return <>{children}</>;
-}
+};
 
-export function Providers({ children }: ProvidersProps) {
+export const Providers = ({ children }: ProvidersProps) => {
   return (
     <QueryProvider>
       <ThemeProvider>
@@ -41,4 +41,4 @@ export function Providers({ children }: ProvidersProps) {
       </ThemeProvider>
     </QueryProvider>
   );
-}
+};

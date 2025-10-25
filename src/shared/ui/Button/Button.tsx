@@ -9,7 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 
-export function Button({
+export const Button = ({
   variant = 'primary',
   size = 'md',
   icon: Icon,
@@ -18,7 +18,7 @@ export function Button({
   className = '',
   disabled,
   ...props
-}: ButtonProps) {
+}: ButtonProps) => {
   const baseClasses =
     'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
 
@@ -52,4 +52,4 @@ export function Button({
       {children}
     </button>
   );
-}
+};

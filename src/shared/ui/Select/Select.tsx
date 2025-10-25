@@ -12,7 +12,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   placeholder?: string;
 }
 
-export function Select({ label, error, options, placeholder, className = '', ...props }: SelectProps) {
+export const Select = ({ label, error, options, placeholder, className = '', ...props }: SelectProps) => {
   const selectClasses = `w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors ${
     error ? 'border-red-300 dark:border-red-700' : 'border-gray-300 dark:border-gray-600'
   } ${className}`;
@@ -35,4 +35,4 @@ export function Select({ label, error, options, placeholder, className = '', ...
       {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
     </div>
   );
-}
+};

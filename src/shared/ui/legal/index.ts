@@ -1,4 +1,4 @@
-export { default as CookiePolicy } from './CookiePolicy';
-export { default as PrivacyPolicy } from './PrivacyPolicy';
-export { default as SecurityPolicy } from './SecurityPolicy';
-export { default as TermsOfService } from './TermsOfService';
+export { CookiePolicy } from './CookiePolicy';
+export { PrivacyPolicy } from './PrivacyPolicy';
+export { SecurityPolicy } from './SecurityPolicy';
+export { TermsOfService } from './TermsOfService';

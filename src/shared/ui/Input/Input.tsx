@@ -8,7 +8,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   helperText?: string;
 }
 
-export function Input({ label, error, icon: Icon, helperText, className = '', ...props }: InputProps) {
+export const Input = ({ label, error, icon: Icon, helperText, className = '', ...props }: InputProps) => {
   const inputClasses = `w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors ${
     Icon ? 'pl-10' : ''
   } ${error ? 'border-red-300 dark:border-red-700' : 'border-gray-300 dark:border-gray-600'} ${className}`;
@@ -24,4 +24,4 @@ export function Input({ label, error, icon: Icon, helperText, className = '', ..
       {helperText && !error && <p className="text-sm text-gray-500 dark:text-gray-400">{helperText}</p>}
     </div>
   );
-}
+};

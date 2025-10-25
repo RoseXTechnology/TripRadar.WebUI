@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import type { CreateSubscriptionCheckoutRequest } from 'shared/api';
 import { paymentApi } from './paymentApi';
 
-export function useCreateCheckoutMutation() {
+export const useCreateCheckoutMutation = () => {
   return useMutation({
     mutationFn: (data: CreateSubscriptionCheckoutRequest) => paymentApi.createCheckout(data),
     onSuccess: response => {
@@ -12,4 +12,4 @@ export function useCreateCheckoutMutation() {
       }
     },
   });
-}
+};

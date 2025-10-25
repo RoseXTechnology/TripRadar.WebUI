@@ -31,7 +31,7 @@ const features = [
   },
 ];
 
-export function BenefitsSection() {
+export const BenefitsSection = () => {
   return (
     <section className="py-24 px-6 bg-surface dark:bg-surface-dark">
       <div className="max-w-6xl mx-auto">
@@ -61,4 +61,4 @@ export function BenefitsSection() {
       </div>
     </section>
   );
-}
+};

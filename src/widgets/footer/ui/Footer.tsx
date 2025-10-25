@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Logo } from 'shared/ui';
 
-export default function Footer() {
+export const Footer = () => {
   const location = useLocation();
   const isAuthPage = ['/login', '/signup'].includes(location.pathname);
 
@@ -38,4 +38,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+};

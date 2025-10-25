@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import type { CreateUserRequest } from 'shared/api';
 import { authApi } from './authApi';
 
-export function useRegisterMutation() {
+export const useRegisterMutation = () => {
   return useMutation({
     mutationFn: async (data: CreateUserRequest) => {
       // Только регистрация, без автологина
@@ -13,4 +13,4 @@ export function useRegisterMutation() {
       console.log('✅ Registration successful:', response.message);
     },
   });
-}
+};

@@ -3,12 +3,12 @@ import type { User } from 'app/types';
 /**
  * Создает объект пользователя из данных регистрации
  */
-export function createUserFromRegistration(data: {
+export const createUserFromRegistration = (data: {
   username: string;
   email: string;
   firstName?: string;
   lastName?: string;
-}): User {
+}): User => {
   const displayName = data.firstName && data.lastName ? `${data.firstName} ${data.lastName}` : data.username;
 
   return {
@@ -18,4 +18,4 @@ export function createUserFromRegistration(data: {
     avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=6366f1&color=fff`,
     subscription: 'free',
   };
-}
+};

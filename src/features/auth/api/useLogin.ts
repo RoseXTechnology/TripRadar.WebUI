@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import type { CreateLoginRequest, GetLoginResponse } from 'shared/api';
 import { authApi } from './authApi';
 
-export function useLoginMutation() {
+export const useLoginMutation = () => {
   return useMutation({
     mutationFn: async (data: CreateLoginRequest): Promise<GetLoginResponse> => {
       return authApi.login(data);
@@ -14,4 +14,4 @@ export function useLoginMutation() {
       console.error('❌ Login failed:', error);
     },
   });
-}
+};

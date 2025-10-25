@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-export function useForm<T extends Record<string, unknown>>(initialValues: T) {
+export const useForm = <T extends Record<string, unknown>>(initialValues: T) => {
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
 
@@ -31,4 +31,4 @@ export function useForm<T extends Record<string, unknown>>(initialValues: T) {
     setErrors,
     reset,
   };
-}
+};

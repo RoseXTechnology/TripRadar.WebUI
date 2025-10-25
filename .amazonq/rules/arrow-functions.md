@@ -5,7 +5,7 @@
 **Use arrow functions everywhere possible:**
 
 ```typescript
-// ✅ Correct - arrow functions
+// ✅ Correct - arrow functions with semicolons
 const MyComponent = () => {
   return <div>Hello</div>;
 };
@@ -25,6 +25,22 @@ const fetchData = async () => {
 // ✅ Correct - arrow functions in arrays
 const items = data.map(item => item.name);
 const filtered = items.filter(item => item.length > 0);
+```
+
+## 🔧 SEMICOLON REQUIREMENT
+
+**Always end arrow function declarations with semicolons:**
+
+```typescript
+// ✅ Correct - with semicolon
+export const MyComponent = () => {
+  return <div>Hello</div>;
+};
+
+// ❌ Wrong - missing semicolon
+export const AnotherComponent = () => {
+  return <div>Hello</div>;
+}
 ```
 
 ## ❌ NEVER USE - Function Declarations
@@ -83,3 +99,4 @@ This ensures:
 - More concise and modern JavaScript/TypeScript
 - Better readability and maintainability
 - Consistent with React functional components pattern
+- Proper semicolon usage prevents ASI (Automatic Semicolon Insertion) issues

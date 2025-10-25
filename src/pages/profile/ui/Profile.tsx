@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { User, Settings, CreditCard, LogOut, Edit2, Check, X } from 'lucide-react';
 import { useAuthStore } from 'shared/store/auth';
 
-export default function Profile() {
+export const Profile = () => {
   const { user, updateUser, logout } = useAuthStore();
   const [activeSection, setActiveSection] = useState('profile');
   const [isEditing, setIsEditing] = useState({
@@ -308,4 +308,4 @@ export default function Profile() {
       </div>
     </div>
   );
-}
+};

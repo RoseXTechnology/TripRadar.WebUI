@@ -6,7 +6,7 @@ import { handleGoogleSignUp } from 'features/auth/lib/oauth';
 import { authStorage } from 'shared/lib';
 import { useAuthStore } from 'shared/store/auth';
 
-export default function Login() {
+export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     usernameOrEmail: '', // Backend accepts both email and username in this field
@@ -232,4 +232,4 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};
