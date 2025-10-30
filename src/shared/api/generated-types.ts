@@ -2169,8 +2169,8 @@ export interface paths {
       };
       requestBody?: never;
       responses: {
-        /** @description OK */
-        200: {
+        /** @description Found */
+        302: {
           headers: {
             [name: string]: unknown;
           };

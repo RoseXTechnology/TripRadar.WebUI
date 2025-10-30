@@ -1,32 +1,41 @@
 import { useState } from 'react';
 import { User, Settings, CreditCard, LogOut, Edit2, Check, X } from 'lucide-react';
+import { useProfileQuery, useUpdateProfileMutation } from 'entities/user/api';
 import { useAuthStore } from 'shared/store/auth';
 
 export const Profile = () => {
-  const { user, updateUser, logout } = useAuthStore();
+  const { user, logout } = useAuthStore();
+  const { data: profile, isLoading, error } = useProfileQuery(user?.name || '');
+  const updateProfile = useUpdateProfileMutation();
   const [activeSection, setActiveSection] = useState('profile');
   const [isEditing, setIsEditing] = useState({
     name: false,
     email: false,
   });
   const [editValues, setEditValues] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
+    firstName: profile?.firstName || '',
+    lastName: profile?.lastName || '',
   });
 
   const handleSave = (field: keyof typeof isEditing) => {
+    const username = user?.name;
+    if (!username) return;
+
     setIsEditing(prev => ({ ...prev, [field]: false }));
-    if (field === 'name') updateUser({ name: editValues.name });
-    if (field === 'email') updateUser({ email: editValues.email });
+    if (field === 'name') {
+      updateProfile.mutate({
+        username,
+        data: { firstName: editValues.firstName, lastName: editValues.lastName },
+      });
+    }
   };
 
   const handleCancel = (field: keyof typeof isEditing) => {
     setIsEditing(prev => ({ ...prev, [field]: false }));
-    setEditValues(prev => ({
-      ...prev,
-      name: user?.name || '',
-      email: user?.email || '',
-    }));
+    setEditValues({
+      firstName: profile?.firstName || '',
+      lastName: profile?.lastName || '',
+    });
   };
 
   const sidebarItems = [
@@ -34,6 +43,26 @@ export const Profile = () => {
     { id: 'preferences', label: 'Preferences', icon: Settings },
     { id: 'billing', label: 'Billing', icon: CreditCard },
   ];
+
+  // Показываем загрузку или ошибку
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p>Loading profile...</p>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p>Error loading profile</p>
+      </div>
+    );
+  if (!profile)
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p>Profile not found</p>
+      </div>
+    );
 
   const renderProfileSection = () => (
     <div className="p-8">
@@ -53,8 +82,11 @@ export const Profile = () => {
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
-                    value={editValues.name}
-                    onChange={e => setEditValues(prev => ({ ...prev, name: e.target.value }))}
+                    value={`${editValues.firstName} ${editValues.lastName}`}
+                    onChange={e => {
+                      const [firstName = '', lastName = ''] = e.target.value.split(' ');
+                      setEditValues({ firstName, lastName });
+                    }}
                     className="flex-1 px-3 py-2 border border-gray-300 dark:border-outline-dark rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-content-dark bg-white dark:bg-surface-dark"
                     autoFocus
                   />
@@ -73,7 +105,9 @@ export const Profile = () => {
                 </div>
               ) : (
                 <div className="group flex items-center justify-between py-2">
-                  <span className="text-gray-900 dark:text-content-dark font-medium">{user?.name}</span>
+                  <span className="text-gray-900 dark:text-content-dark font-medium">
+                    {profile.firstName} {profile.lastName}
+                  </span>
                   <button
                     onClick={() => setIsEditing(prev => ({ ...prev, name: true }))}
                     className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200"
@@ -93,39 +127,18 @@ export const Profile = () => {
               <label className="block text-sm font-medium text-gray-700 dark:text-content-dark mb-1">
                 Email Address
               </label>
-              {isEditing.email ? (
-                <div className="flex items-center gap-2">
-                  <input
-                    type="email"
-                    value={editValues.email}
-                    onChange={e => setEditValues(prev => ({ ...prev, email: e.target.value }))}
-                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-outline-dark rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-content-dark bg-white dark:bg-surface-dark"
-                    autoFocus
-                  />
-                  <button
-                    onClick={() => handleSave('email')}
-                    className="p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-500/10 rounded-md transition-colors"
-                  >
-                    <Check className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => handleCancel('email')}
-                    className="p-2 text-gray-400 hover:bg-gray-50 dark:hover:bg-surface-accent-dark rounded-md transition-colors"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              ) : (
-                <div className="group flex items-center justify-between py-2">
-                  <span className="text-gray-900 dark:text-content-dark font-medium">{user?.email}</span>
-                  <button
-                    onClick={() => setIsEditing(prev => ({ ...prev, email: true }))}
-                    className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200"
-                  >
-                    <Edit2 className="h-4 w-4" />
-                  </button>
-                </div>
-              )}
+              <div className="group flex items-center justify-between py-2">
+                <span className="text-gray-900 dark:text-content-dark font-medium">{profile.email}</span>
+                <span
+                  className={`px-2 py-1 text-xs rounded-full ${
+                    profile.isEmailConfirmed
+                      ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400'
+                      : 'bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-400'
+                  }`}
+                >
+                  {profile.isEmailConfirmed ? 'Verified' : 'Unverified'}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -140,15 +153,15 @@ export const Profile = () => {
               <div className="flex items-center justify-between py-2">
                 <div className="flex items-center gap-3">
                   <span className="text-gray-900 dark:text-content-dark font-medium capitalize">
-                    {user?.subscription}
+                    {profile.tierName}
                   </span>
-                  {user?.subscription === 'premium' && (
+                  {profile.tierName !== 'basic' && (
                     <span className="px-2 py-1 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400 text-xs font-medium rounded-full">
-                      Pro
+                      {profile.tierName}
                     </span>
                   )}
                 </div>
-                {user?.subscription !== 'premium' && (
+                {profile.tierName === 'basic' && (
                   <button className="px-3 py-1.5 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark border border-outline dark:border-outline-dark hover:bg-button-hover dark:hover:bg-button-hover-dark text-sm font-medium rounded-md transition-colors">
                     Upgrade
                   </button>
@@ -212,11 +225,19 @@ export const Profile = () => {
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-12">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-content-dark mb-2">Account Settings</h1>
-          <p className="text-gray-600 dark:text-content-secondary-dark text-lg">
-            Manage your profile and account preferences
-          </p>
+        <div className="mb-12 flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-content-dark mb-2">Account Settings</h1>
+            <p className="text-gray-600 dark:text-content-secondary-dark text-lg">
+              Manage your profile and account preferences
+            </p>
+          </div>
+          <button
+            onClick={() => (window.location.href = '/profile/edit')}
+            className="px-4 py-2 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark border border-outline dark:border-outline-dark hover:bg-button-hover dark:hover:bg-button-hover-dark rounded-md transition-colors"
+          >
+            Edit Profile
+          </button>
         </div>
 
         {/* Mobile Navigation */}
