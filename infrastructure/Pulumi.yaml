@@ -1,0 +1,3 @@
+name: tripradar-webui-infrastructure
+runtime: dotnet
+description: Infrastructure as Code for TripRadar WebUI using Pulumi and Azure
