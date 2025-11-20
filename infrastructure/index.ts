@@ -39,7 +39,7 @@ const baseTags = {
   [TAG_KEYS.COST_CENTER]: isProd ? TAG_VALUES.COST_CENTER_PROD : TAG_VALUES.COST_CENTER_DEV,
 };
 
-const rgName = `webui-${isProd ? 'prod' : 'dev'}-${RESOURCE_SUFFIX.RESOURCE_GROUP}`;
+const rgName = `tripradar-webui-${isProd ? 'prod' : 'dev'}-${RESOURCE_SUFFIX.RESOURCE_GROUP}`;
 
 const resourceGroup = new resources.ResourceGroup(rgName, {
   resourceGroupName: rgName,
