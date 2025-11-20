@@ -160,7 +160,9 @@ jobs:
           if [ "${{ steps.env.outputs.environment }}" == "development" ]; then
             STORAGE_ACCOUNT="tripradarwebuidev"
             RESOURCE_GROUP="tripradar-webui-rg-dev"
-            USE_CDN="false"
+            CDN_PROFILE="tripradar-webui-cdn-dev"
+            CDN_ENDPOINT="tripradar-webui-dev"
+            USE_CDN="true"
           else
             STORAGE_ACCOUNT="tripradarwebuiprod"
             RESOURCE_GROUP="tripradar-webui-rg-prod"

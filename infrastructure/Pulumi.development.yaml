@@ -1,4 +1,5 @@
 config:
   tripradar-webui-infrastructure:environment: development
   tripradar-webui-infrastructure:location: westeurope
+  tripradar-webui-infrastructure:customDomain: dev.tripradar.io
   azure-native:location: westeurope

@@ -27,7 +27,7 @@ const isProd = environment === ENVIRONMENT.PRODUCTION;
 
 const envConfig = {
   storageSku: isProd ? storage.SkuName.Standard_GRS : storage.SkuName.Standard_LRS,
-  enableCdn: isProd,
+  enableCdn: true, // Always enable CDN for custom domains
   cdnSku: cdn.SkuName.Standard_Microsoft,
   cacheTtl: isProd ? 31_536_000 : 300, // 1 year vs 5 minutes
 };
@@ -116,7 +116,21 @@ if (envConfig.enableCdn) {
     tags: baseTags,
   });
 
-  publicEndpoint = pulumi.interpolate`${HTTPS_PROTOCOL}${cdnEndpoint.hostName}`;
+  // Custom domain configuration (optional)
+  const customDomain = config.get('customDomain');
+  if (customDomain) {
+    new cdn.CustomDomain(`custom-domain-${isProd ? 'prod' : 'dev'}`, {
+      customDomainName: customDomain.replace(/\./g, '-'),
+      hostName: customDomain,
+      resourceGroupName: resourceGroup.name,
+      profileName: cdnProfile.name,
+      endpointName: cdnEndpoint.name,
+    });
+  }
+
+  publicEndpoint = customDomain
+    ? pulumi.interpolate`https://${customDomain}`
+    : pulumi.interpolate`${HTTPS_PROTOCOL}${cdnEndpoint.hostName}`;
 } else {
   publicEndpoint = storageAccount.primaryEndpoints.apply(e => e!.web!);
 }
