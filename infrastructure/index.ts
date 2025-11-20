@@ -90,47 +90,65 @@ if (envConfig.enableCdn) {
     e!.web!.replace(REGEX_PATTERNS.REMOVE_HTTPS, '').replace(REGEX_PATTERNS.REMOVE_TRAILING_SLASH, '')
   );
 
-  const cdnEndpoint = new cdn.Endpoint(CDN_RESOURCE_NAMES.ENDPOINT, {
-    endpointName: `${PROJECT_NAME}-${isProd ? 'prod' : 'dev'}`,
-    resourceGroupName: resourceGroup.name,
+  // Azure Front Door Origin Group
+  const originGroup = new cdn.AFDOriginGroup('afd-origin-group', {
+    originGroupName: 'storage-origin-group',
     profileName: cdnProfile.name,
-    isHttpAllowed: false,
-    isHttpsAllowed: true,
+    resourceGroupName: resourceGroup.name,
+    loadBalancingSettings: {
+      sampleSize: 4,
+      successfulSamplesRequired: 3,
+      additionalLatencyInMilliseconds: 50,
+    },
+    healthProbeSettings: {
+      probePath: '/',
+      probeRequestType: 'GET',
+      probeProtocol: 'Https',
+      probeIntervalInSeconds: 100,
+    },
+  });
+
+  // Azure Front Door Origin
+  const origin = new cdn.AFDOrigin('afd-origin', {
+    originName: 'storage-origin',
+    originGroupName: originGroup.name,
+    profileName: cdnProfile.name,
+    resourceGroupName: resourceGroup.name,
+    hostName: originHostName,
+    httpPort: 80,
+    httpsPort: 443,
     originHostHeader: originHostName,
-    queryStringCachingBehavior: cdn.QueryStringCachingBehavior.IgnoreQueryString,
-    origins: [
-      {
-        name: CDN_ORIGIN_NAME,
-        hostName: originHostName,
-      },
-    ],
-    isCompressionEnabled: true,
-    contentTypesToCompress: [
-      CONTENT_TYPES.PLAIN,
-      CONTENT_TYPES.HTML,
-      CONTENT_TYPES.CSS,
-      CONTENT_TYPES.JS,
-      CONTENT_TYPES.APP_JS,
-      CONTENT_TYPES.JSON,
-    ],
+    priority: 1,
+    weight: 1000,
+    enabledState: 'Enabled',
+  });
+
+  // Azure Front Door Endpoint
+  const afdEndpoint = new cdn.AFDEndpoint('afd-endpoint', {
+    endpointName: `${PROJECT_NAME}-${isProd ? 'prod' : 'dev'}`,
+    profileName: cdnProfile.name,
+    resourceGroupName: resourceGroup.name,
+    enabledState: 'Enabled',
     tags: baseTags,
   });
 
-  // Custom domain configuration (optional)
-  const customDomain = config.get('customDomain');
-  if (customDomain) {
-    new cdn.CustomDomain(`custom-domain-${isProd ? 'prod' : 'dev'}`, {
-      customDomainName: customDomain.replace(/\./g, '-'),
-      hostName: customDomain,
-      resourceGroupName: resourceGroup.name,
-      profileName: cdnProfile.name,
-      endpointName: cdnEndpoint.name,
-    });
-  }
+  // AFD Route
+  new cdn.Route('afd-route', {
+    routeName: 'default-route',
+    endpointName: afdEndpoint.name,
+    profileName: cdnProfile.name,
+    resourceGroupName: resourceGroup.name,
+    originGroup: {
+      id: originGroup.id,
+    },
+    supportedProtocols: ['Https', 'Http'],
+    patternsToMatch: ['/*'],
+    forwardingProtocol: 'HttpsOnly',
+    linkToDefaultDomain: 'Enabled',
+    httpsRedirect: 'Enabled',
+  });
 
-  publicEndpoint = customDomain
-    ? pulumi.interpolate`https://${customDomain}`
-    : pulumi.interpolate`${HTTPS_PROTOCOL}${cdnEndpoint.hostName}`;
+  publicEndpoint = pulumi.interpolate`${HTTPS_PROTOCOL}${afdEndpoint.hostName}`;
 } else {
   publicEndpoint = storageAccount.primaryEndpoints.apply(e => e!.web!);
 }

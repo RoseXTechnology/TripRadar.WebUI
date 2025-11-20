@@ -232,22 +232,23 @@ jobs:
         uses: azure/CLI@v2
         with:
           inlineScript: |
-            echo "🔄 Purging CDN cache..."
-            az cdn endpoint purge \
+            echo "🔄 Purging Azure Front Door cache..."
+            az afd endpoint purge \
               --resource-group ${{ steps.infra.outputs.resource_group }} \
               --profile-name ${{ steps.infra.outputs.cdn_profile }} \
-              --name ${{ steps.infra.outputs.cdn_endpoint }} \
-              --content-paths "/*"
-            echo "✅ CDN cache purged"
+              --endpoint-name ${{ steps.infra.outputs.cdn_endpoint }} \
+              --content-paths "/*" \
+              --domains ${{ steps.infra.outputs.cdn_endpoint }}.azurefd.net
+            echo "✅ AFD cache purged"
 
       - name: Get CDN Hostname
         id: cdn
         run: |
           if [ "${{ steps.infra.outputs.use_cdn }}" == "true" ]; then
-            CDN_HOSTNAME=$(az cdn endpoint show \
+            CDN_HOSTNAME=$(az afd endpoint show \
               --resource-group ${{ steps.infra.outputs.resource_group }} \
               --profile-name ${{ steps.infra.outputs.cdn_profile }} \
-              --name ${{ steps.infra.outputs.cdn_endpoint }} \
+              --endpoint-name ${{ steps.infra.outputs.cdn_endpoint }} \
               --query "hostName" -o tsv)
             echo "hostname=$CDN_HOSTNAME" >> $GITHUB_OUTPUT
             echo "url=https://$CDN_HOSTNAME" >> $GITHUB_OUTPUT
