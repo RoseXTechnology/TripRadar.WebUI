@@ -39,7 +39,7 @@ const baseTags = {
   [TAG_KEYS.COST_CENTER]: isProd ? TAG_VALUES.COST_CENTER_PROD : TAG_VALUES.COST_CENTER_DEV,
 };
 
-const rgName = `${PROJECT_NAME}-${RESOURCE_SUFFIX.RESOURCE_GROUP}-${environment}`;
+const rgName = `${PROJECT_NAME}-${RESOURCE_SUFFIX.RESOURCE_GROUP}-${isProd ? 'prod' : 'dev'}`;
 
 const resourceGroup = new resources.ResourceGroup(rgName, {
   resourceGroupName: rgName,
@@ -47,7 +47,7 @@ const resourceGroup = new resources.ResourceGroup(rgName, {
   tags: baseTags,
 });
 
-const storageAccountName = `tripradarwebui${environment}`;
+const storageAccountName = `tripradarwebui${isProd ? 'prod' : 'dev'}`;
 
 const storageAccount = new storage.StorageAccount(`${PROJECT_NAME}${RESOURCE_SUFFIX.STORAGE_ACCOUNT}${environment}`, {
   accountName: storageAccountName,
@@ -76,7 +76,7 @@ pulumi
 let publicEndpoint: pulumi.Output<string>;
 
 if (envConfig.enableCdn) {
-  const profileName = `${PROJECT_NAME}-${RESOURCE_SUFFIX.CDN_PROFILE}-${environment}`;
+  const profileName = `${PROJECT_NAME}-${RESOURCE_SUFFIX.CDN_PROFILE}-${isProd ? 'prod' : 'dev'}`;
 
   const cdnProfile = new cdn.Profile(CDN_RESOURCE_NAMES.PROFILE, {
     profileName,
@@ -91,7 +91,7 @@ if (envConfig.enableCdn) {
   );
 
   const cdnEndpoint = new cdn.Endpoint(CDN_RESOURCE_NAMES.ENDPOINT, {
-    endpointName: `${PROJECT_NAME}-${environment}`,
+    endpointName: `${PROJECT_NAME}-${isProd ? 'prod' : 'dev'}`,
     resourceGroupName: resourceGroup.name,
     profileName: cdnProfile.name,
     isHttpAllowed: false,
