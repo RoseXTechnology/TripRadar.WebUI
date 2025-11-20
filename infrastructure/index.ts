@@ -28,7 +28,7 @@ const isProd = environment === ENVIRONMENT.PRODUCTION;
 const envConfig = {
   storageSku: isProd ? storage.SkuName.Standard_GRS : storage.SkuName.Standard_LRS,
   enableCdn: true, // Always enable CDN for custom domains
-  cdnSku: cdn.SkuName.Standard_Verizon, // Microsoft CDN classic deprecated
+  cdnSku: cdn.SkuName.Standard_AzureFrontDoor, // Use Azure Front Door (new CDN)
   cacheTtl: isProd ? 31_536_000 : 300, // 1 year vs 5 minutes
 };
 
@@ -39,7 +39,7 @@ const baseTags = {
   [TAG_KEYS.COST_CENTER]: isProd ? TAG_VALUES.COST_CENTER_PROD : TAG_VALUES.COST_CENTER_DEV,
 };
 
-const rgName = `${PROJECT_NAME}-${RESOURCE_SUFFIX.RESOURCE_GROUP}-${isProd ? 'prod' : 'dev'}`;
+const rgName = `webui-${isProd ? 'prod' : 'dev'}-${RESOURCE_SUFFIX.RESOURCE_GROUP}`;
 
 const resourceGroup = new resources.ResourceGroup(rgName, {
   resourceGroupName: rgName,

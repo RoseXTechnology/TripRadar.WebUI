@@ -59,9 +59,9 @@ jobs:
           echo "🔍 Checking Azure resources for environment: ${{ env.DEPLOYMENT_ENVIRONMENT }}"
 
           if [ "${{ env.DEPLOYMENT_ENVIRONMENT }}" == "development" ]; then
-            RESOURCE_GROUP="tripradar-webui-rg-dev"
+            RESOURCE_GROUP="webui-dev-rg"
           else
-            RESOURCE_GROUP="tripradar-webui-rg-prod"
+            RESOURCE_GROUP="webui-prod-rg"
           fi
 
           if az group show --name "$RESOURCE_GROUP" --output none 2>/dev/null; then
@@ -104,9 +104,9 @@ jobs:
           echo "🔍 Verifying deployed resources..."
 
           if [ "${{ env.DEPLOYMENT_ENVIRONMENT }}" == "development" ]; then
-            RESOURCE_GROUP="tripradar-webui-rg-dev"
+            RESOURCE_GROUP="webui-dev-rg"
           else
-            RESOURCE_GROUP="tripradar-webui-rg-prod"
+            RESOURCE_GROUP="webui-prod-rg"
           fi
 
           echo "📊 Resources in $RESOURCE_GROUP:"
