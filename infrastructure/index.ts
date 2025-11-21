@@ -132,7 +132,7 @@ if (envConfig.enableCdn) {
     tags: baseTags,
   });
 
-  // AFD Route
+  // AFD Route (depends on origin being ready)
   new cdn.Route('afd-route', {
     routeName: 'default-route',
     endpointName: afdEndpoint.name,
@@ -146,7 +146,7 @@ if (envConfig.enableCdn) {
     forwardingProtocol: 'HttpsOnly',
     linkToDefaultDomain: 'Enabled',
     httpsRedirect: 'Enabled',
-  });
+  }, { dependsOn: [origin] });
 
   publicEndpoint = pulumi.interpolate`${HTTPS_PROTOCOL}${afdEndpoint.hostName}`;
 } else {
