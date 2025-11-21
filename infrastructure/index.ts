@@ -192,9 +192,10 @@ if (envConfig.enableCdn) {
           name: 'UrlPath',
           parameters: {
             typeName: 'DeliveryRuleUrlPathConditionParameters',
-            operator: 'NotEqual',
-            matchValues: ['/403.html'],
-            negateCondition: false,
+            operator: 'Equal',
+            path: '/403.html',
+            matchType: 'Literal',
+            negateCondition: true, // Negate to exclude /403.html from blocking
           },
         },
       ],
