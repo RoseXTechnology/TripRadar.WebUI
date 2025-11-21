@@ -134,7 +134,7 @@ if (envConfig.enableCdn) {
   // WAF Policy for IP Restriction
   // TODO: Enable WAF after verifying correct API type for Azure Front Door WAF
   // For now, deploying without WAF to unblock DNS and custom domain setup
-  const wafPolicyId = pulumi.output(''); // Placeholder for security policy
+  // const wafPolicyId = pulumi.output(''); // Placeholder for security policy
 
   // DNS Record Management
   // This automatically creates the CNAME record in your existing Azure DNS Zone.
@@ -224,7 +224,7 @@ if (envConfig.enableCdn) {
       httpsRedirect: 'Enabled',
       customDomains: [{ id: customDomain.id }],
     },
-    { dependsOn: [origin, customDomain] }
+    { dependsOn: [origin, customDomain, txtRecord] }
   );
 
   publicEndpoint = pulumi.interpolate`${HTTPS_PROTOCOL}${afdEndpoint.hostName}`;
@@ -234,12 +234,13 @@ if (envConfig.enableCdn) {
 
 export const url = publicEndpoint;
 
+// TODO: Re-enable when WAF is implemented
 /**
  * Parses the ALLOWED_IP_RANGES environment variable.
  * Expected format: "Name|IP|Description;Name|IP|Description"
  * Example: "Anton|79.100.209.184/32|Office;Vadim|178.51.119.80/32|Home"
  */
-function parseAllowedIps(ipRangesString: string | undefined): string[] {
+/* function parseAllowedIps(ipRangesString: string | undefined): string[] {
   const fallbackIp = '127.0.0.1/32'; // Dummy IP to prevent empty matchValue
 
   if (!ipRangesString) {
@@ -272,4 +273,4 @@ function parseAllowedIps(ipRangesString: string | undefined): string[] {
     console.error('❌ Failed to parse ALLOWED_IP_RANGES:', error);
     return [fallbackIp];
   }
-}
+} */
