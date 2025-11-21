@@ -237,8 +237,7 @@ jobs:
               --resource-group ${{ steps.infra.outputs.resource_group }} \
               --profile-name ${{ steps.infra.outputs.cdn_profile }} \
               --endpoint-name ${{ steps.infra.outputs.cdn_endpoint }} \
-              --content-paths "/*" \
-              --domains ${{ steps.infra.outputs.cdn_endpoint }}.azurefd.net
+              --content-paths "/*"
             echo "✅ AFD cache purged"
 
       - name: Get CDN Hostname
