@@ -8,9 +8,7 @@ import {
   PROJECT_NAME,
   RESOURCE_SUFFIX,
   HTML_DOCUMENT,
-  CONTENT_TYPES,
   CDN_LOCATION,
-  CDN_ORIGIN_NAME,
   CDN_RESOURCE_NAMES,
   HTTPS_PROTOCOL,
   REGEX_PATTERNS,
@@ -133,20 +131,24 @@ if (envConfig.enableCdn) {
   });
 
   // AFD Route (depends on origin being ready)
-  new cdn.Route('afd-route', {
-    routeName: 'default-route',
-    endpointName: afdEndpoint.name,
-    profileName: cdnProfile.name,
-    resourceGroupName: resourceGroup.name,
-    originGroup: {
-      id: originGroup.id,
+  new cdn.Route(
+    'afd-route',
+    {
+      routeName: 'default-route',
+      endpointName: afdEndpoint.name,
+      profileName: cdnProfile.name,
+      resourceGroupName: resourceGroup.name,
+      originGroup: {
+        id: originGroup.id,
+      },
+      supportedProtocols: ['Https', 'Http'],
+      patternsToMatch: ['/*'],
+      forwardingProtocol: 'HttpsOnly',
+      linkToDefaultDomain: 'Enabled',
+      httpsRedirect: 'Enabled',
     },
-    supportedProtocols: ['Https', 'Http'],
-    patternsToMatch: ['/*'],
-    forwardingProtocol: 'HttpsOnly',
-    linkToDefaultDomain: 'Enabled',
-    httpsRedirect: 'Enabled',
-  }, { dependsOn: [origin] });
+    { dependsOn: [origin] }
+  );
 
   publicEndpoint = pulumi.interpolate`${HTTPS_PROTOCOL}${afdEndpoint.hostName}`;
 } else {
