@@ -135,6 +135,7 @@ if (envConfig.enableCdn) {
   const wafPolicy = new network.FrontDoorWebApplicationFirewallPolicy('waf-policy', {
     resourceGroupName: resourceGroup.name,
     policyName: `tripradarwebui${isProd ? 'prod' : 'dev'}waf`,
+    location: 'Global', // WAF for AFD is a global resource
     sku: {
       name: 'Standard_AzureFrontDoor',
     },
@@ -229,9 +230,11 @@ export const url = publicEndpoint;
  * Example: "Anton|79.100.209.184/32|Office;Vadim|178.51.119.80/32|Home"
  */
 function parseAllowedIps(ipRangesString: string | undefined): string[] {
+  const fallbackIp = '127.0.0.1/32'; // Dummy IP to prevent empty matchValue
+
   if (!ipRangesString) {
-    console.warn('⚠️ ALLOWED_IP_RANGES is not set. WAF will block all requests!');
-    return [];
+    console.warn('⚠️ ALLOWED_IP_RANGES is not set. WAF will block all requests (fallback to dummy IP).');
+    return [fallbackIp];
   }
 
   try {
@@ -248,7 +251,8 @@ function parseAllowedIps(ipRangesString: string | undefined): string[] {
       .filter((ip): ip is string => !!ip && ip.length > 0);
 
     if (ips.length === 0) {
-      console.warn('⚠️ No valid IPs found in ALLOWED_IP_RANGES.');
+      console.warn('⚠️ No valid IPs found in ALLOWED_IP_RANGES. WAF will block all requests.');
+      return [fallbackIp];
     } else {
       console.log(`✅ Configured WAF with ${ips.length} allowed IPs.`);
     }
@@ -256,6 +260,6 @@ function parseAllowedIps(ipRangesString: string | undefined): string[] {
     return ips;
   } catch (error) {
     console.error('❌ Failed to parse ALLOWED_IP_RANGES:', error);
-    return [];
+    return [fallbackIp];
   }
 }
