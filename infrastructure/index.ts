@@ -187,17 +187,24 @@ if (envConfig.enableCdn) {
       ruleSetName: ipRuleSet.name,
       order: 1,
       matchProcessingBehavior: 'Continue',
-      conditions: [], // No conditions = applies to all requests
+      conditions: [
+        {
+          name: 'UrlPath',
+          parameters: {
+            typeName: 'DeliveryRuleUrlPathConditionParameters',
+            operator: 'NotEqual',
+            matchValues: ['/403.html'],
+            negateCondition: false,
+          },
+        },
+      ],
       actions: [
         {
           name: 'UrlRedirect',
           parameters: {
             typeName: 'DeliveryRuleUrlRedirectActionParameters',
             redirectType: 'Found', // 302
-            destinationProtocol: 'Https',
-            customHostname: storageAccount.primaryEndpoints.apply(e =>
-              e!.web!.replace(REGEX_PATTERNS.REMOVE_HTTPS, '').replace(REGEX_PATTERNS.REMOVE_TRAILING_SLASH, '')
-            ),
+            destinationProtocol: 'MatchRequest',
             customPath: '/403.html',
           },
         },
