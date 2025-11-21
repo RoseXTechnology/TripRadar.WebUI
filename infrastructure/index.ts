@@ -131,49 +131,80 @@ if (envConfig.enableCdn) {
     tags: baseTags,
   });
 
-  // WAF Policy for IP Restriction
+  // IP Restriction using AFD Rules Engine
   const allowedIps = parseAllowedIps(process.env.ALLOWED_IP_RANGES);
-  const wafPolicyName = `${PROJECT_NAME}-waf-${isProd ? 'prod' : 'dev'}`;
 
-  const wafPolicy = new cdn.Policy('waf-policy', {
-    policyName: wafPolicyName,
+  // RuleSet for IP-based access control
+  const ipRuleSet = new cdn.RuleSet('ip-restriction-ruleset', {
+    ruleSetName: 'IPRestriction',
+    profileName: cdnProfile.name,
     resourceGroupName: resourceGroup.name,
-    location: CDN_LOCATION,
-    sku: { name: cdn.SkuName.Standard_AzureFrontDoor },
-    policySettings: {
-      enabledState: 'Enabled',
-      mode: 'Prevention',
-    },
-    customRules: {
-      rules: [
+  });
+
+  // Rule 1: Allow whitelisted IPs (order 0 = highest priority)
+  new cdn.Rule(
+    'allow-whitelisted-ips',
+    {
+      ruleName: 'AllowWhitelistedIPs',
+      profileName: cdnProfile.name,
+      resourceGroupName: resourceGroup.name,
+      ruleSetName: ipRuleSet.name,
+      order: 0,
+      matchProcessingBehavior: 'Stop', // Stop processing if IP is allowed
+      conditions: [
         {
-          name: 'AllowedIPs',
-          priority: 1,
-          matchConditions: [
-            {
-              matchVariable: 'RemoteAddr',
-              operator: 'IPMatch',
-              matchValue: allowedIps,
-            },
-          ],
-          action: 'Allow',
+          name: 'RemoteAddress',
+          parameters: {
+            typeName: 'DeliveryRuleRemoteAddressConditionParameters',
+            operator: 'IPMatch',
+            matchValues: allowedIps,
+            negateCondition: false,
+          },
         },
+      ],
+      actions: [
         {
-          name: 'BlockAll',
-          priority: 2,
-          matchConditions: [
-            {
-              matchVariable: 'RemoteAddr',
-              operator: 'IPMatch',
-              matchValue: ['0.0.0.0/0'],
-            },
-          ],
-          action: 'Block',
+          name: 'ModifyResponseHeader',
+          parameters: {
+            typeName: 'DeliveryRuleHeaderActionParameters',
+            headerAction: 'Append',
+            headerName: 'X-IP-Allowed',
+            value: 'true',
+          },
         },
       ],
     },
-    tags: baseTags,
-  });
+    { dependsOn: [ipRuleSet] }
+  );
+
+  // Rule 2: Block all other IPs (order 1)
+  new cdn.Rule(
+    'block-unauthorized-ips',
+    {
+      ruleName: 'BlockUnauthorizedIPs',
+      profileName: cdnProfile.name,
+      resourceGroupName: resourceGroup.name,
+      ruleSetName: ipRuleSet.name,
+      order: 1,
+      matchProcessingBehavior: 'Continue',
+      conditions: [], // No conditions = applies to all requests
+      actions: [
+        {
+          name: 'UrlRedirect',
+          parameters: {
+            typeName: 'DeliveryRuleUrlRedirectActionParameters',
+            redirectType: 'Found', // 302
+            destinationProtocol: 'Https',
+            customHostname: storageAccount.primaryEndpoints.apply(e =>
+              e!.web!.replace(REGEX_PATTERNS.REMOVE_HTTPS, '').replace(REGEX_PATTERNS.REMOVE_TRAILING_SLASH, '')
+            ),
+            customPath: '/403.html',
+          },
+        },
+      ],
+    },
+    { dependsOn: [ipRuleSet] }
+  );
 
   // DNS Record Management
   // This automatically creates the CNAME record in your existing Azure DNS Zone.
@@ -225,28 +256,6 @@ if (envConfig.enableCdn) {
     ],
   });
 
-  // Security Policy to attach WAF to AFD Endpoint and Custom Domain
-  new cdn.SecurityPolicy(
-    'afd-security-policy',
-    {
-      resourceGroupName: resourceGroup.name,
-      profileName: cdnProfile.name,
-      securityPolicyName: 'default-security-policy',
-      parameters: {
-        type: 'WebApplicationFirewall',
-        wafPolicy: {
-          id: wafPolicy.id,
-        },
-        associations: [
-          {
-            domains: [{ id: afdEndpoint.id }, { id: customDomain.id }],
-            patternsToMatch: ['/*'],
-          },
-        ],
-      },
-    },
-    { dependsOn: [wafPolicy, afdEndpoint, customDomain] }
-  );
 
   // AFD Route
   new cdn.Route(
@@ -265,6 +274,7 @@ if (envConfig.enableCdn) {
       linkToDefaultDomain: 'Enabled',
       httpsRedirect: 'Enabled',
       customDomains: [{ id: customDomain.id }],
+      ruleSets: [{ id: ipRuleSet.id }], // Apply IP restriction rules
       cacheConfiguration: {
         queryStringCachingBehavior: 'IgnoreQueryString',
         compressionSettings: {
@@ -279,7 +289,7 @@ if (envConfig.enableCdn) {
         },
       },
     },
-    { dependsOn: [origin, customDomain, txtRecord] }
+    { dependsOn: [origin, customDomain, txtRecord, ipRuleSet] }
   );
 
   publicEndpoint = pulumi.interpolate`${HTTPS_PROTOCOL}${afdEndpoint.hostName}`;
