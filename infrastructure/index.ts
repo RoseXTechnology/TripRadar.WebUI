@@ -132,71 +132,67 @@ if (envConfig.enableCdn) {
   });
 
   // WAF Policy for IP Restriction
-  const wafPolicy = new network.FrontDoorWebApplicationFirewallPolicy('waf-policy', {
-    resourceGroupName: resourceGroup.name,
-    policyName: `tripradarwebui${isProd ? 'prod' : 'dev'}waf`,
-    location: 'Global', // WAF for AFD is a global resource
-    sku: {
-      name: 'Standard_AzureFrontDoor',
-    },
-    policySettings: {
-      enabledState: 'Enabled',
-      mode: 'Prevention',
-    },
-    customRules: {
-      rules: [
-        {
-          name: 'IPAllowList',
-          priority: 100,
-          ruleType: 'MatchRule',
-          action: 'Block',
-          matchConditions: [
-            {
-              matchVariable: 'RemoteAddr',
-              operator: 'IPMatch',
-              negateCondition: true, // Block if NOT in this list
-              matchValue: parseAllowedIps(process.env.ALLOWED_IP_RANGES),
-            },
-          ],
-        },
-      ],
-    },
-    tags: baseTags,
-  });
+  // TODO: Enable WAF after verifying correct API type for Azure Front Door WAF
+  // For now, deploying without WAF to unblock DNS and custom domain setup
+  const wafPolicyId = pulumi.output(''); // Placeholder for security policy
 
-  // Security Policy to attach WAF to AFD Endpoint
-  new cdn.SecurityPolicy('afd-security-policy', {
-    resourceGroupName: resourceGroup.name,
-    profileName: cdnProfile.name,
-    securityPolicyName: 'default-security-policy',
-    parameters: {
-      type: 'WebApplicationFirewall',
-      wafPolicy: {
-        id: wafPolicy.id,
-      },
-      associations: [
-        {
-          domains: [{ id: afdEndpoint.id }],
-          patternsToMatch: ['/*'],
-        },
-      ],
+  // DNS Record Management
+  // This automatically creates the CNAME record in your existing Azure DNS Zone.
+  // NOTE: The Service Principal must have "DNS Zone Contributor" permissions on the DNS Zone's Resource Group.
+  const dnsZoneResourceGroup = config.get('dnsZoneResourceGroup') || 'tripradar-shared-rg';
+  const dnsZoneName = config.get('dnsZoneName') || 'tripradar.io';
+  const subdomain = isProd ? '@' : 'dev';
+
+  const cnameRecord = new network.RecordSet('dns-cname', {
+    resourceGroupName: dnsZoneResourceGroup,
+    zoneName: dnsZoneName,
+    relativeRecordSetName: subdomain,
+    recordType: 'CNAME',
+    ttl: 300,
+    cnameRecord: {
+      cname: afdEndpoint.hostName,
     },
   });
 
   // Custom Domain
-  const domainName = isProd ? 'tripradar.io' : 'dev.tripradar.io';
-  const customDomain = new cdn.AFDCustomDomain('custom-domain', {
-    customDomainName: domainName.replace(/\./g, '-'),
-    hostName: domainName,
-    profileName: cdnProfile.name,
-    resourceGroupName: resourceGroup.name,
-    tlsSettings: {
-      certificateType: 'ManagedCertificate',
-      minimumTlsVersion: 'TLS12',
+  // Now that we manage the DNS record, we can create this resource immediately.
+  const domainName = isProd ? dnsZoneName : `${subdomain}.${dnsZoneName}`;
+  const customDomain = new cdn.AFDCustomDomain(
+    'custom-domain',
+    {
+      customDomainName: domainName.replace(/\./g, '-'),
+      hostName: domainName,
+      profileName: cdnProfile.name,
+      resourceGroupName: resourceGroup.name,
+      tlsSettings: {
+        certificateType: 'ManagedCertificate',
+        minimumTlsVersion: 'TLS12',
+      },
     },
-  });
+    { dependsOn: [cnameRecord] } // Wait for DNS record to be created
+  );
 
-  // AFD Route (depends on origin being ready)
+  // Security Policy to attach WAF to AFD Endpoint and Custom Domain
+  // TODO: Enable Security Policy after WAF Policy is configured
+  // new cdn.SecurityPolicy('afd-security-policy', {
+  //   resourceGroupName: resourceGroup.name,
+  //   profileName: cdnProfile.name,
+  //   securityPolicyName: 'default-security-policy',
+  //   parameters: {
+  //     type: 'WebApplicationFirewall',
+  //     wafPolicy: {
+  //       id: wafPolicy.id,
+  //     },
+  //     associations: [
+  //       {
+  //         domains: [{ id: afdEndpoint.id }, { id: customDomain.id }],
+  //         patternsToMatch: ['/*'],
+  //       },
+  //     ],
+  //   },
+  // });
+
+  // AFD Route
   new cdn.Route(
     'afd-route',
     {
