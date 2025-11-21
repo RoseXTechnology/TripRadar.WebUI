@@ -229,6 +229,8 @@ jobs:
 
       - name: Purge CDN Endpoint
         if: steps.infra.outputs.use_cdn == 'true'
+        continue-on-error: true
+        timeout-minutes: 3
         uses: azure/CLI@v2
         with:
           inlineScript: |
@@ -237,8 +239,8 @@ jobs:
               --resource-group ${{ steps.infra.outputs.resource_group }} \
               --profile-name ${{ steps.infra.outputs.cdn_profile }} \
               --endpoint-name ${{ steps.infra.outputs.cdn_endpoint }} \
-              --content-paths "/*"
-            echo "✅ AFD cache purged"
+              --content-paths "/*" || echo "⚠️ Purge failed or timed out (non-critical)"
+            echo "✅ AFD cache purge attempted"
 
       - name: Get CDN Hostname
         id: cdn
