@@ -223,6 +223,19 @@ if (envConfig.enableCdn) {
       linkToDefaultDomain: 'Enabled',
       httpsRedirect: 'Enabled',
       customDomains: [{ id: customDomain.id }],
+      cacheConfiguration: {
+        queryStringCachingBehavior: 'IgnoreQueryString',
+        compressionSettings: {
+          contentTypesToCompress: [
+            'text/html',
+            'text/css',
+            'text/javascript',
+            'application/javascript',
+            'application/json',
+          ],
+          isCompressionEnabled: true,
+        },
+      },
     },
     { dependsOn: [origin, customDomain, txtRecord] }
   );
