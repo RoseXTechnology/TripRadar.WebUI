@@ -290,7 +290,8 @@ if (envConfig.enableCdn) {
       linkToDefaultDomain: 'Enabled',
       httpsRedirect: 'Enabled',
       customDomains: [{ id: customDomain.id }],
-      ruleSets: [{ id: ipRuleSet.id }], // Apply IP restriction rules
+      // TEMPORARILY DISABLED: IP restriction rules (Azure deployment stuck)
+      // ruleSets: [{ id: ipRuleSet.id }],
       cacheConfiguration: {
         queryStringCachingBehavior: 'IgnoreQueryString',
         compressionSettings: {
