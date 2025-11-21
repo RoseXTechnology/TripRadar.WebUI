@@ -1,4 +1,5 @@
 import * as cdn from '@pulumi/azure-native/cdn';
+import * as network from '@pulumi/azure-native/network';
 import * as resources from '@pulumi/azure-native/resources';
 import * as storage from '@pulumi/azure-native/storage';
 import * as pulumi from '@pulumi/pulumi';
@@ -130,6 +131,70 @@ if (envConfig.enableCdn) {
     tags: baseTags,
   });
 
+  // WAF Policy for IP Restriction
+  const wafPolicy = new network.FrontDoorWebApplicationFirewallPolicy('waf-policy', {
+    resourceGroupName: resourceGroup.name,
+    policyName: `tripradarwebui${isProd ? 'prod' : 'dev'}waf`,
+    sku: {
+      name: 'Standard_AzureFrontDoor',
+    },
+    policySettings: {
+      enabledState: 'Enabled',
+      mode: 'Prevention',
+    },
+    customRules: {
+      rules: [
+        {
+          name: 'IPAllowList',
+          priority: 100,
+          ruleType: 'MatchRule',
+          action: 'Block',
+          matchConditions: [
+            {
+              matchVariable: 'RemoteAddr',
+              operator: 'IPMatch',
+              negateCondition: true, // Block if NOT in this list
+              matchValue: parseAllowedIps(process.env.ALLOWED_IP_RANGES),
+            },
+          ],
+        },
+      ],
+    },
+    tags: baseTags,
+  });
+
+  // Security Policy to attach WAF to AFD Endpoint
+  new cdn.SecurityPolicy('afd-security-policy', {
+    resourceGroupName: resourceGroup.name,
+    profileName: cdnProfile.name,
+    securityPolicyName: 'default-security-policy',
+    parameters: {
+      type: 'WebApplicationFirewall',
+      wafPolicy: {
+        id: wafPolicy.id,
+      },
+      associations: [
+        {
+          domains: [{ id: afdEndpoint.id }],
+          patternsToMatch: ['/*'],
+        },
+      ],
+    },
+  });
+
+  // Custom Domain
+  const domainName = isProd ? 'tripradar.io' : 'dev.tripradar.io';
+  const customDomain = new cdn.AFDCustomDomain('custom-domain', {
+    customDomainName: domainName.replace(/\./g, '-'),
+    hostName: domainName,
+    profileName: cdnProfile.name,
+    resourceGroupName: resourceGroup.name,
+    tlsSettings: {
+      certificateType: 'ManagedCertificate',
+      minimumTlsVersion: 'TLS12',
+    },
+  });
+
   // AFD Route (depends on origin being ready)
   new cdn.Route(
     'afd-route',
@@ -146,11 +211,51 @@ if (envConfig.enableCdn) {
       forwardingProtocol: 'HttpsOnly',
       linkToDefaultDomain: 'Enabled',
       httpsRedirect: 'Enabled',
+      customDomains: [{ id: customDomain.id }],
     },
-    { dependsOn: [origin] }
+    { dependsOn: [origin, customDomain] }
   );
 
   publicEndpoint = pulumi.interpolate`${HTTPS_PROTOCOL}${afdEndpoint.hostName}`;
 } else {
   publicEndpoint = storageAccount.primaryEndpoints.apply(e => e!.web!);
+}
+
+export const url = publicEndpoint;
+
+/**
+ * Parses the ALLOWED_IP_RANGES environment variable.
+ * Expected format: "Name|IP|Description;Name|IP|Description"
+ * Example: "Anton|79.100.209.184/32|Office;Vadim|178.51.119.80/32|Home"
+ */
+function parseAllowedIps(ipRangesString: string | undefined): string[] {
+  if (!ipRangesString) {
+    console.warn('⚠️ ALLOWED_IP_RANGES is not set. WAF will block all requests!');
+    return [];
+  }
+
+  try {
+    const ips = ipRangesString
+      .split(';')
+      .map(entry => {
+        const parts = entry.split('|');
+        // Format is Name|IP|Description, so IP is at index 1
+        if (parts.length >= 2) {
+          return parts[1].trim();
+        }
+        return null;
+      })
+      .filter((ip): ip is string => !!ip && ip.length > 0);
+
+    if (ips.length === 0) {
+      console.warn('⚠️ No valid IPs found in ALLOWED_IP_RANGES.');
+    } else {
+      console.log(`✅ Configured WAF with ${ips.length} allowed IPs.`);
+    }
+
+    return ips;
+  } catch (error) {
+    console.error('❌ Failed to parse ALLOWED_IP_RANGES:', error);
+    return [];
+  }
 }
