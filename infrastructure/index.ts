@@ -177,7 +177,7 @@ if (envConfig.enableCdn) {
     { dependsOn: [ipRuleSet] }
   );
 
-  // Rule 2: Block all other IPs (order 1)
+  // Rule 2: Block all non-whitelisted IPs by checking RemoteAddress with negation
   new cdn.Rule(
     'block-unauthorized-ips',
     {
@@ -189,13 +189,12 @@ if (envConfig.enableCdn) {
       matchProcessingBehavior: 'Continue',
       conditions: [
         {
-          name: 'UrlPath',
+          name: 'RemoteAddress',
           parameters: {
-            typeName: 'DeliveryRuleUrlPathConditionParameters',
-            operator: 'Equal',
-            path: '/403.html',
-            matchType: 'Literal',
-            negateCondition: true, // Negate to exclude /403.html from blocking
+            typeName: 'DeliveryRuleRemoteAddressConditionParameters',
+            operator: 'IPMatch',
+            matchValues: allowedIps,
+            negateCondition: true, // Match IPs NOT in the whitelist
           },
         },
       ],
@@ -206,7 +205,7 @@ if (envConfig.enableCdn) {
             typeName: 'DeliveryRuleUrlRedirectActionParameters',
             redirectType: 'Found', // 302
             destinationProtocol: 'MatchRequest',
-            customPath: '/403.html',
+            customPath: '/blocked.html', // Use different page to avoid conflict with potential 403.html
           },
         },
       ],
