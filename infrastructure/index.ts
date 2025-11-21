@@ -172,6 +172,20 @@ if (envConfig.enableCdn) {
     { dependsOn: [cnameRecord] } // Wait for DNS record to be created
   );
 
+  // DNS TXT record for domain validation
+  const txtRecord = new network.RecordSet('dns-validation-txt', {
+    resourceGroupName: dnsZoneResourceGroup,
+    zoneName: dnsZoneName,
+    relativeRecordSetName: `_dnsauth.${subdomain}`,
+    recordType: 'TXT',
+    ttl: 300,
+    txtRecords: [
+      {
+        value: [customDomain.validationProperties.apply(vp => vp!.validationToken!)],
+      },
+    ],
+  });
+
   // Security Policy to attach WAF to AFD Endpoint and Custom Domain
   // TODO: Enable Security Policy after WAF Policy is configured
   // new cdn.SecurityPolicy('afd-security-policy', {
