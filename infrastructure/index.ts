@@ -172,6 +172,15 @@ if (envConfig.enableCdn) {
             value: 'true',
           },
         },
+        {
+          name: 'ModifyResponseHeader',
+          parameters: {
+            typeName: 'DeliveryRuleHeaderActionParameters',
+            headerAction: 'Append',
+            headerName: 'X-Deployment-Trigger',
+            value: 'forced',
+          },
+        },
       ],
     },
     { dependsOn: [ipRuleSet] }
