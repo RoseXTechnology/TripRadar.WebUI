@@ -30,9 +30,6 @@ export const CONTENT_TYPES = {
 } as const;
 
 export const CDN_LOCATION = 'Global';
-
-export const CDN_ORIGIN_NAME = 'storage-origin';
-
 export const CDN_RESOURCE_NAMES = {
   PROFILE: 'cdn-profile',
   ENDPOINT: 'cdn-endpoint',
