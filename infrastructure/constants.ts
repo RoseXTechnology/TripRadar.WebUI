@@ -32,7 +32,7 @@ export const CONTENT_TYPES = {
 export const CDN_LOCATION = 'Global';
 export const CDN_RESOURCE_NAMES = {
   PROFILE: 'cdn-profile',
-  ENDPOINT: 'cdn-endpoint',
+  ENDPOINT: 'afd-endpoint',
   ORIGIN_GROUP: 'afd-origin-group',
   ORIGIN_GROUP_NAME: 'storage-origin-group',
   ORIGIN: 'afd-origin',
