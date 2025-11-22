@@ -33,6 +33,21 @@ export const CDN_LOCATION = 'Global';
 export const CDN_RESOURCE_NAMES = {
   PROFILE: 'cdn-profile',
   ENDPOINT: 'cdn-endpoint',
+  ORIGIN_GROUP: 'afd-origin-group',
+  ORIGIN_GROUP_NAME: 'storage-origin-group',
+  ORIGIN: 'afd-origin',
+  ORIGIN_NAME: 'storage-origin',
+  RULE_SET: 'ip-restriction-ruleset',
+  RULE_SET_NAME: 'IPRestriction',
+  ALLOW_RULE: 'allow-whitelisted-ips',
+  ALLOW_RULE_NAME: 'AllowWhitelistedIPs',
+  BLOCK_RULE: 'block-unauthorized-ips',
+  BLOCK_RULE_NAME: 'BlockUnauthorizedIPs',
+  CUSTOM_DOMAIN: 'custom-domain',
+  DNS_CNAME: 'dns-cname',
+  DNS_TXT: 'dns-validation-txt',
+  ROUTE: 'afd-route',
+  ROUTE_NAME: 'default-route',
 } as const;
 
 export const HTTPS_PROTOCOL = 'https://';
@@ -57,3 +72,9 @@ export const TAG_VALUES = {
 } as const;
 
 export const STATIC_WEBSITE_RESOURCE_NAME = 'static-website';
+
+export const DEFAULTS = {
+  DNS_ZONE_RG: 'tripradar-shared-rg',
+  DNS_ZONE_NAME: 'tripradar.io',
+  STORAGE_ACCOUNT_PREFIX: 'tripradarwebui',
+} as const;
