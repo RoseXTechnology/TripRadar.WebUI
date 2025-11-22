@@ -101,50 +101,6 @@ export class CdnBuilder {
       resourceGroupName: this.resourceGroup.name,
     });
 
-    this.allowRule = new cdn.Rule(
-      CDN_RESOURCE_NAMES.ALLOW_RULE,
-      {
-        ruleName: CDN_RESOURCE_NAMES.ALLOW_RULE_NAME,
-        profileName: this.profile.name,
-        resourceGroupName: this.resourceGroup.name,
-        ruleSetName: this.ipRuleSet.name,
-        order: 0,
-        matchProcessingBehavior: 'Stop',
-        conditions: [
-          {
-            name: 'RemoteAddress',
-            parameters: {
-              typeName: 'DeliveryRuleRemoteAddressConditionParameters',
-              operator: 'IPMatch',
-              matchValues: allowedIps,
-              negateCondition: false,
-            },
-          },
-        ],
-        actions: [
-          {
-            name: 'ModifyResponseHeader',
-            parameters: {
-              typeName: 'DeliveryRuleHeaderActionParameters',
-              headerAction: 'Append',
-              headerName: 'X-IP-Allowed',
-              value: 'true',
-            },
-          },
-          {
-            name: 'ModifyResponseHeader',
-            parameters: {
-              typeName: 'DeliveryRuleHeaderActionParameters',
-              headerAction: 'Append',
-              headerName: 'X-Deployment-Trigger',
-              value: 'forced',
-            },
-          },
-        ],
-      },
-      { dependsOn: [this.ipRuleSet] }
-    );
-
     this.blockRule = new cdn.Rule(
       CDN_RESOURCE_NAMES.BLOCK_RULE,
       {
@@ -152,7 +108,7 @@ export class CdnBuilder {
         profileName: this.profile.name,
         resourceGroupName: this.resourceGroup.name,
         ruleSetName: this.ipRuleSet.name,
-        order: 1,
+        order: 0,
         matchProcessingBehavior: 'Continue',
         conditions: [
           {
@@ -161,7 +117,7 @@ export class CdnBuilder {
               typeName: 'DeliveryRuleRemoteAddressConditionParameters',
               operator: 'IPMatch',
               matchValues: allowedIps,
-              negateCondition: true,
+              negateCondition: true, // Block IPs NOT in the whitelist
             },
           },
         ],
@@ -238,7 +194,6 @@ export class CdnBuilder {
 
     const dependencies: pulumi.Resource[] = [this.origin, this.customDomain];
     if (this.ipRuleSet) dependencies.push(this.ipRuleSet);
-    if (this.allowRule) dependencies.push(this.allowRule);
     if (this.blockRule) dependencies.push(this.blockRule);
 
     new cdn.Route(
