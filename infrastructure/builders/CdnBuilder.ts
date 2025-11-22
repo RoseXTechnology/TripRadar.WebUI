@@ -112,12 +112,22 @@ export class CdnBuilder {
         matchProcessingBehavior: 'Continue',
         conditions: [
           {
+            name: 'UrlPath',
+            parameters: {
+              typeName: 'DeliveryRuleUrlPathMatchConditionParameters',
+              operator: 'Equal',
+              matchValues: ['/blocked.html'],
+              negateCondition: true,
+              transforms: [],
+            },
+          },
+          {
             name: 'RemoteAddress',
             parameters: {
               typeName: 'DeliveryRuleRemoteAddressConditionParameters',
               operator: 'IPMatch',
               matchValues: allowedIps,
-              negateCondition: true, // Block IPs NOT in the whitelist
+              negateCondition: true,
             },
           },
         ],
