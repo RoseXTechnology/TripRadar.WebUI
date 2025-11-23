@@ -1,4 +1,4 @@
-export function parseAllowedIps(ipRangesString: string | undefined): string[] {
+export const parseAllowedIps = (ipRangesString: string | undefined): string[] => {
   const fallbackIp = '127.0.0.1/32';
 
   console.log('🔍 parseAllowedIps called with:', ipRangesString ? `"${ipRangesString}"` : 'undefined');
@@ -32,4 +32,4 @@ export function parseAllowedIps(ipRangesString: string | undefined): string[] {
     console.error('❌ Failed to parse ALLOWED_IP_RANGES:', error);
     return [fallbackIp];
   }
-}
+};

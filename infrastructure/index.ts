@@ -1,20 +1,11 @@
+import * as cdn from '@pulumi/azure-native/cdn';
 import * as resources from '@pulumi/azure-native/resources';
 import * as storage from '@pulumi/azure-native/storage';
-import * as cdn from '@pulumi/azure-native/cdn';
 import * as pulumi from '@pulumi/pulumi';
-import {
-  ENVIRONMENT,
-  LOCATION,
-  RESOURCE_SUFFIX,
-  TAG_KEYS,
-  TAG_VALUES,
-  HTTPS_PROTOCOL,
-  DEFAULTS,
-  PROJECT_NAME,
-} from './constants';
-import { EnvConfig, StorageBuilderOptions, CdnBuilderOptions } from './types';
-import { StorageBuilder } from './builders/StorageBuilder';
 import { CdnBuilder } from './builders/CdnBuilder';
+import { StorageBuilder } from './builders/StorageBuilder';
+import { ENVIRONMENT, LOCATION, RESOURCE_SUFFIX, TAG_KEYS, TAG_VALUES, DEFAULTS, PROJECT_NAME } from './constants';
+import { EnvConfig, StorageBuilderOptions, CdnBuilderOptions } from './types';
 
 const config = new pulumi.Config();
 const environment = config.get('environment') ?? ENVIRONMENT.DEVELOPMENT;
@@ -87,9 +78,9 @@ if (envConfig.enableCdn) {
   // DNS and Custom Domain setup
   const dnsZoneResourceGroup = config.get('dnsZoneResourceGroup') || DEFAULTS.DNS_ZONE_RG;
   const dnsZoneName = config.get('dnsZoneName') || DEFAULTS.DNS_ZONE_NAME;
-  
+
   cdnBuilder.setupCustomDomain(dnsZoneResourceGroup, dnsZoneName);
-  
+
   cdnBuilder.createRoute();
 
   publicEndpoint = cdnBuilder.getEndpointUrl();

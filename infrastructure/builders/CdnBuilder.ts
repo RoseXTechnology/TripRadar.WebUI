@@ -2,8 +2,15 @@ import * as cdn from '@pulumi/azure-native/cdn';
 import * as network from '@pulumi/azure-native/network';
 import * as resources from '@pulumi/azure-native/resources';
 import * as pulumi from '@pulumi/pulumi';
+import {
+  PROJECT_NAME,
+  RESOURCE_SUFFIX,
+  CDN_RESOURCE_NAMES,
+  CDN_LOCATION,
+  REGEX_PATTERNS,
+  HTTPS_PROTOCOL,
+} from '../constants';
 import { CdnBuilderOptions } from '../types';
-import { PROJECT_NAME, RESOURCE_SUFFIX, CDN_RESOURCE_NAMES, CDN_LOCATION, REGEX_PATTERNS, HTTPS_PROTOCOL } from '../constants';
 import { parseAllowedIps } from '../utils';
 
 export class CdnBuilder {
@@ -38,9 +45,9 @@ export class CdnBuilder {
   }
 
   public createOrigin(): this {
-    const originHostName = pulumi.output(this.options.storageAccountWebEndpoint).apply(url =>
-      url.replace(REGEX_PATTERNS.REMOVE_HTTPS, '').replace(REGEX_PATTERNS.REMOVE_TRAILING_SLASH, '')
-    );
+    const originHostName = pulumi
+      .output(this.options.storageAccountWebEndpoint)
+      .apply(url => url.replace(REGEX_PATTERNS.REMOVE_HTTPS, '').replace(REGEX_PATTERNS.REMOVE_TRAILING_SLASH, ''));
 
     this.originGroup = new cdn.AFDOriginGroup(CDN_RESOURCE_NAMES.ORIGIN_GROUP, {
       originGroupName: CDN_RESOURCE_NAMES.ORIGIN_GROUP_NAME,
@@ -164,7 +171,7 @@ export class CdnBuilder {
     });
 
     const domainName = this.options.isProd ? dnsZoneName : `${subdomain}.${dnsZoneName}`;
-    
+
     this.customDomain = new cdn.AFDCustomDomain(
       CDN_RESOURCE_NAMES.CUSTOM_DOMAIN,
       {
@@ -181,7 +188,7 @@ export class CdnBuilder {
     );
 
     // DNS TXT record for validation
-    const txtRecord = new network.RecordSet(CDN_RESOURCE_NAMES.DNS_TXT, {
+    new network.RecordSet(CDN_RESOURCE_NAMES.DNS_TXT, {
       resourceGroupName: dnsZoneResourceGroup,
       zoneName: dnsZoneName,
       relativeRecordSetName: `_dnsauth.${subdomain}`,
@@ -198,9 +205,8 @@ export class CdnBuilder {
   }
 
   public createRoute(): this {
-    const ruleSets = this.options.envConfig.enableIpRestrictions && this.ipRuleSet 
-      ? [{ id: this.ipRuleSet.id }] 
-      : undefined;
+    const ruleSets =
+      this.options.envConfig.enableIpRestrictions && this.ipRuleSet ? [{ id: this.ipRuleSet.id }] : undefined;
 
     const dependencies: pulumi.Resource[] = [this.origin, this.customDomain];
     if (this.ipRuleSet) dependencies.push(this.ipRuleSet);

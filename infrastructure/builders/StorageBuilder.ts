@@ -1,8 +1,8 @@
-import * as storage from '@pulumi/azure-native/storage';
 import * as resources from '@pulumi/azure-native/resources';
+import * as storage from '@pulumi/azure-native/storage';
 import * as pulumi from '@pulumi/pulumi';
-import { StorageBuilderOptions } from '../types';
 import { PROJECT_NAME, RESOURCE_SUFFIX, STATIC_WEBSITE_RESOURCE_NAME, HTML_DOCUMENT, DEFAULTS } from '../constants';
+import { StorageBuilderOptions } from '../types';
 
 export class StorageBuilder {
   private resourceGroup: resources.ResourceGroup;
