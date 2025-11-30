@@ -4,7 +4,7 @@ import { useAuthStore } from 'shared/store/auth';
 import { QueryProvider } from './QueryProvider';
 import { ThemeProvider } from './ThemeContext';
 
-const basename = process.env.NODE_ENV === 'production' ? '/TripRadar.WebUI' : '';
+const basename = import.meta.env.BASE_URL;
 
 interface ProvidersProps {
   children: ReactNode;

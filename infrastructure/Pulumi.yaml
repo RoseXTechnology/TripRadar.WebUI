@@ -1,0 +1,3 @@
+name: tripradar-webui-infrastructure
+runtime: nodejs
+description: Infrastructure for TripRadar WebUI

@@ -1,0 +1,6 @@
+config:
+  tripradar-webui-infrastructure:environment: development
+  tripradar-webui-infrastructure:location: westeurope
+  tripradar-webui-infrastructure:dnsZoneResourceGroup: tripradar-dev-rg
+  tripradar-webui-infrastructure:dnsZoneName: tripradar.io
+  azure-native:location: westeurope

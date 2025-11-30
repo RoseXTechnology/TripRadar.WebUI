@@ -1,0 +1,16 @@
+# Node
+node_modules/
+
+# Build output
+bin/
+dist/
+
+# Pulumi
+Pulumi.*.yaml.bak
+stack-outputs.json
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo

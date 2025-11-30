@@ -82,5 +82,11 @@ export default tseslint.config(
         version: 'detect',
       },
     },
+  },
+  {
+    files: ['vite.config.ts', '*.config.ts', '*.config.js', '*.config.mjs'],
+    rules: {
+      'import/no-default-export': 'off',
+    },
   }
 );
