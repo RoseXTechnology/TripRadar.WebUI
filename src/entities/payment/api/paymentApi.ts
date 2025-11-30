@@ -9,7 +9,7 @@ export const paymentApi = {
       throw new Error('User not authenticated');
     }
 
-    const endpoint = `/v1/payments/users/${user.username}/create-subscription-checkout`;
+    const endpoint = `/api/v1/payments/users/${user.username}/create-subscription-checkout`;
     return apiClient.post(endpoint, data);
   },
 };

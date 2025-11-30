@@ -46,7 +46,7 @@ const transformPricesToTiers = (prices: PriceResponse[]): PricingTier[] => {
 };
 
 const getPricing = async (): Promise<PricingResponse> => {
-  const response: PricesResponse = await apiClient.get('/v1/payments/prices');
+  const response: PricesResponse = await apiClient.get('/api/v1/payments/prices');
   return {
     tiers: transformPricesToTiers(response.prices || []),
   };
