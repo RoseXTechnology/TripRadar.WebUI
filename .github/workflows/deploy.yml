@@ -19,7 +19,8 @@ on:
 env:
   NODE_VERSION: '20.x'
   # Determine environment based on branch or manual input
-  DEPLOYMENT_ENVIRONMENT: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'development') }}
+  # Currently deploying to development for both main and development branches
+  DEPLOYMENT_ENVIRONMENT: ${{ github.event.inputs.environment || 'development' }}
 
 permissions:
   contents: read
