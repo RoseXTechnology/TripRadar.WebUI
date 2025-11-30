@@ -12,7 +12,7 @@ const config = defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:5330',
+        target: 'https://api-dev.tripradar.io',
         changeOrigin: true,
         secure: false,
       },
