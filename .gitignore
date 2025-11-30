@@ -23,3 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Local task files
+MVP_REQUESTS.md
+ЗАДАЧИ_НА_ЗАВТРА.md
