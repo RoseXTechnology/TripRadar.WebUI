@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import { FaArrowRight, FaCheckCircle, FaExclamationTriangle, FaSpinner } from 'react-icons/fa';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { apiClient } from 'shared/api';
 import { ROUTES } from 'shared/config/routes';
 
 type ConfirmationState = 'loading' | 'success' | 'error';
 
 export const EmailConfirmation = () => {
-  const { username } = useParams<{ username: string }>();
   const [searchParams] = useSearchParams();
   const [state, setState] = useState<ConfirmationState>('loading');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
     const confirmEmail = async () => {
+      const username = searchParams.get('username');
       const token = searchParams.get('token');
 
       if (!username || !token) {
@@ -43,7 +43,7 @@ export const EmailConfirmation = () => {
     };
 
     confirmEmail();
-  }, [username, searchParams]);
+  }, [searchParams]);
 
   if (state === 'loading') {
     return (

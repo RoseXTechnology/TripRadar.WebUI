@@ -18,8 +18,8 @@ const createWrapper = (username: string, token: string) => {
   return ({ children }: any) => {
     return createElement(
       MemoryRouter,
-      { initialEntries: [`/confirm-email/${username}?token=${token}`] },
-      createElement(Routes, null, createElement(Route, { path: '/confirm-email/:username', element: children }))
+      { initialEntries: [`/confirm-email?username=${username}&token=${token}`] },
+      createElement(Routes, null, createElement(Route, { path: '/confirm-email', element: children }))
     );
   };
 };

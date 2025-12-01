@@ -15,7 +15,7 @@ export const AppRoutes = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/email-sent" element={<EmailSent />} />
       <Route path="/email-confirmed" element={<EmailConfirmed />} />
-      <Route path="/confirm-email/:username" element={<EmailConfirmation />} />
+      <Route path="/confirm-email" element={<EmailConfirmation />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/" element={<Home />} />

@@ -63,7 +63,7 @@
   - **Property 7: Email confirmation errors are handled**
   - **Validates: Requirements 4.4**
 
-- [ ] 5. Update routing for email confirmation
+- [x] 5. Update routing for email confirmation
   - Add route /confirm-email in src/app/router/routes.tsx
   - Map route to EmailConfirmation component
   - Ensure route accepts query parameters (username, token)
