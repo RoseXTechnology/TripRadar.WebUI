@@ -49,7 +49,7 @@
   - **Property 6: Promo code errors are displayed**
   - **Validates: Requirements 3.4**
 
-- [ ] 4. Create email confirmation handler component
+- [x] 4. Create email confirmation handler component
   - Create new component src/pages/auth/EmailConfirmation.tsx
   - Extract username and token from URL query parameters
   - Call GET /api/v1/users/{username}/email-confirmations?token={token}
@@ -59,7 +59,7 @@
   - Add "Go to Login" button on success
   - _Requirements: 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 4.1 Write property test for confirmation error handling
+- [x] 4.1 Write property test for confirmation error handling
   - **Property 7: Email confirmation errors are handled**
   - **Validates: Requirements 4.4**
 
