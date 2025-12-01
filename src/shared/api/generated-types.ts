@@ -337,6 +337,70 @@ export interface paths {
     };
     trace?: never;
   };
+  '/api/v{version}/internals/users/{username}/activation': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          username: string;
+          version: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          'application/json': components['schemas']['ActivateUserRequest'];
+          'text/json': components['schemas']['ActivateUserRequest'];
+          'application/*+json': components['schemas']['ActivateUserRequest'];
+        };
+      };
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+      };
+    };
+    trace?: never;
+  };
   '/api/v{version}/internals/features/{featureName}': {
     parameters: {
       query?: never;
@@ -449,6 +513,378 @@ export interface paths {
     put?: never;
     post?: never;
     delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v{version}/internals/promo-codes': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          version: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          'application/json': components['schemas']['CreatePromoCodeRequest'];
+          'text/json': components['schemas']['CreatePromoCodeRequest'];
+          'application/*+json': components['schemas']['CreatePromoCodeRequest'];
+        };
+      };
+      responses: {
+        /** @description Created */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['CreatePromoCodeResponse'];
+            'application/json': components['schemas']['CreatePromoCodeResponse'];
+            'text/json': components['schemas']['CreatePromoCodeResponse'];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v{version}/internals/promo-codes/{code}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          code: string;
+          version: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          'application/json': components['schemas']['UpdatePromoCodeRequest'];
+          'text/json': components['schemas']['UpdatePromoCodeRequest'];
+          'application/*+json': components['schemas']['UpdatePromoCodeRequest'];
+        };
+      };
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    post?: never;
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          code: string;
+          version: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v{version}/internals/promo-codes/{code}/usage-history': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          code: string;
+          version: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['GetPromoCodeUsageResponse'][];
+            'application/json': components['schemas']['GetPromoCodeUsageResponse'][];
+            'text/json': components['schemas']['GetPromoCodeUsageResponse'][];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v{version}/internals/users/{username}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          username: string;
+          version: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
     options?: never;
     head?: never;
     patch?: never;
@@ -1296,6 +1732,237 @@ export interface paths {
         };
       };
     };
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v{version}/promo-codes/users/{username}/validations': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          username: string;
+          version: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          'application/json': components['schemas']['ValidatePromoCodeRequest'];
+          'text/json': components['schemas']['ValidatePromoCodeRequest'];
+          'application/*+json': components['schemas']['ValidatePromoCodeRequest'];
+        };
+      };
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ValidatePromoCodeResponse'];
+            'application/json': components['schemas']['ValidatePromoCodeResponse'];
+            'text/json': components['schemas']['ValidatePromoCodeResponse'];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v{version}/promo-codes/users/{username}/applications': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          username: string;
+          version: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          'application/json': components['schemas']['ApplyPromoCodeRequest'];
+          'text/json': components['schemas']['ApplyPromoCodeRequest'];
+          'application/*+json': components['schemas']['ApplyPromoCodeRequest'];
+        };
+      };
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ApplyPromoCodeResponse'];
+            'application/json': components['schemas']['ApplyPromoCodeResponse'];
+            'text/json': components['schemas']['ApplyPromoCodeResponse'];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v{version}/promo-codes/{code}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          code: string;
+          version: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['GetPromoCodeResponse'];
+            'application/json': components['schemas']['GetPromoCodeResponse'];
+            'text/json': components['schemas']['GetPromoCodeResponse'];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+      };
+    };
+    put?: never;
     post?: never;
     delete?: never;
     options?: never;
@@ -2543,6 +3210,20 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    ActivateUserRequest: {
+      /** Format: email */
+      email: string;
+    };
+    ApplyPromoCodeRequest: {
+      code: string;
+      /** Format: double */
+      orderAmount: number;
+    };
+    ApplyPromoCodeResponse: {
+      /** Format: double */
+      discountAmount: number;
+      message: string;
+    };
     /** @enum {string} */
     BillingPeriodType: 'monthly' | 'yearly';
     CancelSubscriptionRequest: {
@@ -2569,6 +3250,25 @@ export interface components {
     CreateLoginRequest: {
       usernameOrEmail: string;
       password: string;
+    };
+    CreatePromoCodeRequest: {
+      code: string;
+      description?: string | null;
+      discountType: components['schemas']['DiscountType'];
+      /** Format: double */
+      discountValue: number;
+      /** Format: int32 */
+      maxUsageCount?: number | null;
+      /** Format: int32 */
+      maxUsagePerUser: number;
+      /** Format: date-time */
+      startDate: string;
+      /** Format: date-time */
+      endDate: string;
+      isActive?: boolean;
+    };
+    CreatePromoCodeResponse: {
+      message: string;
     };
     CreateRefreshTokenRequest: {
       usernameOrEmail: string;
@@ -2601,8 +3301,8 @@ export interface components {
       schedule: string;
     };
     CreateScheduledFlightQueryRequest: {
-      origin: string;
-      destination: string;
+      departureAirportCode: string;
+      destinationAirportCode: string;
       /** Format: date */
       departureDate: string;
       /** Format: date */
@@ -2666,13 +3366,13 @@ export interface components {
     CreateSubscriptionCheckoutRequest: {
       targetTierType: components['schemas']['UserTierType'];
       billingPeriodType?: components['schemas']['BillingPeriodType'];
+      promoCode?: string | null;
     };
     CreateSubscriptionCheckoutResponse: {
       sessionId?: string | null;
       checkoutUrl?: string | null;
     };
     CreateUserRequest: {
-      username: string;
       password: string;
       /** Format: email */
       email: string;
@@ -2680,12 +3380,12 @@ export interface components {
       lastName?: string | null;
       phoneNumber?: string | null;
       hasDataStorageConsent: boolean;
+      promoCode?: string | null;
     };
     CurrencyExchangePreferences: {
       BaseCurrency?: string | null;
     };
     DeductTokensRequest: {
-      username: string;
       /** Format: double */
       tokensToDeduct: number;
       serviceType: components['schemas']['ServiceType'];
@@ -2700,6 +3400,8 @@ export interface components {
       limitReached: boolean;
       canUseApi: boolean;
     };
+    /** @enum {string} */
+    DiscountType: 'percentage' | 'fixedAmount';
     DowngradeTierRequest: {
       targetTierType: components['schemas']['UserTierType'];
       billingPeriodType: components['schemas']['BillingPeriodType'];
@@ -2776,6 +3478,37 @@ export interface components {
     };
     GetPreferenceTypesResponse: {
       preferenceTypes?: components['schemas']['PreferenceTypeDto'][] | null;
+    };
+    GetPromoCodeResponse: {
+      code: string;
+      description?: string | null;
+      discountType: components['schemas']['DiscountType'];
+      /** Format: double */
+      discountValue: number;
+      /** Format: int32 */
+      maxUsageCount?: number | null;
+      /** Format: int32 */
+      currentUsageCount: number;
+      /** Format: int32 */
+      maxUsagePerUser: number;
+      /** Format: date-time */
+      startDate: string;
+      /** Format: date-time */
+      endDate: string;
+      isActive: boolean;
+      isExpired: boolean;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt?: string | null;
+    };
+    GetPromoCodeUsageResponse: {
+      promoCode: string;
+      username?: string | null;
+      /** Format: date-time */
+      usedAt: string;
+      /** Format: double */
+      discountApplied: number;
     };
     GetUserFeedbackResponse: {
       title?: string | null;
@@ -2901,7 +3634,7 @@ export interface components {
       isActive?: boolean;
     };
     PriceResponse: {
-      /** Format: int64 */
+      /** Format: double */
       amount?: number;
       currency?: string | null;
       tierName?: string | null;
@@ -2986,6 +3719,18 @@ export interface components {
     UpdatePayAsYouGoResponse: {
       enabled?: boolean;
     };
+    UpdatePromoCodeRequest: {
+      description?: string | null;
+      /** Format: int32 */
+      maxUsageCount?: number | null;
+      /** Format: int32 */
+      maxUsagePerUser?: number | null;
+      /** Format: date-time */
+      startDate?: string | null;
+      /** Format: date-time */
+      endDate?: string | null;
+      isActive?: boolean | null;
+    };
     UpdateScheduledExecutionConfigurationRequest: {
       isActive: boolean;
     };
@@ -3044,6 +3789,13 @@ export interface components {
     };
     /** @enum {string} */
     UserTierType: 'basic' | 'essential' | 'advanced';
+    ValidatePromoCodeRequest: {
+      code: string;
+    };
+    ValidatePromoCodeResponse: {
+      message?: string | null;
+      isValid?: boolean;
+    };
     WeatherPreferences: {
       Units?: components['schemas']['WeatherUnitsType'];
       IncludeForecast?: boolean | null;

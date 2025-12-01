@@ -28,6 +28,11 @@ const config = defineConfig({
       shared: path.resolve(__dirname, './src/shared'),
     },
   },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
+  },
 });
 
 export default config;
