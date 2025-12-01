@@ -33,7 +33,7 @@
   - **Property 5: Promo code is included when provided**
   - **Validates: Requirements 3.2**
 
-- [ ] 3. Update registration API mutation
+- [x] 3. Update registration API mutation
   - Update useRegisterMutation to use new CreateUserRequest type
   - Remove username from mutation payload
   - Add optional fields to mutation payload (firstName, lastName, phoneNumber, promoCode)
@@ -41,11 +41,11 @@
   - Update error handling to display backend error messages
   - _Requirements: 1.2, 1.5, 2.2, 3.2, 3.4_
 
-- [ ] 3.1 Write property test for API error display
+- [x] 3.1 Write property test for API error display
   - **Property 2: API errors are displayed to users**
   - **Validates: Requirements 1.5, 9.1**
 
-- [ ] 3.2 Write property test for promo code error handling
+- [x] 3.2 Write property test for promo code error handling
   - **Property 6: Promo code errors are displayed**
   - **Validates: Requirements 3.4**
 
