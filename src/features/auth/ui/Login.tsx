@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight, FaGoogle } from 'react-icons/fa';
+import { FaArrowRight, FaEnvelope, FaEye, FaEyeSlash, FaGoogle, FaLock } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useLoginMutation } from 'features/auth/api';
 import { handleGoogleSignUp } from 'features/auth/lib/oauth';
@@ -52,8 +52,10 @@ export const Login = () => {
             error?.message?.includes('EmailNotConfirmed') ||
             error?.response?.data?.title?.includes('EmailNotConfirmed')
           ) {
-            alert('Please confirm your email before logging in. Check your inbox for the confirmation link.');
-            // TODO: Add proper toast notification and resend email button
+            alert(
+              'Please confirm your email before logging in.\n\n' +
+                'Check your inbox for the confirmation link. If you did not receive the email, please contact support.'
+            );
           } else {
             alert('Login failed. Please check your credentials and try again.');
           }
@@ -104,7 +106,7 @@ export const Login = () => {
               </div>
               <div className="relative flex justify-center text-xs md:text-sm">
                 <span className="px-3 md:px-4 bg-surface dark:bg-surface-dark text-content-muted font-medium">
-                  or continue with email/username
+                  or continue with email
                 </span>
               </div>
             </div>
@@ -116,7 +118,7 @@ export const Login = () => {
                   htmlFor="usernameOrEmail"
                   className="block text-xs md:text-sm font-medium text-content dark:text-content-dark mb-1.5 md:mb-2"
                 >
-                  Email or Username
+                  Email Address
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -131,7 +133,7 @@ export const Login = () => {
                     value={formData.usernameOrEmail}
                     onChange={e => setFormData(prev => ({ ...prev, usernameOrEmail: e.target.value }))}
                     className="block w-full pl-8 md:pl-10 pr-3 py-2.5 md:py-3 border border-outline dark:border-outline-dark rounded-lg md:rounded-xl placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-surface dark:bg-surface-dark text-content dark:text-content-dark text-sm md:text-base"
-                    placeholder="Enter your email or username"
+                    placeholder="Enter your email address"
                   />
                 </div>
               </div>

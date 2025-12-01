@@ -70,7 +70,7 @@
   - Test navigation to confirmation page
   - _Requirements: 4.2_
 
-- [ ] 6. Update Login component
+- [x] 6. Update Login component
   - Update placeholder text to "Enter your email or username"
   - Update label to emphasize email login
   - Keep usernameOrEmail field (backend accepts both)
@@ -78,15 +78,15 @@
   - Add link to resend confirmation email (optional)
   - _Requirements: 5.1, 5.2, 5.5_
 
-- [ ] 6.1 Write property test for email acceptance in login
+- [x] 6.1 Write property test for email acceptance in login
   - **Property 8: Email format is accepted in login**
   - **Validates: Requirements 5.1**
 
-- [ ] 6.2 Write property test for token storage after login
+- [x] 6.2 Write property test for token storage after login
   - **Property 9: Login tokens are stored**
   - **Validates: Requirements 5.3**
 
-- [ ] 6.3 Write property test for username storage in auth state
+- [x] 6.3 Write property test for username storage in auth state
   - **Property 10: Username from login is stored in state**
   - **Validates: Requirements 5.4**
 
