@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 .env
 
-# Local task files
-MVP_REQUESTS.md
-ЗАДАЧИ_НА_ЗАВТРА.md
+
+# Kiro IDE settings
+.kiro/settings/
