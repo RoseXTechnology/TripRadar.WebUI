@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaEnvelope, FaEye, FaEyeSlash, FaLock, FaUser } from 'react-icons/fa';
+import { FaEnvelope, FaEye, FaEyeSlash, FaLock } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { AUTH_MESSAGES, OAuthButtons, useRegisterMutation } from 'features/auth';
 import { ROUTES } from 'shared/config/routes';
@@ -9,10 +9,6 @@ interface SignupFormData {
   email: string;
   password: string;
   hasDataStorageConsent: boolean;
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
-  promoCode?: string;
 }
 
 export const Signup = () => {
@@ -30,10 +26,6 @@ export const Signup = () => {
       email: '',
       password: '',
       hasDataStorageConsent: false,
-      firstName: '',
-      lastName: '',
-      phoneNumber: '',
-      promoCode: '',
     },
   });
 
@@ -45,10 +37,6 @@ export const Signup = () => {
         email: data.email,
         password: data.password,
         hasDataStorageConsent: data.hasDataStorageConsent,
-        firstName: data.firstName || null,
-        lastName: data.lastName || null,
-        phoneNumber: data.phoneNumber || null,
-        promoCode: data.promoCode || null,
       });
 
       // Перенаправляем на страницу с сообщением об email
@@ -153,80 +141,6 @@ export const Signup = () => {
               </div>
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.password.message}</p>
-              )}
-            </div>
-
-            {/* First Name (optional) */}
-            <div>
-              <label className="block text-sm font-medium text-content dark:text-content-dark mb-2">
-                First Name (optional)
-              </label>
-              <div className="relative">
-                <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-content-muted h-4 w-4" />
-                <input
-                  {...register('firstName')}
-                  type="text"
-                  className="w-full pl-10 pr-4 py-3 border border-outline dark:border-outline-dark rounded-lg bg-surface dark:bg-surface-dark text-content dark:text-content-dark placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Enter your first name"
-                />
-              </div>
-              {errors.firstName && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.firstName.message}</p>
-              )}
-            </div>
-
-            {/* Last Name (optional) */}
-            <div>
-              <label className="block text-sm font-medium text-content dark:text-content-dark mb-2">
-                Last Name (optional)
-              </label>
-              <div className="relative">
-                <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-content-muted h-4 w-4" />
-                <input
-                  {...register('lastName')}
-                  type="text"
-                  className="w-full pl-10 pr-4 py-3 border border-outline dark:border-outline-dark rounded-lg bg-surface dark:bg-surface-dark text-content dark:text-content-dark placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Enter your last name"
-                />
-              </div>
-              {errors.lastName && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.lastName.message}</p>
-              )}
-            </div>
-
-            {/* Phone Number (optional) */}
-            <div>
-              <label className="block text-sm font-medium text-content dark:text-content-dark mb-2">
-                Phone Number (optional)
-              </label>
-              <div className="relative">
-                <input
-                  {...register('phoneNumber')}
-                  type="tel"
-                  className="w-full px-4 py-3 border border-outline dark:border-outline-dark rounded-lg bg-surface dark:bg-surface-dark text-content dark:text-content-dark placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Enter your phone number"
-                />
-              </div>
-              {errors.phoneNumber && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.phoneNumber.message}</p>
-              )}
-            </div>
-
-            {/* Promo Code (optional) */}
-            <div>
-              <label className="block text-sm font-medium text-content dark:text-content-dark mb-2">
-                Promo Code (optional)
-              </label>
-              <div className="relative">
-                <input
-                  {...register('promoCode')}
-                  type="text"
-                  className="w-full px-4 py-3 border border-outline dark:border-outline-dark rounded-lg bg-surface dark:bg-surface-dark text-content dark:text-content-dark placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Enter promo code"
-                />
-              </div>
-              {errors.promoCode && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.promoCode.message}</p>
               )}
             </div>
 

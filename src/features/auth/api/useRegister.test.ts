@@ -54,10 +54,6 @@ describe('useRegisterMutation', () => {
               email: 'test@example.com',
               password: 'password123',
               hasDataStorageConsent: true,
-              firstName: null,
-              lastName: null,
-              phoneNumber: null,
-              promoCode: null,
             };
 
             // Execute: Render hook and trigger mutation
@@ -85,57 +81,3 @@ describe('useRegisterMutation', () => {
     { timeout: 30000 }
   );
 });
-
-/**
- * Feature: email-only-registration, Property 6: Promo code errors are displayed
- * Validates: Requirements 3.4
- *
- * For any backend rejection of a promo code, the error message should be displayed to the user
- */
-it(
-  'property: Promo code errors are displayed',
-  async () => {
-    await fc.assert(
-      fc.asyncProperty(
-        // Generate random promo codes and error messages
-        fc.string({ minLength: 1, maxLength: 50 }),
-        fc.string({ minLength: 1, maxLength: 200 }),
-        async (promoCode, errorMessage) => {
-          // Setup: Mock API to reject with a promo code error
-          vi.mocked(authApi.register).mockRejectedValueOnce(new Error(errorMessage));
-
-          // Create a registration request with a promo code
-          const requestWithPromo: CreateUserRequest = {
-            email: 'test@example.com',
-            password: 'password123',
-            hasDataStorageConsent: true,
-            firstName: null,
-            lastName: null,
-            phoneNumber: null,
-            promoCode: promoCode,
-          };
-
-          // Execute: Render hook and trigger mutation
-          const { result } = renderHook(() => useRegisterMutation(), {
-            wrapper: createWrapper(),
-          });
-
-          // Use mutateAsync to properly wait for the error
-          try {
-            await result.current.mutateAsync(requestWithPromo);
-            // If we get here, the mutation succeeded when it should have failed
-            throw new Error('Expected mutation to fail but it succeeded');
-          } catch (error) {
-            // Verify: Error message is accessible and can be displayed
-            // This validates that promo code errors from the backend
-            // are properly propagated to the UI
-            expect(error).toBeInstanceOf(Error);
-            expect((error as Error).message).toBe(errorMessage);
-          }
-        }
-      ),
-      { numRuns: 100 }
-    );
-  },
-  { timeout: 30000 }
-);
