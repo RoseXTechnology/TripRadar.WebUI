@@ -5,3 +5,20 @@ export const env = {
   TELEGRAM_BOT_URL: import.meta.env.VITE_TELEGRAM_BOT_URL || 'https://t.me/TripRadarBot',
   WHATSAPP_URL: import.meta.env.VITE_WHATSAPP_URL || 'https://wa.me/1234567890',
 } as const;
+
+/**
+ * Get the Telegram bot username from environment variables
+ * @throws {Error} If VITE_TELEGRAM_BOT_USERNAME is not defined
+ * @returns {string} The Telegram bot username
+ */
+export const getTelegramBotUsername = (): string => {
+  const botUsername = import.meta.env.VITE_TELEGRAM_BOT_USERNAME;
+
+  if (!botUsername) {
+    throw new Error(
+      'VITE_TELEGRAM_BOT_USERNAME is not defined in environment variables. ' + 'Please add it to your .env file.'
+    );
+  }
+
+  return botUsername;
+};

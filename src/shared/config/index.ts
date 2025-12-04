@@ -1,3 +1,3 @@
 export * from './constants';
-export { env } from './env';
+export { env, getTelegramBotUsername } from './env';
 export * from './navigation';
