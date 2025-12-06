@@ -1,11 +1,12 @@
 import {
   apiClient,
-  type CreateUserRequest,
   type CreateGoogleLoginRequest,
-  type UserManagementResponse,
   type CreateLoginRequest,
+  type CreateUserRequest,
   type GetLoginResponse,
+  type UserManagementResponse,
 } from 'shared/api';
+import type { LinkTelegramRequest, LinkTelegramResponse } from 'shared/api/types';
 
 export const authApi = {
   register: async (data: CreateUserRequest): Promise<UserManagementResponse> => {
@@ -22,5 +23,9 @@ export const authApi = {
 
   googleLogin: async (data: CreateGoogleLoginRequest): Promise<GetLoginResponse> => {
     return apiClient.post('/api/v1/tokens/sessions/google', data);
+  },
+
+  linkTelegram: async (data: LinkTelegramRequest): Promise<LinkTelegramResponse> => {
+    return apiClient.internalPost('/api/v1/internals/users/activation', data);
   },
 };

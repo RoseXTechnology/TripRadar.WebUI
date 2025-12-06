@@ -9,10 +9,12 @@ export interface ApiError {
 export class ApiClient {
   private baseURL: string;
   private apiKey: string;
+  private internalApiKey: string;
 
   constructor() {
     this.baseURL = env.API_BASE_URL;
     this.apiKey = env.API_KEY;
+    this.internalApiKey = env.INTERNAL_API_KEY;
   }
 
   async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
@@ -74,6 +76,59 @@ export class ApiClient {
 
   async delete<T>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, { method: 'DELETE' });
+  }
+
+  /**
+   * Internal API methods - automatically include X-Internal-Auth header
+   * Use these methods for all requests to /api/v{version}/internals/* endpoints
+   */
+
+  async internalGet<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'GET',
+      headers: {
+        'X-Internal-Auth': this.internalApiKey,
+      },
+    });
+  }
+
+  async internalPost<T, D = object>(endpoint: string, data?: D): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'POST',
+      headers: {
+        'X-Internal-Auth': this.internalApiKey,
+      },
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  async internalPut<T, D = object>(endpoint: string, data?: D): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'PUT',
+      headers: {
+        'X-Internal-Auth': this.internalApiKey,
+      },
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  async internalPatch<T, D = object>(endpoint: string, data?: D): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'PATCH',
+      headers: {
+        'X-Internal-Auth': this.internalApiKey,
+      },
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  async internalDelete<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'DELETE',
+      headers: {
+        'X-Internal-Auth': this.internalApiKey,
+      },
+    });
   }
 
   private async handleError(response: Response): Promise<never> {

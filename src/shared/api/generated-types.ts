@@ -890,6 +890,68 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v{version}/internals/auth/users/{username}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          username: string;
+          version: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['GetLoginResponse'];
+            'application/json': components['schemas']['GetLoginResponse'];
+            'text/json': components['schemas']['GetLoginResponse'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v{version}/payments/users/{username}/subscription-checkouts': {
     parameters: {
       query?: never;
@@ -2815,7 +2877,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v{version}/users/{username}/email-confirmations': {
+  '/api/v{version}/users/email-confirmations': {
     parameters: {
       query?: never;
       header?: never;
@@ -2825,11 +2887,11 @@ export interface paths {
     get: {
       parameters: {
         query?: {
+          email?: string;
           token?: string;
         };
         header?: never;
         path: {
-          username: string;
           version: string;
         };
         cookie?: never;

@@ -62,7 +62,7 @@ This plan focuses ONLY on frontend implementation. Backend endpoints are assumed
 
 ## Phase 3: Telegram Integration
 
-- [ ] 6. Create Telegram utility functions
+- [x] 6. Create Telegram utility functions
   - Create src/features/auth/lib/telegram.ts
   - Implement loadTelegramWidget() function that loads script from telegram.org
   - Implement validateTelegramData() function that checks required fields
@@ -70,12 +70,12 @@ This plan focuses ONLY on frontend implementation. Backend endpoints are assumed
   - Add TypeScript types for window.Telegram if needed
   - _Requirements: 5.1, 5.2, 5.4, 9.5_
 
-- [ ] 7. Create link Telegram API hook
+- [x] 7. Create link Telegram API hook
   - Create src/features/auth/api/useLinkTelegram.ts
-  - Implement useMutation for POST /api/v1/users/link-telegram
-  - Accept email and telegramData as parameters
+  - Implement useMutation for POST /api/v1/internals/users/activation
+  - Accept linkToken and telegramData as parameters
   - Return accessToken, refreshToken, and user on success
-  - Handle errors (invalid email, invalid hash, network errors)
+  - Handle errors (invalid linkToken, invalid hash, network errors)
   - _Requirements: 3.4, 3.5_
 
 - [ ] 8. Create TelegramConnect component
@@ -215,9 +215,9 @@ This plan focuses ONLY on frontend implementation. Backend endpoints are assumed
 ⚠️ **These endpoints must be implemented on backend before frontend can be fully tested:**
 
 1. `POST /api/v1/users` - Registration (already exists, but verify it doesn't require optional fields)
-2. `POST /api/v1/email-confirmations` - Email confirmation returning user's email
-3. `POST /api/v1/users/link-telegram` - Telegram account linking with hash verification (accepts email + telegramData)
-4. `POST /api/v1/login` - Login with TELEGRAM_REQUIRED error handling (returns user's email in error)
+2. `POST /api/v1/email-confirmations` - Email confirmation returning linkToken
+3. `POST /api/v1/internals/users/activation` - Telegram account linking with hash verification (accepts linkToken + telegramData, returns JWT tokens)
+4. `POST /api/v1/login` - Login with TELEGRAM_REQUIRED error handling (returns linkToken in error)
 
 ### Testing Strategy
 
