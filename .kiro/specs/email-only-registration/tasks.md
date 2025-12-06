@@ -78,7 +78,7 @@ This plan focuses ONLY on frontend implementation. Backend endpoints are assumed
   - Handle errors (invalid linkToken, invalid hash, network errors)
   - _Requirements: 3.4, 3.5_
 
-- [ ] 8. Create TelegramConnect component
+- [x] 8. Create TelegramConnect component
   - Create src/features/auth/ui/TelegramConnect.tsx
   - Accept email, onSuccess, onError as props
   - Load Telegram widget script in useEffect
@@ -91,7 +91,7 @@ This plan focuses ONLY on frontend implementation. Backend endpoints are assumed
   - Show loading state while linking
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 9. Integrate TelegramConnect into EmailConfirmation
+- [x] 9. Integrate TelegramConnect into EmailConfirmation
   - Import TelegramConnect component
   - Render TelegramConnect when email is available
   - Implement onSuccess handler: store tokens, update auth state, redirect to /profile

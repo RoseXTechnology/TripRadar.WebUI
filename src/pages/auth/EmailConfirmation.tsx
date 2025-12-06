@@ -1,49 +1,55 @@
 import { useEffect, useState } from 'react';
-import { FaArrowRight, FaCheckCircle, FaExclamationTriangle, FaSpinner } from 'react-icons/fa';
-import { Link, useSearchParams } from 'react-router-dom';
-import { apiClient } from 'shared/api';
+import { FaCheckCircle, FaExclamationTriangle, FaSpinner } from 'react-icons/fa';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useEmailConfirmation } from 'features/auth/api/useEmailConfirmation';
+import { TelegramConnect } from 'features/auth/ui/TelegramConnect';
 import { ROUTES } from 'shared/config/routes';
+import { useAuthStore } from 'shared/store/auth';
 
-type ConfirmationState = 'loading' | 'success' | 'error';
+type ConfirmationState = 'loading' | 'confirmed' | 'error';
 
 export const EmailConfirmation = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [state, setState] = useState<ConfirmationState>('loading');
+  const [linkToken, setLinkToken] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [telegramError, setTelegramError] = useState<string>('');
+  const { mutate: confirmEmail } = useEmailConfirmation();
+  const { login } = useAuthStore();
 
   useEffect(() => {
-    const confirmEmail = async () => {
-      const username = searchParams.get('username');
-      const token = searchParams.get('token');
+    const token = searchParams.get('token');
 
-      if (!username || !token) {
-        setState('error');
-        setErrorMessage('Invalid confirmation link. Missing username or token.');
-        return;
+    if (!token) {
+      setState('error');
+      setErrorMessage('Invalid confirmation link. Missing token.');
+      return;
+    }
+
+    // Call email confirmation API
+    confirmEmail(
+      { token },
+      {
+        onSuccess: response => {
+          console.log('✅ Email confirmed, received linkToken');
+          setState('confirmed');
+          setLinkToken(response.linkToken);
+        },
+        onError: error => {
+          console.error('❌ Email confirmation failed:', error);
+          setState('error');
+
+          // Extract error message
+          if (error instanceof Error) {
+            setErrorMessage(error.message);
+          } else {
+            setErrorMessage('Failed to confirm email. Please try again or contact support.');
+          }
+        },
       }
-
-      try {
-        // Call the email confirmation endpoint
-        // GET /api/v1/users/{username}/email-confirmations?token={token}
-        await apiClient.get(`/api/v1/users/${username}/email-confirmations?token=${token}`);
-
-        // If successful (302 redirect is handled by fetch), show success
-        setState('success');
-      } catch (error) {
-        console.error('Email confirmation error:', error);
-        setState('error');
-
-        // Extract error message
-        if (error instanceof Error) {
-          setErrorMessage(error.message);
-        } else {
-          setErrorMessage('Failed to confirm email. Please try again or contact support.');
-        }
-      }
-    };
-
-    confirmEmail();
-  }, [searchParams]);
+    );
+  }, [searchParams, confirmEmail]);
 
   if (state === 'loading') {
     return (
@@ -67,7 +73,7 @@ export const EmailConfirmation = () => {
     );
   }
 
-  if (state === 'success') {
+  if (state === 'confirmed' && linkToken) {
     return (
       <div className="relative min-h-screen flex items-center justify-center p-4 md:p-8 transition-colors duration-300">
         {/* Background */}
@@ -89,23 +95,63 @@ export const EmailConfirmation = () => {
                 Email Confirmed!
               </h1>
 
-              <p className="text-content-secondary dark:text-content-secondary-dark mb-8 text-sm md:text-base">
-                Great! Your email has been successfully confirmed. You can now sign in to your TripRadar account and
-                start planning your next adventure.
+              <p className="text-content-secondary dark:text-content-secondary-dark mb-6 text-sm md:text-base">
+                Great! Your email has been successfully confirmed.
               </p>
 
-              {/* Go to Login Button */}
-              <Link
-                to={ROUTES.LOGIN}
-                className="group relative w-full flex justify-center items-center gap-2 py-2.5 md:py-3 px-4 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark rounded-lg md:rounded-xl font-medium hover:bg-button-hover dark:hover:bg-button-hover-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow-lg hover:shadow-xl text-sm md:text-base"
-              >
-                <span>Go to Login</span>
-                <FaArrowRight className="h-3 w-3 md:h-4 md:w-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+              {/* Explanatory text */}
+              <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-4 mb-6">
+                <p className="text-sm text-content-secondary dark:text-content-secondary-dark font-medium">
+                  Connect your Telegram account to complete registration
+                </p>
+                <p className="text-xs text-content-muted dark:text-content-muted-dark mt-2">
+                  Your username will be automatically set from your Telegram profile
+                </p>
+              </div>
+
+              {/* Telegram Connect Component */}
+              <TelegramConnect
+                linkToken={linkToken}
+                onSuccess={response => {
+                  console.log('✅ Telegram linked successfully, logging in user');
+                  // Transform API user to app user format
+                  const appUser = {
+                    username: response.user.username,
+                    name: response.user.firstName || response.user.username,
+                    email: response.user.email,
+                    avatar:
+                      response.user.profilePictureUrl ||
+                      `https://ui-avatars.com/api/?name=${encodeURIComponent(response.user.username)}&background=6366f1&color=fff`,
+                    subscription:
+                      (response.user.tierName?.toLowerCase() as 'free' | 'premium' | 'enterprise') || 'free',
+                  };
+                  // Update auth state with user data
+                  login(appUser);
+                  // Redirect to profile
+                  navigate(ROUTES.PROFILE);
+                }}
+                onError={error => {
+                  console.error('❌ Telegram linking error:', error);
+                  setTelegramError(error);
+                }}
+              />
+
+              {/* Error message for Telegram linking */}
+              {telegramError && (
+                <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                  <p className="text-sm text-red-600 dark:text-red-400">{telegramError}</p>
+                  <button
+                    onClick={() => setTelegramError('')}
+                    className="mt-2 text-xs text-red-700 dark:text-red-300 underline hover:no-underline"
+                  >
+                    Try again
+                  </button>
+                </div>
+              )}
 
               {/* Additional Info */}
               <p className="mt-6 text-xs md:text-sm text-content-muted dark:text-content-muted-dark">
-                Ready to explore the world with TripRadar? Sign in and discover amazing travel destinations.
+                After connecting Telegram, you'll be automatically logged in and ready to start planning your trips!
               </p>
             </div>
           </div>
