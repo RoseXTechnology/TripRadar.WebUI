@@ -1,17 +1,16 @@
-# Design Document: Email-Only Registration
+# Design Document: Registration with Telegram Integration
 
 ## Overview
 
-This design document outlines the technical approach for migrating the TripRadar registration system from username-based to email-only registration. The backend API has been updated to remove the username requirement and automatically generate usernames from email addresses. This document describes the frontend changes needed to align with the new API schema while maintaining a smooth user experience.
+This design document outlines the technical approach for implementing TripRadar's registration system with Telegram integration. Users register with email and password, confirm their email, then connect their Telegram account to automatically obtain a username from their Telegram profile.
 
-The migration involves:
+The implementation involves:
 
-- Removing the username field from the registration form
-- Adding optional profile fields (firstName, lastName, phoneNumber)
-- Adding promo code support
-- Updating TypeScript types from the Swagger specification
-- Ensuring email confirmation flow works with auto-generated usernames
-- Maintaining Google OAuth functionality
+- Simplified registration form (email + password only)
+- Email confirmation with linkToken generation
+- Telegram Login Widget integration
+- New API endpoint for linking Telegram accounts
+- Updated login flow to handle incomplete registrations
 
 ## Architecture
 
@@ -19,59 +18,62 @@ The migration involves:
 
 ```
 User Registration Flow:
-1. User fills registration form (email, password, optional fields)
+1. User fills registration form (email + password + consent)
 2. Frontend validates input
-3. POST /api/v1/users (without username)
-4. Backend generates username from email
-5. Backend sends confirmation email
-6. User clicks email link → GET /api/v1/users/{username}/email-confirmations?token=xxx
-7. Backend confirms email (302 redirect)
-8. User redirected to success page
-9. User logs in with email
+3. POST /api/v1/users {email, password, hasDataStorageConsent}
+4. Backend creates user (emailConfirmed=false, username=null)
+5. Backend sends confirmation email with token
+6. User clicks email link → /confirm-email?token=XXX
+7. Frontend calls POST /api/v1/email-confirmations {token}
+8. Backend confirms email, returns user email
+9. Frontend shows Telegram Login Widget
+10. User authorizes via Telegram
+11. Frontend calls POST /api/v1/users/link-telegram {email, telegramData}
+12. Backend verifies hash, saves username, returns JWT tokens
+13. User is auto-logged in and redirected to profile
 ```
 
 ### Component Architecture (FSD)
-
-Following Feature-Sliced Design principles:
 
 ```
 src/
 ├── features/auth/
 │   ├── ui/
-│   │   ├── Signup.tsx              # Updated registration form
-│   │   ├── Login.tsx               # Updated to emphasize email login
-│   │   └── OAuthButtons.tsx        # No changes needed
+│   │   ├── Signup.tsx              # Simplified form (email + password only)
+│   │   ├── Login.tsx               # Updated to handle TELEGRAM_REQUIRED
+│   │   ├── TelegramConnect.tsx     # NEW: Reusable Telegram Widget component
+│   │   └── OAuthButtons.tsx        # Existing Google OAuth
 │   ├── api/
-│   │   ├── useRegister.ts          # Updated mutation
-│   │   ├── useLogin.ts             # No changes needed
-│   │   └── authApi.ts              # Updated types
+│   │   ├── useRegister.ts          # Updated to remove optional fields
+│   │   ├── useEmailConfirmation.ts # NEW: Hook for email confirmation
+│   │   ├── useLinkTelegram.ts      # NEW: Hook for Telegram linking
+│   │   └── useLogin.ts             # Updated to handle TELEGRAM_REQUIRED
 │   └── lib/
-│       └── oauth.ts                # Updated to handle email-only
+│       └── telegram.ts             # NEW: Telegram integration utilities
 ├── pages/auth/
-│   ├── EmailSent.tsx               # No changes needed
-│   ├── EmailConfirmed.tsx          # Updated to handle username from URL
-│   └── ForgotPassword.tsx          # No changes needed
+│   ├── EmailSent.tsx               # Existing
+│   ├── EmailConfirmation.tsx       # UPDATED: New flow with linkToken + Telegram Widget
+│   └── Login.tsx                   # UPDATED: Handle TELEGRAM_REQUIRED error
 ├── shared/
 │   ├── api/
-│   │   ├── generated-types.ts      # Regenerated from Swagger
-│   │   └── index.ts                # Updated type exports
-│   └── ui/
-│       └── FormInput/              # Reusable form components
+│   │   ├── types.ts                # NEW: Types for Telegram integration
+│   │   └── index.ts                # API client
+│   └── config/
+│       └── env.ts                  # NEW: Environment variables (TELEGRAM_BOT_USERNAME)
 └── app/
-    └── router/routes.tsx           # Updated email confirmation route
+    └── router/routes.tsx           # Existing routes
 ```
 
 ## Components and Interfaces
 
-### 1. Updated Signup Component
+### 1. Simplified Signup Component
 
 **Location:** `src/features/auth/ui/Signup.tsx`
 
 **Changes:**
 
-- Remove username field from form
-- Add optional fields: firstName, lastName, phoneNumber
-- Add optional promo code field
+- Remove firstName, lastName, phoneNumber, promoCode fields
+- Keep only email, password, hasDataStorageConsent
 - Update form validation
 - Update API request payload
 
@@ -82,67 +84,54 @@ interface SignupFormData {
   email: string; // Required
   password: string; // Required
   hasDataStorageConsent: boolean; // Required
-  firstName?: string; // Optional (new)
-  lastName?: string; // Optional (new)
-  phoneNumber?: string; // Optional (new)
-  promoCode?: string; // Optional (new)
 }
 ```
 
-### 2. Updated Registration API
+### 2. Updated Email Confirmation Component
 
-**Location:** `src/features/auth/api/useRegister.ts`
+**Location:** `src/pages/auth/EmailConfirmation.tsx`
 
 **Changes:**
 
-- Update mutation to use new CreateUserRequest type
-- Remove username from request payload
-- Add optional fields to request
-
-**API Request:**
-
-```typescript
-POST /api/v1/users
-{
-  email: string;
-  password: string;
-  hasDataStorageConsent: boolean;
-  firstName?: string | null;
-  lastName?: string | null;
-  phoneNumber?: string | null;
-  promoCode?: string | null;
-}
-```
-
-**API Response:**
-
-```typescript
-{
-  message: string;
-  username?: string;  // Auto-generated by backend
-}
-```
-
-### 3. Email Confirmation Handler
-
-**Location:** `src/pages/auth/EmailConfirmation.tsx` (new component)
-
-**Purpose:** Handle the email confirmation link click
-
-**Flow:**
-
-1. Extract token and username from URL query params
-2. Call GET /api/v1/users/{username}/email-confirmations?token={token}
-3. Handle 302 redirect or error
-4. Show success/error message
+- Extract only token from URL (no username)
+- Call POST /api/v1/email-confirmations {token}
+- Receive and store user email in state
+- Show Telegram Login Widget after success
+- Handle Telegram callback and call link API
 
 **Interface:**
 
 ```typescript
-interface EmailConfirmationProps {
-  // Extracted from URL: /confirm-email?username=xxx&token=xxx
+interface EmailConfirmationState {
+  status: 'loading' | 'confirmed' | 'error';
+  email: string | null;
+  errorMessage: string;
 }
 ```
+
+### 3. NEW: Telegram Connect Component
+
+**Location:** `src/features/auth/ui/TelegramConnect.tsx`
+
+**Purpose:** Reusable component for Telegram Login Widget
+
+**Props:**
+
+```typescript
+interface TelegramConnectProps {
+  email: string;
+  onSuccess: (tokens: { accessToken: string; refreshToken: string; user: User }) => void;
+  onError: (error: string) => void;
+}
+```
+
+**Implementation:**
+
+- Load Telegram widget script
+- Configure with bot username from env
+- Handle onTelegramAuth callback
+- Call POST /api/v1/users/link-telegram
+- Emit success/error events
 
 ### 4. Updated Login Component
 
@@ -150,153 +139,178 @@ interface EmailConfirmationProps {
 
 **Changes:**
 
-- Update placeholder text to emphasize email
-- Keep usernameOrEmail field (backend still accepts both)
-- Update error handling for EmailNotConfirmed
+- Handle TELEGRAM_REQUIRED error (403)
+- Extract user email from error response
+- Show Telegram Connect component instead of error
+- Auto-login after successful Telegram linking
 
-### 5. Updated OAuth Handler
+### 5. NEW: Telegram Integration Utilities
 
-**Location:** `src/features/auth/lib/oauth.ts`
+**Location:** `src/features/auth/lib/telegram.ts`
 
-**Changes:**
+**Functions:**
 
-- Remove username extraction logic
-- Backend will generate username from Google email
-- Extract firstName/lastName from Google profile
+```typescript
+// Load Telegram widget script
+export function loadTelegramWidget(): Promise<void>;
+
+// Validate telegram data structure
+export function validateTelegramData(data: unknown): data is TelegramData;
+
+// Get bot username from env
+export function getTelegramBotUsername(): string;
+```
 
 ## Data Models
 
-### CreateUserRequest (from Swagger)
+### API Request/Response Types
 
 ```typescript
+// Registration
 interface CreateUserRequest {
-  email: string; // Required, format: email
-  password: string; // Required
-  hasDataStorageConsent: boolean; // Required
-  firstName?: string | null; // Optional
-  lastName?: string | null; // Optional
-  phoneNumber?: string | null; // Optional
-  promoCode?: string | null; // Optional
+  email: string;
+  password: string;
+  hasDataStorageConsent: boolean;
 }
-```
 
-### CreateLoginRequest (unchanged)
+interface CreateUserResponse {
+  message: string;
+}
 
-```typescript
-interface CreateLoginRequest {
-  usernameOrEmail: string; // Can be email or auto-generated username
+// Email Confirmation
+interface EmailConfirmationRequest {
+  token: string;
+}
+
+interface EmailConfirmationResponse {
+  success: true;
+  email: string; // User's email for Telegram linking
+}
+
+// Telegram Linking
+interface TelegramData {
+  id: number;
+  first_name: string;
+  last_name?: string;
+  username?: string;
+  photo_url?: string;
+  auth_date: number;
+  hash: string;
+}
+
+interface LinkTelegramRequest {
+  email: string;
+  telegramData: TelegramData;
+}
+
+interface LinkTelegramResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: {
+    username: string;
+    email: string;
+    firstName?: string;
+    lastName?: string;
+    telegramId: number;
+    // ... other user fields
+  };
+}
+
+// Login
+interface LoginRequest {
+  usernameOrEmail: string;
   password: string;
 }
+
+interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
+}
+
+interface LoginErrorTelegramRequired {
+  error: 'TELEGRAM_REQUIRED';
+  message: string;
+  email: string;
+}
 ```
 
-### GetUserProfileResponse (from Swagger)
+## API Endpoints
+
+### Frontend → Backend
 
 ```typescript
-interface GetUserProfileResponse {
-  username: string; // Auto-generated by backend
-  email: string;
-  isEmailConfirmed: boolean;
-  firstName?: string | null;
-  lastName?: string | null;
-  phoneNumber?: string | null;
-  googleId?: string | null;
-  timezone: string;
-  profilePictureUrl?: string | null;
-  languageCode?: string | null;
-  languageName?: string | null;
-  countryCode?: string | null;
-  countryName?: string | null;
-  allowsMarketingEmails: boolean;
-  isActive: boolean;
-  tierName: string;
-  createdOn: string;
-  updatedOn?: string | null;
-}
+// 1. Registration
+POST /api/v1/users
+Body: { email, password, hasDataStorageConsent }
+Response: { message: "Check your email" }
+
+// 2. Email Confirmation
+POST /api/v1/email-confirmations
+Body: { token }
+Response: { success: true, email: "user@example.com" }
+
+// 3. Link Telegram
+POST /api/v1/users/link-telegram
+Body: { email, telegramData: { id, first_name, username, auth_date, hash, ... } }
+Response: { accessToken, refreshToken, user }
+
+// 4. Login
+POST /api/v1/login
+Body: { usernameOrEmail, password }
+Response (Success): { accessToken, refreshToken, user }
+Response (Telegram Required): 403 { error: "TELEGRAM_REQUIRED", email: "user@example.com" }
+Response (Email Not Confirmed): 403 { error: "EMAIL_NOT_CONFIRMED" }
 ```
 
 ## Correctness Properties
 
-_A property is a characteristic or behavior that should hold true across all valid executions of a system-essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees._
+_A property is a characteristic or behavior that should hold true across all valid executions of a system._
 
-### Property 1: Registration request excludes username
+### Property 1: Registration request contains only required fields
 
-_For any_ registration form submission, the API request payload should not contain a username field
+_For any_ registration form submission, the API request payload should contain only email, password, and hasDataStorageConsent fields
 **Validates: Requirements 1.2, 1.3**
 
-### Property 2: API errors are displayed to users
+### Property 2: Email confirmation returns user email
 
-_For any_ backend error response, the error message should be displayed in the UI
-**Validates: Requirements 1.5, 9.1**
+_For any_ successful email confirmation, the backend response should include the user's email
+**Validates: Requirements 2.4**
 
-### Property 3: Optional fields are included when filled
+### Property 3: Telegram data is sent unmodified
 
-_For any_ registration form submission where optional fields (firstName, lastName, phoneNumber) have non-empty values, those values should be included in the API request
-**Validates: Requirements 2.2**
+_For any_ Telegram OAuth callback, the telegramData should be sent to the backend without modification
+**Validates: Requirements 9.4**
 
-### Property 4: Optional field validation errors are shown
+### Property 4: Email is stored in component state only
 
-_For any_ invalid input in optional fields, an appropriate validation error message should be displayed
-**Validates: Requirements 2.5**
+_For any_ email received from confirmation, it should be stored in component state and never in localStorage
+**Validates: Requirements 9.1**
 
-### Property 5: Promo code is included when provided
+### Property 5: JWT tokens are stored after Telegram linking
 
-_For any_ registration form submission with a non-empty promo code, the promo code should be included in the API request
-**Validates: Requirements 3.2**
+_For any_ successful Telegram linking response, the JWT tokens should be stored in localStorage
+**Validates: Requirements 9.3**
 
-### Property 6: Promo code errors are displayed
+### Property 6: TELEGRAM_REQUIRED shows widget
 
-_For any_ backend rejection of a promo code, the error message should be displayed to the user
-**Validates: Requirements 3.4**
+_For any_ login response with error "TELEGRAM_REQUIRED", the Telegram Login Widget should be displayed
+**Validates: Requirements 4.3**
 
-### Property 7: Email confirmation errors are handled
+### Property 7: Telegram widget loads bot username from env
 
-_For any_ email confirmation failure, an error message with instructions should be displayed
-**Validates: Requirements 4.4**
+_For any_ Telegram Widget render, the bot username should be read from environment variables
+**Validates: Requirements 9.5**
 
-### Property 8: Email format is accepted in login
+### Property 8: Email validation errors are displayed
 
-_For any_ valid email address entered in the login form, it should be accepted as a valid usernameOrEmail value
-**Validates: Requirements 5.1**
-
-### Property 9: Login tokens are stored
-
-_For any_ successful login response, the authentication tokens should be stored in localStorage
-**Validates: Requirements 5.3**
-
-### Property 10: Username from login is stored in state
-
-_For any_ login response containing a username, that username should be stored in the auth state
-**Validates: Requirements 5.4**
-
-### Property 11: OAuth tokens are stored
-
-_For any_ successful Google OAuth response, the returned authentication tokens should be stored in localStorage
-**Validates: Requirements 7.3**
-
-### Property 12: Google profile data is extracted
-
-_For any_ Google OAuth success, firstName and lastName should be extracted from the Google profile and included in the user data
-**Validates: Requirements 7.4**
-
-### Property 13: Invalid email formats show errors
-
-_For any_ invalid email format entered in the registration form, an error message should be displayed below the email field
+_For any_ invalid email format, an error message should be displayed below the email field
 **Validates: Requirements 8.1**
 
-### Property 14: Validation errors clear when corrected
+### Property 9: API errors are logged
 
-_For any_ form field with a validation error, when the user enters valid data, the error message should be removed
-**Validates: Requirements 8.4**
-
-### Property 15: Submit button enabled when form valid
-
-_For any_ registration form state where all required fields are valid, the submit button should be enabled
-**Validates: Requirements 8.5**
-
-### Property 16: Error logging to console
-
-_For any_ error that occurs during registration or login, error details should be logged to the console
-**Validates: Requirements 9.5**
+_For any_ API error, error details should be logged to the console
+**Validates: Requirements 7.5**
 
 ## Error Handling
 
@@ -306,7 +320,6 @@ _For any_ error that occurs during registration or login, error details should b
 | -------------------- | ----------- | ----------------------------------------------------------- |
 | Invalid email format | 400         | Display validation error below email field                  |
 | Email already exists | 400         | Display "Email already registered. Try logging in instead." |
-| Invalid promo code   | 400         | Display error message from backend                          |
 | Weak password        | 400         | Display password requirements                               |
 | Missing consent      | 400         | Display "You must agree to continue"                        |
 | Network error        | -           | Display "Network error. Please try again."                  |
@@ -314,21 +327,29 @@ _For any_ error that occurs during registration or login, error details should b
 
 ### Email Confirmation Errors
 
-| Error Type        | HTTP Status | Handling                                           |
-| ----------------- | ----------- | -------------------------------------------------- |
-| Invalid token     | 400         | Display "Invalid or expired confirmation link"     |
-| User not found    | 404         | Display "User not found"                           |
-| Already confirmed | 400         | Display "Email already confirmed. You can log in." |
-| Network error     | -           | Display "Network error. Please try again."         |
+| Error Type        | HTTP Status | Handling                                       |
+| ----------------- | ----------- | ---------------------------------------------- |
+| Invalid token     | 400         | Display "Invalid or expired confirmation link" |
+| Token expired     | 400         | Display "Link expired. Please register again"  |
+| Already confirmed | 400         | Display "Email already confirmed"              |
+| Network error     | -           | Display "Network error. Please try again."     |
+
+### Telegram Linking Errors
+
+| Error Type    | HTTP Status | Handling                                                |
+| ------------- | ----------- | ------------------------------------------------------- |
+| Invalid email | 403         | Display "Session expired. Please try again"             |
+| Invalid hash  | 403         | Display "Telegram verification failed. Please try again |
+| Network error | -           | Display "Network error. Please try again."              |
 
 ### Login Errors
 
-| Error Type          | HTTP Status | Handling                                                               |
-| ------------------- | ----------- | ---------------------------------------------------------------------- |
-| Invalid credentials | 401         | Display "Invalid email or password"                                    |
-| Email not confirmed | 400         | Display "Please confirm your email before logging in" with resend link |
-| Account disabled    | 403         | Display "Account disabled. Contact support."                           |
-| Network error       | -           | Display "Network error. Please try again."                             |
+| Error Type          | HTTP Status | Handling                                   |
+| ------------------- | ----------- | ------------------------------------------ |
+| Invalid credentials | 401         | Display "Invalid email or password"        |
+| Email not confirmed | 403         | Display "Please confirm your email first"  |
+| Telegram required   | 403         | Show Telegram Login Widget with linkToken  |
+| Network error       | -           | Display "Network error. Please try again." |
 
 ## Testing Strategy
 
@@ -336,170 +357,165 @@ _For any_ error that occurs during registration or login, error details should b
 
 **Test Coverage:**
 
-- Form validation logic (email format, password length, required fields)
-- API request payload structure (no username, optional fields included/excluded)
-- Error message display logic
-- Navigation after successful registration
-- Token storage after login
-- OAuth data extraction
+- Signup form validation (email, password, consent)
+- Email confirmation flow (token extraction, API call, linkToken storage)
+- Telegram widget integration (script loading, callback handling)
+- Login flow (TELEGRAM_REQUIRED handling)
+- Error message display
 
 **Example Unit Tests:**
 
 ```typescript
 describe('Signup Form', () => {
-  it('should not include username in registration request', () => {
-    // Test that API call excludes username field
+  it('should only send email, password, and consent', () => {
+    // Verify no optional fields in request
   });
 
-  it('should include optional fields when filled', () => {
-    // Test that firstName, lastName are included when provided
+  it('should validate email format', () => {
+    // Test email validation
+  });
+});
+
+describe('Email Confirmation', () => {
+  it('should extract token from URL', () => {
+    // Test token extraction
   });
 
-  it('should display backend error messages', () => {
-    // Test error display for various error responses
+  it('should store email in state', () => {
+    // Test email storage
+  });
+
+  it('should show Telegram widget after confirmation', () => {
+    // Test widget display
+  });
+});
+
+describe('Telegram Connect', () => {
+  it('should load Telegram script', () => {
+    // Test script loading
+  });
+
+  it('should call link API with correct data', () => {
+    // Test API call
   });
 });
 ```
-
-### Property-Based Testing
-
-**Library:** `fast-check` (JavaScript/TypeScript property testing library)
-
-**Configuration:** Minimum 100 iterations per property test
-
-**Property Tests:**
-
-1. **Property 1: Registration request excludes username**
-   - Generate random registration data
-   - Verify API request never contains username field
-
-2. **Property 2: API errors are displayed**
-   - Generate random error messages
-   - Verify all errors are displayed in UI
-
-3. **Property 3: Optional fields included when filled**
-   - Generate random optional field values
-   - Verify they appear in API request
-
-4. **Property 8: Email format accepted in login**
-   - Generate random valid emails
-   - Verify they are accepted in login form
-
-5. **Property 13: Invalid email formats show errors**
-   - Generate random invalid emails
-   - Verify error messages are displayed
-
-6. **Property 14: Validation errors clear when corrected**
-   - Generate random invalid then valid inputs
-   - Verify errors disappear
 
 ### Integration Testing
 
 **Test Scenarios:**
 
-- Complete registration flow (form → API → email sent page)
-- Email confirmation flow (link click → API → success page)
-- Login with email after registration
-- Google OAuth registration flow
-- Error handling for duplicate email
-- Error handling for invalid promo code
+- Complete registration flow (signup → email → Telegram → auto-login)
+- Login with incomplete registration (shows Telegram widget)
+- Error handling for each step
+- Token expiration scenarios
 
-### Manual Testing Checklist
+## Environment Variables
 
-- [ ] Registration form displays without username field
-- [ ] Optional fields (firstName, lastName, phoneNumber) are clearly marked
-- [ ] Promo code field is optional
-- [ ] Form validation works for all fields
-- [ ] Registration succeeds and redirects to email sent page
-- [ ] Email confirmation link works
-- [ ] Login with email works
-- [ ] Google OAuth works without username
-- [ ] Error messages are clear and helpful
-- [ ] Mobile responsive design works
-
-## Migration Steps
-
-### Phase 1: Update Types (No UI Changes)
-
-1. Update package.json with correct Swagger URL
-2. Run `npm run generate-types`
-3. Update type imports in auth files
-4. Fix TypeScript errors
-
-### Phase 2: Update Registration Form
-
-1. Remove username field from Signup.tsx
-2. Add optional fields (firstName, lastName, phoneNumber)
-3. Add promo code field
-4. Update form validation
-5. Update API request payload
-
-### Phase 3: Update Email Confirmation
-
-1. Create EmailConfirmation component
-2. Add route for /confirm-email
-3. Handle token and username from URL
-4. Call confirmation API
-5. Handle success/error states
-
-### Phase 4: Update Login Flow
-
-1. Update Login.tsx placeholder text
-2. Update error handling for EmailNotConfirmed
-3. Test login with email
-
-### Phase 5: Update OAuth
-
-1. Update oauth.ts to remove username logic
-2. Test Google OAuth flow
-
-### Phase 6: Testing
-
-1. Write unit tests
-2. Write property-based tests
-3. Run integration tests
-4. Manual testing
-5. Fix bugs
-
-### Phase 7: Deployment
-
-1. Deploy to staging
-2. Test on staging
-3. Deploy to production
-4. Monitor for errors
+```bash
+# Frontend .env
+VITE_TELEGRAM_BOT_USERNAME=tripradar_bot
+VITE_API_BASE_URL=https://api.tripradar.io
+```
 
 ## Security Considerations
 
-1. **Email Validation:** Validate email format on frontend and backend
-2. **Password Strength:** Enforce minimum 6 characters (consider increasing)
-3. **HTTPS Only:** All API calls must use HTTPS
-4. **Token Security:** Email confirmation tokens should be single-use and expire
-5. **Rate Limiting:** Implement rate limiting on registration endpoint
-6. **XSS Protection:** Sanitize all user inputs before display
-7. **CSRF Protection:** Use CSRF tokens for form submissions
+1. **Email in State:**
+   - Stored in component state, not localStorage
+   - Used only for Telegram linking
+   - No sensitive data exposure
 
-## Performance Considerations
+2. **Telegram Hash Verification:**
+   - Backend MUST verify hash using Bot Token
+   - Frontend sends data unmodified
+   - Bot Token NEVER exposed to frontend
 
-1. **Form Validation:** Use debouncing for real-time validation
-2. **API Calls:** Show loading states during registration
-3. **Error Handling:** Cache error messages to avoid re-fetching
-4. **OAuth:** Optimize OAuth flow to minimize redirects
-5. **Bundle Size:** Ensure form validation doesn't bloat bundle
+3. **JWT Token Storage:**
+   - Stored in localStorage after successful Telegram linking
+   - Includes refresh token for session management
 
-## Accessibility
+4. **HTTPS Only:**
+   - All API calls must use HTTPS
+   - Telegram widget requires HTTPS
 
-1. **Form Labels:** All inputs must have associated labels
-2. **Error Messages:** Use aria-describedby for error messages
-3. **Focus Management:** Focus on first error field after validation
-4. **Keyboard Navigation:** Ensure all interactive elements are keyboard accessible
-5. **Screen Readers:** Announce validation errors and success messages
+## Implementation Notes
 
-## Future Enhancements
+### Telegram Widget Integration
 
-1. **Password Strength Indicator:** Add visual password strength meter
-2. **Email Verification:** Add "Resend confirmation email" button
-3. **Social Login:** Add more OAuth providers (GitHub, Microsoft)
-4. **Profile Completion:** Prompt users to complete profile after registration
-5. **Username Customization:** Allow users to change auto-generated username
-6. **Phone Verification:** Add SMS verification for phone numbers
-7. **Two-Factor Authentication:** Add 2FA support
+The Telegram Login Widget is loaded dynamically:
+
+```html
+<script
+  async
+  src="https://telegram.org/js/telegram-widget.js?22"
+  data-telegram-login="tripradar_bot"
+  data-size="large"
+  data-onauth="onTelegramAuth(user)"
+  data-request-access="write"
+></script>
+```
+
+The `onTelegramAuth` callback receives:
+
+```javascript
+{
+  id: 123456789,
+  first_name: "John",
+  last_name: "Doe",
+  username: "johndoe",
+  photo_url: "https://...",
+  auth_date: 1234567890,
+  hash: "abc123..."
+}
+```
+
+### Backend Requirements
+
+⚠️ **BACKEND MUST IMPLEMENT:**
+
+1. **Email Return on Confirmation:**
+   - Return user's email after successful email confirmation
+   - Email used to identify user for Telegram linking
+
+2. **Email Validation on Link:**
+   - Verify email exists in database
+   - Verify email is confirmed
+   - Find userId associated with email
+
+3. **Telegram Hash Verification:**
+   - Verify hash using Bot Token
+   - Prevent replay attacks
+   - Check auth_date freshness
+
+4. **Username Extraction:**
+   - Extract username from Telegram data
+   - Handle missing username (use first_name + id)
+   - Ensure username uniqueness
+
+## Migration from Current Implementation
+
+### Changes Required:
+
+1. **Signup.tsx:**
+   - Remove firstName, lastName, phoneNumber, promoCode fields
+   - Remove from form state
+   - Remove from validation
+   - Remove from API call
+
+2. **EmailConfirmation.tsx:**
+   - Change API call from GET to POST
+   - Remove username from URL params
+   - Add email state
+   - Add Telegram Widget component
+   - Handle Telegram callback
+
+3. **Login.tsx:**
+   - Add TELEGRAM_REQUIRED error handling
+   - Add Telegram Widget display
+   - Handle auto-login after Telegram linking
+
+4. **New Files:**
+   - `TelegramConnect.tsx` - Reusable widget component
+   - `telegram.ts` - Utility functions
+   - `useLinkTelegram.ts` - API hook
+   - `useEmailConfirmation.ts` - API hook

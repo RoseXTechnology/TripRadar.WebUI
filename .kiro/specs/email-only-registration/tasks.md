@@ -1,207 +1,235 @@
-# Implementation Plan
+# Implementation Plan: Registration with Telegram Integration
 
-- [x] 1. Update TypeScript types from Swagger
-  - Update package.json with correct Swagger URL (already done)
-  - Run npm run generate-types to regenerate types
-  - Verify CreateUserRequest no longer has username field
-  - Verify CreateUserRequest has optional firstName, lastName, phoneNumber, promoCode fields
-  - Update type exports in src/shared/api/index.ts if needed
-  - _Requirements: 6.2, 6.3, 6.4, 6.5_
+## Overview
 
-- [x] 2. Update Signup form component
-  - Remove username field from form UI
-  - Remove username from form validation schema
-  - Remove username from SignupFormData interface
-  - Add optional firstName field with label "First Name (optional)"
-  - Add optional lastName field with label "Last Name (optional)"
-  - Add optional phoneNumber field with label "Phone Number (optional)"
-  - Add optional promoCode field with label "Promo Code (optional)"
-  - Update form submission to exclude username from API request
-  - Update form submission to include optional fields when filled
-  - Test that form renders without username field
-  - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 3.1, 3.2, 3.3_
+This plan focuses ONLY on frontend implementation. Backend endpoints are assumed to be implemented separately.
 
-- [x] 2.1 Write property test for registration request structure
-  - **Property 1: Registration request excludes username**
-  - **Validates: Requirements 1.2, 1.3**
+---
 
-- [x] 2.2 Write property test for optional fields inclusion
-  - **Property 3: Optional fields are included when filled**
-  - **Validates: Requirements 2.2**
+## Phase 1: Cleanup and Preparation
 
-- [x] 2.3 Write property test for promo code inclusion
-  - **Property 5: Promo code is included when provided**
-  - **Validates: Requirements 3.2**
+- [x] 1. Remove optional fields from Signup form
+  - Remove firstName field and its validation
+  - Remove lastName field and its validation
+  - Remove phoneNumber field and its validation
+  - Remove promoCode field and its validation
+  - Update SignupFormData interface to only include email, password, hasDataStorageConsent
+  - Update form submission to only send required fields
+  - Test that form renders with only email, password, and consent checkbox
+  - _Requirements: 1.1, 1.2, 1.3_
 
-- [x] 3. Update registration API mutation
-  - Update useRegisterMutation to use new CreateUserRequest type
-  - Remove username from mutation payload
-  - Add optional fields to mutation payload (firstName, lastName, phoneNumber, promoCode)
-  - Handle backend response that may include auto-generated username
-  - Update error handling to display backend error messages
-  - _Requirements: 1.2, 1.5, 2.2, 3.2, 3.4_
+- [x] 2. Create TypeScript types for Telegram integration
+  - Create src/shared/api/types.ts if it doesn't exist
+  - Define TelegramData interface (id, first_name, last_name?, username?, photo_url?, auth_date, hash)
+  - Define EmailConfirmationRequest interface (token)
+  - Define EmailConfirmationResponse interface (success, email)
+  - Define LinkTelegramRequest interface (email, telegramData)
+  - Define LinkTelegramResponse interface (accessToken, refreshToken, user)
+  - Define LoginErrorTelegramRequired interface (error, message, email)
+  - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
-- [x] 3.1 Write property test for API error display
-  - **Property 2: API errors are displayed to users**
-  - **Validates: Requirements 1.5, 9.1**
+- [x] 3. Setup environment variables
+  - Add VITE_TELEGRAM_BOT_USERNAME to .env file
+  - Create src/shared/config/env.ts if it doesn't exist
+  - Export getTelegramBotUsername() function that reads from import.meta.env
+  - Add validation that bot username is defined
+  - _Requirements: 9.5_
 
-- [x] 3.2 Write property test for promo code error handling
-  - **Property 6: Promo code errors are displayed**
-  - **Validates: Requirements 3.4**
+---
 
-- [x] 4. Create email confirmation handler component
-  - Create new component src/pages/auth/EmailConfirmation.tsx
-  - Extract username and token from URL query parameters
-  - Call GET /api/v1/users/{username}/email-confirmations?token={token}
-  - Handle 302 redirect response
-  - Display success message on confirmation
-  - Display error message on failure with instructions
-  - Add "Go to Login" button on success
-  - _Requirements: 4.2, 4.3, 4.4, 4.5_
+## Phase 2: Email Confirmation with Email Return
 
-- [x] 4.1 Write property test for confirmation error handling
-  - **Property 7: Email confirmation errors are handled**
-  - **Validates: Requirements 4.4**
+- [x] 4. Create email confirmation API hook
+  - Create src/features/auth/api/useEmailConfirmation.ts
+  - Implement useMutation for POST /api/v1/email-confirmations
+  - Accept token as parameter
+  - Return user's email on success
+  - Handle errors (invalid token, expired token, network errors)
+  - _Requirements: 2.3, 2.4_
 
-- [x] 5. Update routing for email confirmation
-  - Add route /confirm-email in src/app/router/routes.tsx
-  - Map route to EmailConfirmation component
-  - Ensure route accepts query parameters (username, token)
-  - Test navigation to confirmation page
-  - _Requirements: 4.2_
+- [ ] 5. Update EmailConfirmation component
+  - Update src/pages/auth/EmailConfirmation.tsx
+  - Change to extract only token from URL (remove username extraction)
+  - Use useEmailConfirmation hook instead of direct apiClient call
+  - Add state for email storage
+  - Update loading state to show "Confirming email..."
+  - Update success state to store email and show Telegram widget
+  - Update error state to show appropriate error messages
+  - Remove "Go to Login" button from success state (user will auto-login after Telegram)
+  - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
 
-- [x] 6. Update Login component
-  - Update placeholder text to "Enter your email or username"
-  - Update label to emphasize email login
-  - Keep usernameOrEmail field (backend accepts both)
-  - Update EmailNotConfirmed error handling
-  - Add link to resend confirmation email (optional)
-  - _Requirements: 5.1, 5.2, 5.5_
+---
 
-- [x] 6.1 Write property test for email acceptance in login
-  - **Property 8: Email format is accepted in login**
-  - **Validates: Requirements 5.1**
+## Phase 3: Telegram Integration
 
-- [x] 6.2 Write property test for token storage after login
-  - **Property 9: Login tokens are stored**
-  - **Validates: Requirements 5.3**
+- [ ] 6. Create Telegram utility functions
+  - Create src/features/auth/lib/telegram.ts
+  - Implement loadTelegramWidget() function that loads script from telegram.org
+  - Implement validateTelegramData() function that checks required fields
+  - Implement getTelegramBotUsername() function that reads from env
+  - Add TypeScript types for window.Telegram if needed
+  - _Requirements: 5.1, 5.2, 5.4, 9.5_
 
-- [x] 6.3 Write property test for username storage in auth state
-  - **Property 10: Username from login is stored in state**
-  - **Validates: Requirements 5.4**
+- [ ] 7. Create link Telegram API hook
+  - Create src/features/auth/api/useLinkTelegram.ts
+  - Implement useMutation for POST /api/v1/users/link-telegram
+  - Accept email and telegramData as parameters
+  - Return accessToken, refreshToken, and user on success
+  - Handle errors (invalid email, invalid hash, network errors)
+  - _Requirements: 3.4, 3.5_
 
-- [ ] 7. Update OAuth handler
-  - Update src/features/auth/lib/oauth.ts
-  - Remove username extraction logic from Google profile
-  - Backend will auto-generate username from email
-  - Keep firstName and lastName extraction from Google profile
-  - Update user object creation to not include username initially
-  - Store username from backend response after OAuth
-  - _Requirements: 7.2, 7.3, 7.4_
+- [ ] 8. Create TelegramConnect component
+  - Create src/features/auth/ui/TelegramConnect.tsx
+  - Accept email, onSuccess, onError as props
+  - Load Telegram widget script in useEffect
+  - Render Telegram widget with bot username from env
+  - Implement onTelegramAuth callback function
+  - Validate telegramData structure
+  - Call useLinkTelegram hook with email and telegramData
+  - On success: store JWT tokens in localStorage and call onSuccess
+  - On error: call onError with error message
+  - Show loading state while linking
+  - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 7.1 Write property test for OAuth token storage
-  - **Property 11: OAuth tokens are stored**
-  - **Validates: Requirements 7.3**
+- [ ] 9. Integrate TelegramConnect into EmailConfirmation
+  - Import TelegramConnect component
+  - Render TelegramConnect when email is available
+  - Implement onSuccess handler: store tokens, update auth state, redirect to /profile
+  - Implement onError handler: show error message, allow retry
+  - Add explanatory text: "Connect your Telegram account to complete registration"
+  - _Requirements: 2.5, 3.1, 9.1, 9.3_
 
-- [ ] 7.2 Write property test for Google profile data extraction
-  - **Property 12: Google profile data is extracted**
-  - **Validates: Requirements 7.4**
+---
 
-- [ ] 8. Add form validation for new fields
-  - Add email format validation with regex
-  - Add password length validation (min 6 characters)
-  - Add optional field validation (firstName, lastName, phoneNumber)
-  - Add phone number format validation (if phoneNumber provided)
-  - Display validation errors below respective fields
-  - Clear validation errors when user corrects input
-  - Enable submit button only when all required fields are valid
+## Phase 4: Login Flow Updates
+
+- [ ] 10. Update login API hook to handle TELEGRAM_REQUIRED
+  - Update src/features/auth/api/useLogin.ts
+  - Add error handling for 403 status with TELEGRAM_REQUIRED
+  - Extract user's email from error response
+  - Return email in error object
+  - _Requirements: 4.1, 4.2_
+
+- [ ] 11. Update Login component for Telegram requirement
+  - Update src/features/auth/ui/Login.tsx
+  - Add state for email and showTelegramWidget
+  - Update onError handler to check for TELEGRAM_REQUIRED
+  - When TELEGRAM_REQUIRED: extract email, set showTelegramWidget=true
+  - Conditionally render TelegramConnect component when showTelegramWidget=true
+  - Implement onSuccess handler for Telegram linking: store tokens, update auth state, redirect
+  - Add explanatory text: "Please connect your Telegram account to complete your registration"
+  - Keep existing error handling for other error types
+  - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
+
+- [ ] 11. Update Login component for Telegram requirement
+  - Update src/features/auth/ui/Login.tsx
+  - Add state for linkToken and showTelegramWidget
+  - Update onError handler to check for TELEGRAM_REQUIRED
+  - When TELEGRAM_REQUIRED: extract linkToken, set showTelegramWidget=true
+  - Conditionally render TelegramConnect component when showTelegramWidget=true
+  - Implement onSuccess handler for Telegram linking: store tokens, update auth state, redirect
+  - Add explanatory text: "Please connect your Telegram account to complete your registration"
+  - Keep existing error handling for other error types
+  - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
+
+---
+
+## Phase 5: Testing and Polish
+
+- [ ] 12. Add form validation tests
+  - Test email format validation
+  - Test password length validation (min 6 characters)
+  - Test consent checkbox requirement
+  - Test that only required fields are sent to API
   - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5_
 
-- [ ] 8.1 Write property test for invalid email validation
-  - **Property 13: Invalid email formats show errors**
-  - **Validates: Requirements 8.1**
+- [ ] 13. Add email confirmation flow tests
+  - Test token extraction from URL
+  - Test API call with correct token
+  - Test email storage in state
+  - Test Telegram widget display after confirmation
+  - Test error handling for invalid/expired tokens
+  - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
 
-- [ ] 8.2 Write property test for validation error clearing
-  - **Property 14: Validation errors clear when corrected**
-  - **Validates: Requirements 8.4**
+- [ ] 14. Add Telegram integration tests
+  - Test Telegram script loading
+  - Test telegramData validation
+  - Test link API call with correct data
+  - Test JWT token storage after success
+  - Test error handling for linking failures
+  - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 8.3 Write property test for submit button state
-  - **Property 15: Submit button enabled when form valid**
-  - **Validates: Requirements 8.5**
+- [ ] 15. Add login flow tests
+  - Test TELEGRAM_REQUIRED error handling
+  - Test Telegram widget display on login
+  - Test auto-login after Telegram linking
+  - Test normal login flow still works
+  - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 8.4 Write property test for optional field validation
-  - **Property 4: Optional field validation errors are shown**
-  - **Validates: Requirements 2.5**
-
-- [ ] 9. Implement comprehensive error handling
-  - Handle 400 errors (validation, duplicate email, invalid promo)
-  - Handle 401 errors (invalid credentials)
-  - Handle 404 errors (user not found)
-  - Handle 500 errors (server errors)
-  - Handle network errors (fetch failures)
-  - Display user-friendly error messages for each error type
-  - Log all errors to console for debugging
-  - Add error message mapping for common errors
-  - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5_
-
-- [ ] 9.1 Write property test for error logging
-  - **Property 16: Error logging to console**
-  - **Validates: Requirements 9.5**
-
-- [ ] 10. Setup property-based testing infrastructure
-  - Install fast-check library: npm install --save-dev fast-check
-  - Install @types/fast-check if needed
-  - Create test utilities in src/shared/lib/test-utils/
-  - Create custom generators for email, password, user data
-  - Configure Vitest to run property tests
-  - Set minimum iterations to 100 for all property tests
-  - _Requirements: Testing Strategy_
-
-- [ ] 11. Write unit tests for components
-  - Test Signup component renders without username field
-  - Test Signup component includes optional fields
-  - Test form submission excludes username
-  - Test form submission includes optional fields when filled
-  - Test EmailConfirmation component handles success
-  - Test EmailConfirmation component handles errors
-  - Test Login component accepts email
-  - Test OAuth handler extracts Google profile data
-  - _Requirements: Testing Strategy_
-
-- [ ] 12. Update EmailSent page (if needed)
-  - Review EmailSent.tsx for any username references
-  - Update messaging to be email-focused
-  - Ensure "Back to Login" link works
-  - _Requirements: 4.1_
-
-- [ ] 13. Update auth store initialization
-  - Review src/shared/store/auth.ts
-  - Ensure initializeAuth handles auto-generated usernames
-  - Update user object creation to work without username initially
-  - Username will be loaded from JWT or profile API
-  - _Requirements: 5.4_
-
-- [ ] 14. Checkpoint - Ensure all tests pass
-  - Ensure all tests pass, ask the user if questions arise.
-
-- [ ] 15. Manual testing and bug fixes
-  - Test complete registration flow (form → API → email sent)
-  - Test email confirmation flow (link → API → success)
-  - Test login with email
-  - Test login with auto-generated username
-  - Test Google OAuth flow
-  - Test error scenarios (duplicate email, invalid promo, network errors)
-  - Test form validation for all fields
-  - Test on mobile devices (responsive design)
-  - Fix any bugs discovered during testing
+- [ ] 16. Manual testing checklist
+  - Test complete registration flow (signup → email → Telegram → auto-login)
+  - Test login with incomplete registration (shows Telegram widget)
+  - Test error scenarios (invalid token, invalid email, Telegram auth failure)
+  - Test on mobile devices (Telegram widget should open Telegram app)
+  - Test with users who don't have Telegram username (should use first_name)
+  - Test network error handling at each step
+  - Verify JWT tokens are stored correctly
+  - Verify redirect to profile after successful registration
   - _Requirements: All_
 
-- [ ] 16. Update documentation
-  - Update README.md if registration flow is documented
-  - Update any developer documentation
-  - Add comments to complex code sections
-  - Document new optional fields in code
+- [ ] 17. Update error messages and UI polish
+  - Ensure all error messages are user-friendly
+  - Add loading states for all async operations
+  - Add success animations/feedback
+  - Ensure mobile responsive design
+  - Test dark mode compatibility
+  - Add accessibility attributes (aria-labels, etc.)
+  - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
+
+---
+
+## Phase 6: Documentation
+
+- [ ] 18. Update code documentation
+  - Add JSDoc comments to TelegramConnect component
+  - Add JSDoc comments to telegram utility functions
+  - Add JSDoc comments to new API hooks
+  - Document environment variables in README
+  - Add inline comments for complex logic
   - _Requirements: Documentation_
 
-- [ ] 17. Final checkpoint - Ensure all tests pass
-  - Ensure all tests pass, ask the user if questions arise.
+- [ ] 19. Create developer guide
+  - Document Telegram bot setup process
+  - Document how to get bot username
+  - Document environment variable configuration
+  - Document testing with Telegram in development
+  - Add troubleshooting section
+  - _Requirements: Documentation_
+
+---
+
+## Notes
+
+### Backend Dependencies
+
+⚠️ **These endpoints must be implemented on backend before frontend can be fully tested:**
+
+1. `POST /api/v1/users` - Registration (already exists, but verify it doesn't require optional fields)
+2. `POST /api/v1/email-confirmations` - Email confirmation returning user's email
+3. `POST /api/v1/users/link-telegram` - Telegram account linking with hash verification (accepts email + telegramData)
+4. `POST /api/v1/login` - Login with TELEGRAM_REQUIRED error handling (returns user's email in error)
+
+### Testing Strategy
+
+- Unit tests for individual components and functions
+- Integration tests for complete flows
+- Manual testing for Telegram OAuth (requires real Telegram account)
+- Test with different Telegram account states (with/without username)
+
+### Telegram Bot Setup
+
+Before starting implementation, ensure:
+
+1. Telegram bot is created via @BotFather
+2. Bot username is configured in environment variables
+3. Bot domain is whitelisted in Telegram bot settings
