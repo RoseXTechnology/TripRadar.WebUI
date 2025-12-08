@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { FaArrowRight, FaEnvelope, FaEye, FaEyeSlash, FaGoogle, FaLock } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { useLoginMutation } from 'features/auth/api';
+import { Link, useNavigate } from 'react-router-dom';
+import { type LoginError, useLoginMutation } from 'features/auth/api/useLogin';
 import { handleGoogleSignUp } from 'features/auth/lib/oauth';
+import { TelegramConnect } from 'features/auth/ui/TelegramConnect';
+import type { LinkTelegramResponse } from 'shared/api/types';
+import { ROUTES } from 'shared/config/routes';
 import { authStorage } from 'shared/lib';
 import { useAuthStore } from 'shared/store/auth';
 
 export const Login = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     usernameOrEmail: '', // Backend accepts both email and username in this field
     password: '',
   });
+  const [showTelegramWidget, setShowTelegramWidget] = useState(false);
+  const [userEmail, setUserEmail] = useState<string>('');
+  const [telegramError, setTelegramError] = useState<string>('');
   const login = useAuthStore(state => state.login);
   const loginMutation = useLoginMutation();
 
@@ -44,14 +51,19 @@ export const Login = () => {
             subscription: 'free',
           });
         },
-        onError: (error: { message?: string; response?: { data?: { title?: string } } }) => {
+        onError: (error: LoginError) => {
           console.error('Login failed:', error);
 
+          // Handle TELEGRAM_REQUIRED error
+          if (error.isTelegramRequired && error.email) {
+            console.log('🔗 Telegram linking required for:', error.email);
+            setUserEmail(error.email);
+            setShowTelegramWidget(true);
+            return;
+          }
+
           // Handle EmailNotConfirmed error
-          if (
-            error?.message?.includes('EmailNotConfirmed') ||
-            error?.response?.data?.title?.includes('EmailNotConfirmed')
-          ) {
+          if (error?.message?.includes('EmailNotConfirmed')) {
             alert(
               'Please confirm your email before logging in.\n\n' +
                 'Check your inbox for the confirmation link. If you did not receive the email, please contact support.'
@@ -229,6 +241,69 @@ export const Login = () => {
                 </Link>
               </p>
             </div>
+
+            {/* Telegram Widget Section */}
+            {showTelegramWidget && userEmail && (
+              <div className="mt-6 pt-6 border-t border-outline dark:border-outline-dark">
+                <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-4 mb-4">
+                  <p className="text-sm text-content dark:text-content-dark font-medium mb-2">
+                    Complete Your Registration
+                  </p>
+                  <p className="text-xs text-content-secondary dark:text-content-secondary-dark">
+                    Please connect your Telegram account to complete your registration and log in.
+                  </p>
+                </div>
+
+                <TelegramConnect
+                  email={userEmail}
+                  onSuccess={(response: LinkTelegramResponse) => {
+                    console.log('✅ Telegram linked successfully, logging in user');
+                    // Store tokens
+                    if (response.accessToken && response.refreshToken) {
+                      authStorage.setTokens({
+                        authToken: response.accessToken,
+                        refreshToken: response.refreshToken,
+                      });
+                    }
+                    // Transform API user to app user format
+                    const appUser = {
+                      username: response.user.username,
+                      name: response.user.firstName || response.user.username,
+                      email: response.user.email,
+                      avatar:
+                        response.user.profilePictureUrl ||
+                        `https://ui-avatars.com/api/?name=${encodeURIComponent(response.user.username)}&background=6366f1&color=fff`,
+                      subscription:
+                        (response.user.tierName?.toLowerCase() as 'free' | 'premium' | 'enterprise') || 'free',
+                    };
+                    // Update auth state
+                    login(appUser);
+                    // Redirect to profile
+                    navigate(ROUTES.PROFILE);
+                  }}
+                  onError={(error: string) => {
+                    console.error('❌ Telegram linking error:', error);
+                    setTelegramError(error);
+                  }}
+                />
+
+                {/* Error message for Telegram linking */}
+                {telegramError && (
+                  <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+                    <p className="text-sm text-red-600 dark:text-red-400">{telegramError}</p>
+                    <button
+                      onClick={() => {
+                        setTelegramError('');
+                        setShowTelegramWidget(false);
+                      }}
+                      className="mt-2 text-xs text-red-700 dark:text-red-300 underline hover:no-underline"
+                    >
+                      Try logging in again
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

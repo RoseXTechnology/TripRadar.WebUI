@@ -9,7 +9,7 @@ import { getTelegramBotUsername, loadTelegramWidget, validateTelegramData } from
  * Props for TelegramConnect component
  */
 interface TelegramConnectProps {
-  linkToken: string;
+  email: string;
   onSuccess: (response: LinkTelegramResponse) => void;
   onError: (error: string) => void;
 }
@@ -18,17 +18,17 @@ interface TelegramConnectProps {
  * TelegramConnect Component
  *
  * Renders the Telegram Login Widget and handles the OAuth flow for linking
- * a Telegram account to a user after email confirmation.
+ * a Telegram account to a user after email confirmation or login attempt.
  *
  * Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 5.1, 5.2, 5.3, 5.4, 5.5
  *
- * @param linkToken - Token from email confirmation to identify the user
+ * @param email - User's email to identify the user
  * @param onSuccess - Callback when Telegram linking succeeds
  * @param onError - Callback when an error occurs
  *
  * @example
  * <TelegramConnect
- *   linkToken={linkToken}
+ *   email={userEmail}
  *   onSuccess={(response) => {
  *     // Store tokens and redirect
  *     navigate('/profile');
@@ -39,7 +39,7 @@ interface TelegramConnectProps {
  *   }}
  * />
  */
-export const TelegramConnect = ({ linkToken, onSuccess, onError }: TelegramConnectProps) => {
+export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const widgetContainerRef = useRef<HTMLDivElement>(null);
@@ -68,7 +68,7 @@ export const TelegramConnect = ({ linkToken, onSuccess, onError }: TelegramConne
     // Call link Telegram API
     linkTelegram(
       {
-        linkToken,
+        email,
         telegramData: user,
       },
       {
@@ -147,7 +147,7 @@ export const TelegramConnect = ({ linkToken, onSuccess, onError }: TelegramConne
         delete window.onTelegramAuth;
       }
     };
-  }, [linkToken]); // Re-initialize if linkToken changes
+  }, [email]); // Re-initialize if email changes
 
   return (
     <div className="flex flex-col items-center gap-4">

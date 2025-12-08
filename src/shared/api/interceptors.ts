@@ -142,7 +142,7 @@ export class ApiClient {
       throw new Error('Unauthorized - redirecting to login');
     }
 
-    let errorData: ApiError;
+    let errorData: ApiError & { type?: string; error?: string; errorCode?: string; email?: string; detail?: string };
     try {
       errorData = await response.json();
     } catch {
@@ -153,7 +153,30 @@ export class ApiClient {
     }
 
     console.log('💥 API Error data:', errorData);
-    throw new Error(errorData.message || 'API request failed');
+
+    // For 403 errors with TELEGRAM_REQUIRED, preserve the full error data
+    // Backend format: { errorCode: "TELEGRAM_REQUIRED", email: "user@example.com" }
+    // Also support legacy formats: { type: "TELEGRAM_REQUIRED", ... } or { error: "TELEGRAM_REQUIRED", ... }
+    const isTelegramRequired =
+      response.status === 403 &&
+      (errorData.errorCode === 'TELEGRAM_REQUIRED' ||
+        errorData.type === 'TELEGRAM_REQUIRED' ||
+        errorData.error === 'TELEGRAM_REQUIRED');
+
+    if (isTelegramRequired) {
+      const error = new Error(errorData.detail || errorData.message || 'Telegram account linking required') as Error & {
+        email?: string;
+        isTelegramRequired?: boolean;
+        statusCode?: number;
+      };
+      error.email = errorData.email;
+      error.isTelegramRequired = true;
+      error.statusCode = 403;
+      console.log('🔗 TELEGRAM_REQUIRED error detected, email:', errorData.email);
+      throw error;
+    }
+
+    throw new Error(errorData.detail || errorData.message || 'API request failed');
   }
 }
 

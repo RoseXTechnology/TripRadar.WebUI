@@ -12,7 +12,7 @@ export const EmailConfirmation = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [state, setState] = useState<ConfirmationState>('loading');
-  const [linkToken, setLinkToken] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [telegramError, setTelegramError] = useState<string>('');
   const { mutate: confirmEmail } = useEmailConfirmation();
@@ -32,9 +32,9 @@ export const EmailConfirmation = () => {
       { token },
       {
         onSuccess: response => {
-          console.log('✅ Email confirmed, received linkToken');
+          console.log('✅ Email confirmed, received email:', response.email);
           setState('confirmed');
-          setLinkToken(response.linkToken);
+          setEmail(response.email);
         },
         onError: error => {
           console.error('❌ Email confirmation failed:', error);
@@ -73,7 +73,7 @@ export const EmailConfirmation = () => {
     );
   }
 
-  if (state === 'confirmed' && linkToken) {
+  if (state === 'confirmed' && email) {
     return (
       <div className="relative min-h-screen flex items-center justify-center p-4 md:p-8 transition-colors duration-300">
         {/* Background */}
@@ -111,7 +111,7 @@ export const EmailConfirmation = () => {
 
               {/* Telegram Connect Component */}
               <TelegramConnect
-                linkToken={linkToken}
+                email={email}
                 onSuccess={response => {
                   console.log('✅ Telegram linked successfully, logging in user');
                   // Transform API user to app user format

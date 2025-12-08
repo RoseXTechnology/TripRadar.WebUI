@@ -337,7 +337,7 @@ export interface paths {
     };
     trace?: never;
   };
-  '/api/v{version}/internals/users/{username}/activation': {
+  '/api/v{version}/internals/users/activation': {
     parameters: {
       query?: never;
       header?: never;
@@ -355,7 +355,6 @@ export interface paths {
         query?: never;
         header?: never;
         path: {
-          username: string;
           version: string;
         };
         cookie?: never;
@@ -373,10 +372,25 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'text/plain': components['schemas']['ActivateUserResponse'];
+            'application/json': components['schemas']['ActivateUserResponse'];
+            'text/json': components['schemas']['ActivateUserResponse'];
+          };
         };
         /** @description Bad Request */
         400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
           headers: {
             [name: string]: unknown;
           };
@@ -841,7 +855,11 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'text/plain': components['schemas']['UserManagementResponse'];
+            'application/json': components['schemas']['UserManagementResponse'];
+            'text/json': components['schemas']['UserManagementResponse'];
+          };
         };
         /** @description Bad Request */
         400: {
@@ -2606,6 +2624,17 @@ export interface paths {
             'text/json': components['schemas']['ProblemDetails'];
           };
         };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'text/plain': components['schemas']['ProblemDetails'];
+            'application/json': components['schemas']['ProblemDetails'];
+            'text/json': components['schemas']['ProblemDetails'];
+          };
+        };
       };
     };
     delete?: never;
@@ -3275,6 +3304,13 @@ export interface components {
     ActivateUserRequest: {
       /** Format: email */
       email: string;
+      telegramAuth: components['schemas']['TelegramAuthData'];
+    };
+    ActivateUserResponse: {
+      message?: string | null;
+      token: string | null;
+      refreshToken: string | null;
+      email: string | null;
     };
     ApplyPromoCodeRequest: {
       code: string;
@@ -3773,6 +3809,17 @@ export interface components {
       | 'weather'
       | 'pointsOfInterest'
       | 'publicTransport';
+    TelegramAuthData: {
+      /** Format: int64 */
+      id: number;
+      firstName: string;
+      lastName?: string | null;
+      username: string;
+      photoUrl?: string | null;
+      /** Format: int64 */
+      authDate: number;
+      hash: string;
+    };
     /** @enum {string} */
     TravelClassType: 'economy' | 'premiumEconomy' | 'business' | 'first';
     UpdateMeteredBillingRequest: {

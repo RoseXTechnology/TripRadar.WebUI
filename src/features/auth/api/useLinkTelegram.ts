@@ -3,11 +3,11 @@ import type { LinkTelegramRequest, LinkTelegramResponse } from 'shared/api/types
 import { authApi } from './authApi';
 
 /**
- * Hook for linking a Telegram account to a user after email confirmation.
+ * Hook for linking a Telegram account to a user.
  *
- * This mutation accepts a linkToken (from email confirmation) and telegramData
- * (from Telegram OAuth widget), sends them to the backend for verification,
- * and returns JWT tokens and user data on success.
+ * This mutation accepts an email and telegramData (from Telegram OAuth widget),
+ * sends them to the backend for verification, and returns JWT tokens and user
+ * data on success.
  *
  * Backend endpoint: POST /api/v1/internals/users/activation
  *
@@ -20,7 +20,7 @@ import { authApi } from './authApi';
  *
  * const handleTelegramAuth = (telegramData: TelegramData) => {
  *   mutate(
- *     { linkToken, telegramData },
+ *     { email: userEmail, telegramData },
  *     {
  *       onSuccess: ({ accessToken, refreshToken, user }) => {
  *         // Store tokens and redirect

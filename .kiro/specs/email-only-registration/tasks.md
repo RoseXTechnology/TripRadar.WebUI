@@ -73,9 +73,9 @@ This plan focuses ONLY on frontend implementation. Backend endpoints are assumed
 - [x] 7. Create link Telegram API hook
   - Create src/features/auth/api/useLinkTelegram.ts
   - Implement useMutation for POST /api/v1/internals/users/activation
-  - Accept linkToken and telegramData as parameters
+  - Accept email and telegramData as parameters
   - Return accessToken, refreshToken, and user on success
-  - Handle errors (invalid linkToken, invalid hash, network errors)
+  - Handle errors (invalid email, invalid hash, network errors)
   - _Requirements: 3.4, 3.5_
 
 - [x] 8. Create TelegramConnect component
@@ -103,29 +103,18 @@ This plan focuses ONLY on frontend implementation. Backend endpoints are assumed
 
 ## Phase 4: Login Flow Updates
 
-- [ ] 10. Update login API hook to handle TELEGRAM_REQUIRED
+- [x] 10. Update login API hook to handle TELEGRAM_REQUIRED
   - Update src/features/auth/api/useLogin.ts
   - Add error handling for 403 status with TELEGRAM_REQUIRED
   - Extract user's email from error response
   - Return email in error object
   - _Requirements: 4.1, 4.2_
 
-- [ ] 11. Update Login component for Telegram requirement
+- [x] 11. Update Login component for Telegram requirement
   - Update src/features/auth/ui/Login.tsx
   - Add state for email and showTelegramWidget
   - Update onError handler to check for TELEGRAM_REQUIRED
   - When TELEGRAM_REQUIRED: extract email, set showTelegramWidget=true
-  - Conditionally render TelegramConnect component when showTelegramWidget=true
-  - Implement onSuccess handler for Telegram linking: store tokens, update auth state, redirect
-  - Add explanatory text: "Please connect your Telegram account to complete your registration"
-  - Keep existing error handling for other error types
-  - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
-
-- [ ] 11. Update Login component for Telegram requirement
-  - Update src/features/auth/ui/Login.tsx
-  - Add state for linkToken and showTelegramWidget
-  - Update onError handler to check for TELEGRAM_REQUIRED
-  - When TELEGRAM_REQUIRED: extract linkToken, set showTelegramWidget=true
   - Conditionally render TelegramConnect component when showTelegramWidget=true
   - Implement onSuccess handler for Telegram linking: store tokens, update auth state, redirect
   - Add explanatory text: "Please connect your Telegram account to complete your registration"
@@ -166,7 +155,14 @@ This plan focuses ONLY on frontend implementation. Backend endpoints are assumed
   - Test normal login flow still works
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 16. Manual testing checklist
+- [x] 16. Backend integration verification
+  - ✅ Backend returns 403 with format: `{ errorCode: "TELEGRAM_REQUIRED", email: "user@example.com" }`
+  - ✅ Frontend interceptor updated to handle `errorCode` field
+  - ✅ Login component shows Telegram widget when TELEGRAM_REQUIRED error occurs
+  - Ready for manual testing of complete flow: Login → TELEGRAM_REQUIRED → Telegram Widget → Link → Auto-login
+  - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
+
+- [ ] 17. Manual testing checklist
   - Test complete registration flow (signup → email → Telegram → auto-login)
   - Test login with incomplete registration (shows Telegram widget)
   - Test error scenarios (invalid token, invalid email, Telegram auth failure)
@@ -215,9 +211,26 @@ This plan focuses ONLY on frontend implementation. Backend endpoints are assumed
 ⚠️ **These endpoints must be implemented on backend before frontend can be fully tested:**
 
 1. `POST /api/v1/users` - Registration (already exists, but verify it doesn't require optional fields)
-2. `POST /api/v1/email-confirmations` - Email confirmation returning linkToken
-3. `POST /api/v1/internals/users/activation` - Telegram account linking with hash verification (accepts linkToken + telegramData, returns JWT tokens)
-4. `POST /api/v1/login` - Login with TELEGRAM_REQUIRED error handling (returns linkToken in error)
+2. `POST /api/v1/email-confirmations` - Email confirmation returning user's email
+3. `POST /api/v1/internals/users/activation` - Telegram account linking with hash verification
+   - Accepts: `{ email, telegramData }`
+   - Returns: JWT tokens
+4. `POST /api/v1/login` - Login with TELEGRAM_REQUIRED error handling
+   - On success: Returns `{ accessToken, refreshToken, user }`
+   - On TELEGRAM_REQUIRED: Returns 403 with `{ error: "TELEGRAM_REQUIRED", message: "...", email: "user@example.com" }`
+
+⚠️ **IMPORTANT - Backend Integration Testing:**
+
+**Current Status:** Backend currently returns incorrect error format for TELEGRAM_REQUIRED.
+
+📋 **See detailed integration notes:** `.kiro/specs/email-only-registration/BACKEND_INTEGRATION.md`
+
+**Quick Summary:**
+
+- Backend needs to return 403 with `{ error: "TELEGRAM_REQUIRED", email: "user@example.com" }`
+- Frontend is ready to handle this format
+- Task 16 should be completed AFTER backend is fixed
+- See BACKEND_INTEGRATION.md for complete testing checklist
 
 ### Testing Strategy
 

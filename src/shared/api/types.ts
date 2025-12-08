@@ -36,14 +36,15 @@ export interface EmailConfirmationRequest {
  */
 export interface EmailConfirmationResponse {
   success: true;
-  linkToken: string;
+  email: string;
 }
 
 /**
  * Request to link Telegram account to user
+ * Uses email to identify the user (from email confirmation or login error)
  */
 export interface LinkTelegramRequest {
-  linkToken: string;
+  email: string;
   telegramData: TelegramData;
 }
 
@@ -81,5 +82,5 @@ export interface LinkTelegramResponse {
 export interface LoginErrorTelegramRequired {
   error: 'TELEGRAM_REQUIRED';
   message: string;
-  linkToken: string;
+  email: string;
 }
