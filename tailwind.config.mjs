@@ -30,6 +30,7 @@ export default {
           secondary: '#475569', // было #64748b - сделал темнее
           'secondary-dark': '#cbd5e1',
           muted: '#64748b', // было #94a3b8 - сделал темнее
+          'muted-dark': '#9ca3af',
         },
         outline: {
           DEFAULT: '#cbd5e1', // было #e2e8f0 - сделал темнее

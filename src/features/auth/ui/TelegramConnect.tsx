@@ -138,6 +138,7 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
           script.setAttribute('data-size', 'large');
           script.setAttribute('data-onauth', 'onTelegramAuth(user)');
           script.setAttribute('data-request-access', 'write');
+          script.setAttribute('data-lang', 'en'); // Force English language
 
           widgetContainerRef.current.appendChild(script);
         }
