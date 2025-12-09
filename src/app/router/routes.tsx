@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { Login, ProtectedRoute, Signup } from 'features/auth';
-import { EmailConfirmed, EmailSent, ForgotPassword, ResetPassword } from 'pages/auth';
+import { EmailConfirmed, EmailSent, ForgotPassword, ResetPassword, TelegramCallback } from 'pages/auth';
 import { Home } from 'pages/marketing/ui/Home';
 import { Pricing } from 'pages/marketing/ui/Pricing';
 import { Profile } from 'pages/profile/ui/Profile';
@@ -17,6 +17,7 @@ export const AppRoutes = () => {
       <Route path="/email-confirmed" element={<EmailConfirmed />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/auth/telegram-callback" element={<TelegramCallback />} />
       <Route path="/" element={<Home />} />
       <Route path="/pricing" element={<Pricing />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />

@@ -115,6 +115,9 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
   useEffect(() => {
     const initializeTelegramWidget = async () => {
       try {
+        // Store email in sessionStorage for OAuth redirect callback
+        sessionStorage.setItem('telegram_auth_email', email);
+
         // Load Telegram widget script
         await loadTelegramWidget();
         setScriptLoaded(true);
@@ -136,7 +139,10 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
           script.async = true;
           script.setAttribute('data-telegram-login', botUsername);
           script.setAttribute('data-size', 'large');
+
+          // Use both methods: callback for quick auth, redirect for OAuth flow
           script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+          script.setAttribute('data-auth-url', `${window.location.origin}/auth/telegram-callback`);
           script.setAttribute('data-request-access', 'write');
           script.setAttribute('data-lang', 'en'); // Force English language
 
