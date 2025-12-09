@@ -4,6 +4,9 @@ import { FaEnvelope, FaEye, FaEyeSlash, FaLock } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { AUTH_MESSAGES, OAuthButtons, useRegisterMutation } from 'features/auth';
 import { ROUTES } from 'shared/config/routes';
+import { parseBackendError, type ErrorConfig } from '../lib/errorMessages';
+import { validatePassword } from '../lib/validation';
+import { ErrorAlert } from './ErrorAlert';
 
 interface SignupFormData {
   email: string;
@@ -15,6 +18,7 @@ export const Signup = () => {
   const navigate = useNavigate();
   const registerMutation = useRegisterMutation();
   const [showPassword, setShowPassword] = useState(false);
+  const [errorConfig, setErrorConfig] = useState<ErrorConfig | null>(null);
 
   const {
     register,
@@ -32,6 +36,9 @@ export const Signup = () => {
   const onSubmit = async (data: SignupFormData) => {
     if (!data.hasDataStorageConsent) return;
 
+    // Clear previous errors
+    setErrorConfig(null);
+
     try {
       await registerMutation.mutateAsync({
         email: data.email,
@@ -44,8 +51,34 @@ export const Signup = () => {
 
       // Перенаправляем на страницу с сообщением об email
       navigate(ROUTES.EMAIL_SENT);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Registration failed:', error);
+
+      // Parse backend error and set error config
+      const backendError = error as {
+        response?: {
+          data?: {
+            code?: string;
+            [key: string]: unknown;
+          };
+        };
+        code?: string;
+        message?: string;
+      };
+
+      const errorWithEmail = {
+        ...backendError,
+        response: {
+          ...backendError?.response,
+          data: {
+            ...backendError?.response?.data,
+            email: data.email, // Pass email for pre-fill in actions
+          },
+        },
+      };
+
+      const parsedError = parseBackendError(errorWithEmail);
+      setErrorConfig(parsedError);
     }
   };
 
@@ -85,10 +118,16 @@ export const Signup = () => {
             </div>
           </div>
 
-          {/* Error Message */}
-          {registerMutation.error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
-              <p className="text-sm text-red-600 dark:text-red-400">{registerMutation.error.message}</p>
+          {/* Error Alert */}
+          {errorConfig && (
+            <div className="mb-6">
+              <ErrorAlert
+                title={errorConfig.title}
+                message={errorConfig.message}
+                severity={errorConfig.severity}
+                actions={errorConfig.actions}
+                onDismiss={() => setErrorConfig(null)}
+              />
             </div>
           )}
 
@@ -125,9 +164,12 @@ export const Signup = () => {
                 <input
                   {...register('password', {
                     required: 'Password is required',
-                    minLength: {
-                      value: 6,
-                      message: 'Password must be at least 6 characters',
+                    validate: value => {
+                      const result = validatePassword(value);
+                      if (!result.isValid) {
+                        return result.errors.join('. ');
+                      }
+                      return true;
                     },
                   })}
                   type={showPassword ? 'text' : 'password'}
@@ -145,6 +187,7 @@ export const Signup = () => {
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.password.message}</p>
               )}
+              <p className="mt-1 text-xs text-content-muted">9+ chars, uppercase, digit, special char</p>
             </div>
 
             {/* Consent */}
