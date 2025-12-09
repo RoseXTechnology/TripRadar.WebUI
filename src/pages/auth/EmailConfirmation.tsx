@@ -100,7 +100,7 @@ export const EmailConfirmation = () => {
               </p>
 
               {/* Explanatory text */}
-              <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-4 mb-6">
+              <div className="bg-surface-accent dark:bg-surface-accent-dark border border-outline dark:border-outline-dark rounded-xl p-4 mb-6">
                 <p className="text-sm text-content-secondary dark:text-content-secondary-dark font-medium">
                   Connect your Telegram account to complete registration
                 </p>

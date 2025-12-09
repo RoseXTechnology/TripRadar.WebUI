@@ -245,7 +245,7 @@ export const Login = () => {
             {/* Telegram Widget Section */}
             {showTelegramWidget && userEmail && (
               <div className="mt-6 pt-6 border-t border-outline dark:border-outline-dark">
-                <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-4 mb-4">
+                <div className="bg-surface-accent dark:bg-surface-accent-dark border border-outline dark:border-outline-dark rounded-xl p-4 mb-4">
                   <p className="text-sm text-content dark:text-content-dark font-medium mb-2">
                     Complete Your Registration
                   </p>
