@@ -39,6 +39,9 @@ export const Signup = () => {
         hasDataStorageConsent: data.hasDataStorageConsent,
       });
 
+      // Store email in sessionStorage for later use in EmailConfirmed page
+      sessionStorage.setItem('registration_email', data.email);
+
       // Перенаправляем на страницу с сообщением об email
       navigate(ROUTES.EMAIL_SENT);
     } catch (error) {

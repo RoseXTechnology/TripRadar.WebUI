@@ -1,7 +1,37 @@
-import { FaCheckCircle, FaArrowRight } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { FaCheckCircle } from 'react-icons/fa';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { TelegramConnect } from 'features/auth/ui/TelegramConnect';
+import { ROUTES } from 'shared/config/routes';
+import { useAuthStore } from 'shared/store/auth';
 
 export const EmailConfirmed = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const { login } = useAuthStore();
+  const [email, setEmail] = useState<string | null>(null);
+  const [telegramError, setTelegramError] = useState<string>('');
+
+  useEffect(() => {
+    // Try to get email from URL parameter
+    const emailParam = searchParams.get('email');
+
+    if (emailParam) {
+      setEmail(emailParam);
+      return;
+    }
+
+    // Fallback: try to get email from sessionStorage
+    const storedEmail = sessionStorage.getItem('registration_email');
+    if (storedEmail) {
+      setEmail(storedEmail);
+      return;
+    }
+
+    // If no email found, show error
+    console.warn('⚠️ No email found in URL or sessionStorage');
+  }, [searchParams]);
+
   return (
     <div className="relative min-h-screen flex items-center justify-center p-4 md:p-8 transition-colors duration-300">
       {/* Hero-style background */}
@@ -24,23 +54,74 @@ export const EmailConfirmed = () => {
               Email Confirmed!
             </h1>
 
-            <p className="text-content-secondary dark:text-content-secondary-dark mb-8 text-sm md:text-base">
-              Great! Your email has been successfully confirmed. You can now sign in to your TripRadar account and start
-              planning your next adventure.
+            <p className="text-content-secondary dark:text-content-secondary-dark mb-6 text-sm md:text-base">
+              Great! Your email has been successfully confirmed.
             </p>
 
-            {/* Sign In Button */}
-            <Link
-              to="/login"
-              className="group relative w-full flex justify-center items-center gap-2 py-2.5 md:py-3 px-4 bg-button dark:bg-button-dark text-button-text dark:text-button-text-dark rounded-lg md:rounded-xl font-medium hover:bg-button-hover dark:hover:bg-button-hover-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow-lg hover:shadow-xl text-sm md:text-base"
-            >
-              <span>Sign In to Your Account</span>
-              <FaArrowRight className="h-3 w-3 md:h-4 md:w-4 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
+            {/* Explanatory text */}
+            <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-4 mb-6">
+              <p className="text-sm text-content-secondary dark:text-content-secondary-dark font-medium">
+                Connect your Telegram account to complete registration
+              </p>
+              <p className="text-xs text-content-muted dark:text-content-muted-dark mt-2">
+                Your username will be automatically set from your Telegram profile
+              </p>
+            </div>
+
+            {/* Telegram Connect Component */}
+            {email ? (
+              <TelegramConnect
+                email={email}
+                onSuccess={response => {
+                  console.log('✅ Telegram linked successfully, logging in user');
+
+                  // Transform API user to app user format
+                  const appUser = {
+                    username: response.user.username,
+                    name: response.user.firstName || response.user.username,
+                    email: response.user.email,
+                    avatar:
+                      response.user.profilePictureUrl ||
+                      `https://ui-avatars.com/api/?name=${encodeURIComponent(response.user.username)}&background=6366f1&color=fff`,
+                    subscription:
+                      (response.user.tierName?.toLowerCase() as 'free' | 'premium' | 'enterprise') || 'free',
+                  };
+
+                  // Update auth state with user data
+                  login(appUser);
+
+                  // Redirect to profile
+                  navigate(ROUTES.PROFILE);
+                }}
+                onError={error => {
+                  console.error('❌ Telegram linking error:', error);
+                  setTelegramError(error);
+                }}
+              />
+            ) : (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  Unable to retrieve your email. Please try registering again or contact support.
+                </p>
+              </div>
+            )}
+
+            {/* Error message for Telegram linking */}
+            {telegramError && (
+              <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                <p className="text-sm text-red-600 dark:text-red-400">{telegramError}</p>
+                <button
+                  onClick={() => setTelegramError('')}
+                  className="mt-2 text-xs text-red-700 dark:text-red-300 underline hover:no-underline"
+                >
+                  Try again
+                </button>
+              </div>
+            )}
 
             {/* Additional Info */}
-            <p className="mt-6 text-xs md:text-sm text-content-muted">
-              Ready to explore the world with TripRadar? Sign in and discover amazing travel destinations.
+            <p className="mt-6 text-xs md:text-sm text-content-muted dark:text-content-muted-dark">
+              After connecting Telegram, you'll be automatically logged in and ready to start planning your trips!
             </p>
           </div>
         </div>
