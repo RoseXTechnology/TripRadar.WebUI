@@ -25,21 +25,6 @@ export interface TelegramData {
 }
 
 /**
- * Request to confirm email address
- */
-export interface EmailConfirmationRequest {
-  token: string;
-}
-
-/**
- * Response from email confirmation endpoint
- */
-export interface EmailConfirmationResponse {
-  success: true;
-  email: string;
-}
-
-/**
  * Request to link Telegram account to user
  * Uses email to identify the user (from email confirmation or login error)
  */
@@ -68,11 +53,19 @@ export interface User {
 }
 
 /**
- * Response from linking Telegram account
+ * Extended response from linking Telegram account
+ * Extends ActivateUserResponse from Swagger with actual user data returned by backend
+ *
+ * Note: Swagger defines token/refreshToken/email as nullable, but on successful response
+ * they are always present. This type reflects the actual successful response structure.
+ *
+ * TODO: Update Swagger spec to include user object in ActivateUserResponse
  */
 export interface LinkTelegramResponse {
-  accessToken: string;
+  token: string;
   refreshToken: string;
+  email: string;
+  message?: string | null;
   user: User;
 }
 

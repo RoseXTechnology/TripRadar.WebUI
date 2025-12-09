@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { FaEnvelope, FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaEnvelope } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useForgotPasswordMutation } from 'features/auth/api';
+import { useForgotPasswordMutation } from 'entities/auth';
 
 export const ForgotPassword = () => {
   const [email, setEmail] = useState('');

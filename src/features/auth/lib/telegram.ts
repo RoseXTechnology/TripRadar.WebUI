@@ -93,3 +93,20 @@ export const validateTelegramData = (data: unknown): data is TelegramData => {
 export const getTelegramBotUsername = (): string => {
   return getEnvBotUsername();
 };
+
+/**
+ * Convert Telegram widget data (snake_case) to API format (camelCase)
+ * @param telegramData - Data from Telegram widget in snake_case
+ * @returns Data in camelCase format for API
+ */
+export const convertTelegramDataToApiFormat = (telegramData: TelegramData) => {
+  return {
+    id: telegramData.id,
+    firstName: telegramData.first_name,
+    lastName: telegramData.last_name || null,
+    username: telegramData.username || '',
+    photoUrl: telegramData.photo_url || null,
+    authDate: telegramData.auth_date,
+    hash: telegramData.hash,
+  };
+};

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { FaLock, FaEye, FaEyeSlash, FaCheckCircle } from 'react-icons/fa';
+import { FaCheckCircle, FaEye, FaEyeSlash, FaLock } from 'react-icons/fa';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useResetPasswordMutation } from 'features/auth/api';
+import { useResetPasswordMutation } from 'entities/auth';
 
 export const ResetPassword = () => {
   const [searchParams] = useSearchParams();

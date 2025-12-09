@@ -1,9 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useLinkTelegramMutation } from 'entities/auth';
 import type { LinkTelegramResponse, TelegramData } from 'shared/api/types';
 import { authStorage } from 'shared/lib/auth-storage';
 import { LoadingSpinner } from 'shared/ui';
-import { useLinkTelegramMutation } from '../api/useLinkTelegram';
-import { getTelegramBotUsername, loadTelegramWidget, validateTelegramData } from '../lib/telegram';
+import {
+  convertTelegramDataToApiFormat,
+  getTelegramBotUsername,
+  loadTelegramWidget,
+  validateTelegramData,
+} from '../lib/telegram';
 
 /**
  * Props for TelegramConnect component
@@ -70,7 +75,7 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
       linkTelegram(
         {
           email,
-          telegramData: user,
+          telegramAuth: convertTelegramDataToApiFormat(user),
         },
         {
           onSuccess: response => {
@@ -78,7 +83,7 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
 
             // Store JWT tokens in localStorage
             authStorage.setTokens({
-              authToken: response.accessToken,
+              authToken: response.token,
               refreshToken: response.refreshToken,
             });
 

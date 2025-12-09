@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEnvelope, FaEye, FaEyeSlash, FaLock } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import { AUTH_MESSAGES, OAuthButtons, useRegisterMutation } from 'features/auth';
+import { useRegisterMutation } from 'entities/auth';
 import { ROUTES } from 'shared/config/routes';
 import { parseBackendError, type ErrorConfig } from '../lib/errorMessages';
 import { validatePassword } from '../lib/validation';
+import { AUTH_MESSAGES } from '../model/constants';
 import { ErrorAlert } from './ErrorAlert';
+import { OAuthButtons } from './OAuthButtons';
 
 interface SignupFormData {
   email: string;
@@ -33,53 +35,57 @@ export const Signup = () => {
     },
   });
 
-  const onSubmit = async (data: SignupFormData) => {
+  const onSubmit = (data: SignupFormData) => {
     if (!data.hasDataStorageConsent) return;
 
     // Clear previous errors
     setErrorConfig(null);
 
-    try {
-      await registerMutation.mutateAsync({
+    registerMutation.mutate(
+      {
         email: data.email,
         password: data.password,
         hasDataStorageConsent: data.hasDataStorageConsent,
-      });
+      },
+      {
+        onSuccess: () => {
+          // Store email in sessionStorage for later use in EmailConfirmed page
+          sessionStorage.setItem('registration_email', data.email);
 
-      // Store email in sessionStorage for later use in EmailConfirmed page
-      sessionStorage.setItem('registration_email', data.email);
-
-      // Перенаправляем на страницу с сообщением об email
-      navigate(ROUTES.EMAIL_SENT);
-    } catch (error: unknown) {
-      console.error('Registration failed:', error);
-
-      // Parse backend error and set error config
-      const backendError = error as {
-        response?: {
-          data?: {
-            code?: string;
-            [key: string]: unknown;
-          };
-        };
-        code?: string;
-        message?: string;
-      };
-
-      const errorWithEmail = {
-        ...backendError,
-        response: {
-          ...backendError?.response,
-          data: {
-            ...backendError?.response?.data,
-            email: data.email, // Pass email for pre-fill in actions
-          },
+          // Перенаправляем на страницу с сообщением об email
+          navigate(ROUTES.EMAIL_SENT);
         },
-      };
+        onError: (error: unknown) => {
+          console.error('Registration failed:', error);
 
-      const parsedError = parseBackendError(errorWithEmail);
-      setErrorConfig(parsedError);
-    }
+          // Parse backend error and set error config
+          const backendError = error as {
+            response?: {
+              data?: {
+                code?: string;
+                [key: string]: unknown;
+              };
+            };
+            code?: string;
+            message?: string;
+          };
+
+          const errorWithEmail = {
+            ...backendError,
+            response: {
+              ...backendError?.response,
+              data: {
+                ...backendError?.response?.data,
+                email: data.email, // Pass email for pre-fill in actions
+              },
+            },
+          };
+
+          const parsedError = parseBackendError(errorWithEmail);
+          setErrorConfig(parsedError);
+        },
+      }
+    );
   };
 
   return (

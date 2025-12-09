@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { FaArrowRight, FaEnvelope, FaEye, FaEyeSlash, FaGoogle, FaLock } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import { type LoginError, useLoginMutation } from 'features/auth/api/useLogin';
-import { handleGoogleSignUp } from 'features/auth/lib/oauth';
-import { TelegramConnect } from 'features/auth/ui/TelegramConnect';
-import type { LinkTelegramResponse } from 'shared/api/types';
+import { type LoginError, useLoginMutation } from 'entities/auth';
+import { type LinkTelegramResponse } from 'shared/api/types';
 import { ROUTES } from 'shared/config/routes';
 import { authStorage } from 'shared/lib';
 import { useAuthStore } from 'shared/store/auth';
+import { handleGoogleSignUp } from '../lib/oauth';
+import { TelegramConnect } from './TelegramConnect';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -259,9 +259,9 @@ export const Login = () => {
                   onSuccess={(response: LinkTelegramResponse) => {
                     console.log('✅ Telegram linked successfully, logging in user');
                     // Store tokens
-                    if (response.accessToken && response.refreshToken) {
+                    if (response.token && response.refreshToken) {
                       authStorage.setTokens({
-                        authToken: response.accessToken,
+                        authToken: response.token,
                         refreshToken: response.refreshToken,
                       });
                     }

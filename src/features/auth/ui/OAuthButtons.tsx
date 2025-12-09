@@ -1,6 +1,6 @@
 import { FaGoogle } from 'react-icons/fa';
-import { AUTH_MESSAGES } from 'features/auth';
 import { handleGoogleSignUp } from '../lib/oauth';
+import { AUTH_MESSAGES } from '../model/constants';
 
 export const OAuthButtons = () => {
   const buttonStyles =

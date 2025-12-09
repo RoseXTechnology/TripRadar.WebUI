@@ -1,5 +1,5 @@
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { authApi } from 'features/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { apiClient, type CreateGoogleLoginRequest, type GetLoginResponse } from 'shared/api';
 import { authStorage } from 'shared/lib';
 import { auth } from 'shared/lib/firebase';
 import { createUserFromRegistration } from 'shared/lib/user-utils';
@@ -45,7 +45,10 @@ const signInWithProvider = async (
     }
 
     // Отправляем Google ID token на backend
-    const loginResponse = await authApi.googleLogin({ id_token: googleIdToken });
+    const loginResponse = await apiClient.post<GetLoginResponse, CreateGoogleLoginRequest>(
+      '/api/v1/tokens/sessions/google',
+      { id_token: googleIdToken }
+    );
 
     // Проверяем что токены получены
     if (!loginResponse.token || !loginResponse.refreshToken) {
