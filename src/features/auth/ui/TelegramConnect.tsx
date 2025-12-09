@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { LinkTelegramResponse, TelegramData } from 'shared/api/types';
 import { authStorage } from 'shared/lib/auth-storage';
 import { LoadingSpinner } from 'shared/ui';
@@ -49,57 +49,60 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
    * Handle Telegram OAuth callback
    * This function is called by the Telegram widget when user authorizes
    */
-  const handleTelegramAuth = (user: TelegramData) => {
-    // Validate telegram data structure
-    if (!validateTelegramData(user)) {
-      console.error('❌ Invalid Telegram data structure:', user);
-      onError('Invalid data received from Telegram. Please try again.');
-      return;
-    }
-
-    console.log('✅ Telegram data validated:', {
-      id: user.id,
-      username: user.username || user.first_name,
-      auth_date: user.auth_date,
-    });
-
-    setIsLoading(true);
-
-    // Call link Telegram API
-    linkTelegram(
-      {
-        email,
-        telegramData: user,
-      },
-      {
-        onSuccess: response => {
-          console.log('✅ Telegram linked successfully');
-
-          // Store JWT tokens in localStorage
-          authStorage.setTokens({
-            authToken: response.accessToken,
-            refreshToken: response.refreshToken,
-          });
-
-          setIsLoading(false);
-
-          // Call success callback
-          onSuccess(response);
-        },
-        onError: error => {
-          console.error('❌ Telegram linking failed:', error);
-          setIsLoading(false);
-
-          // Extract error message
-          const errorMessage =
-            error instanceof Error ? error.message : 'Failed to link Telegram account. Please try again.';
-
-          // Call error callback
-          onError(errorMessage);
-        },
+  const handleTelegramAuth = useCallback(
+    (user: TelegramData) => {
+      // Validate telegram data structure
+      if (!validateTelegramData(user)) {
+        console.error('❌ Invalid Telegram data structure:', user);
+        onError('Invalid data received from Telegram. Please try again.');
+        return;
       }
-    );
-  };
+
+      console.log('✅ Telegram data validated:', {
+        id: user.id,
+        username: user.username || user.first_name,
+        auth_date: user.auth_date,
+      });
+
+      setIsLoading(true);
+
+      // Call link Telegram API
+      linkTelegram(
+        {
+          email,
+          telegramData: user,
+        },
+        {
+          onSuccess: response => {
+            console.log('✅ Telegram linked successfully');
+
+            // Store JWT tokens in localStorage
+            authStorage.setTokens({
+              authToken: response.accessToken,
+              refreshToken: response.refreshToken,
+            });
+
+            setIsLoading(false);
+
+            // Call success callback
+            onSuccess(response);
+          },
+          onError: error => {
+            console.error('❌ Telegram linking failed:', error);
+            setIsLoading(false);
+
+            // Extract error message
+            const errorMessage =
+              error instanceof Error ? error.message : 'Failed to link Telegram account. Please try again.';
+
+            // Call error callback
+            onError(errorMessage);
+          },
+        }
+      );
+    },
+    [email, linkTelegram, onSuccess, onError]
+  );
 
   /**
    * Load Telegram widget script and render widget
@@ -147,7 +150,7 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
         delete window.onTelegramAuth;
       }
     };
-  }, [email]); // Re-initialize if email changes
+  }, [email, handleTelegramAuth, onError]); // Re-initialize if email changes
 
   return (
     <div className="flex flex-col items-center gap-4">

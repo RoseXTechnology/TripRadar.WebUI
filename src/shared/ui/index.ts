@@ -1,9 +1,5 @@
-export { Button } from './Button';
-export { Input } from './Input';
-export { Select } from './Select';
-export { Badge } from './Badge';
 export { ErrorBoundary } from './ErrorBoundary';
+export { FormInput } from './FormInput';
 export { LoadingSpinner } from './LoadingSpinner';
 export { Logo } from './Logo';
-export { FormInput } from './FormInput';
 export { ThemeToggle } from './ThemeToggle';
