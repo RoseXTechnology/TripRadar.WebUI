@@ -60,7 +60,7 @@
   - **Property 8: Email retrieval fallback chain**
   - **Validates: Requirements 4.4, 4.5**
 
-- [ ] 5. Add unit tests for validation utilities
+- [x] 5. Add unit tests for validation utilities
   - Create validation.test.ts file
   - Test validatePassword() with various inputs (valid, invalid, edge cases)
   - Test checkPasswordRequirements() for individual requirements

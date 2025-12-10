@@ -151,6 +151,41 @@ describe('validatePassword', () => {
       expect(result.isValid).toBe(true);
       expect(result.errors).toHaveLength(0);
     });
+
+    it('should handle very long passwords', () => {
+      const veryLongPassword = 'A'.repeat(1000) + '1!';
+      const result = validatePassword(veryLongPassword);
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should handle unicode characters in passwords', () => {
+      const unicodePassword = 'Pässwörd123!';
+      const result = validatePassword(unicodePassword);
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should handle unicode uppercase characters (ASCII uppercase required)', () => {
+      const unicodePassword = 'pÄssword123!';
+      const result = validatePassword(unicodePassword);
+      expect(result.isValid).toBe(false); // Ä is not ASCII uppercase
+      expect(result.errors).toContain('Password must contain at least one uppercase letter');
+    });
+
+    it('should handle unicode special characters', () => {
+      const unicodePassword = 'Password123€';
+      const result = validatePassword(unicodePassword);
+      expect(result.isValid).toBe(false); // € is not in our special chars regex
+      expect(result.errors).toContain('Password must contain at least one special character');
+    });
+
+    it('should handle mixed unicode and ASCII', () => {
+      const mixedPassword = 'Pässwörd123!';
+      const result = validatePassword(mixedPassword);
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
   });
 });
 
@@ -201,5 +236,57 @@ describe('checkPasswordRequirements', () => {
     expect(result.minLength).toBe(true);
     expect(result.hasUppercase).toBe(true);
     expect(result.hasDigit).toBe(true);
+  });
+
+  describe('edge cases for checkPasswordRequirements', () => {
+    it('should handle very long passwords', () => {
+      const veryLongPassword = 'A'.repeat(1000) + '1!';
+      const result = checkPasswordRequirements(veryLongPassword);
+      expect(result.minLength).toBe(true);
+      expect(result.hasUppercase).toBe(true);
+      expect(result.hasDigit).toBe(true);
+      expect(result.hasSpecialChar).toBe(true);
+    });
+
+    it('should handle unicode characters', () => {
+      const unicodePassword = 'Pässwörd123!';
+      const result = checkPasswordRequirements(unicodePassword);
+      expect(result.minLength).toBe(true);
+      expect(result.hasUppercase).toBe(true);
+      expect(result.hasDigit).toBe(true);
+      expect(result.hasSpecialChar).toBe(true);
+    });
+
+    it('should handle whitespace-only password', () => {
+      const result = checkPasswordRequirements('         ');
+      expect(result.minLength).toBe(true); // 9 spaces
+      expect(result.hasUppercase).toBe(false);
+      expect(result.hasDigit).toBe(false);
+      expect(result.hasSpecialChar).toBe(false);
+    });
+
+    it('should handle password with only numbers', () => {
+      const result = checkPasswordRequirements('123456789');
+      expect(result.minLength).toBe(true);
+      expect(result.hasUppercase).toBe(false);
+      expect(result.hasDigit).toBe(true);
+      expect(result.hasSpecialChar).toBe(false);
+    });
+
+    it('should handle password with only special characters', () => {
+      const result = checkPasswordRequirements('!@#$%^&*()');
+      expect(result.minLength).toBe(true);
+      expect(result.hasUppercase).toBe(false);
+      expect(result.hasDigit).toBe(false);
+      expect(result.hasSpecialChar).toBe(true);
+    });
+
+    it('should handle password with only uppercase letters', () => {
+      const result = checkPasswordRequirements('ABCDEFGHI');
+      expect(result.minLength).toBe(true);
+      expect(result.hasUppercase).toBe(true);
+      expect(result.hasDigit).toBe(false);
+      expect(result.hasSpecialChar).toBe(false);
+    });
   });
 });
