@@ -274,16 +274,14 @@ export const Login = () => {
                         refreshToken: response.refreshToken,
                       });
                     }
-                    // Transform API user to app user format
+                    // Transform API response to app user format
+                    const emailUsername = response.email.split('@')[0];
                     const appUser = {
-                      username: response.user.username,
-                      name: response.user.firstName || response.user.username,
-                      email: response.user.email,
-                      avatar:
-                        response.user.profilePictureUrl ||
-                        `https://ui-avatars.com/api/?name=${encodeURIComponent(response.user.username)}&background=6366f1&color=fff`,
-                      subscription:
-                        (response.user.tierName?.toLowerCase() as 'free' | 'premium' | 'enterprise') || 'free',
+                      username: emailUsername,
+                      name: emailUsername,
+                      email: response.email,
+                      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(emailUsername)}&background=6366f1&color=fff`,
+                      subscription: 'free' as const,
                     };
                     // Update auth state
                     login(appUser);

@@ -76,16 +76,17 @@ export const EmailConfirmed = () => {
                 onSuccess={response => {
                   console.log('✅ Telegram linked successfully, logging in user');
 
-                  // Transform API user to app user format
+                  // Since API doesn't return user object, we need to extract username from JWT token
+                  // or use email as fallback
+                  const emailUsername = response.email.split('@')[0];
+
+                  // Transform API response to app user format
                   const appUser = {
-                    username: response.user.username,
-                    name: response.user.firstName || response.user.username,
-                    email: response.user.email,
-                    avatar:
-                      response.user.profilePictureUrl ||
-                      `https://ui-avatars.com/api/?name=${encodeURIComponent(response.user.username)}&background=6366f1&color=fff`,
-                    subscription:
-                      (response.user.tierName?.toLowerCase() as 'free' | 'premium' | 'enterprise') || 'free',
+                    username: emailUsername,
+                    name: emailUsername,
+                    email: response.email,
+                    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(emailUsername)}&background=6366f1&color=fff`,
+                    subscription: 'free' as const,
                   };
 
                   // Update auth state with user data

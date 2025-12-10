@@ -53,20 +53,16 @@ export interface User {
 }
 
 /**
- * Extended response from linking Telegram account
- * Extends ActivateUserResponse from Swagger with actual user data returned by backend
- *
- * Note: Swagger defines token/refreshToken/email as nullable, but on successful response
- * they are always present. This type reflects the actual successful response structure.
- *
- * TODO: Update Swagger spec to include user object in ActivateUserResponse
+ * Response from linking Telegram account
+ * This interface represents the actual response structure from the API when linking succeeds.
+ * The API returns token, refreshToken, email, and optional message, but does not include
+ * a user object in the response.
  */
 export interface LinkTelegramResponse {
   token: string;
   refreshToken: string;
   email: string;
   message?: string | null;
-  user: User;
 }
 
 /**
