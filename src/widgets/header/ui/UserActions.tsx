@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { DeleteUserButton } from 'features/auth';
 import { ROUTES } from 'shared/config/routes';
 import { useAuthStore } from 'shared/store/auth';
 
@@ -25,16 +26,21 @@ export const UserActions = () => {
   }
 
   return (
-    <Link
-      to={ROUTES.PROFILE}
-      className="flex items-center space-x-2 p-2 rounded-xl transition-colors hover:bg-surface-accent/50 dark:hover:bg-surface-accent-dark/50"
-    >
-      <img
-        src={user?.avatar}
-        alt={user?.name}
-        className="h-8 w-8 rounded-full object-cover border-2 border-outline dark:border-outline-dark"
-      />
-      <span className="hidden sm:block text-sm font-medium text-content dark:text-content-dark">{user?.name}</span>
-    </Link>
+    <div className="flex items-center gap-2">
+      <Link
+        to={ROUTES.PROFILE}
+        className="flex items-center space-x-2 p-2 rounded-xl transition-colors hover:bg-surface-accent/50 dark:hover:bg-surface-accent-dark/50"
+      >
+        <img
+          src={user?.avatar}
+          alt={user?.name}
+          className="h-8 w-8 rounded-full object-cover border-2 border-outline dark:border-outline-dark"
+        />
+        <span className="hidden sm:block text-sm font-medium text-content dark:text-content-dark">{user?.name}</span>
+      </Link>
+
+      {/* Development: Delete user button */}
+      <DeleteUserButton />
+    </div>
   );
 };
