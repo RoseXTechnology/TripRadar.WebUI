@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, Save, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useProfileQuery, useUpdateProfileMutation } from 'entities/user/api';
@@ -8,7 +8,7 @@ import { useAuthStore } from 'shared/store/auth';
 export const ProfileEdit = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { data: profile, isLoading } = useProfileQuery(user?.name || '');
+  const { data: profile, isLoading } = useProfileQuery(user?.username || '');
   const updateProfile = useUpdateProfileMutation();
 
   const [formData, setFormData] = useState<UpdateUserProfileRequest>({
@@ -37,10 +37,10 @@ export const ProfileEdit = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user?.name) return;
+    if (!user?.username) return;
 
     updateProfile.mutate(
-      { username: user.name, data: formData },
+      { username: user.username, data: formData },
       {
         onSuccess: () => {
           navigate('/profile');

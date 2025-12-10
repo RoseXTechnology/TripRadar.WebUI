@@ -4,7 +4,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { type LoginError, useLoginMutation } from 'entities/auth';
 import { type LinkTelegramResponse } from 'shared/api/types';
 import { ROUTES } from 'shared/config/routes';
-import { authStorage } from 'shared/lib';
+import { authStorage, getUsernameFromToken } from 'shared/lib';
 import { useAuthStore } from 'shared/store/auth';
 import { handleGoogleSignUp } from '../lib/oauth';
 import { TelegramConnect } from './TelegramConnect';
@@ -40,7 +40,7 @@ export const Login = () => {
         password: formData.password,
       },
       {
-        onSuccess: response => {
+        onSuccess: async response => {
           // Store tokens using authStorage for consistency
           if (response.token && response.refreshToken) {
             authStorage.setTokens({
@@ -49,9 +49,10 @@ export const Login = () => {
             });
           }
 
-          // Update auth store
+          // Get username from JWT token
+          const username = response.token ? getUsernameFromToken(response.token) || 'user' : 'user';
           const isEmail = formData.usernameOrEmail.includes('@');
-          const username = isEmail ? formData.usernameOrEmail.split('@')[0] : formData.usernameOrEmail;
+
           login({
             username,
             name: username.charAt(0).toUpperCase() + username.slice(1),
@@ -65,7 +66,6 @@ export const Login = () => {
 
           // Handle TELEGRAM_REQUIRED error
           if (error.isTelegramRequired && error.email) {
-            console.log('🔗 Telegram linking required for:', error.email);
             setUserEmail(error.email);
             setShowTelegramWidget(true);
             return;
@@ -266,7 +266,6 @@ export const Login = () => {
                 <TelegramConnect
                   email={userEmail}
                   onSuccess={(response: LinkTelegramResponse) => {
-                    console.log('✅ Telegram linked successfully, logging in user');
                     // Store tokens
                     if (response.token && response.refreshToken) {
                       authStorage.setTokens({

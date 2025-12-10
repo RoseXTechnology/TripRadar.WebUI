@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { User, Settings, CreditCard, LogOut, Edit2, Check, X } from 'lucide-react';
+import { Check, CreditCard, Edit2, LogOut, Settings, User, X } from 'lucide-react';
 import { useProfileQuery, useUpdateProfileMutation } from 'entities/user/api';
 import { useAuthStore } from 'shared/store/auth';
 
 export const Profile = () => {
   const { user, logout } = useAuthStore();
-  const { data: profile, isLoading, error } = useProfileQuery(user?.name || '');
+  // Try using username with proper encoding
+  const userIdentifier = user?.username || '';
+  const { data: profile, isLoading, error } = useProfileQuery(userIdentifier);
+
   const updateProfile = useUpdateProfileMutation();
   const [activeSection, setActiveSection] = useState('profile');
   const [isEditing, setIsEditing] = useState({
@@ -18,7 +21,7 @@ export const Profile = () => {
   });
 
   const handleSave = (field: keyof typeof isEditing) => {
-    const username = user?.name;
+    const username = user?.username;
     if (!username) return;
 
     setIsEditing(prev => ({ ...prev, [field]: false }));

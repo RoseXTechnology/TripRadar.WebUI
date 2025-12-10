@@ -74,8 +74,6 @@ export const EmailConfirmed = () => {
               <TelegramConnect
                 email={email}
                 onSuccess={response => {
-                  console.log('✅ Telegram linked successfully, logging in user');
-
                   // Since API doesn't return user object, we need to extract username from JWT token
                   // or use email as fallback
                   const emailUsername = response.email.split('@')[0];
