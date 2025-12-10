@@ -9,6 +9,17 @@ import {
   loadTelegramWidget,
   validateTelegramData,
 } from '../lib/telegram';
+import { ErrorAlert } from './ErrorAlert';
+
+/**
+ * Telegram error state interface
+ */
+interface TelegramErrorState {
+  hasError: boolean;
+  errorMessage: string;
+  retryCount: number;
+  troubleshootingSteps: string[];
+}
 
 /**
  * Props for TelegramConnect component
@@ -18,6 +29,23 @@ interface TelegramConnectProps {
   onSuccess: (response: LinkTelegramResponse) => void;
   onError: (error: string) => void;
 }
+
+/**
+ * TroubleshootingSteps component for displaying error recovery instructions
+ */
+const TroubleshootingSteps = ({ steps }: { steps: string[] }) => (
+  <div className="mt-3">
+    <p className="text-sm font-medium text-content dark:text-content-dark mb-2">Try these steps:</p>
+    <ol className="text-sm text-content-secondary dark:text-content-secondary-dark space-y-1">
+      {steps.map((step, index) => (
+        <li key={index} className="flex items-start gap-2">
+          <span className="font-medium text-primary-600 dark:text-primary-400 flex-shrink-0">{index + 1}.</span>
+          <span>{step}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+);
 
 /**
  * TelegramConnect Component
@@ -47,8 +75,63 @@ interface TelegramConnectProps {
 export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [telegramError, setTelegramError] = useState<TelegramErrorState>({
+    hasError: false,
+    errorMessage: '',
+    retryCount: 0,
+    troubleshootingSteps: [],
+  });
   const widgetContainerRef = useRef<HTMLDivElement>(null);
   const { mutate: linkTelegram, isPending } = useLinkTelegramMutation();
+
+  /**
+   * Handle Telegram connection errors with troubleshooting steps
+   */
+  const handleTelegramError = useCallback(
+    (error: Error | string) => {
+      const errorMessage = typeof error === 'string' ? error : error.message;
+
+      const troubleshootingSteps = [
+        'Ensure you have a Telegram account',
+        'Check that pop-ups are not blocked in your browser',
+        'Try refreshing the page',
+        'Clear browser cache and cookies',
+        'Disable browser extensions temporarily',
+      ];
+
+      setTelegramError({
+        hasError: true,
+        errorMessage: errorMessage || 'Failed to connect Telegram',
+        retryCount: telegramError.retryCount + 1,
+        troubleshootingSteps,
+      });
+
+      // Also call the original onError callback for backward compatibility
+      onError(errorMessage || 'Failed to connect Telegram');
+    },
+    [telegramError.retryCount, onError]
+  );
+
+  /**
+   * Handle retry - clear error state and reinitialize widget
+   */
+  const handleRetry = useCallback(() => {
+    setTelegramError({
+      hasError: false,
+      errorMessage: '',
+      retryCount: 0,
+      troubleshootingSteps: [],
+    });
+    setScriptLoaded(false);
+    setIsLoading(false);
+
+    // Clear the widget container
+    if (widgetContainerRef.current) {
+      widgetContainerRef.current.innerHTML = '';
+    }
+
+    // Reinitialize will happen via useEffect dependency change
+  }, []);
 
   /**
    * Handle Telegram OAuth callback
@@ -59,7 +142,7 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
       // Validate telegram data structure
       if (!validateTelegramData(user)) {
         console.error('❌ Invalid Telegram data structure:', user);
-        onError('Invalid data received from Telegram. Please try again.');
+        handleTelegramError('Invalid data received from Telegram. Please try again.');
         return;
       }
 
@@ -100,13 +183,13 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
             const errorMessage =
               error instanceof Error ? error.message : 'Failed to link Telegram account. Please try again.';
 
-            // Call error callback
-            onError(errorMessage);
+            // Use the new error handler
+            handleTelegramError(errorMessage);
           },
         }
       );
     },
-    [email, linkTelegram, onSuccess, onError]
+    [email, linkTelegram, onSuccess, handleTelegramError]
   );
 
   /**
@@ -150,7 +233,7 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
         }
       } catch (error) {
         console.error('❌ Failed to load Telegram widget:', error);
-        onError('Failed to load Telegram widget. Please refresh the page and try again.');
+        handleTelegramError('Failed to load Telegram widget. Please refresh the page and try again.');
       }
     };
 
@@ -162,26 +245,50 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
         delete window.onTelegramAuth;
       }
     };
-  }, [email, handleTelegramAuth, onError]); // Re-initialize if email changes
+  }, [email, handleTelegramAuth, handleTelegramError, telegramError.hasError]); // Re-initialize if email changes or after retry
 
   return (
     <div className="flex flex-col items-center gap-4">
+      {/* Error state with troubleshooting */}
+      {telegramError.hasError && (
+        <div className="w-full max-w-md">
+          <ErrorAlert
+            title="Telegram Connection Failed"
+            message={telegramError.errorMessage}
+            severity="error"
+            actions={[
+              {
+                label: 'Try Again',
+                onClick: handleRetry,
+                variant: 'primary',
+              },
+            ]}
+          >
+            <TroubleshootingSteps steps={telegramError.troubleshootingSteps} />
+          </ErrorAlert>
+        </div>
+      )}
+
       {/* Loading state while linking */}
-      {(isLoading || isPending) && (
+      {!telegramError.hasError && (isLoading || isPending) && (
         <div className="flex flex-col items-center gap-2">
           <LoadingSpinner />
-          <p className="text-sm text-gray-600 dark:text-gray-400">Connecting your Telegram account...</p>
+          <p className="text-sm text-content-secondary dark:text-content-secondary-dark">
+            Connecting your Telegram account...
+          </p>
         </div>
       )}
 
       {/* Telegram widget container */}
-      {!isLoading && !isPending && (
+      {!telegramError.hasError && !isLoading && !isPending && (
         <div className="flex flex-col items-center gap-4">
           <div ref={widgetContainerRef} className="flex justify-center" />
           {!scriptLoaded && (
             <div className="flex items-center gap-2">
               <LoadingSpinner />
-              <p className="text-sm text-gray-600 dark:text-gray-400">Loading Telegram widget...</p>
+              <p className="text-sm text-content-secondary dark:text-content-secondary-dark">
+                Loading Telegram widget...
+              </p>
             </div>
           )}
         </div>

@@ -3,14 +3,16 @@
  * Requirements: 3.1, 3.2, 3.3, 3.4, 3.5
  */
 
+import React from 'react';
 import { FaExclamationCircle, FaExclamationTriangle, FaInfoCircle, FaTimes } from 'react-icons/fa';
 import type { ErrorConfig } from '../lib/errorMessages';
 
 interface ErrorAlertProps extends ErrorConfig {
   onDismiss?: () => void;
+  children?: React.ReactNode;
 }
 
-export const ErrorAlert = ({ title, message, severity, actions, onDismiss }: ErrorAlertProps) => {
+export const ErrorAlert = ({ title, message, severity, actions, onDismiss, children }: ErrorAlertProps) => {
   const severityStyles = {
     error: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800',
     warning: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800',
@@ -37,6 +39,8 @@ export const ErrorAlert = ({ title, message, severity, actions, onDismiss }: Err
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-content dark:text-content-dark mb-1">{title}</h3>
           <p className="text-sm text-content-secondary dark:text-content-secondary-dark">{message}</p>
+
+          {children}
 
           {actions && actions.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
