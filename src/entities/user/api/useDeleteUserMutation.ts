@@ -9,12 +9,12 @@ import { apiClient } from 'shared/api';
 export const useDeleteUserMutation = () => {
   return useMutation({
     mutationFn: (username: string): Promise<{ message: string }> =>
-      apiClient.internalDelete(`/api/v1/internals/users/${username}`),
+      apiClient.internalDelete(`/api/v1/internals/users/${encodeURIComponent(username)}`),
     onSuccess: () => {
-      console.log('✅ User deleted successfully');
+      // User deleted successfully
     },
-    onError: error => {
-      console.error('❌ Failed to delete user:', error);
+    onError: () => {
+      // Failed to delete user
     },
   });
 };
