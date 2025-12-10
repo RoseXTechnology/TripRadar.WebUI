@@ -13,7 +13,7 @@ export const EmailConfirmed = () => {
   const [telegramError, setTelegramError] = useState<string>('');
 
   useEffect(() => {
-    // Try to get email from URL parameter
+    // Try to get email from URL parameter first
     const emailParam = searchParams.get('email');
 
     if (emailParam) {
@@ -28,8 +28,9 @@ export const EmailConfirmed = () => {
       return;
     }
 
-    // If no email found, show error
+    // If no email found, set email to null to trigger error display
     console.warn('⚠️ No email found in URL or sessionStorage');
+    setEmail(null);
   }, [searchParams]);
 
   return (
@@ -99,10 +100,20 @@ export const EmailConfirmed = () => {
                 }}
               />
             ) : (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                <p className="text-sm text-red-600 dark:text-red-400">
-                  Unable to retrieve your email. Please try registering again or contact support.
+              <div className="bg-surface-accent dark:bg-surface-accent-dark border border-outline dark:border-outline-dark rounded-xl p-4">
+                <p className="text-sm text-content dark:text-content-dark font-medium mb-2">
+                  Registration Information Missing
                 </p>
+                <p className="text-xs text-content-secondary dark:text-content-secondary-dark mb-4">
+                  Unable to retrieve your registration information. This may happen if you opened this page in a new
+                  browser session.
+                </p>
+                <button
+                  onClick={() => navigate(ROUTES.LOGIN)}
+                  className="w-full py-2 px-4 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors text-sm"
+                >
+                  Go to Login
+                </button>
               </div>
             )}
 
