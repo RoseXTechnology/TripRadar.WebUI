@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaArrowRight, FaEnvelope, FaEye, FaEyeSlash, FaGoogle, FaLock } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { type LoginError, useLoginMutation } from 'entities/auth';
 import { type LinkTelegramResponse } from 'shared/api/types';
 import { ROUTES } from 'shared/config/routes';
@@ -11,6 +11,7 @@ import { TelegramConnect } from './TelegramConnect';
 
 export const Login = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     usernameOrEmail: '', // Backend accepts both email and username in this field
@@ -21,6 +22,14 @@ export const Login = () => {
   const [telegramError, setTelegramError] = useState<string>('');
   const login = useAuthStore(state => state.login);
   const loginMutation = useLoginMutation();
+
+  // Pre-fill email from URL parameters
+  useEffect(() => {
+    const emailParam = searchParams.get('email');
+    if (emailParam) {
+      setFormData(prev => ({ ...prev, usernameOrEmail: emailParam }));
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

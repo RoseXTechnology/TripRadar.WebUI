@@ -44,7 +44,6 @@ export const navigateToLogin = (email?: string) => {
  * Navigation helper: Navigate to password reset page with optional email pre-fill
  */
 export const navigateToPasswordReset = (email?: string) => {
-  // TODO: Update this route when password reset page is implemented
   const url = new URL(window.location.origin + '/forgot-password');
   if (email) {
     url.searchParams.set('email', email);
@@ -70,16 +69,16 @@ interface ErrorContext {
 export const ERROR_MESSAGES: Record<ErrorCode, (context?: ErrorContext) => ErrorConfig> = {
   EMAIL_ALREADY_EXISTS: context => ({
     title: 'Email Already Registered',
-    message: 'This email address is already associated with an account.',
+    message: 'This email is already in use. Please log in or reset your password.',
     severity: 'warning',
     actions: [
       {
-        label: 'Login',
+        label: 'Log In',
         onClick: () => navigateToLogin(context?.email),
         variant: 'primary',
       },
       {
-        label: 'Forgot Password?',
+        label: 'Reset Password',
         onClick: () => navigateToPasswordReset(context?.email),
         variant: 'secondary',
       },

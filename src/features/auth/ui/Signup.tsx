@@ -190,10 +190,11 @@ export const Signup = () => {
                   {showPassword ? <FaEyeSlash className="h-4 w-4" /> : <FaEye className="h-4 w-4" />}
                 </button>
               </div>
-              {errors.password && (
+              {errors.password ? (
                 <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.password.message}</p>
+              ) : (
+                <p className="mt-1 text-xs text-content-muted">Min 9 chars, 1 uppercase, 1 digit, 1 special</p>
               )}
-              <p className="mt-1 text-xs text-content-muted">9+ chars, uppercase, digit, special char</p>
             </div>
 
             {/* Consent */}
