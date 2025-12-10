@@ -8,6 +8,6 @@ type ActivateUserRequest = components['schemas']['ActivateUserRequest'];
 export const useLinkTelegramMutation = () => {
   return useMutation({
     mutationFn: (data: ActivateUserRequest): Promise<LinkTelegramResponse> =>
-      apiClient.internalPatch('/api/v1/internals/users/activation', data),
+      apiClient.patch('/api/v1/users/activation', data),
   });
 };
