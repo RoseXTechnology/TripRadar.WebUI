@@ -146,12 +146,6 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
         return;
       }
 
-      console.log('✅ Telegram data validated:', {
-        id: user.id,
-        username: user.username || user.first_name,
-        auth_date: user.auth_date,
-      });
-
       setIsLoading(true);
 
       // Call link Telegram API
@@ -162,8 +156,6 @@ export const TelegramConnect = ({ email, onSuccess, onError }: TelegramConnectPr
         },
         {
           onSuccess: response => {
-            console.log('✅ Telegram linked successfully');
-
             // Store JWT tokens in localStorage
             authStorage.setTokens({
               authToken: response.token,

@@ -47,12 +47,6 @@ export const TelegramCallback = () => {
         return;
       }
 
-      console.log('✅ Telegram callback data validated:', {
-        id: telegramData.id,
-        username: telegramData.username || telegramData.first_name,
-        auth_date: telegramData.auth_date,
-      });
-
       // Get email from sessionStorage (stored before redirect)
       const email = sessionStorage.getItem('telegram_auth_email');
       if (!email) {
@@ -70,8 +64,6 @@ export const TelegramCallback = () => {
         },
         {
           onSuccess: response => {
-            console.log('✅ Telegram linked successfully');
-
             // Store JWT tokens in localStorage
             authStorage.setTokens({
               authToken: response.token,
