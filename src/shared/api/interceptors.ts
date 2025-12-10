@@ -17,7 +17,7 @@ export class ApiClient {
     this.internalApiKey = env.INTERNAL_API_KEY;
   }
 
-  async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  async request<T>(endpoint: string, options: RequestInit = {}, retryCount = 0): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
     const token = authStorage.getToken();
 
@@ -33,26 +33,21 @@ export class ApiClient {
       ...options,
     };
 
-    console.log('🚀 API Request:', {
-      endpoint,
-      method: options.method || 'GET',
-      headers: requestData.headers,
-      body: options.body,
-    });
-
     const response = await fetch(url, requestData);
 
     if (!response.ok) {
-      console.log('❌ API Error:', {
-        status: response.status,
-        statusText: response.statusText,
-        url: response.url,
-      });
-      await this.handleError(response);
+      try {
+        await this.handleError(response);
+      } catch (error) {
+        // Если токен был обновлен, повторяем запрос один раз
+        if (error instanceof Error && error.message === 'TOKEN_REFRESHED' && retryCount === 0) {
+          return this.request<T>(endpoint, options, retryCount + 1);
+        }
+        throw error;
+      }
     }
 
     const result = await response.json();
-    console.log('✅ API Success:', result);
     return result;
   }
 
@@ -138,12 +133,53 @@ export class ApiClient {
     });
   }
 
-  private async handleError(response: Response): Promise<never> {
-    console.log('🚨 Handling error:', response.status, response.url);
+  /**
+   * Refresh access token using refresh token
+   */
+  private async refreshTokens(refreshToken: string): Promise<{ token: string; refreshToken: string }> {
+    const url = `${this.baseURL}/api/v1/tokens/refresh-tokens`;
 
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': this.apiKey,
+        'X-ClientId': '127.0.0.1',
+      },
+      body: JSON.stringify({
+        refreshToken: refreshToken,
+        usernameOrEmail: '', // Может потребоваться, проверим
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Refresh failed: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  private async handleError(response: Response): Promise<never> {
     if (response.status === 401) {
-      // Токен истек - очищаем и перенаправляем на логин
-      console.log('🔒 Unauthorized - clearing tokens');
+      // Попытка обновить токен
+      const refreshToken = authStorage.getRefreshToken();
+      if (refreshToken) {
+        try {
+          const refreshResponse = await this.refreshTokens(refreshToken);
+          if (refreshResponse.token && refreshResponse.refreshToken) {
+            authStorage.setTokens({
+              authToken: refreshResponse.token,
+              refreshToken: refreshResponse.refreshToken,
+            });
+            // Не выбрасываем ошибку, позволяем повторить запрос
+            throw new Error('TOKEN_REFRESHED');
+          }
+        } catch {
+          // Token refresh failed
+        }
+      }
+
+      // Если обновление не удалось - очищаем и перенаправляем на логин
       authStorage.clearTokens();
       window.location.href = '/login';
       throw new Error('Unauthorized - redirecting to login');
@@ -158,8 +194,6 @@ export class ApiClient {
         message: `HTTP ${response.status}: ${response.statusText}`,
       };
     }
-
-    console.log('💥 API Error data:', errorData);
 
     // For 403 errors with TELEGRAM_REQUIRED, preserve the full error data
     // Backend format: { errorCode: "TELEGRAM_REQUIRED", email: "user@example.com" }
@@ -179,7 +213,6 @@ export class ApiClient {
       error.email = errorData.email;
       error.isTelegramRequired = true;
       error.statusCode = 403;
-      console.log('🔗 TELEGRAM_REQUIRED error detected, email:', errorData.email);
       throw error;
     }
 
