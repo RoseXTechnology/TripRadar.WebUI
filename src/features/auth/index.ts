@@ -1,3 +1,4 @@
+export { AuthGuard } from './ui/AuthGuard';
 export { DeleteUserButton } from './ui/DeleteUserButton';
 export { ErrorAlert } from './ui/ErrorAlert';
 export { Login } from './ui/Login';

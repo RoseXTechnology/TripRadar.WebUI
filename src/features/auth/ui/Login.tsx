@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaArrowRight, FaEnvelope, FaEye, FaEyeSlash, FaGoogle, FaLock } from 'react-icons/fa';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { type LoginError, useLoginMutation } from 'entities/auth';
 import { type LinkTelegramResponse } from 'shared/api/types';
 import { ROUTES } from 'shared/config/routes';
@@ -11,6 +11,7 @@ import { TelegramConnect } from './TelegramConnect';
 
 export const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -60,6 +61,10 @@ export const Login = () => {
             avatar: `https://ui-avatars.com/api/?name=${username}&background=6366f1&color=fff`,
             subscription: 'free',
           });
+
+          // Redirect after successful login
+          const from = location.state?.from?.pathname || ROUTES.PROFILE;
+          navigate(from, { replace: true });
         },
         onError: (error: LoginError) => {
           console.error('Login failed:', error);

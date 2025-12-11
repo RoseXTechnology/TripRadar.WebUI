@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { Login, ProtectedRoute, Signup } from 'features/auth';
+import { AuthGuard, Login, ProtectedRoute, Signup } from 'features/auth';
 import { EmailConfirmed, EmailSent, ForgotPassword, ResetPassword, TelegramCallback } from 'pages/auth';
 import { Home } from 'pages/marketing/ui/Home';
 import { Pricing } from 'pages/marketing/ui/Pricing';
@@ -11,12 +11,40 @@ export const AppRoutes = () => {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route
+        path="/login"
+        element={
+          <AuthGuard>
+            <Login />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <AuthGuard>
+            <Signup />
+          </AuthGuard>
+        }
+      />
       <Route path="/email-sent" element={<EmailSent />} />
       <Route path="/email-confirmed" element={<EmailConfirmed />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route
+        path="/forgot-password"
+        element={
+          <AuthGuard>
+            <ForgotPassword />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path="/reset-password"
+        element={
+          <AuthGuard>
+            <ResetPassword />
+          </AuthGuard>
+        }
+      />
       <Route path="/auth/telegram-callback" element={<TelegramCallback />} />
       <Route path="/" element={<Home />} />
       <Route path="/pricing" element={<Pricing />} />
