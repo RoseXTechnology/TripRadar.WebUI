@@ -76,7 +76,7 @@
   - **Property 10: Email format validation**
   - **Validates: Requirements 5.2**
 
-- [ ] 6. Add unit tests for error message utilities
+- [x] 6. Add unit tests for error message utilities
   - Create errorMessages.test.ts file
   - Test parseBackendError() for all error codes
   - Test navigation helper functions (navigateToLogin, navigateToPasswordReset)
@@ -84,7 +84,7 @@
   - Achieve 100% coverage for errorMessages.ts
   - _Requirements: 5.3, 5.4_
 
-- [ ] 7. Add unit tests for ErrorAlert component
+- [x] 7. Add unit tests for ErrorAlert component
   - Create ErrorAlert.test.tsx file
   - Test rendering with different severity levels (error, warning, info)
   - Test action button rendering and onClick behavior
@@ -100,7 +100,7 @@
   - **Property 12: Error Alert renders action buttons**
   - **Validates: Requirements 7.2**
 
-- [ ] 8. Add unit tests for Signup component
+- [x] 8. Add unit tests for Signup component
   - Create Signup.test.tsx file
   - Test password hint/error mutual exclusivity
   - Test form submission with valid data
@@ -109,7 +109,7 @@
   - Test navigation to EmailSent page on success
   - _Requirements: 1.1, 1.2, 1.5, 2.1_
 
-- [ ] 9. Add unit tests for TelegramConnect component
+- [x] 9. Add unit tests for TelegramConnect component
   - Create TelegramConnect.test.tsx file
   - Test error state management
   - Test retry functionality
@@ -118,7 +118,7 @@
   - Test error callback with error display
   - _Requirements: 3.1, 3.2, 3.3_
 
-- [ ] 10. Checkpoint - Ensure all tests pass
+- [x] 10. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 11. Verify UI/UX best practices compliance
