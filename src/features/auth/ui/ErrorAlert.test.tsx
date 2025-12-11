@@ -30,7 +30,12 @@ describe('ErrorAlert Component', () => {
 
       // Check for error-specific styling classes
       const container = screen.getByRole('alert');
-      expect(container).toHaveClass('bg-red-50', 'dark:bg-red-900/20', 'border-red-200', 'dark:border-red-800');
+      expect(container).toHaveClass(
+        'bg-surface-accent',
+        'dark:bg-surface-accent-dark',
+        'border-outline',
+        'dark:border-outline-dark'
+      );
 
       // Check for error icon (FaExclamationCircle)
       const icon = container.querySelector('svg');
@@ -53,10 +58,10 @@ describe('ErrorAlert Component', () => {
       // Check for warning-specific styling classes
       const container = screen.getByRole('alert');
       expect(container).toHaveClass(
-        'bg-yellow-50',
-        'dark:bg-yellow-900/20',
-        'border-yellow-200',
-        'dark:border-yellow-800'
+        'bg-surface-accent',
+        'dark:bg-surface-accent-dark',
+        'border-outline',
+        'dark:border-outline-dark'
       );
 
       // Check for warning icon color
@@ -79,7 +84,12 @@ describe('ErrorAlert Component', () => {
 
       // Check for info-specific styling classes
       const container = screen.getByRole('alert');
-      expect(container).toHaveClass('bg-blue-50', 'dark:bg-blue-900/20', 'border-blue-200', 'dark:border-blue-800');
+      expect(container).toHaveClass(
+        'bg-surface-accent',
+        'dark:bg-surface-accent-dark',
+        'border-outline',
+        'dark:border-outline-dark'
+      );
 
       // Check for info icon color
       const icon = container.querySelector('svg');
