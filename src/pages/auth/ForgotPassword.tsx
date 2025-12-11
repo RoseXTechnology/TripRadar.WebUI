@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaArrowLeft, FaEnvelope } from 'react-icons/fa';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useForgotPasswordMutation } from 'entities/auth';
+import { getEmailFromUrlParams } from 'shared/lib';
 
 export const ForgotPassword = () => {
   const [searchParams] = useSearchParams();
@@ -11,7 +12,7 @@ export const ForgotPassword = () => {
 
   // Pre-fill email from URL parameters
   useEffect(() => {
-    const emailParam = searchParams.get('email');
+    const emailParam = getEmailFromUrlParams(searchParams);
     if (emailParam) {
       setEmail(emailParam);
     }

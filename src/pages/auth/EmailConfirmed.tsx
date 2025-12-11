@@ -3,6 +3,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { TelegramConnect } from 'features/auth/ui/TelegramConnect';
 import { ROUTES } from 'shared/config/routes';
+import { getEmailFromUrlParams } from 'shared/lib';
 import { useAuthStore } from 'shared/store/auth';
 
 export const EmailConfirmed = () => {
@@ -14,7 +15,7 @@ export const EmailConfirmed = () => {
 
   useEffect(() => {
     // Try to get email from URL parameter first
-    const emailParam = searchParams.get('email');
+    const emailParam = getEmailFromUrlParams(searchParams);
 
     if (emailParam) {
       setEmail(emailParam);

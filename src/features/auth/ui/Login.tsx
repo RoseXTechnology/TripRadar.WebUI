@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-do
 import { type LoginError, useLoginMutation } from 'entities/auth';
 import { type LinkTelegramResponse } from 'shared/api/types';
 import { ROUTES } from 'shared/config/routes';
-import { authStorage, getUsernameFromToken } from 'shared/lib';
+import { authStorage, getEmailFromUrlParams, getUsernameFromToken } from 'shared/lib';
 import { useAuthStore } from 'shared/store/auth';
 import { handleGoogleSignUp } from '../lib/oauth';
 import { TelegramConnect } from './TelegramConnect';
@@ -26,7 +26,7 @@ export const Login = () => {
 
   // Pre-fill email from URL parameters
   useEffect(() => {
-    const emailParam = searchParams.get('email');
+    const emailParam = getEmailFromUrlParams(searchParams);
     if (emailParam) {
       setFormData(prev => ({ ...prev, usernameOrEmail: emailParam }));
     }
