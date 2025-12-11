@@ -10,4 +10,5 @@ export { TelegramConnect } from './ui/TelegramConnect';
 export * from './lib/errorMessages';
 export * from './lib/oauth';
 export * from './lib/validation';
+export { useLogout } from './lib/useLogout';
 export * from './model/constants';

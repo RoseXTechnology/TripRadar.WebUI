@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Check, CreditCard, Edit2, LogOut, Settings, User, X } from 'lucide-react';
 import { useProfileQuery, useUpdateProfileMutation } from 'entities/user/api';
+import { useLogout } from 'features/auth';
 import { useAuthStore } from 'shared/store/auth';
 
 export const Profile = () => {
-  const { user, logout } = useAuthStore();
+  const { user } = useAuthStore();
+  const logout = useLogout();
   // Try using username with proper encoding
   const userIdentifier = user?.username || '';
   const { data: profile, isLoading, error } = useProfileQuery(userIdentifier);

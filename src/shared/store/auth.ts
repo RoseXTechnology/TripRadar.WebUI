@@ -28,6 +28,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     }),
 
   logout: () => {
+    // Clear tokens and state
     authStorage.clearTokens();
     set({ user: null, isAuthenticated: false });
   },

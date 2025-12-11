@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useDeleteUserMutation } from 'entities/user/api/useDeleteUserMutation';
-import { ROUTES } from 'shared/config/routes';
-import { authStorage } from 'shared/lib/auth-storage';
 import { useAuthStore } from 'shared/store/auth';
+import { useLogout } from '../lib/useLogout';
 
 /**
  * DeleteUserButton Component
@@ -14,8 +12,7 @@ import { useAuthStore } from 'shared/store/auth';
  */
 export const DeleteUserButton = () => {
   const [showConfirm, setShowConfirm] = useState(false);
-  const navigate = useNavigate();
-  const { logout } = useAuthStore();
+  const logout = useLogout();
   const deleteUserMutation = useDeleteUserMutation();
 
   const { user } = useAuthStore();
@@ -27,13 +24,9 @@ export const DeleteUserButton = () => {
     }
 
     deleteUserMutation.mutate(user.username, {
-      onSuccess: () => {
-        // Clear auth state and tokens
-        authStorage.clearTokens();
-        logout();
-
-        // Redirect to home
-        navigate(ROUTES.HOME);
+      onSuccess: async () => {
+        // Logout handles clearing tokens and navigation
+        await logout();
 
         // Close confirmation dialog
         setShowConfirm(false);
