@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { DeleteUserButton } from 'features/auth';
 import { ROUTES } from 'shared/config/routes';
 import { useAuthStore } from 'shared/store/auth';
 
@@ -38,9 +37,6 @@ export const UserActions = () => {
         />
         <span className="hidden sm:block text-sm font-medium text-content dark:text-content-dark">{user?.name}</span>
       </Link>
-
-      {/* Development: Delete user button */}
-      <DeleteUserButton />
     </div>
   );
 };

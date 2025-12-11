@@ -3,7 +3,6 @@
 export const env = {
   API_BASE_URL: import.meta.env.VITE_API_BASE_URL || '',
   API_KEY: import.meta.env.VITE_API_KEY || '4599e588-6d05-4aad-86ed-3d28860a9338',
-  INTERNAL_API_KEY: import.meta.env.VITE_INTERNAL_API_KEY || '0a62cc12-d1c7-400e-9fc4-76460cd88358',
   APP_ENV: import.meta.env.VITE_APP_ENV || 'development',
   TELEGRAM_BOT_USERNAME: import.meta.env.VITE_TELEGRAM_BOT_USERNAME || 'aiTravelBotVVV_bot',
 } as const;
