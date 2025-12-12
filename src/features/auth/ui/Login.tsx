@@ -279,11 +279,14 @@ export const Login = () => {
                       });
                     }
                     // Transform API response to app user format
-                    // Extract username from JWT token (this is the correct username from backend)
-                    const usernameFromToken = getUsernameFromToken(response.token);
+                    // Use username from API response (backend should always return it)
+                    const username = response.username;
 
-                    // Fallback to email part if token doesn't contain username
-                    const username = usernameFromToken || response.email.split('@')[0];
+                    if (!username) {
+                      console.error('❌ Username not returned from activation API');
+                      setTelegramError('Username not received from server. Please try again.');
+                      return;
+                    }
 
                     const appUser = {
                       username: username,

@@ -37,6 +37,7 @@ describe('TelegramConnect Component Logic', () => {
     token: 'mock-auth-token',
     refreshToken: 'mock-refresh-token',
     email: 'test@example.com',
+    username: 'testuser',
     message: 'Success',
   };
 

@@ -62,6 +62,7 @@ export interface LinkTelegramResponse {
   token: string;
   refreshToken: string;
   email: string;
+  username: string;
   message?: string | null;
 }
 

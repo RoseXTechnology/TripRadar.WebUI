@@ -3339,6 +3339,7 @@ export interface components {
       token: string | null;
       refreshToken: string | null;
       email: string | null;
+      username: string | null;
     };
     ApplyPromoCodeRequest: {
       code: string;
