@@ -279,12 +279,17 @@ export const Login = () => {
                       });
                     }
                     // Transform API response to app user format
-                    const emailUsername = response.email.split('@')[0];
+                    // Extract username from JWT token (this is the correct username from backend)
+                    const usernameFromToken = getUsernameFromToken(response.token);
+
+                    // Fallback to email part if token doesn't contain username
+                    const username = usernameFromToken || response.email.split('@')[0];
+
                     const appUser = {
-                      username: emailUsername,
-                      name: emailUsername,
+                      username: username,
+                      name: username,
                       email: response.email,
-                      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(emailUsername)}&background=6366f1&color=fff`,
+                      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=6366f1&color=fff`,
                       subscription: 'free' as const,
                     };
                     // Update auth state

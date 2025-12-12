@@ -3,7 +3,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { TelegramConnect } from 'features/auth/ui/TelegramConnect';
 import { ROUTES } from 'shared/config/routes';
-import { getEmailFromUrlParams } from 'shared/lib';
+import { getEmailFromUrlParams, getUsernameFromToken } from 'shared/lib';
 import { useAuthStore } from 'shared/store/auth';
 
 export const EmailConfirmed = () => {
@@ -75,16 +75,18 @@ export const EmailConfirmed = () => {
               <TelegramConnect
                 email={email}
                 onSuccess={response => {
-                  // Since API doesn't return user object, we need to extract username from JWT token
-                  // or use email as fallback
-                  const emailUsername = response.email.split('@')[0];
+                  // Extract username from JWT token (this is the correct username from backend)
+                  const usernameFromToken = getUsernameFromToken(response.token);
+
+                  // Fallback to email part if token doesn't contain username
+                  const username = usernameFromToken || response.email.split('@')[0];
 
                   // Transform API response to app user format
                   const appUser = {
-                    username: emailUsername,
-                    name: emailUsername,
+                    username: username,
+                    name: username,
                     email: response.email,
-                    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(emailUsername)}&background=6366f1&color=fff`,
+                    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=6366f1&color=fff`,
                     subscription: 'free' as const,
                   };
 
