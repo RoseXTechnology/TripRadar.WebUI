@@ -124,11 +124,11 @@ export const EmailConfirmed = () => {
 
             {/* Error message for Telegram linking */}
             {telegramError && (
-              <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+              <div className="mt-4 p-3 bg-surface-accent dark:bg-surface-accent-dark rounded-xl border border-outline dark:border-outline-dark transition-all duration-200 animate-in slide-in-from-top-2">
                 <p className="text-sm text-red-600 dark:text-red-400">{telegramError}</p>
                 <button
                   onClick={() => setTelegramError('')}
-                  className="mt-2 text-xs text-red-700 dark:text-red-300 underline hover:no-underline"
+                  className="mt-2 text-xs text-red-700 dark:text-red-300 underline hover:no-underline transition-colors duration-200"
                 >
                   Try again
                 </button>

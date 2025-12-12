@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { FaExclamationCircle, FaExclamationTriangle, FaInfoCircle, FaTimes } from 'react-icons/fa';
+import { AlertCircle, AlertTriangle, Info, X } from 'lucide-react';
 import type { ErrorConfig } from '../lib/errorMessages';
 
 interface ErrorAlertProps extends ErrorConfig {
@@ -14,9 +14,9 @@ interface ErrorAlertProps extends ErrorConfig {
 
 export const ErrorAlert = ({ title, message, severity, actions, onDismiss, children }: ErrorAlertProps) => {
   const severityStyles = {
-    error: 'bg-surface-accent dark:bg-surface-accent-dark border-outline dark:border-outline-dark',
-    warning: 'bg-surface-accent dark:bg-surface-accent-dark border-outline dark:border-outline-dark',
-    info: 'bg-surface-accent dark:bg-surface-accent-dark border-outline dark:border-outline-dark',
+    error: 'bg-surface-accent dark:bg-surface-accent-dark border border-outline dark:border-outline-dark',
+    warning: 'bg-surface-accent dark:bg-surface-accent-dark border border-outline dark:border-outline-dark',
+    info: 'bg-surface-accent dark:bg-surface-accent-dark border border-outline dark:border-outline-dark',
   };
 
   const iconStyles = {
@@ -26,13 +26,17 @@ export const ErrorAlert = ({ title, message, severity, actions, onDismiss, child
   };
 
   const Icon = {
-    error: FaExclamationCircle,
-    warning: FaExclamationTriangle,
-    info: FaInfoCircle,
+    error: AlertCircle,
+    warning: AlertTriangle,
+    info: Info,
   }[severity];
 
   return (
-    <div className={`rounded-lg border p-4 ${severityStyles[severity]}`} role="alert" aria-live="polite">
+    <div
+      className={`rounded-xl p-4 transition-all duration-200 ${severityStyles[severity]}`}
+      role="alert"
+      aria-live="polite"
+    >
       <div className="flex items-start gap-3">
         <Icon className={`h-5 w-5 mt-0.5 flex-shrink-0 ${iconStyles[severity]}`} aria-hidden="true" />
 
@@ -50,8 +54,8 @@ export const ErrorAlert = ({ title, message, severity, actions, onDismiss, child
                   onClick={action.onClick}
                   className={
                     action.variant === 'primary'
-                      ? 'px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors'
-                      : 'px-4 py-2 border border-outline dark:border-outline-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark text-content dark:text-content-dark rounded-lg text-sm font-medium transition-colors'
+                      ? 'px-4 py-2.5 bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md'
+                      : 'px-4 py-2.5 border border-outline dark:border-outline-dark hover:bg-surface-accent dark:hover:bg-surface-accent-dark text-content dark:text-content-dark rounded-xl text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md'
                   }
                 >
                   {action.label}
@@ -64,10 +68,10 @@ export const ErrorAlert = ({ title, message, severity, actions, onDismiss, child
         {onDismiss && (
           <button
             onClick={onDismiss}
-            className="text-content-muted hover:text-content dark:hover:text-content-dark transition-colors flex-shrink-0"
+            className="text-content-muted hover:text-content dark:hover:text-content-dark transition-all duration-200 flex-shrink-0 p-1 rounded-lg hover:bg-surface-accent dark:hover:bg-surface-accent-dark"
             aria-label="Dismiss alert"
           >
-            <FaTimes className="h-4 w-4" />
+            <X className="h-4 w-4" />
           </button>
         )}
       </div>

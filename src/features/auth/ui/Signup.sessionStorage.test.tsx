@@ -66,7 +66,7 @@ describe('Signup Session Management', () => {
     const emailInput = screen.getByPlaceholderText('Enter your email');
     const passwordInput = screen.getByPlaceholderText('Create a password');
     const consentCheckbox = screen.getByRole('checkbox');
-    const submitButton = screen.getByRole('button', { name: /create account/i });
+    const submitButton = screen.getByRole('button', { name: /get started/i });
 
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'TestPass123!' } });
@@ -92,7 +92,7 @@ describe('Signup Session Management', () => {
     const emailInput = screen.getByPlaceholderText('Enter your email');
     const passwordInput = screen.getByPlaceholderText('Create a password');
     const consentCheckbox = screen.getByRole('checkbox');
-    const submitButton = screen.getByRole('button', { name: /create account/i });
+    const submitButton = screen.getByRole('button', { name: /get started/i });
 
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'TestPass123!' } });

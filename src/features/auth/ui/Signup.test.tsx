@@ -1,9 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { UseMutationResult } from '@tanstack/react-query';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import * as fc from 'fast-check';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useRegisterMutation } from 'entities/auth';
+import type { CreateUserRequest, UserManagementResponse } from 'shared/api';
 import { ROUTES } from 'shared/config/routes';
 import { Signup } from './Signup';
 
@@ -70,7 +72,7 @@ describe('Property 1: Registration request contains only required fields', () =>
  */
 describe('Signup Component', () => {
   const mockMutate = vi.fn();
-  const mockRegisterMutation = {
+  const mockRegisterMutation: Partial<UseMutationResult<UserManagementResponse, Error, CreateUserRequest, unknown>> = {
     mutate: mockMutate,
     isPending: false,
     isError: false,
@@ -96,7 +98,9 @@ describe('Signup Component', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(useRegisterMutation).mockReturnValue(mockRegisterMutation);
+    vi.mocked(useRegisterMutation).mockReturnValue(
+      mockRegisterMutation as unknown as UseMutationResult<UserManagementResponse, Error, CreateUserRequest, unknown>
+    );
     // Mock sessionStorage
     Object.defineProperty(window, 'sessionStorage', {
       value: {
@@ -116,7 +120,7 @@ describe('Signup Component', () => {
       expect(screen.getByText('Create your account')).toBeInTheDocument();
       expect(screen.getByPlaceholderText('Enter your email')).toBeInTheDocument();
       expect(screen.getByPlaceholderText('Create a password')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /create account/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /get started/i })).toBeInTheDocument();
     });
 
     it('should render all form fields and elements', () => {
@@ -128,20 +132,37 @@ describe('Signup Component', () => {
       expect(screen.getByRole('checkbox')).toBeInTheDocument();
 
       // Check links
-      expect(screen.getByText('Terms of Service')).toBeInTheDocument();
+      expect(screen.getByText('Terms')).toBeInTheDocument();
       expect(screen.getByText('Privacy Policy')).toBeInTheDocument();
       expect(screen.getByText('Sign in')).toBeInTheDocument();
     });
   });
 
   describe('Password hint/error mutual exclusivity (Requirements 1.1, 1.2, 1.5)', () => {
-    it('should display password hint when no error is present', () => {
+    it('should display password hint in tooltip when hovering info icon', async () => {
       renderSignup();
 
-      expect(screen.getByText('Min 9 chars, 1 uppercase, 1 digit, 1 special')).toBeInTheDocument();
+      const infoButton = screen.getByLabelText('Password requirements');
+
+      // Hover over info button to show tooltip
+      fireEvent.mouseEnter(infoButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('• 9+ characters')).toBeInTheDocument();
+        expect(screen.getByText('• 1 uppercase')).toBeInTheDocument();
+        expect(screen.getByText('• 1 number')).toBeInTheDocument();
+        expect(screen.getByText('• 1 special char')).toBeInTheDocument();
+      });
+
+      // Mouse leave should hide tooltip
+      fireEvent.mouseLeave(infoButton);
+
+      await waitFor(() => {
+        expect(screen.queryByText('• 9+ characters')).not.toBeInTheDocument();
+      });
     });
 
-    it('should hide password hint when validation error is present', async () => {
+    it('should show validation error when password is invalid', async () => {
       renderSignup();
 
       const passwordInput = screen.getByPlaceholderText('Create a password');
@@ -153,12 +174,10 @@ describe('Signup Component', () => {
       await waitFor(() => {
         // Should show error message
         expect(screen.getByText(/Password must be at least 9 characters long/)).toBeInTheDocument();
-        // Should NOT show hint
-        expect(screen.queryByText('Min 9 chars, 1 uppercase, 1 digit, 1 special')).not.toBeInTheDocument();
       });
     });
 
-    it('should show hint again when error is cleared', async () => {
+    it('should clear error when valid password is entered', async () => {
       renderSignup();
 
       const passwordInput = screen.getByPlaceholderText('Create a password');
@@ -175,32 +194,29 @@ describe('Signup Component', () => {
       fireEvent.change(passwordInput, { target: { value: 'ValidPass1!' } });
 
       await waitFor(() => {
-        // Error should be gone, hint should be back
+        // Error should be gone
         expect(screen.queryByText(/Password must be at least 9 characters long/)).not.toBeInTheDocument();
-        expect(screen.getByText('Min 9 chars, 1 uppercase, 1 digit, 1 special')).toBeInTheDocument();
       });
     });
 
-    it('should never show both hint and error simultaneously', async () => {
+    it('should show tooltip on focus and hide on blur', async () => {
       renderSignup();
 
-      const passwordInput = screen.getByPlaceholderText('Create a password');
+      const infoButton = screen.getByLabelText('Password requirements');
 
-      // Test various password states
-      const testPasswords = ['', 'weak', 'WeakPass', 'WeakPass1', 'StrongPass1!'];
+      // Focus should show tooltip
+      fireEvent.focus(infoButton);
 
-      for (const password of testPasswords) {
-        fireEvent.change(passwordInput, { target: { value: password } });
-        fireEvent.blur(passwordInput);
+      await waitFor(() => {
+        expect(screen.getByText('• 9+ characters')).toBeInTheDocument();
+      });
 
-        await waitFor(() => {
-          const hasHint = screen.queryByText('Min 9 chars, 1 uppercase, 1 digit, 1 special') !== null;
-          const hasError = screen.queryByText(/Password must be/) !== null;
+      // Blur should hide tooltip
+      fireEvent.blur(infoButton);
 
-          // Should never have both hint and error at the same time
-          expect(hasHint && hasError).toBe(false);
-        });
-      }
+      await waitFor(() => {
+        expect(screen.queryByText('• 9+ characters')).not.toBeInTheDocument();
+      });
     });
   });
 
@@ -214,12 +230,12 @@ describe('Signup Component', () => {
       fireEvent.click(screen.getByRole('checkbox'));
 
       // Mock successful registration
-      mockMutate.mockImplementation((data, { onSuccess }) => {
+      mockMutate.mockImplementation((_, { onSuccess }) => {
         onSuccess();
       });
 
       // Submit form
-      fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+      fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       await waitFor(() => {
         // Should call mutation with correct data
@@ -244,7 +260,7 @@ describe('Signup Component', () => {
       vi.mocked(useRegisterMutation).mockReturnValue({
         ...mockRegisterMutation,
         isPending: true,
-      });
+      } as unknown as UseMutationResult<UserManagementResponse, Error, CreateUserRequest, unknown>);
 
       renderSignup();
 
@@ -253,8 +269,8 @@ describe('Signup Component', () => {
       fireEvent.change(screen.getByPlaceholderText('Create a password'), { target: { value: 'StrongPass1!' } });
       fireEvent.click(screen.getByRole('checkbox'));
 
-      expect(screen.getByText('Creating account...')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /creating account/i })).toBeDisabled();
+      expect(screen.getByText('Creating your account...')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /creating your account/i })).toBeDisabled();
     });
   });
 
@@ -263,7 +279,7 @@ describe('Signup Component', () => {
       renderSignup();
 
       // Try to submit empty form
-      fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+      fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       await waitFor(() => {
         expect(screen.getByText('Email is required')).toBeInTheDocument();
@@ -304,7 +320,7 @@ describe('Signup Component', () => {
       fireEvent.change(screen.getByPlaceholderText('Enter your email'), { target: { value: 'test@example.com' } });
       fireEvent.change(screen.getByPlaceholderText('Create a password'), { target: { value: 'StrongPass1!' } });
 
-      fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+      fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       await waitFor(() => {
         expect(screen.getByText('You must agree to continue')).toBeInTheDocument();
@@ -333,12 +349,12 @@ describe('Signup Component', () => {
         },
       };
 
-      mockMutate.mockImplementation((data, { onError }) => {
+      mockMutate.mockImplementation((_, { onError }) => {
         onError(mockError);
       });
 
       // Submit form
-      fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+      fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       await waitFor(() => {
         // Should display error alert
@@ -368,11 +384,11 @@ describe('Signup Component', () => {
         },
       };
 
-      mockMutate.mockImplementation((data, { onError }) => {
+      mockMutate.mockImplementation((_, { onError }) => {
         onError(mockError);
       });
 
-      fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+      fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       await waitFor(() => {
         expect(screen.getByText('Email Already Registered')).toBeInTheDocument();
@@ -403,11 +419,11 @@ describe('Signup Component', () => {
         },
       };
 
-      mockMutate.mockImplementationOnce((data, { onError }) => {
+      mockMutate.mockImplementationOnce((_, { onError }) => {
         onError(mockError);
       });
 
-      fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+      fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       await waitFor(() => {
         expect(screen.getByText('Email Already Registered')).toBeInTheDocument();
@@ -416,11 +432,11 @@ describe('Signup Component', () => {
       // Change email and submit again
       fireEvent.change(screen.getByPlaceholderText('Enter your email'), { target: { value: 'new@example.com' } });
 
-      mockMutate.mockImplementationOnce((data, { onSuccess }) => {
+      mockMutate.mockImplementationOnce((_, { onSuccess }) => {
         onSuccess();
       });
 
-      fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+      fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       // Error should be cleared before new submission
       await waitFor(() => {
@@ -433,10 +449,9 @@ describe('Signup Component', () => {
     it('should toggle password visibility when eye icon is clicked', async () => {
       renderSignup();
 
-      const passwordInput = screen.getByPlaceholderText('Create a password');
-      // Find the toggle button by its position in the password field container
-      const toggleButtons = screen.getAllByRole('button');
-      const toggleButton = toggleButtons.find(button => button.querySelector('svg') && button.type === 'button');
+      const passwordInput = screen.getByPlaceholderText('Create a password') as HTMLInputElement;
+      // Find the toggle button by its aria-label
+      const toggleButton = screen.getByLabelText('Show password');
 
       expect(toggleButton).toBeInTheDocument();
 
@@ -444,11 +459,15 @@ describe('Signup Component', () => {
       expect(passwordInput).toHaveAttribute('type', 'password');
 
       // Click to show password
-      fireEvent.click(toggleButton!);
+      fireEvent.click(toggleButton);
       expect(passwordInput).toHaveAttribute('type', 'text');
 
+      // Button label should change
+      const hideButton = screen.getByLabelText('Hide password');
+      expect(hideButton).toBeInTheDocument();
+
       // Click to hide password again
-      fireEvent.click(toggleButton!);
+      fireEvent.click(hideButton);
       expect(passwordInput).toHaveAttribute('type', 'password');
     });
   });
@@ -475,6 +494,89 @@ describe('Signup Component', () => {
         expect(emailInput).toBeInvalid();
         expect(errorMessage).toBeInTheDocument();
       });
+    });
+  });
+
+  describe('Mobile accessibility and touch targets (Requirements 4.1, 4.3)', () => {
+    it('should have minimum touch target sizes for interactive elements', () => {
+      renderSignup();
+
+      // Check form inputs have minimum height
+      const emailInput = screen.getByPlaceholderText('Enter your email');
+      const passwordInput = screen.getByPlaceholderText('Create a password');
+      const submitButton = screen.getByRole('button', { name: /get started/i });
+
+      // Check that inputs have min-h-[44px] class or equivalent
+      expect(emailInput).toHaveClass('min-h-[44px]');
+      expect(passwordInput).toHaveClass('min-h-[44px]');
+      expect(submitButton).toHaveClass('min-h-[48px]'); // Primary button is slightly larger
+    });
+
+    it('should have appropriate input types and attributes for mobile keyboards', () => {
+      renderSignup();
+
+      const emailInput = screen.getByPlaceholderText('Enter your email');
+      const passwordInput = screen.getByPlaceholderText('Create a password');
+
+      // Email input should have proper attributes for mobile
+      expect(emailInput).toHaveAttribute('type', 'email');
+      expect(emailInput).toHaveAttribute('inputMode', 'email');
+      expect(emailInput).toHaveAttribute('autoComplete', 'email');
+      expect(emailInput).toHaveAttribute('autoCapitalize', 'none');
+      expect(emailInput).toHaveAttribute('autoCorrect', 'off');
+      expect(emailInput).toHaveAttribute('spellCheck', 'false');
+
+      // Password input should have proper attributes
+      expect(passwordInput).toHaveAttribute('autoComplete', 'new-password');
+      expect(passwordInput).toHaveAttribute('autoCapitalize', 'none');
+      expect(passwordInput).toHaveAttribute('autoCorrect', 'off');
+      expect(passwordInput).toHaveAttribute('spellCheck', 'false');
+    });
+
+    it('should have accessible password toggle button with proper touch target', () => {
+      renderSignup();
+
+      const toggleButtons = screen.getAllByRole('button');
+      const passwordToggle = toggleButtons.find(button => button.getAttribute('aria-label')?.includes('password'));
+
+      expect(passwordToggle).toBeInTheDocument();
+      expect(passwordToggle).toHaveAttribute('aria-label');
+      expect(passwordToggle).toHaveClass('min-h-[44px]', 'min-w-[44px]');
+    });
+
+    it('should have readable text sizes for mobile devices', () => {
+      renderSignup();
+
+      const emailInput = screen.getByPlaceholderText('Enter your email');
+      const passwordInput = screen.getByPlaceholderText('Create a password');
+      const submitButton = screen.getByRole('button', { name: /get started/i });
+
+      // Inputs should have text-base for readability
+      expect(emailInput).toHaveClass('text-base');
+      expect(passwordInput).toHaveClass('text-base');
+      expect(submitButton).toHaveClass('text-base');
+    });
+
+    it('should have proper checkbox size for mobile interaction', () => {
+      renderSignup();
+
+      const checkbox = screen.getByRole('checkbox');
+
+      // Checkbox should be larger than default for mobile
+      expect(checkbox).toHaveClass('h-5', 'w-5', 'min-h-[20px]', 'min-w-[20px]');
+    });
+
+    it('should have accessible links with proper touch targets', () => {
+      renderSignup();
+
+      const termsLink = screen.getByText('Terms');
+      const privacyLink = screen.getByText('Privacy Policy');
+      const signInLink = screen.getByText('Sign in');
+
+      // Links should have minimum touch target height
+      expect(termsLink).toHaveClass('min-h-[44px]');
+      expect(privacyLink).toHaveClass('min-h-[44px]');
+      expect(signInLink).toHaveClass('min-h-[44px]');
     });
   });
 });
