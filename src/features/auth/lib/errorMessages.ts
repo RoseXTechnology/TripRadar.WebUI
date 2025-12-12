@@ -19,7 +19,7 @@ export interface ErrorConfig {
 }
 
 export type ErrorCode =
-  | 'EMAIL_ALREADY_EXISTS'
+  | 'USER_EXISTS'
   | 'WEAK_PASSWORD'
   | 'INVALID_EMAIL'
   | 'NETWORK_ERROR'
@@ -67,7 +67,7 @@ interface ErrorContext {
  * Error message mapping for all error codes
  */
 export const ERROR_MESSAGES: Record<ErrorCode, (context?: ErrorContext) => ErrorConfig> = {
-  EMAIL_ALREADY_EXISTS: context => ({
+  USER_EXISTS: context => ({
     title: 'Email Already Registered',
     message: 'This email is already in use. Please log in or reset your password.',
     severity: 'warning',
@@ -153,6 +153,7 @@ interface BackendError {
   response?: {
     data?: {
       code?: string;
+      errorCode?: string;
       [key: string]: unknown;
     };
   };
@@ -166,12 +167,13 @@ interface BackendError {
  * @returns ErrorConfig with title, message, severity, and optional actions
  */
 export const parseBackendError = (error: BackendError): ErrorConfig => {
-  // Try to extract error code from response
-  const errorCode = error?.response?.data?.code || error?.code;
+  // Try to extract error code from response (check both 'code' and 'errorCode' fields)
+  const errorCode = error?.response?.data?.code || error?.response?.data?.errorCode || error?.code;
 
   // Check if we have a mapping for this error code
   if (errorCode && ERROR_MESSAGES[errorCode as ErrorCode]) {
     const context = (error?.response?.data || {}) as ErrorContext;
+
     return ERROR_MESSAGES[errorCode as ErrorCode](context);
   }
 

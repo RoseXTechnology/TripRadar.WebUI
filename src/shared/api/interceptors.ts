@@ -161,7 +161,23 @@ export class ApiClient {
       throw error;
     }
 
-    throw new Error(errorData.detail || errorData.message || 'API request failed');
+    // Create error with preserved response data
+    const error = new Error(errorData.detail || errorData.message || 'API request failed') as Error & {
+      response?: {
+        data?: unknown;
+        status?: number;
+      };
+      code?: string;
+    };
+
+    // Preserve error data for proper error handling in components
+    error.response = {
+      data: errorData,
+      status: response.status,
+    };
+    error.code = errorData.errorCode || errorData.code;
+
+    throw error;
   }
 }
 

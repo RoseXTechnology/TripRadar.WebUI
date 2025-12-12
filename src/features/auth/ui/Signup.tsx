@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Mail, Lock, Eye, EyeOff, Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -22,11 +22,15 @@ export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordHint, setShowPasswordHint] = useState(false);
   const [errorConfig, setErrorConfig] = useState<ErrorConfig | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const consentCheckboxRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    clearErrors,
+    setValue,
   } = useForm<SignupFormData>({
     mode: 'onChange',
     defaultValues: {
@@ -36,11 +40,19 @@ export const Signup = () => {
     },
   });
 
+  // Focus on consent checkbox when there's a validation error
+  useEffect(() => {
+    if (errors.hasDataStorageConsent && consentCheckboxRef.current) {
+      consentCheckboxRef.current.focus();
+    }
+  }, [errors.hasDataStorageConsent]);
+
   const onSubmit = (data: SignupFormData) => {
     if (!data.hasDataStorageConsent) return;
 
     // Clear previous errors
     setErrorConfig(null);
+    setEmailError(null);
 
     registerMutation.mutate(
       {
@@ -64,6 +76,7 @@ export const Signup = () => {
             response?: {
               data?: {
                 code?: string;
+                errorCode?: string;
                 [key: string]: unknown;
               };
             };
@@ -83,7 +96,15 @@ export const Signup = () => {
           };
 
           const parsedError = parseBackendError(errorWithEmail);
-          setErrorConfig(parsedError);
+
+          // Check if this is a USER_EXISTS error - show it under email field instead of as ErrorAlert
+          const errorCode =
+            backendError?.response?.data?.code || backendError?.response?.data?.errorCode || backendError?.code;
+          if (errorCode === 'USER_EXISTS') {
+            setEmailError('Account with this email already exists');
+          } else {
+            setErrorConfig(parsedError);
+          }
         },
       }
     );
@@ -166,10 +187,16 @@ export const Signup = () => {
                   />
                   <input
                     {...register('email', {
-                      required: 'Email is required',
+                      required: true,
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                         message: 'Invalid email address',
+                      },
+                      onChange: () => {
+                        // Clear email error when user starts typing
+                        if (emailError) {
+                          setEmailError(null);
+                        }
                       },
                     })}
                     id="email-input"
@@ -179,20 +206,19 @@ export const Signup = () => {
                     autoCapitalize="none"
                     autoCorrect="off"
                     spellCheck="false"
-                    className="w-full pl-10 pr-4 py-4 min-h-[44px] border border-outline dark:border-outline-dark rounded-xl bg-surface dark:bg-surface-dark text-content dark:text-content-dark placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-content/10 focus:border-content dark:focus:border-content-dark transition-all duration-200 text-base"
+                    className={`w-full pl-10 pr-4 py-4 min-h-[44px] rounded-xl bg-surface dark:bg-surface-dark text-content dark:text-content-dark placeholder-content-muted focus:outline-none focus:ring-2 transition-all duration-200 text-base ${
+                      errors.email || emailError
+                        ? 'border-2 border-red-500 dark:border-red-400 focus:ring-red-500/20'
+                        : 'border border-outline dark:border-outline-dark focus:ring-content/10 focus:border-content dark:focus:border-content-dark'
+                    }`}
                     placeholder="Enter your email"
-                    aria-describedby={errors.email ? 'email-error' : undefined}
-                    aria-invalid={errors.email ? 'true' : 'false'}
+                    aria-describedby={errors.email || emailError ? 'email-error' : undefined}
+                    aria-invalid={errors.email || emailError ? 'true' : 'false'}
                   />
                 </div>
-                {errors.email && (
-                  <p
-                    id="email-error"
-                    className="mt-2 text-sm text-red-600 dark:text-red-400 transition-all duration-200 animate-in slide-in-from-top-1"
-                    role="alert"
-                    aria-live="polite"
-                  >
-                    {errors.email.message}
+                {emailError && (
+                  <p id="email-error" className="mt-1 text-sm text-red-500 dark:text-red-400">
+                    {emailError}
                   </p>
                 )}
               </div>
@@ -239,13 +265,10 @@ export const Signup = () => {
                   />
                   <input
                     {...register('password', {
-                      required: 'Password is required',
+                      required: true,
                       validate: value => {
                         const result = validatePassword(value);
-                        if (!result.isValid) {
-                          return result.errors.join('. ');
-                        }
-                        return true;
+                        return result.isValid;
                       },
                     })}
                     id="password-input"
@@ -254,7 +277,11 @@ export const Signup = () => {
                     autoCapitalize="none"
                     autoCorrect="off"
                     spellCheck="false"
-                    className="w-full pl-10 pr-12 py-4 min-h-[44px] border border-outline dark:border-outline-dark rounded-xl bg-surface dark:bg-surface-dark text-content dark:text-content-dark placeholder-content-muted focus:outline-none focus:ring-2 focus:ring-content/10 focus:border-content dark:focus:border-content-dark transition-all duration-200 text-base"
+                    className={`w-full pl-10 pr-12 py-4 min-h-[44px] rounded-xl bg-surface dark:bg-surface-dark text-content dark:text-content-dark placeholder-content-muted focus:outline-none focus:ring-2 transition-all duration-200 text-base ${
+                      errors.password
+                        ? 'border-2 border-red-500 dark:border-red-400 focus:ring-red-500/20'
+                        : 'border border-outline dark:border-outline-dark focus:ring-content/10 focus:border-content dark:focus:border-content-dark'
+                    }`}
                     placeholder="Create a password"
                     aria-describedby={errors.password ? 'password-error' : undefined}
                     aria-invalid={errors.password ? 'true' : 'false'}
@@ -273,30 +300,34 @@ export const Signup = () => {
                     )}
                   </button>
                 </div>
-                {errors.password && (
-                  <p
-                    id="password-error"
-                    className="mt-2 text-sm text-red-600 dark:text-red-400 transition-all duration-200 animate-in slide-in-from-top-1"
-                    role="alert"
-                    aria-live="polite"
-                  >
-                    {errors.password.message}
-                  </p>
-                )}
               </div>
 
               {/* Consent */}
               <div className="flex items-center gap-3">
-                <input
-                  {...register('hasDataStorageConsent', {
-                    required: 'You must agree to continue',
-                  })}
-                  id="consent-checkbox"
-                  type="checkbox"
-                  className="h-5 w-5 min-h-[20px] min-w-[20px] text-content dark:text-content-dark focus:ring-2 focus:ring-content/10 border-outline dark:border-outline-dark rounded transition-all duration-200"
-                  aria-describedby={errors.hasDataStorageConsent ? 'consent-error' : 'consent-description'}
-                  aria-invalid={errors.hasDataStorageConsent ? 'true' : 'false'}
-                />
+                <div className="relative">
+                  <input
+                    {...register('hasDataStorageConsent', {
+                      required: 'Please accept our terms to continue',
+                    })}
+                    ref={consentCheckboxRef}
+                    id="consent-checkbox"
+                    type="checkbox"
+                    className="h-5 w-5 min-h-[20px] min-w-[20px] text-content dark:text-content-dark border border-outline dark:border-outline-dark rounded focus:ring-2 focus:ring-content/10 transition-all duration-200"
+                    aria-describedby="consent-description"
+                    aria-invalid={errors.hasDataStorageConsent ? 'true' : 'false'}
+                    onChange={e => {
+                      // Update form value
+                      setValue('hasDataStorageConsent', e.target.checked);
+                      // Clear error immediately when checkbox is checked
+                      if (e.target.checked && errors.hasDataStorageConsent) {
+                        clearErrors('hasDataStorageConsent');
+                      }
+                    }}
+                  />
+                  {errors.hasDataStorageConsent && (
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 dark:bg-red-400 rounded-full animate-pulse"></div>
+                  )}
+                </div>
                 <label
                   htmlFor="consent-checkbox"
                   className="text-xs text-content-secondary dark:text-content-secondary-dark leading-relaxed"
@@ -318,16 +349,6 @@ export const Signup = () => {
                   </Link>
                 </label>
               </div>
-              {errors.hasDataStorageConsent && (
-                <p
-                  id="consent-error"
-                  className="mt-2 text-sm text-red-600 dark:text-red-400 transition-all duration-200 animate-in slide-in-from-top-1"
-                  role="alert"
-                  aria-live="polite"
-                >
-                  {errors.hasDataStorageConsent.message}
-                </p>
-              )}
 
               {/* Submit Button */}
               <button

@@ -172,8 +172,9 @@ describe('Signup Component', () => {
       fireEvent.blur(passwordInput); // Trigger validation
 
       await waitFor(() => {
-        // Should show error message
-        expect(screen.getByText(/Password must be at least 9 characters long/)).toBeInTheDocument();
+        // Should show visual error indicator
+        const passwordInput = screen.getByPlaceholderText('Create a password');
+        expect(passwordInput).toHaveClass('border-red-500');
       });
     });
 
@@ -187,15 +188,15 @@ describe('Signup Component', () => {
       fireEvent.blur(passwordInput);
 
       await waitFor(() => {
-        expect(screen.getByText(/Password must be at least 9 characters long/)).toBeInTheDocument();
+        expect(passwordInput).toHaveClass('border-red-500');
       });
 
       // Enter a valid password to clear validation error
       fireEvent.change(passwordInput, { target: { value: 'ValidPass1!' } });
 
       await waitFor(() => {
-        // Error should be gone
-        expect(screen.queryByText(/Password must be at least 9 characters long/)).not.toBeInTheDocument();
+        // Error styling should be gone
+        expect(passwordInput).not.toHaveClass('border-red-500');
       });
     });
 
@@ -282,34 +283,44 @@ describe('Signup Component', () => {
       fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       await waitFor(() => {
-        expect(screen.getByText('Email is required')).toBeInTheDocument();
-        expect(screen.getByText('Password is required')).toBeInTheDocument();
-        expect(screen.getByText('You must agree to continue')).toBeInTheDocument();
+        // Check for visual error indicators instead of text messages
+        const emailInput = screen.getByPlaceholderText('Enter your email');
+        const passwordInput = screen.getByPlaceholderText('Create a password');
+        const checkbox = screen.getByRole('checkbox');
+
+        expect(emailInput).toHaveAttribute('aria-invalid', 'true');
+        expect(passwordInput).toHaveAttribute('aria-invalid', 'true');
+        expect(checkbox).toHaveAttribute('aria-invalid', 'true');
+
+        // Check for red dot indicator for consent
+        expect(document.querySelector('.bg-red-500')).toBeInTheDocument();
       });
 
       // Should not call mutation
       expect(mockMutate).not.toHaveBeenCalled();
     });
 
-    it('should show validation error for invalid email format', async () => {
+    it('should show visual error indicator for invalid email format', async () => {
       renderSignup();
 
-      fireEvent.change(screen.getByPlaceholderText('Enter your email'), { target: { value: 'invalid-email' } });
-      fireEvent.blur(screen.getByPlaceholderText('Enter your email'));
+      const emailInput = screen.getByPlaceholderText('Enter your email');
+      fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
+      fireEvent.blur(emailInput);
 
       await waitFor(() => {
-        expect(screen.getByText('Invalid email address')).toBeInTheDocument();
+        expect(emailInput).toHaveClass('border-red-500');
       });
     });
 
-    it('should show validation error for weak password', async () => {
+    it('should show visual error indicator for weak password', async () => {
       renderSignup();
 
-      fireEvent.change(screen.getByPlaceholderText('Create a password'), { target: { value: 'weak' } });
-      fireEvent.blur(screen.getByPlaceholderText('Create a password'));
+      const passwordInput = screen.getByPlaceholderText('Create a password');
+      fireEvent.change(passwordInput, { target: { value: 'weak' } });
+      fireEvent.blur(passwordInput);
 
       await waitFor(() => {
-        expect(screen.getByText(/Password must be at least 9 characters long/)).toBeInTheDocument();
+        expect(passwordInput).toHaveClass('border-red-500');
       });
     });
 
@@ -323,15 +334,60 @@ describe('Signup Component', () => {
       fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       await waitFor(() => {
-        expect(screen.getByText('You must agree to continue')).toBeInTheDocument();
+        // Check for red dot indicator instead of text message
+        const checkbox = screen.getByRole('checkbox');
+        expect(checkbox).toHaveAttribute('aria-invalid', 'true');
       });
 
       expect(mockMutate).not.toHaveBeenCalled();
     });
+
+    it('should clear consent error indicator when checkbox is checked', async () => {
+      renderSignup();
+
+      // Fill valid data but don't check consent
+      fireEvent.change(screen.getByPlaceholderText('Enter your email'), { target: { value: 'test@example.com' } });
+      fireEvent.change(screen.getByPlaceholderText('Create a password'), { target: { value: 'StrongPass1!' } });
+
+      // Try to submit without consent to trigger error
+      fireEvent.click(screen.getByRole('button', { name: /get started/i }));
+
+      await waitFor(() => {
+        const checkbox = screen.getByRole('checkbox');
+        expect(checkbox).toHaveAttribute('aria-invalid', 'true');
+        // Red dot should be visible
+        expect(document.querySelector('.bg-red-500')).toBeInTheDocument();
+      });
+
+      // Now check the consent checkbox
+      const checkbox = screen.getByRole('checkbox');
+      fireEvent.click(checkbox);
+
+      await waitFor(() => {
+        // Error should be cleared immediately
+        expect(checkbox).toHaveAttribute('aria-invalid', 'false');
+        // Red dot should be gone
+        expect(document.querySelector('.bg-red-500')).not.toBeInTheDocument();
+      });
+    });
   });
 
   describe('Error alert display on backend errors (Requirement 2.1)', () => {
-    it('should display error alert when backend returns error', async () => {
+    it('should display email error under email field when USER_EXISTS error occurs', async () => {
+      // Mock error response
+      const mockError = {
+        response: {
+          data: {
+            code: 'USER_EXISTS',
+            email: 'existing@example.com',
+          },
+        },
+      };
+
+      mockMutate.mockImplementation((data, { onError }) => {
+        onError(mockError);
+      });
+
       renderSignup();
 
       // Fill form with valid data
@@ -339,46 +395,28 @@ describe('Signup Component', () => {
       fireEvent.change(screen.getByPlaceholderText('Create a password'), { target: { value: 'StrongPass1!' } });
       fireEvent.click(screen.getByRole('checkbox'));
 
-      // Mock error response
-      const mockError = {
-        response: {
-          data: {
-            code: 'EMAIL_ALREADY_EXISTS',
-            email: 'existing@example.com',
-          },
-        },
-      };
-
-      mockMutate.mockImplementation((_, { onError }) => {
-        onError(mockError);
-      });
-
       // Submit form
       fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       await waitFor(() => {
-        // Should display error alert
-        expect(screen.getByText('Email Already Registered')).toBeInTheDocument();
+        // Should display error under email field
+        expect(screen.getByText('Account with this email already exists')).toBeInTheDocument();
+        // Should NOT display ErrorAlert with buttons
         expect(
-          screen.getByText('This email is already in use. Please log in or reset your password.')
-        ).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Log In' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Reset Password' })).toBeInTheDocument();
+          screen.queryByText('This email is already in use. Please log in or reset your password.')
+        ).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Log In' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Reset Password' })).not.toBeInTheDocument();
       });
     });
 
-    it('should clear error alert when dismissed', async () => {
+    it('should clear email error when user starts typing in email field', async () => {
       renderSignup();
-
-      // Fill form and trigger error
-      fireEvent.change(screen.getByPlaceholderText('Enter your email'), { target: { value: 'existing@example.com' } });
-      fireEvent.change(screen.getByPlaceholderText('Create a password'), { target: { value: 'StrongPass1!' } });
-      fireEvent.click(screen.getByRole('checkbox'));
 
       const mockError = {
         response: {
           data: {
-            code: 'EMAIL_ALREADY_EXISTS',
+            code: 'USER_EXISTS',
             email: 'existing@example.com',
           },
         },
@@ -388,22 +426,27 @@ describe('Signup Component', () => {
         onError(mockError);
       });
 
+      // Fill form with valid data
+      fireEvent.change(screen.getByPlaceholderText('Enter your email'), { target: { value: 'existing@example.com' } });
+      fireEvent.change(screen.getByPlaceholderText('Create a password'), { target: { value: 'StrongPass1!' } });
+      fireEvent.click(screen.getByRole('checkbox'));
+
+      // Submit form to trigger error
       fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       await waitFor(() => {
-        expect(screen.getByText('Email Already Registered')).toBeInTheDocument();
+        expect(screen.getByText('Account with this email already exists')).toBeInTheDocument();
       });
 
-      // Dismiss error
-      const dismissButton = screen.getByRole('button', { name: 'Dismiss alert' });
-      fireEvent.click(dismissButton);
+      // Start typing in email field
+      fireEvent.change(screen.getByPlaceholderText('Enter your email'), { target: { value: 'new@example.com' } });
 
       await waitFor(() => {
-        expect(screen.queryByText('Email Already Registered')).not.toBeInTheDocument();
+        expect(screen.queryByText('Account with this email already exists')).not.toBeInTheDocument();
       });
     });
 
-    it('should clear error alert on new form submission', async () => {
+    it('should clear email error on new form submission', async () => {
       renderSignup();
 
       // First submission with error
@@ -414,7 +457,7 @@ describe('Signup Component', () => {
       const mockError = {
         response: {
           data: {
-            code: 'EMAIL_ALREADY_EXISTS',
+            code: 'USER_EXISTS',
           },
         },
       };
@@ -426,7 +469,7 @@ describe('Signup Component', () => {
       fireEvent.click(screen.getByRole('button', { name: /get started/i }));
 
       await waitFor(() => {
-        expect(screen.getByText('Email Already Registered')).toBeInTheDocument();
+        expect(screen.getByText('Account with this email already exists')).toBeInTheDocument();
       });
 
       // Change email and submit again
@@ -440,7 +483,7 @@ describe('Signup Component', () => {
 
       // Error should be cleared before new submission
       await waitFor(() => {
-        expect(screen.queryByText('Email Already Registered')).not.toBeInTheDocument();
+        expect(screen.queryByText('Account with this email already exists')).not.toBeInTheDocument();
       });
     });
   });
@@ -481,7 +524,7 @@ describe('Signup Component', () => {
       expect(screen.getByPlaceholderText('Create a password')).toBeInTheDocument();
     });
 
-    it('should associate error messages with form fields', async () => {
+    it('should show visual error indicators for invalid fields', async () => {
       renderSignup();
 
       fireEvent.change(screen.getByPlaceholderText('Enter your email'), { target: { value: 'invalid' } });
@@ -489,10 +532,8 @@ describe('Signup Component', () => {
 
       await waitFor(() => {
         const emailInput = screen.getByPlaceholderText('Enter your email');
-        const errorMessage = screen.getByText('Invalid email address');
-
         expect(emailInput).toBeInvalid();
-        expect(errorMessage).toBeInTheDocument();
+        expect(emailInput).toHaveClass('border-red-500');
       });
     });
   });
